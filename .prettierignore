@@ -1,0 +1,2 @@
+# Prettier gets in conflict with Forestry on Front Matter indentation
+*.md
