@@ -1,110 +1,112 @@
-{
-	"siret": "12345678901234",
-	"nom": "ORGANISME TEST",
-	"date_creation": "2018-01-01",
-	"statut": "association|entreprise|ccas-cias",
-	"adresse": {
-		"rue1": "1 RUE DU GENERAL DE GAULE",
-		"rue2": "",
-		"code_postal": "78670",
-		"ville": "VILLENNES SUR SEINE"
-	},
-	"representant": {
-		"civilite": "M.",
-		"prenom": "Jean",
-		"nom": "Arnoud",
-		"titre": "Directeur"
-	},
-	"contact": {
-		"telephone": "012345678",
-		"mobile": "062345679",
-		"bureau": "072345678",
-		"mail1": "jean.arnoud@test.fr",
-		"mail2": "accueil@test.fr"
-	},
-	"antennes": null,
-	"declaration": { "date": "2018-06-01", "no": "SAP999999999" },
-	"agrement": { "date": "2018-08-01", "no": "SAP98989898" },
-	"autorisation": { "date": "2018-06-01", "no": "2018-06" },
-	"federation_reseau_enseigne": "Fédération des Confédérés",
-	"convention_collective": "Convention collective nationale des entreprises de propreté et services associés",
-	"opco": "Agefos PME",
-	"liens_internet": {
-		"site_web": "https://organisme.test",
-		"facebook": null,
-		"linkedin": null,
-		"twitter": null,
-		"instagram": null,
-		"autres": null
-	},
-	"effectif": {
-		"total": 40,
-		"etp": 30,
-		"intervenants": 20,
-		"intervenants_etp": 10,
-		"cadres_intermediaires": 10,
-		"cadres_intermediaires_etp": 5
-	},
-	"heures_cumulees": 800,
-	"chiffre_affaire": 50000,
-	"certifications": [
-		{ "label": "AFNOR", "date": null, "no": null },
-		{ "label": "QUALISAP", "date": "2019-06-30", "no": "QUALIKSIJ87H786" }
-	],
-	"syneos": {
-		"a_mettre_en_place": true
-	},
-	"systemes_gestion": {
-		"dispositif_domicile": false,
-		"telegestion": true,
-		"editeur_telegestion": "Nathan",
-		"teletransmission": true
-	},
-	"ratios_activité": {
-		"pa": 30,
-		"ph": 20,
-		"transport": 5,
-		"enfance": 0,
-		"mandataire": 10,
-		"prestataire": 5,
-		"confort": 10
-	},
-	"beneficiaires": {
-		"pa": 5,
-		"pa_apa": 2,
-		"ph": 3,
-		"ph_pch": 1,
-		"petite_enfance": 0,
-		"enfance": 1,
-		"confort": 2,
-		"autres": 3
-	},
-	"codes_activite": [
-		"aide_a_la_toilette",
-		"accompagnement",
-		"animation",
-		"bricolage",
-		"transports",
-		"courses",
-		"garde_enfants",
-		"garde_malade",
-		"soutien_scolaire",
-		"homme_a_tout_faire",
-		"jardinage",
-		"menage",
-		"portage_repas",
-		"repassage",
-		"repas",
-		"demarches_administratives",
-		"autre"
-	],
-	"autre_activite": "Toilette pour chats",
-	"statut_adhesion": "active|en_attente|inactive",
-	"adhesions": [{ "annee": 2021, "date_paiement": null, "cotisation": "A" }],
-	"autorisations": {
-		"coordonnees": false,
-		"image": false,
-		"statuts": true,
-		"charte_engagement": true
+[
+	{
+		"siret": "12345678901234",
+		"nom": "ORGANISME TEST",
+		"date_creation": "2018-01-01",
+		"statut": "association|entreprise|ccas-cias",
+		"adresse": {
+			"rue1": "1 RUE DU GENERAL DE GAULE",
+			"rue2": "",
+			"code_postal": "78670",
+			"ville": "VILLENNES SUR SEINE"
+		},
+		"representant": {
+			"civilite": "M.",
+			"prenom": "Jean",
+			"nom": "Arnoud",
+			"titre": "Directeur"
+		},
+		"contact": {
+			"telephone": "012345678",
+			"mobile": "062345679",
+			"bureau": "072345678",
+			"mail1": "jean.arnoud@test.fr",
+			"mail2": "accueil@test.fr"
+		},
+		"antennes": null,
+		"declaration": { "date": "2018-06-01", "no": "SAP999999999" },
+		"agrement": { "date": "2018-08-01", "no": "SAP98989898" },
+		"autorisation": { "date": "2018-06-01", "no": "2018-06" },
+		"federation_reseau_enseigne": "Fédération des Confédérés",
+		"convention_collective": "Convention collective nationale des entreprises de propreté et services associés",
+		"opco": "Agefos PME",
+		"liens_internet": {
+			"site_web": "https://organisme.test",
+			"facebook": null,
+			"linkedin": null,
+			"twitter": null,
+			"instagram": null,
+			"autres": null
+		},
+		"effectif": {
+			"total": 40,
+			"etp": 30,
+			"intervenants": 20,
+			"intervenants_etp": 10,
+			"cadres_intermediaires": 10,
+			"cadres_intermediaires_etp": 5
+		},
+		"heures_cumulees": 800,
+		"chiffre_affaire": 50000,
+		"certifications": [
+			{ "label": "AFNOR", "date": null, "no": null },
+			{ "label": "QUALISAP", "date": "2019-06-30", "no": "QUALIKSIJ87H786" }
+		],
+		"syneos": {
+			"a_mettre_en_place": true
+		},
+		"systemes_gestion": {
+			"dispositif_domicile": false,
+			"telegestion": true,
+			"editeur_telegestion": "Nathan",
+			"teletransmission": true
+		},
+		"ratios_activite": {
+			"pa": 30,
+			"ph": 20,
+			"transport": 5,
+			"enfance": 0,
+			"mandataire": 10,
+			"prestataire": 5,
+			"confort": 10
+		},
+		"beneficiaires": {
+			"pa": 5,
+			"pa_apa": 2,
+			"ph": 3,
+			"ph_pch": 1,
+			"petite_enfance": 0,
+			"enfance": 1,
+			"confort": 2,
+			"autres": 3
+		},
+		"codes_activite": [
+			"aide_a_la_toilette",
+			"accompagnement",
+			"animation",
+			"bricolage",
+			"transports",
+			"courses",
+			"garde_enfants",
+			"garde_malade",
+			"soutien_scolaire",
+			"homme_a_tout_faire",
+			"jardinage",
+			"menage",
+			"portage_repas",
+			"repassage",
+			"repas",
+			"demarches_administratives",
+			"autre"
+		],
+		"autre_activite": "Toilette pour chats",
+		"statut_adhesion": "active|en_attente|inactive",
+		"adhesions": [{ "annee": 2021, "date_paiement": null, "cotisation": "A" }],
+		"autorisations": {
+			"coordonnees": false,
+			"image": false,
+			"statuts": true,
+			"charte_engagement": true
+		}
 	}
-}
+]
