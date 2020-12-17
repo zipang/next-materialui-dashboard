@@ -46,6 +46,7 @@ const APIForm = ({ action, method = "POST", onSuccess, children }) => {
 		setSubmitting(true);
 
 		try {
+			console.dir(`Sending : `, formData);
 			const apiResponse = await APIClient.post(action, formData);
 			if (typeof onSuccess === "function") {
 				onSuccess(apiResponse);

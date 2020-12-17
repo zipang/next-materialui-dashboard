@@ -1,4 +1,3 @@
-import APIClient from "@lib/client/ApiClient";
 import APIForm from "@forms/APIForm";
 import Input from "@forms/Input";
 import { useState } from "react";
@@ -11,26 +10,10 @@ import { Typography } from "@material-ui/core";
  */
 const RegisterForm = ({ onRegistration }) => {
 	const [submitted, setSubmitted] = useState(false);
-
-	const onSubmit = async (formData, e) => {
-		e.preventDefault();
-
-		try {
-			// We will use the email field as the username
-			formData.username = formData.email;
-			const loggedUser = await APIClient.post("/api/user/register", formData);
-			// Call the registration callbak
-			setSubmitted(true);
-		} catch (err) {
-			// API error
-			alert(err.message);
-		}
-	};
-
 	return (
 		<>
 			{!submitted && (
-				<APIForm action="/api/user/register" onSubmit={onSubmit}>
+				<APIForm action="/api/user/register" onSuccess={() => setSubmitted(true)}>
 					<Input.Text
 						label="Prénom"
 						name="firstName"
@@ -57,7 +40,7 @@ const RegisterForm = ({ onRegistration }) => {
 			)}
 			{submitted && (
 				<Typography variant="body2">
-					Regardez votre boîte aux lettres. Un email de véfification vient de
+					Regardez votre boîte aux lettres. Un email de vérification vient de
 					vous être envoyé.
 				</Typography>
 			)}

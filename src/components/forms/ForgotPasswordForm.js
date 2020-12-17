@@ -10,27 +10,13 @@ import { Typography } from "@material-ui/core";
 const ForgotPasswordForm = () => {
 	const [submitted, setSubmitted] = useState(false);
 
-	const onSubmit = async (formData, e) => {
-		e.preventDefault();
-
-		try {
-			const response = await APIClient.post("/api/user/forgotPassword", formData);
-			// Call the registration callbak
-			if (response.success) {
-				setSubmitted(true);
-			} else {
-				alert(response.message);
-			}
-		} catch (err) {
-			// API error
-			alert(err.message);
-		}
-	};
-
 	return (
 		<>
 			{!submitted && (
-				<APIForm action="/api/user/forgotPassword" onSubmit={onSubmit}>
+				<APIForm
+					action="/api/user/forgotPassword"
+					onSuccess={() => setSubmitted(true)}
+				>
 					<Input.Email
 						label="Email"
 						name="email"
@@ -39,7 +25,7 @@ const ForgotPasswordForm = () => {
 					<Input.Submit />
 				</APIForm>
 			)}
-			{submitted && <Typography>Regardez votre boîte aux lettres</Typography>}
+			{submitted && <Typography>Regardez votre boîte aux lettres.</Typography>}
 		</>
 	);
 };

@@ -3,6 +3,7 @@ import { useAuthentication } from "../AuthenticationProvider";
 
 import APIForm from "@forms/APIForm";
 import Input from "@forms/Input";
+import User from "@models/User";
 
 /**
  * Displays a form to log the user
@@ -13,12 +14,12 @@ const LoginForm = () => {
 
 	/**
 	 * After a successful login, the full User is returned by the API
-	 * @param {User} loggedUser
+	 * @param {Object} userData
 	 */
-	const onSuccess = (loggedUser) => {
-		authProvider.setLoggedUser(loggedUser);
+	const onSuccess = (userData) => {
+		authProvider.setLoggedUser(new User(userData));
 		// Do a fast client-side transition to the already prefetched dashboard page
-		router.push("/dashboard");
+		router.push("/user-dashboard");
 	};
 
 	return (
