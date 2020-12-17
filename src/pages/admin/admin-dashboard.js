@@ -1,12 +1,9 @@
-import { useState } from "react";
-import PropTypes from "prop-types";
+import { withAuthentication } from "@components/AuthenticationProvider";
 import { makeStyles } from "@material-ui/core/styles";
-import Hidden from "@material-ui/core/Hidden";
 import Header from "@components/Header";
-import Navigator from "@components/Navigator";
+import UserNavBar from "@components/navigation/NavigationBar";
 import SearchBox from "@components/SearchBox";
 import Copyright from "@components/Copyright";
-import { useAuthentication } from "@components/AuthenticationProvider";
 
 const drawerWidth = 256;
 
@@ -37,29 +34,13 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Dashboard(props) {
-	const auth = useAuthentication();
+function AdminDashboard({ user }) {
 	const classes = useStyles();
-	const [mobileOpen, setMobileOpen] = useState(false);
-
-	const handleDrawerToggle = () => {
-		setMobileOpen(!mobileOpen);
-	};
 
 	return (
 		<div className={classes.root}>
 			<nav className={classes.drawer}>
-				<Hidden smUp implementation="js">
-					<Navigator
-						PaperProps={{ style: { width: drawerWidth } }}
-						variant="temporary"
-						open={mobileOpen}
-						onClose={handleDrawerToggle}
-					/>
-				</Hidden>
-				<Hidden smDown implementation="css">
-					<Navigator PaperProps={{ style: { width: drawerWidth } }} />
-				</Hidden>
+				<UserNavBar user={user} />
 			</nav>
 			<div className={classes.app}>
 				<Header onDrawerToggle={handleDrawerToggle} />
@@ -74,6 +55,7 @@ function Dashboard(props) {
 	);
 }
 
-Dashboard.propTypes = {};
-
-export default Dashboard;
+export default withAuthentication(AdminDashboard, {
+	profiles: ["admin"],
+	redirectTo: "/admin"
+});

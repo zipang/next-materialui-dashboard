@@ -1,4 +1,4 @@
-import User from "@lib/User";
+import User from "@models/User";
 
 /**
  * `/api/login` request handler

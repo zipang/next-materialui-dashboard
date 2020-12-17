@@ -1,0 +1,17 @@
+[
+	{
+		"label": "Membres",
+		"icon": "People",
+		"children": [
+			{
+				"label": "Rechercher",
+				"icon": "Search",
+				"action": "admin/adherents"
+			},
+			{
+				"label": "Messages",
+				"icon": "Textsms"
+			}
+		]
+	}
+]

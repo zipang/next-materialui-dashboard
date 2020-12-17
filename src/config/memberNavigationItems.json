@@ -1,0 +1,17 @@
+[
+	{
+		"label": "Espace Membre",
+		"children": [
+			{
+				"label": "Mes Organismes",
+				"icon": "Business",
+				"action": "/espace-membre/organismes"
+			},
+			{
+				"label": "Mon Profil",
+				"icon": "People",
+				"action": "/espace-membre/profile"
+			}
+		]
+	}
+]
