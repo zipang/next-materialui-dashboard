@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import {
 	AppBar,
 	Avatar,
@@ -16,6 +15,7 @@ import NotificationsIcon from "@material-ui/icons/Notifications";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { useAuthentication } from "./AuthenticationProvider";
+import EventBusProvider, { useEventBus } from "./EventBusProvider";
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
@@ -38,28 +38,31 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-function Header(props) {
+const MenuButton = () => {
+	const EventBus = useEventBus();
+	<Hidden smUp>
+		<Grid item>
+			<IconButton
+				color="inherit"
+				aria-label="open drawer"
+				onClick={() => EventBus.emit("toggleMenu")}
+				edge="start"
+			>
+				<MenuIcon />
+			</IconButton>
+		</Grid>
+	</Hidden>;
+};
+
+function Header() {
 	const { loggedUser: user } = useAuthentication();
 	const styles = useStyles();
-	const { onDrawerToggle } = props;
 
 	return (
 		<>
 			<AppBar color="primary" position="sticky" elevation={0}>
 				<Toolbar>
 					<Grid container spacing={1} alignItems="center">
-						<Hidden smUp>
-							<Grid item>
-								<IconButton
-									color="inherit"
-									aria-label="open drawer"
-									onClick={onDrawerToggle}
-									edge="start"
-								>
-									<MenuIcon />
-								</IconButton>
-							</Grid>
-						</Hidden>
 						{user && (
 							<>
 								<Grid item>
@@ -105,9 +108,5 @@ function Header(props) {
 		</>
 	);
 }
-
-Header.propTypes = {
-	onDrawerToggle: PropTypes.func.isRequired
-};
 
 export default Header;
