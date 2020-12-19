@@ -1,10 +1,19 @@
 import { useState, useContext, createContext, useEffect } from "react";
 import { useRouter } from "next/router";
+import { NoSsr } from "@material-ui/core";
 import User from "@models/User";
+
+/**
+ * @typedef AuthContext
+ * @field {User} loggedUser
+ * @field {Function} setLoggedUser Define the logged user after a successful login
+ * @field {Function} logout
+ */
 
 const AuthContext = createContext();
 
 /**
+ * Global Provider for the currently logged user and the way to log it out
  * NOTE : Don't forget the {children} when writing a context provider !
  */
 const AuthenticationProvider = ({ children }) => {
@@ -70,10 +79,9 @@ export const withAuthentication = (Component, { profiles = [], redirectTo = "/" 
 		return () => {};
 	}, [loggedUser]);
 
-	if (typeof window === "undefined") {
-		console.log("No SSR");
-		return null;
-	} else {
-		return <Component user={loggedUser} {...props} />;
-	}
+	return (
+		<NoSsr>
+			<Component user={loggedUser} {...props} />
+		</NoSsr>
+	);
 };
