@@ -1,7 +1,9 @@
 import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import SwipeableViews from "react-swipeable-views";
+// import SwipeableViews from "react-swipeable-views";
+
 import EventBusProvider from "@components/EventBusProvider";
 import Register from "@components/Register";
+import SlideViews from "@components/SlideViews";
 import Login from "@components/Login";
 import ForgotPassword from "@components/ForgotPassword";
 import { useState } from "react";
@@ -20,11 +22,11 @@ const SwipeViews = () => {
 
 	return (
 		<EventBusProvider listeners={eventListeners}>
-			<SwipeableViews index={currentView}>
+			<SlideViews index={currentView}>
 				<ForgotPassword />
 				<Login />
 				<Register />
-			</SwipeableViews>
+			</SlideViews>
 		</EventBusProvider>
 	);
 };
