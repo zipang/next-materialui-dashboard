@@ -3,12 +3,14 @@ import { createMuiTheme } from "@material-ui/core/styles";
 let theme = createMuiTheme({
 	palette: {
 		primary: {
-			light: "#63ccff",
 			main: "#009be5",
+			light: "#63ccff",
 			dark: "#006db3"
 		},
 		secondary: {
-			main: "#f44336"
+			main: "#aeea00",
+			light: "#e4ff54",
+			dark: "##c6ff00"
 		},
 		background: {
 			light: "#eaeff1",
@@ -18,7 +20,7 @@ let theme = createMuiTheme({
 		}
 	},
 	typography: {
-		fontSize: 18,
+		htmlFontSize: 16,
 		h5: {
 			fontWeight: 500,
 			fontSize: 26,
@@ -61,6 +63,9 @@ theme = {
 				boxShadow: "none",
 				"&:active": {
 					boxShadow: "none"
+				},
+				"&:hover": {
+					color: "lighter"
 				}
 			}
 		},
@@ -90,11 +95,6 @@ theme = {
 		MuiIconButton: {
 			root: {
 				padding: theme.spacing(1)
-			}
-		},
-		MuiTooltip: {
-			tooltip: {
-				borderRadius: 4
 			}
 		},
 		MuiDivider: {
