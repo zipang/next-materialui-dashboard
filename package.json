@@ -1,29 +1,38 @@
 {
-	"name": "invie",
-	"version": "0.1.0",
-	"private": true,
-	"dependencies": {
-		"@material-ui/core": "^4.11.0",
-		"@material-ui/icons": "^4.9.1",
-		"@material-ui/styles": "^4.10.0",
-		"clsx": "latest",
-		"little-state-machine": "^3.1.4",
-		"next": "^10.0.0",
-		"parse": "^2.17.0",
-		"prop-types": "latest",
-		"react": "^17.0.1",
-		"react-dom": "^17.0.1",
-		"react-hook-form": "^6.9.6",
-		"react-swipeable-views": "^0.13.9"
-	},
-	"devDependencies": {
-		"@hapi/code": "^8.0.2",
-		"baretest": "^2.0.0",
-		"gray-matter-loader": "^0.0.10"
-	},
-	"scripts": {
-		"dev": "next",
-		"build": "next build",
-		"start": "next start"
-	}
+  "name": "invie",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@material-ui/core": "^4.11.0",
+    "@material-ui/icons": "^4.9.1",
+    "@material-ui/styles": "^4.10.0",
+    "clsx": "latest",
+    "little-state-machine": "^3.1.4",
+    "next": "^10.0.0",
+    "parse": "^2.17.0",
+    "prop-types": "latest",
+    "react": "^17.0.1",
+    "react-dom": "^17.0.1",
+    "react-hook-form": "^6.9.6"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.12.10",
+    "@hapi/code": "^8.0.2",
+    "@storybook/addon-actions": "^6.1.11",
+    "@storybook/addon-essentials": "^6.1.11",
+    "@storybook/addon-links": "^6.1.11",
+    "@storybook/react": "^6.1.11",
+    "babel-loader": "^8.2.2",
+    "babel-plugin-import": "^1.13.3",
+    "baretest": "^2.0.0",
+    "gray-matter-loader": "^0.0.10",
+    "storybook-addon-material-ui": "^0.9.0-alpha.22"
+  },
+  "scripts": {
+    "dev": "next",
+    "build": "next build",
+    "start": "next start",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
+  }
 }
