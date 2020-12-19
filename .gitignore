@@ -8,6 +8,9 @@
 # testing
 /coverage
 
+# Storybook examples
+/src/stories
+
 # next.js
 /.next/
 /out/
