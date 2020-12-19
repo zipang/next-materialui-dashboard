@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 /**
- *
+ * Affiche un formulaire en regard d'une illustration
  * @param props
  * @param {String} props.image Image source for the background of the first column
  */

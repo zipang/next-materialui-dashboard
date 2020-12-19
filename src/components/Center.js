@@ -1,4 +1,4 @@
-const { Box } = require("@material-ui/core");
+import { Box } from "@material-ui/core";
 
 /**
  * @typedef CenterProps
@@ -16,7 +16,7 @@ const Center = ({
 	centerVertically = true,
 	centerHorizontally = true,
 	autoExpand = true,
-	children
+	...props
 }) => (
 	<Box
 		display="flex"
@@ -24,9 +24,8 @@ const Center = ({
 		flexGrow={autoExpand ? 1 : 0}
 		alignItems={centerVertically}
 		justifyContent={centerHorizontally}
-	>
-		{children}
-	</Box>
+		{...props}
+	/>
 );
 
 export default Center;

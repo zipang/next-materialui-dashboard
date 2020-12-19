@@ -6,7 +6,7 @@ const Copyright = () => (
 	<Typography component="p" variant="caption" color="textSecondary" align="center">
 		{"Copyright © "}
 		<Link color="inherit" href="https://mtl.com/">
-			CML
+			Invie78
 		</Link>
 		&nbsp;
 		{new Date().getFullYear()}.
