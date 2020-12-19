@@ -81,7 +81,9 @@ const NavLink = ({ label, icon, action, currentPath, styles }) => (
 			button
 			className={clsx(styles.item, action === currentPath && styles.itemActiveItem)}
 		>
-			<ListItemIcon className={styles.itemIcon}>{icon}</ListItemIcon>
+			<ListItemIcon className={styles.itemIcon}>
+				<SvgIcon name={icon} />
+			</ListItemIcon>
 			<ListItemText
 				classes={{
 					primary: styles.itemPrimary
