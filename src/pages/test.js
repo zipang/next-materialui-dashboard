@@ -1,4 +1,5 @@
 import CenteredPaperSheet from "@components/CenteredPaperSheet";
+import { SiretForm } from "@components/forms/registration/SiretSearch";
 import Wizard from "@components/Wizard";
 
 const IndexPage = () => {
@@ -6,7 +7,7 @@ const IndexPage = () => {
 
 	return (
 		<CenteredPaperSheet xs={10} md={8}>
-			<Wizard steps={steps} />
+			<SiretForm onSuccess={(resp) => alert(JSON.stringify(resp))} />
 		</CenteredPaperSheet>
 	);
 };
