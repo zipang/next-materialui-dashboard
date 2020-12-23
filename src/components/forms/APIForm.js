@@ -1,27 +1,8 @@
 import { useForm, FormProvider } from "react-hook-form";
-import { makeStyles } from "@material-ui/core/styles";
 import { useState } from "react";
 import APIClient from "@lib/client/ApiClient";
 import { CircularProgress } from "@material-ui/core";
-
-/**
- * Create specific css class names for our form
- */
-const useStyles = makeStyles((theme) => ({
-	form: {
-		height: "100%",
-		width: "100%",
-		marginTop: theme.spacing(1),
-		alignItems: "center",
-		justify: "center",
-		"& input": {
-			fontWeight: 800
-		},
-		"& .submit": {
-			margin: theme.spacing(3, 0, 2)
-		}
-	}
-}));
+import useFormStyles from "./useFormStyles";
 
 /**
  * Automatically submit validated form data to the API
@@ -30,10 +11,11 @@ const useStyles = makeStyles((theme) => ({
  * @param {string} props.action API method URL to submit to
  * @param {string} [props.method=POST] the HTTP verb to use
  * @param {JSX.Element} props.children the real form content (fields and submit button)
+ * @param {Function} [props.onSubmit] an optional method to call before form submission. RETURNING false will cancel the submission
  * @param {Function} [props.onSuccess] an optional method to call when the form submission has been a success
  */
-const APIForm = ({ action, method = "POST", onSuccess, children }) => {
-	const styles = useStyles();
+const APIForm = ({ action, method = "POST", onSubmit, onSuccess, children }) => {
+	const styles = useFormStyles();
 	const formMethods = useForm();
 	const [submitting, setSubmitting] = useState(false);
 
@@ -41,15 +23,23 @@ const APIForm = ({ action, method = "POST", onSuccess, children }) => {
 	 * Submit the form data
 	 * @see https://react-hook-form.com/api/#handleSubmit
 	 */
-	const onSubmit = formMethods.handleSubmit(async (formData, e) => {
+	const handleSubmit = formMethods.handleSubmit(async (formData, e) => {
+		if (!formData || !e.preventDefault) return; // prevent weird recursion
 		e.preventDefault();
-		setSubmitting(true);
 
 		try {
-			console.dir(`Sending : `, formData);
-			const apiResponse = await APIClient.post(action, formData);
-			if (typeof onSuccess === "function") {
-				onSuccess(apiResponse);
+			const validation = typeof onSubmit === "function" ? onSubmit(formData) : true;
+
+			if (validation) {
+				console.dir(`Sending : `, JSON.stringify(formData));
+				setSubmitting(true);
+				const apiResponse = await APIClient.post(action, formData);
+				if (typeof onSuccess === "function") {
+					onSuccess(apiResponse);
+				}
+				setSubmitting(false);
+			} else {
+				console.dir(`Form submission cancelled : `, JSON.stringify(formData));
 			}
 		} catch (err) {
 			// Display API error
@@ -65,7 +55,7 @@ const APIForm = ({ action, method = "POST", onSuccess, children }) => {
 					action={action}
 					method={method}
 					className={styles.form}
-					onSubmit={onSubmit}
+					onSubmit={handleSubmit}
 				>
 					{children}
 				</form>
