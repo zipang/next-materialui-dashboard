@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import { TextField, Input as MaterialInput, Button, MenuItem } from "@material-ui/core";
 import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
@@ -199,9 +199,76 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 	);
 };
 
-const formatPercent = (str = "") => {
+export const formatPercent = (str = "") => {
 	const number = getDigitsOnly(str + "").substr(0, 3);
 	return number.length ? `${number}%` : "";
+};
+
+const isDateSeparator = (char) => !/[dmy]/i.test(char);
+/**
+ * Use `/` as a separator
+ * @param {String} str User current input
+ */
+export const dateFormatter = (dateFormat = "dd/mm/yyyy") => (str = "") => {
+	const dateFormatParts = dateFormat.split("");
+	const digits = getDigitsOnly(str);
+	if (!digits) return "";
+	let decalage = 1;
+	const formatted = digits
+		.split("")
+		.reduce(
+			(prev, cur, i) =>
+				`${prev}${cur}` +
+				(isDateSeparator(dateFormatParts[i + decalage])
+					? dateFormatParts[i + decalage++]
+					: ""),
+			""
+		);
+	console.log(`Formatted date input ${str} to ${formatted} with format ${dateFormat}`);
+	return formatted;
+};
+
+/**
+ * Given a specific date format using d for day positions, m for month position and y for year position
+ * @param {String} format
+ * @return {Function}
+ */
+export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => {
+	if (formattedDate.length !== format.length) return undefined; // uncomplete date inpput is not serializable
+	const formatLetters = format.split("");
+	const dateDigits = formattedDate.split("");
+	const { year, month, day } = dateDigits.reduce(
+		(prev, cur, i) => {
+			if (formatLetters[i] === "d") {
+				prev.day += cur;
+			} else if (formatLetters[i] === "m") {
+				prev.month += cur;
+			} else if (formatLetters[i] === "y") {
+				prev.year += cur;
+			}
+			return prev;
+		},
+		{
+			year: "",
+			month: "",
+			day: ""
+		}
+	);
+	return `${year}-${month}-${day}`;
+};
+
+export const Date = ({ dateFormat = "dd/mm/yyyy", ...props }) => {
+	const validation = {
+		isDate: (ISODate) => typeof Date.parse(ISODate) === "number"
+	};
+	return (
+		<Format
+			format={dateFormatter(dateFormat)}
+			serialize={serializeDate(dateFormat)}
+			validation={validation}
+			{...props}
+		/>
+	);
 };
 
 /**
@@ -212,6 +279,10 @@ export const Percent = ({ ...props }) => (
 	<Integer format={formatPercent} plage={[0, 100]} {...props} />
 );
 
+/**
+ * Text Input with specific email validation
+ * @param {InputProps} props
+ */
 export const Email = ({ validation = {}, ...props }) => {
 	const emailValidation = {
 		...validation,
@@ -262,6 +333,7 @@ const Input = {
 	Format,
 	Integer,
 	Percent,
+	Date,
 	SelectBox,
 	Submit
 };

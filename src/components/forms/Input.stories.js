@@ -39,3 +39,20 @@ PercentInput.args = {
 PercentInput.argTypes = {
 	required: { control: { type: "boolean" } }
 };
+
+export const DateInput = (args) => (
+	<DForm mode="onChange">
+		<Input.Date name="date" {...args} />
+	</DForm>
+);
+DateInput.args = {
+	label: "Entrez une date",
+	required: false,
+	dateFormat: "dd/mm/yyyy"
+};
+DateInput.argTypes = {
+	required: { control: { type: "boolean" } },
+	dateFormat: {
+		control: { type: "select", options: ["dd/mm/yyyy", "mm-dd-yyyy", "yyyy-mm-dd"] }
+	}
+};
