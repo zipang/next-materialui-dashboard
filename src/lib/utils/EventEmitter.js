@@ -1,6 +1,16 @@
 "use strict";
 
 /**
+ * @typedef EventEmitter
+ * @property {Function} addEventListener Register an event listener
+ * @property {Function} on Same as addEventListener
+ * @property {Function} removeEventListener Remove an event listener
+ * @property {Function} off Same as removeEventListener
+ * @property {Function} emit Send an event
+ * @property {Function} send Same as emit()
+ */
+
+/**
  * An EventEmitter for the front-side
  */
 function EventEmitter() {}
@@ -67,5 +77,6 @@ EP.emit = function (name, var_args) {
 		}
 	}
 };
+EP.send = EP.emit;
 
 export default EventEmitter;
