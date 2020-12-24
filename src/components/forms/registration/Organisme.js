@@ -1,4 +1,4 @@
-import DForm from "@forms/DForm";
+import StepForm from "@components/forms/StepForm";
 import Input from "@forms/Input";
 
 /**
@@ -11,10 +11,11 @@ export const OrganismeForm = ({ state, actions }) => {
 		return actions.merge(state, { data: { organisme: formData } }, actions.next());
 	};
 	return (
-		<DForm id="organisme" data={state.data.organisme} onSubmit={nextStep}>
+		<StepForm id="organisme" data={state.data.organisme} onSubmit={nextStep}>
 			<Input.Format
 				label="No de Siret"
 				name="siret"
+				readonly
 				format={formatSiret}
 				serialize={unformatSiret}
 				autoFocus={true}
@@ -30,7 +31,7 @@ export const OrganismeForm = ({ state, actions }) => {
 				name="date_creation"
 				validation={{ required: "Saisissez la date de création de l'organisme" }}
 			/>
-		</DForm>
+		</StepForm>
 	);
 };
 
