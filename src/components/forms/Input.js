@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { TextField, Input as MaterialInput, Button, MenuItem } from "@material-ui/core";
+import {
+	TextField,
+	Input as MaterialInput,
+	Button,
+	MenuItem,
+	Box
+} from "@material-ui/core";
 import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
 
@@ -59,6 +65,26 @@ const Text = ({
 	);
 };
 
+const HiddenText = ({ name, value = "", inputType = "text", inputRef, ...moreProps }) => {
+	// // Find the parent form to register our input
+	// const { register, errors } = useFormContext();
+
+	// // Pass the required attribute to the validation object
+	// if (required === true) validation.required = true;
+
+	return (
+		<input
+			hidden
+			name={name}
+			id={name}
+			type={inputType}
+			ref={inputRef}
+			value={value}
+			{...moreProps}
+		/>
+	);
+};
+
 /**
  * Text input with special format
  * @param {FormattedInputProps} props -
@@ -66,6 +92,7 @@ const Text = ({
 export const Format = ({
 	name = "formatted-input",
 	label = "Use a label",
+	inputType = "text",
 	format = (val) => val,
 	load = (val) => val,
 	serialize,
@@ -75,7 +102,7 @@ export const Format = ({
 	...moreProps
 }) => {
 	// Find the parent form to register our input
-	const { register, errors } = useFormContext();
+	const { register, errors, handleSubmit } = useFormContext();
 
 	// As this input format the value for display, we use a distinct displayedValue state for the visible TextField
 	const [displayedValue, setDisplayedValue] = useState(format(load(value)));
@@ -88,6 +115,7 @@ export const Format = ({
 			? (userInput) => {
 					setHiddenValue(serialize(userInput));
 					setDisplayedValue(userInput);
+					// if (errors[name]) handleSubmit();
 			  }
 			: setDisplayedValue;
 
@@ -104,7 +132,7 @@ export const Format = ({
 	const mergedProps = { ...MATERIAL_UI_STYLE, ...moreProps };
 
 	if (typeof serialize === "function") {
-		// We create 2 inouyt fields : one for the displayed and formatted value
+		// We create 2 synchronized input fields : one for the displayed and formatted value
 		// and a hidden one that stores the real unformatted value
 		return (
 			<>
@@ -116,10 +144,10 @@ export const Format = ({
 					helperText={errors[name] ? errors[name].message : " "}
 					{...mergedProps}
 				/>
-				<MaterialInput
-					type="hidden"
+				<HiddenText
 					id={`hidden-${name}`}
 					name={name}
+					inputType={inputType}
 					inputRef={register(validation)}
 					value={hiddenValue}
 				/>
@@ -170,7 +198,7 @@ const formatInteger = (sep = " ") => (str = "") => {
 };
 
 const serializeInteger = (str = "") =>
-	str.length ? Number.parseInt(getDigitsOnly(str)) : undefined;
+	str.length ? Number.parseInt(getDigitsOnly(str)) : "";
 
 /**
  * Display a number with thousands separator like `1 000 000 000`
@@ -178,7 +206,9 @@ const serializeInteger = (str = "") =>
  * Optionally provide a plage for min and max values
  */
 export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
-	const validation = {};
+	const validation = {
+		valueAsNumber: true
+	};
 	const [min, max] = plage;
 	if (typeof min === "number") {
 		validation.min = (str) =>
@@ -193,7 +223,7 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 			format={typeof format === "function" ? format : formatInteger(separator)}
 			serialize={serializeInteger}
 			validation={validation}
-			textAlign="right"
+			inputType="number"
 			{...props}
 		/>
 	);
@@ -204,17 +234,27 @@ export const formatPercent = (str = "") => {
 	return number.length ? `${number}%` : "";
 };
 
-const isDateSeparator = (char) => !/[dmy]/i.test(char);
 /**
- * Use `/` as a separator
- * @param {String} str User current input
+ * Everything that is not a letter indicating the day, month or year digit
+ * is considered as a separator in the date format
+ * @param {String} char a single letter part of the date format
+ */
+const isDateSeparator = (char) => !/[dmy]/i.test(char);
+
+/**
+ * Generate an input date formatter from a dateFormat
+ * @example
+ *   const frenchDateFormatter = dateFormatter("dd/mm/yyyy")
+ *   const usDateFormatter = dateFormatter("mm-dd-yyyy")
+ * @param {String} dateFormat Uses d, m or y to indicate the relative position of day month or year digit
+ * @return {Function} Usable inside Input.Date as the input formatter
  */
 export const dateFormatter = (dateFormat = "dd/mm/yyyy") => (str = "") => {
 	const dateFormatParts = dateFormat.split("");
-	const digits = getDigitsOnly(str);
+	const digits = getDigitsOnly(str).substr(0, 8);
 	if (!digits) return "";
 	let decalage = 1;
-	const formatted = digits
+	return digits
 		.split("")
 		.reduce(
 			(prev, cur, i) =>
@@ -224,17 +264,17 @@ export const dateFormatter = (dateFormat = "dd/mm/yyyy") => (str = "") => {
 					: ""),
 			""
 		);
-	console.log(`Formatted date input ${str} to ${formatted} with format ${dateFormat}`);
-	return formatted;
 };
 
 /**
- * Given a specific date format using d for day positions, m for month position and y for year position
+ * Given a specific date display format
+ * (using d for day positions, m for month position and y for year position)
+ * Buuild the serializer function that will serialize the date representation back to ISO
  * @param {String} format
- * @return {Function}
+ * @return {Function} ISO date serializer usable inside <Input.Date serialize />
  */
 export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => {
-	if (formattedDate.length !== format.length) return undefined; // uncomplete date inpput is not serializable
+	if (formattedDate.length !== format.length) return ""; // uncomplete date input is not serializable
 	const formatLetters = format.split("");
 	const dateDigits = formattedDate.split("");
 	const { year, month, day } = dateDigits.reduce(
@@ -257,6 +297,10 @@ export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => 
 	return `${year}-${month}-${day}`;
 };
 
+/**
+ * Text Input that specifically format dates on user input as they change
+ * @param {InputProps} props
+ */
 export const Date = ({ dateFormat = "dd/mm/yyyy", ...props }) => {
 	const validation = {
 		isDate: (ISODate) => typeof Date.parse(ISODate) === "number"

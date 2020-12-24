@@ -1,20 +1,24 @@
 // Input.stories.js
 import Input from "./Input";
-import DForm from "./DForm";
+import StepForm from "./StepForm";
 
 // This default export determines where your story goes in the story list
 export default {
 	title: "Input",
 	component: Input,
 	args: {
+		required: false,
 		label: "Let's input some number"
+	},
+	argTypes: {
+		required: { control: { type: "boolean" } }
 	}
 };
 
 export const IntegerInput = (args) => (
-	<DForm>
-		<Input.Integer {...args} />
-	</DForm>
+	<StepForm>
+		<Input.Integer autoFocus={true} {...args} />
+	</StepForm>
 );
 IntegerInput.args = {
 	separator: " "
@@ -29,30 +33,35 @@ IntegerInput.argTypes = {
 };
 
 export const PercentInput = (args) => (
-	<DForm mode="onChange">
-		<Input.Percent label="Pourcentage" name="percent" {...args} />
-	</DForm>
+	<StepForm mode="onChange">
+		<Input.Percent autoFocus={true} name="percent" {...args} />
+	</StepForm>
 );
 PercentInput.args = {
-	required: false
-};
-PercentInput.argTypes = {
-	required: { control: { type: "boolean" } }
+	label: "Saisissez un pourcentage"
 };
 
 export const DateInput = (args) => (
-	<DForm mode="onChange">
-		<Input.Date name="date" {...args} />
-	</DForm>
+	<StepForm mode="onChange">
+		<Input.Date autoFocus={true} required name="date" {...args} />
+	</StepForm>
 );
 DateInput.args = {
 	label: "Entrez une date",
-	required: false,
 	dateFormat: "dd/mm/yyyy"
 };
 DateInput.argTypes = {
-	required: { control: { type: "boolean" } },
 	dateFormat: {
 		control: { type: "select", options: ["dd/mm/yyyy", "mm-dd-yyyy", "yyyy-mm-dd"] }
 	}
 };
+
+export const DateInputWithData = (args) => (
+	<StepForm data={{ date: "2020-12-01" }}>
+		<Input.Date readOnly name="date" {...args} />
+	</StepForm>
+);
+DateInputWithData.args = {
+	label: "Date de création"
+};
+DateInputWithData.argTypes = {};
