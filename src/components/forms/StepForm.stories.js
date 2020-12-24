@@ -1,6 +1,6 @@
 // Input.stories.js
 import Input from "./Input";
-import DForm from "./DForm";
+import StepForm from "./StepForm";
 import JSON from "@lib/utils/JSON";
 import { Box } from "@material-ui/core";
 import { withEventBus, useEventBus } from "@components/EventBusProvider";
@@ -9,7 +9,7 @@ import { useState } from "react";
 // This default export determines where your story goes in the story list
 export default {
 	title: "Programmable Form",
-	component: DForm
+	component: StepForm
 };
 
 export const ProgrammableForm = withEventBus((props) => {
@@ -24,11 +24,16 @@ export const ProgrammableForm = withEventBus((props) => {
 	const askValidation = () => eb.send("person:validate");
 	return (
 		<Box width="50%">
-			<DForm formId="person" onSubmit={setSubmittedData} onErrors={setErrors}>
+			<StepForm
+				formId="person"
+				mode="onBlur"
+				onSubmit={setSubmittedData}
+				onErrors={setErrors}
+			>
 				<Input.Text label="Prénom" name="firstName" autoFocus={true} />
 				<Input.Text label="Nom" name="lastName" required />
 				<Input.Integer label="Age" name="age" required min={0} />
-			</DForm>
+			</StepForm>
 			<button onClick={askValidation}>Validate</button>
 			<h2>Submitted Data</h2>
 			<pre style={{ width: "100%" }}>

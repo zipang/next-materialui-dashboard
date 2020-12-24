@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useEventBus } from "@components/EventBusProvider";
 import { flattenErrors } from "./errors";
 import { useForm, FormProvider } from "react-hook-form";
@@ -5,14 +6,24 @@ import { useForm, FormProvider } from "react-hook-form";
 import useFormStyles from "./useFormStyles";
 
 /**
- * Disconnected Form that doesn't need a submit button
- * @param props
- * @param {JSX.Element} props.children the real form content (fields and submit button)
- * @param {String} props.formId Unique id to communicat with the form through events
- * @param {Function} props.onSubmit method to call on form submission.
- * @param {Function} props.onErrors optional method to call on form validation errors.
+ * @typedef StepFormProps
+ * @field {String!} formId Unique id : required to communicate with the form through events
+ * @field {Object} data Object to populate the form with their initial values
+ * @field {String} [mode=onSubmit] Auto-validation mode, same values as react-form-hooks mode
+ * @field {Function} onSubmit method to call on form submission.
+ * @field {Function} onErrors optional method to call on form validation errors.
+ * @field {JSX.Element} children the real form content (fields and submit button)
  */
-const DForm = ({
+
+/**
+ * StepForm
+ * A piece of a bigger Form that doesn't need have its own submit button or action
+ * We can trigger a validation by sending the custom event `formId:validate`
+ * If it succeeds, data is received in the `onSubmit` callback
+ * If it succeeds, errors are sended in the `onErrors` callback
+ * @param {StepFormProps} props
+ */
+const StepForm = ({
 	formId = "form",
 	data = {},
 	mode = "onSubmit",
@@ -60,16 +71,18 @@ const DForm = ({
 		}
 	};
 
-	// Listen to the event `form:validate`
-	// and trigger a form submit
-	eb &&
-		eb.on(
-			`${formId}:validate`,
-			handleSubmit(
+	useEffect(() => {
+		if (eb) {
+			// Listen to the event `form:validate`
+			// and trigger a form submit
+			const onValidate = handleSubmit(
 				handleSuccess, // no error : we can send the data
 				handleErrors
-			)
-		);
+			);
+			eb.on(`${formId}:validate`, onValidate);
+			return () => eb.off(`${formId}:validate`, onValidate); // Clean on unmount
+		}
+	}, [eb]);
 
 	return (
 		<FormProvider {...formMethods}>
@@ -84,4 +97,4 @@ const DForm = ({
 	);
 };
 
-export default DForm;
+export default StepForm;
