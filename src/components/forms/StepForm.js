@@ -18,9 +18,9 @@ import useFormStyles from "./useFormStyles";
 /**
  * StepForm
  * A piece of a bigger Form that doesn't need have its own submit button or action
- * We can trigger a validation by sending the custom event `formId:validate`
- * If it succeeds, data is received in the `onSubmit` callback
- * If it succeeds, errors are sended in the `onErrors` callback
+ * We can trigger the form validation by sending the custom event `formId:validate`
+ * If it succeeds, data is received inside the `onSubmit` callback
+ * If it fails, errors are retrieved inside the `onErrors` callback
  * @param {StepFormProps} props
  */
 const StepForm = ({
@@ -31,13 +31,14 @@ const StepForm = ({
 	onErrors,
 	children
 }) => {
+	const eb = useEventBus();
 	const styles = useFormStyles();
+	// @see https://react-hook-form.com/api/#handleSubmit
 	const { handleSubmit, ...formMethods } = useForm({
 		defaultValues: data,
 		reValidateMode: "onChange",
 		mode
 	});
-	const eb = useEventBus();
 
 	/**
 	 * Called when the form validation is a success
@@ -71,26 +72,23 @@ const StepForm = ({
 		}
 	};
 
+	const validateForm = handleSubmit(
+		handleSuccess, // no error : we can send the data
+		handleErrors
+	);
+
 	useEffect(() => {
 		if (eb) {
 			// Listen to the event `form:validate`
 			// and trigger a form submit
-			const onValidate = handleSubmit(
-				handleSuccess, // no error : we can send the data
-				handleErrors
-			);
-			eb.on(`${formId}:validate`, onValidate);
-			return () => eb.off(`${formId}:validate`, onValidate); // Clean on unmount
+			eb.on(`${formId}:validate`, validateForm);
+			return () => eb.off(`${formId}:validate`, validateForm); // Clean on unmount
 		}
 	}, [eb]);
 
 	return (
 		<FormProvider {...formMethods}>
-			<form
-				id={formId}
-				onSubmit={handleSubmit(handleSuccess, handleErrors)}
-				className={styles.form}
-			>
+			<form id={formId} onSubmit={validateForm} className={styles.form}>
 				{children}
 			</form>
 		</FormProvider>
