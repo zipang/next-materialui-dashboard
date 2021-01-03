@@ -6,7 +6,7 @@ import APIForm from "../APIForm";
  * @param {String} str displayed format
  * @return {String}
  */
-const unformatSiret = (str = "") => str.replace(/[^\d]+/gi, "");
+export const unformatSiret = (str = "") => str.replace(/[^\d]+/gi, "");
 
 /**
  * Display SIRET code with spaces between blocks
@@ -14,7 +14,7 @@ const unformatSiret = (str = "") => str.replace(/[^\d]+/gi, "");
  * @param {String} str current input value
  * @return {String}
  */
-const formatSiret = (str = "") => {
+export const formatSiret = (str = "") => {
 	const chars = unformatSiret(str).split("");
 	return chars.reduce(
 		(prev, cur, index) =>
@@ -31,7 +31,7 @@ const formatSiret = (str = "") => {
  * which uses the Open Data
  * @param {Function} onSuccess Callback that receives the SIRET search API response data
  */
-export const SiretForm = ({ onSuccess }) => {
+export const SiretSearchForm = ({ onSuccess }) => {
 	return (
 		<APIForm action="/api/siret/search" onSuccess={onSuccess}>
 			<Input.Format
@@ -54,5 +54,5 @@ export const SiretForm = ({ onSuccess }) => {
 };
 
 export default {
-	form: SiretForm
+	form: SiretSearchForm
 };
