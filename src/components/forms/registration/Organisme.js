@@ -2,6 +2,12 @@ import StepForm from "@components/forms/StepForm";
 import Input from "@forms/Input";
 import { formatSiret, unformatSiret } from "./SiretSearch";
 
+const statusOptionsList = [
+	{ code: "association", label: "Association" },
+	{ code: "entreprise", label: "Entreprise" },
+	{ code: "ccas-cias", label: "CCAS / CIAS" }
+];
+
 /**
  * A block of fields for the mosttop level Organisme infos
  * (step 2 of the registration process)
@@ -32,7 +38,7 @@ export const OrganismeForm = ({ data = {}, onSubmit }) => {
 			<Input.SelectBox
 				label="Statut"
 				name="statut"
-				options={["association", "entreprise", "ccas-cias"]}
+				options={statusOptionsList}
 				validation={{ required: "Saisissez le statut de l'organisme" }}
 			/>
 		</StepForm>
