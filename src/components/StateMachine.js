@@ -35,36 +35,41 @@ export const useStateMachine = () => {
  * @param {JSX.Element} Component
  * @param {StateMachineDef} stateMachineDef
  */
-const withStateMachine = (
+export const withStateMachine = (
 	Component,
 	{ id = "state-machine", initialState = {}, actions = {}, middlewares = [] }
 ) => ({ ...props }) => {
 	const [state, setState] = useState(initialState);
 
-	if (!actions.__machineEnabled) {
-		// Wrap the actions with a setState and middleware
-		Object.keys(actions).forEach((name) => {
-			const originalAction = actions[name];
-			actions[name] = ([...args]) => {
-				const newState = originalAction(state, ...args);
-				if (newState !== undefined && newState !== state) {
-					console.log(
-						`Action ${name} will transition ${id} state to ${JSON.stringify(
-							newState,
-							null,
-							"\t"
-						)}`
-					);
-					setState(newState);
-				}
-			};
-		});
-		actions.__machineEnabled = true;
-	}
+	// Wrap the actions with a setState and middleware chain
+	const enhancedActions = Object.keys(actions).reduce((final, name) => {
+		final[name] = (...args) => {
+			console.log(
+				`Call action '${name}' will current state : ${JSON.stringify(
+					state,
+					null,
+					"\t"
+				)}`
+			);
+
+			const newState = actions[name](state, ...args);
+			if (newState !== undefined && newState !== state) {
+				console.log(
+					`Action '${name}' will transition ${id} state to ${JSON.stringify(
+						newState,
+						null,
+						"\t"
+					)}`
+				);
+				setState(newState);
+			}
+		};
+		return final;
+	}, _DEFAULT_ACTIONS);
 
 	return (
-		<StateMachinesContext.Provider value={{ state, actions }}>
-			<Component {...props} />
+		<StateMachinesContext.Provider value={{ state, actions: enhancedActions }}>
+			<Component state={state} actions={enhancedActions} {...props} />
 		</StateMachinesContext.Provider>
 	);
 };
