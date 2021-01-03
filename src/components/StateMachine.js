@@ -33,19 +33,18 @@ export const useStateMachine = () => {
 /**
  *
  * @param {JSX.Element} Component
- * @param {StateMachineDef} stateMachineDef
+ * @param {StateMachineDef} [stateMachineDef]
  */
-export const withStateMachine = (
-	Component,
-	{ id = "state-machine", initialState = {}, actions = {}, middlewares = [] }
-) => ({ ...props }) => {
+export const withStateMachine = (Component, stateMachineDefinition) => ({ ...props }) => {
+	const { id, initialState = {}, actions = {}, middlewares = [] } =
+		Component.StateMachine || stateMachineDefinition;
 	const [state, setState] = useState(initialState);
 
 	// Wrap the actions with a setState and middleware chain
 	const enhancedActions = Object.keys(actions).reduce((final, name) => {
 		final[name] = (...args) => {
 			console.log(
-				`Call action '${name}' will current state : ${JSON.stringify(
+				`Calling action '${name}' will current state : ${JSON.stringify(
 					state,
 					null,
 					"\t"

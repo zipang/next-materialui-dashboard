@@ -7,10 +7,10 @@ export default {
 	title: "State Machine"
 };
 
-const Interrupteur = ({ state, actions }) => {
+const OnOff = ({ state, actions }) => {
 	// const { state, actions } = useStateMachine();
 	useEffect(() => {
-		console.log("Re-rendering Interrupteur");
+		console.log("Re-rendering OnOff");
 	});
 	return (
 		<Box>
@@ -18,6 +18,7 @@ const Interrupteur = ({ state, actions }) => {
 				control={<Checkbox checked={state.checked} />}
 				label={state.label}
 			/>
+			<br />
 			<Button onClick={actions.on} variant="contained" color="secondary">
 				ON
 			</Button>
@@ -31,23 +32,22 @@ const Interrupteur = ({ state, actions }) => {
 	);
 };
 
-Interrupteur.STATES = {
+OnOff.States = {
 	ON: { checked: true, label: "ON" },
 	OFF: { checked: false, label: "OFF" }
 };
 
-const OnOffStateMachine = {
+OnOff.StateMachine = {
 	id: "interrupteur",
-	initialState: Interrupteur.STATES.OFF,
+	initialState: OnOff.States.OFF,
 	actions: {
-		off: () => Interrupteur.STATES.OFF,
-		on: () => Interrupteur.STATES.ON,
-		toggle: (state) =>
-			state.checked ? Interrupteur.STATES.OFF : Interrupteur.STATES.ON
+		on: () => OnOff.States.ON,
+		off: () => OnOff.States.OFF,
+		toggle: (state) => (state.checked ? OnOff.States.OFF : OnOff.States.ON)
 	}
 };
 
 /**
  * A super simple state machine (ON/OFF)
  */
-export const InterrupteurStateMachine = withStateMachine(Interrupteur, OnOffStateMachine);
+export const InterrupteurStateMachine = withStateMachine(OnOff);
