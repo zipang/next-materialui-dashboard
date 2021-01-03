@@ -15,14 +15,6 @@ const WizardContext = createContext();
  * @param {Number} [currentSlide=0] the current slide to render
  */
 
-const useStyles = makeStyles((theme) => ({
-	slide: {
-		position: "relative",
-		height: "100%",
-		width: "100%"
-	}
-}));
-
 const WizardContainer = ({ children }) => (
 	<Box
 		display="flex"
@@ -39,9 +31,10 @@ const WizardViewport = ({ children }) => (
 		{children}
 	</Box>
 );
-const SlideContainer = ({ children }) => (
+const DisplayStep = ({ step, data }) => (
 	<Box width="100%" height="100%">
-		{children}
+		<h2>{step.title}</h2>
+		{step.form(data)}
 	</Box>
 );
 
@@ -87,7 +80,6 @@ const createActions = (state, setState) => {
  * @param {WizardProps} props
  */
 const Wizard = ({ steps = [], data = {}, current = 0 }) => {
-	const styles = useStyles();
 	// This is the state of the current displayed slide with its in and out animation
 	const [state, setState] = useState({
 		data,
@@ -115,9 +107,7 @@ const Wizard = ({ steps = [], data = {}, current = 0 }) => {
 						mountOnEnter
 						unmountOnExit
 					>
-						<Box className={styles.slide}>
-							<h1>Slide #{i}</h1>
-						</Box>
+						<DisplayStep step={step} data={data} />
 					</Slide>
 				))}
 			</WizardViewport>
