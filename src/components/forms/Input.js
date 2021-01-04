@@ -9,9 +9,9 @@ import {
 import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
 
-const MATERIAL_UI_STYLE = {
+const _BASE_INPUT_STYLES = {
+	backgroundColor: "white",
 	variant: "outlined",
-	fullWidth: true,
 	fontSize: "large",
 	margin: "dense"
 };
@@ -42,7 +42,7 @@ const Text = ({
 }) => {
 	// Find the parent form to register our input
 	const { register, errors } = useFormContext();
-	const mergedProps = { ...MATERIAL_UI_STYLE, ...moreProps };
+	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	// Pass the required attribute to the validation object
 	if (required === true) validation.required = `Saisissez un ${label}`;
@@ -53,7 +53,6 @@ const Text = ({
 			name={name}
 			id={name}
 			label={label}
-			// value={value}
 			defaultValue={value}
 			error={Boolean(errors[name])}
 			inputRef={register(validation)}
@@ -95,6 +94,7 @@ export const Format = ({
 	inputType = "text",
 	format = (val) => val,
 	load = (val) => val,
+	append,
 	serialize,
 	value = "",
 	required = false,
@@ -119,17 +119,22 @@ export const Format = ({
 			  }
 			: setDisplayedValue;
 
-	const rifm = useRifm({
+	const rifmParams = {
 		value: displayedValue,
 		onChange,
 		format
-	});
+	};
+	if (typeof append === "function") {
+		rifmParams.append = append;
+	}
+
+	const rifm = useRifm(rifmParams);
 
 	// Pass the required attribute to the validation object
 	if (required === true) validation.required = `Saisissez un ${label}`;
 	if (validation.required) label += "*";
 
-	const mergedProps = { ...MATERIAL_UI_STYLE, ...moreProps };
+	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	if (typeof serialize === "function") {
 		// We create 2 synchronized input fields : one for the displayed and formatted value
@@ -150,6 +155,7 @@ export const Format = ({
 					inputType={inputType}
 					inputRef={register(validation)}
 					value={hiddenValue}
+					readOnly
 				/>
 			</>
 		);
@@ -224,6 +230,7 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 			serialize={serializeInteger}
 			validation={validation}
 			inputType="number"
+			width="10ch"
 			{...props}
 		/>
 	);
@@ -250,20 +257,58 @@ const isDateSeparator = (char) => !/[dmy]/i.test(char);
  * @return {Function} Usable inside Input.Date as the input formatter
  */
 export const dateFormatter = (dateFormat = "dd/mm/yyyy") => (str = "") => {
+	// const formatLength = dateFormat.length;
+	// let formatted = str
+	// 	.substr(0, formatLength)
+	// 	.split("")
+	// 	.reduce((formatted, letter, i) => {
+	// 		const formatPart = dateFormat[i];
+	// 		if (
+	// 			(/[dmy]/.test(formatPart) && /\d/.test(letter)) ||
+	// 			formatPart === letter
+	// 		) {
+	// 			formatted += letter;
+	// 		}
+	// 		return formatted;
+	// 	}, "");
+
+	// if (
+	// 	formatted.length < formatLength &&
+	// 	isDateSeparator(dateFormat[formatted.length])
+	// ) {
+	// 	formatted += dateFormat[formatted.length];
+	// }
+	// console.log(`Formatting date input '${str}' to '${formatted}'`);
+	// return formatted;
+
 	const dateFormatParts = dateFormat.split("");
 	const digits = getDigitsOnly(str).substr(0, 8);
-	if (!digits) return "";
+	const inputLength = digits.length;
+	if (!inputLength) return "";
 	let decalage = 1;
-	return digits
-		.split("")
-		.reduce(
-			(prev, cur, i) =>
-				`${prev}${cur}` +
-				(isDateSeparator(dateFormatParts[i + decalage])
-					? dateFormatParts[i + decalage++]
-					: ""),
-			""
-		);
+	return dateSeparatorAppender(dateFormat)(
+		digits
+			.split("")
+			.reduce(
+				(prev, cur, i) =>
+					`${prev}${cur}` +
+					(i !== inputLength - 1 &&
+					isDateSeparator(dateFormatParts[i + decalage])
+						? dateFormatParts[i + decalage++]
+						: ""),
+				""
+			)
+	);
+};
+export const dateSeparatorAppender = (dateFormat = "dd/mm/yyyy") => (str = "") => {
+	if (str.length === dateFormat.length) return str;
+	const nextCharInFormat = dateFormat[str.length];
+	if (isDateSeparator(nextCharInFormat)) {
+		console.log(`Appending ${nextCharInFormat} to ${str}`);
+		return str + nextCharInFormat;
+	} else {
+		return str;
+	}
 };
 
 /**
@@ -308,8 +353,10 @@ export const Date = ({ dateFormat = "dd/mm/yyyy", ...props }) => {
 	return (
 		<Format
 			format={dateFormatter(dateFormat)}
+			append={dateSeparatorAppender(dateFormat)}
 			serialize={serializeDate(dateFormat)}
 			validation={validation}
+			width="10ch"
 			{...props}
 		/>
 	);
