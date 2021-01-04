@@ -7,6 +7,7 @@ const useFormStyles = makeStyles((theme) => ({
 	form: {
 		height: "100%",
 		width: "100%",
+		backgroundColor: theme.palette.background.light,
 		padding: "1rem",
 		marginTop: theme.spacing(1),
 		alignItems: "center",
