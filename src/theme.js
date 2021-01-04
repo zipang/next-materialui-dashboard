@@ -102,6 +102,16 @@ theme = {
 				backgroundColor: theme.palette.background.dark
 			}
 		},
+		MuiInputBase: {
+			root: {
+				backgroundColor: theme.palette.common.white
+			}
+		},
+		MuiFormLabel: {
+			root: {
+				backgroundColor: theme.palette.common.white
+			}
+		},
 		MuiFormHelperText: {
 			root: {
 				margin: 0,
