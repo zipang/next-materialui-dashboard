@@ -13,21 +13,21 @@ const statusOptionsList = [
  * (step 2 of the registration process)
  * @param {StateMachime} stateMachine the registration wizard state machine
  */
-export const OrganismeForm = ({ data = {}, onSubmit }) => {
+export const OrganismeForm = ({ formId = "organisme", data = {}, onSubmit }) => {
 	return (
-		<StepForm id="organisme" data={data} onSubmit={onSubmit}>
+		<StepForm formId={formId} data={data} onSubmit={onSubmit}>
 			<Input.Format
 				label="No de Siret"
 				name="siret"
-				readonly
+				readOnly
 				format={formatSiret}
 				serialize={unformatSiret}
-				autoFocus={true}
 				validation={{ required: "Saisissez un no de SIRET valide (14 chiffres)" }}
 			/>
 			<Input.Text
 				label="Nom"
 				name="nom"
+				autoFocus={true}
 				validation={{ required: "Saisissez le nom de l'organisme" }}
 			/>
 			<Input.Date

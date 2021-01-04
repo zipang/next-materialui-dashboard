@@ -7,7 +7,9 @@ export default {
 	title: "Saisie Organisme"
 };
 
-const data = {};
+const data = {
+	siret: "789898876567898"
+};
 
 /**
  * form
