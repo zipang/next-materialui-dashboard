@@ -7,8 +7,17 @@ const StateMachinesContext = createContext();
  * Utility on which more complex actions can rely
  */
 const _DEFAULT_ACTIONS = {
-	merge: (state, payload) => deepMerge({}, state, payload),
-	overwrite: (state, payload) => ({ ...payload })
+	merge: (state, payload) => deepMerge({}, state, payload)
+};
+
+const _MIDDLEWARES = {
+	log: (id, actionName, oldState, newState) => {
+		console.log(
+			`${id}:${actionName}(${JSON.stringify(oldState)}) => ${JSON.stringify(
+				newState
+			)}`
+		);
+	}
 };
 
 /**
@@ -17,7 +26,7 @@ const _DEFAULT_ACTIONS = {
  * @field {Object} [initialState={}] the initial state
  * @field {Object} actions an objects where keys are action names
  *                 and values are functions that return a new state
- * @field {Array} [midlewares=[]] an optional array of function to be runned each times the state change
+ * @field {Array} [middlewares=[]] an optional array of function to be runned each times just before the state changes
  */
 
 export const useStateMachine = () => {

@@ -7,6 +7,10 @@ export default {
 	title: "State Machine"
 };
 
+/**
+ * Demonstrate a simple On/Off component with a (finite) state machine
+ * @param {*} param0
+ */
 const OnOff = ({ state, actions }) => {
 	// const { state, actions } = useStateMachine();
 	useEffect(() => {
