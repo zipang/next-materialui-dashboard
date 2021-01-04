@@ -1,4 +1,4 @@
-import { useState, createContext } from "react";
+import { useState, createContext, forwardRef } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Slide from "@material-ui/core/Slide";
@@ -31,12 +31,16 @@ const WizardViewport = ({ children }) => (
 		{children}
 	</Box>
 );
-const DisplayStep = ({ step, data }) => (
-	<Box width="100%" height="100%">
+/**
+ * Being used inside a Slide component, the Display Step must forward a ref
+ * @see https://material-ui.com/guides/composition/#caveat-with-refs
+ */
+const DisplayStep = forwardRef(({ step, data }, ref) => (
+	<Box width="100%" height="100%" ref={ref}>
 		<h2>{step.title}</h2>
 		{step.form(data)}
 	</Box>
-);
+));
 
 const WizardControls = ({ children }) => (
 	<Box display="flex" flexDirection="row" justifyContent="flex-end" padding="1rem">
