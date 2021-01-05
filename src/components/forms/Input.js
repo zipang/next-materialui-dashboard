@@ -10,7 +10,6 @@ import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
 
 const _BASE_INPUT_STYLES = {
-	backgroundColor: "white",
 	variant: "outlined",
 	fontSize: "large",
 	margin: "dense"

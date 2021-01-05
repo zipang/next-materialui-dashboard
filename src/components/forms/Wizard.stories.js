@@ -2,6 +2,8 @@
 import Wizard from "./Wizard";
 import Input from "./Input";
 import StepForm from "./StepForm";
+import { useStateMachine } from "../StateMachine";
+import { Box } from "@material-ui/core";
 
 const empty_data = {};
 const existing_data = {
@@ -10,35 +12,51 @@ const existing_data = {
 	classe: "magician"
 };
 
-const mergeData = (data, payload) => ({
-	...data,
-	...payload
-});
-
-const createSimpleStep = ({ name, label, type = "text", ...more }) => (data) => (
-	<StepForm formId={name} data={data}>
-		{type === "text" && <Input.Text name={name} {...more} />}
-		{type === "select" && <Input.SelectBox name={name} {...more} />}
-		{type === "number" && <Input.Integer name={name} {...more} />}
-	</StepForm>
-);
+/**
+ * Create a simple displayForm function wich renders
+ * a StepForm with a unique input element
+ */
+const simpleStepForm = ({ name, type = "text", ...more }) => (data, onSubmit) => {
+	return (
+		<StepForm formId={name} data={data} onSubmit={onSubmit}>
+			{type === "text" && <Input.Text name={name} {...more} />}
+			{type === "select" && <Input.SelectBox name={name} {...more} />}
+			{type === "number" && <Input.Integer name={name} {...more} />}
+		</StepForm>
+	);
+};
 
 // Create some dummy steps to display
 const steps = [
 	{
+		id: "firstName",
 		title: "Step #1",
-		form: createSimpleStep({ name: "firstName", label: "Entrez votre prénom" })
+		displayForm: simpleStepForm({
+			name: "firstName",
+			label: "Entrez votre prénom",
+			required: true
+		})
 	},
 	{
+		id: "age",
 		title: "Step #2",
-		form: createSimpleStep({ name: "age", label: "Entrez votre age" })
+		displayForm: simpleStepForm({
+			name: "age",
+			label: "Entrez votre age",
+			required: true
+		})
 	},
 	{
+		id: "classe",
 		title: "Step #3",
-		form: createSimpleStep({
+		displayForm: simpleStepForm({
 			name: "classe",
 			label: "Choisissez votre classe",
-			options: ["magician", "warrior", "thief"]
+			options: [
+				{ code: "magician", label: "Magician" },
+				{ code: "warrior", label: "Warrior" },
+				{ code: "thief", label: "Thief" }
+			]
 		})
 	}
 ];
@@ -52,12 +70,19 @@ export default {
  * Display the wizard with an empty initial data object
  */
 export const EmptySteps = () => (
-	<Wizard steps={steps} data={empty_data} currentSlide={0} />
+	<Box width="600px" height="400px">
+		<Wizard id="3-steps-wizard" steps={steps} data={empty_data} currentSlide={0} />
+	</Box>
 );
 
 /**
  * Display the wizard with a non empty initial data object
  */
 export const ModifySteps = () => (
-	<Wizard steps={steps} data={existing_data} currentSlide={0} />
+	<Wizard
+		id="populated-3-steps-wizard"
+		steps={steps}
+		data={existing_data}
+		currentSlide={0}
+	/>
 );

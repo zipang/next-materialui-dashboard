@@ -1,4 +1,4 @@
-// Input.stories.js
+// StepForm.stories.js
 import Input from "./Input";
 import StepForm from "./StepForm";
 import JSON from "@lib/utils/JSON";
@@ -8,11 +8,11 @@ import { useState } from "react";
 
 // This default export determines where your story goes in the story list
 export default {
-	title: "Programmable Form",
+	title: "Step Form",
 	component: StepForm
 };
 
-export const ProgrammableForm = withEventBus((props) => {
+export const Step = withEventBus((props) => {
 	const eb = useEventBus();
 	const [form, setForm] = useState({
 		data: {},
@@ -32,7 +32,7 @@ export const ProgrammableForm = withEventBus((props) => {
 			>
 				<Input.Text label="Prénom" name="firstName" autoFocus={true} />
 				<Input.Text label="Nom" name="lastName" required />
-				<Input.Integer label="Age" name="age" required min={0} />
+				<Input.Integer label="Age" name="age" required min={0} max={200} />
 			</StepForm>
 			<button onClick={askValidation}>Validate</button>
 			<h2>Submitted Data</h2>

@@ -1,6 +1,16 @@
 import { useContext, createContext } from "react";
 import EventEmitter from "@lib/utils/EventEmitter";
 
+/**
+ * @typedef EventEmitter
+ * @property {Function} addEventListener Register an event listener
+ * @property {Function} on Same as addEventListener
+ * @property {Function} removeEventListener Remove an event listener
+ * @property {Function} off Same as removeEventListener
+ * @property {Function} emit Send an event
+ * @property {Function} send Same as emit()
+ */
+
 const EventBusContext = createContext();
 
 /**

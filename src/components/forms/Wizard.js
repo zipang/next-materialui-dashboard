@@ -1,18 +1,29 @@
-import { useState, createContext, forwardRef } from "react";
+import { forwardRef, useEffect, memo } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import Slide from "@material-ui/core/Slide";
 import { makeStyles } from "@material-ui/core/styles";
 
 import SvgIcon from "@components/SvgIcon";
+import { withStateMachine } from "@components/StateMachine";
+import EventBusProvider, {
+	useEventBus,
+	withEventBus
+} from "@components/EventBusProvider";
 
-const WizardContext = createContext();
+/**
+ * @typedef Step
+ * @field {String} id
+ * @field {String} title
+ * @field {Function} displayForm
+ */
 
 /**
  * @typedef WizardProps
- * @param {Step[]} steps the array of steps that will be executed in sequence
- * @param {Object} data the initial data to render
- * @param {Number} [currentSlide=0] the current slide to render
+ * @field {String} id required a unique id for this wizard
+ * @field {Step[]} steps the array of steps that will be executed in sequence
+ * @field {Object} initialData the initial data to render
+ * @field {Number} [currentSlide=0] the current slide to render
  */
 
 const WizardContainer = ({ children }) => (
@@ -35,12 +46,14 @@ const WizardViewport = ({ children }) => (
  * Being used inside a Slide component, the Display Step must forward a ref
  * @see https://material-ui.com/guides/composition/#caveat-with-refs
  */
-const DisplayStep = forwardRef(({ step, data }, ref) => (
-	<Box width="100%" height="100%" ref={ref}>
-		<h2>{step.title}</h2>
-		{step.form(data)}
-	</Box>
-));
+const DisplayStep = memo(
+	forwardRef(({ step, data, onSubmit }, ref) => (
+		<Box width="100%" height="100%" ref={ref}>
+			<h2>{step.title}</h2>
+			{step.displayForm(data, onSubmit)}
+		</Box>
+	))
+);
 
 const WizardControls = ({ children }) => (
 	<Box display="flex" flexDirection="row" justifyContent="flex-end" padding="1rem">
@@ -55,48 +68,51 @@ const WizardControls = ({ children }) => (
  * @param {Object} state Initial state available to any actions
  * @param {Function} setState Apply the new state and re-render the component
  */
-const createActions = (state, setState) => {
-	/**
-	 * Transition the wizard to a new slide
-	 * @param {Number} to index of the page to transition to
-	 */
-	const transition = (to) => {
-		const [slideDirectionIn, slideDirectionOut] =
-			state.currentSlide < to ? ["right", "left"] : ["left", "right"];
-		const newState = {
-			...state,
-			currentSlide: to,
-			slideDirectionIn,
-			slideDirectionOut
-		};
-		console.log(`Transitionning to`, JSON.stringify(newState, null, "\t"));
-		setState(newState);
-	};
-	const next = () => transition(state.currentSlide + 1);
-	const previous = () => transition(state.currentSlide - 1);
 
-	return { transition, next, previous };
+const transition = (state, to) => {
+	const [slideDirectionIn, slideDirectionOut] =
+		state.currentSlide < to ? ["right", "left"] : ["left", "right"];
+	return {
+		...state,
+		currentSlide: to,
+		slideDirectionIn,
+		slideDirectionOut
+	};
+};
+const next = (state) => {
+	return transition(state, state.currentSlide + 1);
+};
+const previous = (state) => {
+	return transition(state, state.currentSlide - 1);
 };
 
 /**
- * A Wizard is a component that displays steps to accomplish
- * a complex task, like a form registration with a lots of pages of inputs
- * @param {WizardProps} props
+ * Receives the steps and the state machine altogether
  */
-const Wizard = ({ steps = [], data = {}, current = 0 }) => {
-	// This is the state of the current displayed slide with its in and out animation
-	const [state, setState] = useState({
-		data,
-		currentSlide: current,
-		slideDirectionIn: "right",
-		slideDirectionOut: "left"
-	});
+const InitWizard = ({ steps = [], state, actions }) => {
+	const eb = useEventBus();
 
 	// flatten the state
-	const { currentSlide, slideDirectionIn, slideDirectionOut } = state;
+	const { data, currentSlide, slideDirectionIn, slideDirectionOut } = state;
 
-	const actions = createActions(state, setState);
-	console.dir(`Wizard received ${steps.length} steps and`, actions);
+	// Define a validate combo action that merge step data and transition to next step
+	const validateStep = (payload) => {
+		console.dir(`Validate step payload :`, payload);
+		console.trace();
+		actions.merge(state, { data: payload });
+		actions.next();
+	};
+
+	/**
+	 * This event may trigger the onSubmit or onError
+	 */
+	const triggerValidate = () => {
+		eb.send(`${steps[currentSlide].id}:validate`);
+	};
+
+	useEffect(() => {
+		console.log(`Re-rendering Wizard`);
+	});
 
 	return (
 		<WizardContainer>
@@ -111,7 +127,7 @@ const Wizard = ({ steps = [], data = {}, current = 0 }) => {
 						mountOnEnter
 						unmountOnExit
 					>
-						<DisplayStep step={step} data={data} />
+						<DisplayStep step={step} data={data} onSubmit={validateStep} />
 					</Slide>
 				))}
 			</WizardViewport>
@@ -136,6 +152,7 @@ const Wizard = ({ steps = [], data = {}, current = 0 }) => {
 					color="secondary"
 					ml="1rem"
 					startIcon={<SvgIcon name="Save" />}
+					onClick={triggerValidate}
 				>
 					Enregistrer
 				</Button>
@@ -143,5 +160,34 @@ const Wizard = ({ steps = [], data = {}, current = 0 }) => {
 		</WizardContainer>
 	);
 };
+
+InitWizard.StateMachine = {
+	useLocalStorage: true,
+	initialState: {
+		data: {},
+		currentSlide: 0,
+		slideDirectionIn: "right",
+		slideDirectionOut: "left"
+	},
+	actions: {
+		transition,
+		next,
+		previous
+	}
+};
+
+/**
+ * A Wizard is a component that displays steps to accomplish
+ * a complex task, like a form registration with a lots of pages of inputs
+ * @param {WizardProps} props
+ */
+const Wizard = ({ id, steps = [], data = {}, currentSlide = 0 }) =>
+	withEventBus(
+		withStateMachine(
+			InitWizard,
+			{ id, initialState: { data, currentSlide } },
+			{ steps }
+		)
+	)();
 
 export default Wizard;

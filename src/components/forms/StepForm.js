@@ -33,10 +33,12 @@ const StepForm = ({
 }) => {
 	const eb = useEventBus();
 	const styles = useFormStyles();
+
 	// @see https://react-hook-form.com/api/#handleSubmit
 	const { handleSubmit, ...formMethods } = useForm({
 		defaultValues: data,
 		reValidateMode: "onChange",
+		shouldFocusError: true,
 		mode
 	});
 
@@ -77,6 +79,16 @@ const StepForm = ({
 		handleErrors
 	);
 
+	/**
+	 * Validate on ENTER
+	 * @param {Event} e
+	 */
+	const onKeyPress = (e) => {
+		if (e.key === "Enter" && !e.shiftKey) {
+			validateForm();
+		}
+	};
+
 	useEffect(() => {
 		if (eb) {
 			// Listen to the event `form:validate`
@@ -88,7 +100,12 @@ const StepForm = ({
 
 	return (
 		<FormProvider {...formMethods}>
-			<form id={formId} onSubmit={validateForm} className={styles.form}>
+			<form
+				id={formId}
+				onSubmit={validateForm}
+				onKeyPress={onKeyPress}
+				className={styles.form}
+			>
 				{children}
 			</form>
 		</FormProvider>

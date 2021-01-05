@@ -4,6 +4,8 @@ import Wizard from "@forms/Wizard";
 import { useEventBus } from "@components/EventBusProvider";
 import { useStateMachine } from "@components/StateMachine";
 
+const steps = [];
+
 /**
  * Build the steps that are aware of the state machine context
  * @param {StateMachine} sm
@@ -22,11 +24,12 @@ const createSteps = ({ state, actions }) => {
 	return [
 		{
 			title: "Recherche de l'organisme par son no de SIRET",
-			form: (data) => <SiretSearchForm onSuccess={mergeSiretData} />
+			displayForm: (data) => <SiretSearchForm onSuccess={mergeSiretData} />
 		},
 		{
 			title: "Saisie de l'organisme",
-			form: (data) => <OrganismeForm data={data} />
+			displayForm: (data) => <OrganismeForm data={data} onSubmit={mergeStepData} />,
+			validate: validateStep("organisme")
 		}
 	];
 };

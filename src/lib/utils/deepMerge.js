@@ -79,24 +79,26 @@ const safeGetProperty = (object, property) => {
  * Returns extended object or false if have no target object or incorrect type.
  * @example merged = deepMerge(initial, payload1, payload2, ...);
  */
-export const deepMerge = (/*obj_1, [obj_2], [obj_N]*/) => {
-	if (arguments.length < 1 || typeof arguments[0] !== "object") {
-		return false;
+export const deepMerge = (...args) => {
+	if (!args.length) {
+		return {};
 	}
 
-	if (arguments.length < 2) {
-		return arguments[0];
+	if (typeof args[0] !== "object") {
+		throw TypeError(`deepMerge() target first argument is not an object`);
 	}
 
-	var target = arguments[0];
+	if (args.length === 1) {
+		return args[0];
+	}
 
-	// convert arguments to array and cut off target object
-	var args = Array.prototype.slice.call(arguments, 1);
+	// Take the first element as the target
+	var target = args.shift();
 
 	var val, src, clone;
 
 	args.forEach(function (obj) {
-		// skip argument if isn't an object, is null, or is an array
+		// Skip argument if isn't an object, is null, or is an array
 		if (typeof obj !== "object" || obj === null || Array.isArray(obj)) {
 			return;
 		}
@@ -123,11 +125,11 @@ export const deepMerge = (/*obj_1, [obj_2], [obj_N]*/) => {
 				return;
 			} else if (typeof src !== "object" || src === null || Array.isArray(src)) {
 				// overwrite by new value if source isn't object or array
-				target[key] = deepExtend({}, val);
+				target[key] = deepMerge({}, val);
 				return;
 			} else {
 				// source value and new value is objects both, extending...
-				target[key] = deepExtend(src, val);
+				target[key] = deepMerge(src, val);
 				return;
 			}
 		});
