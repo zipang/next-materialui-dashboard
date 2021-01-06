@@ -117,19 +117,24 @@ const InitWizard = ({ steps = [], state, actions }) => {
 	return (
 		<WizardContainer>
 			<WizardViewport>
-				{steps.map((step, i) => (
-					<Slide
-						key={`slide-${i}`}
-						in={i === currentSlide}
-						direction={
-							i === currentSlide ? slideDirectionOut : slideDirectionIn
-						}
-						mountOnEnter
-						unmountOnExit
-					>
-						<DisplayStep step={step} data={data} onSubmit={validateStep} />
-					</Slide>
-				))}
+				<DisplayStep
+					step={steps[currentSlide]}
+					data={data}
+					onSubmit={validateStep}
+				/>
+				{/* {steps.map((step, i) => ( 
+					// <Slide
+					// 	key={`slide-${i}`}
+					// 	in={i === currentSlide}
+					// 	direction={
+					// 		i === currentSlide ? slideDirectionOut : slideDirectionIn
+					// 	}
+					// 	mountOnEnter
+					// 	unmountOnExit
+					// >
+					// 	<DisplayStep step={step} data={data} onSubmit={validateStep} />
+					// </Slide>
+				// ))}*/}
 			</WizardViewport>
 			<WizardControls>
 				<Button
