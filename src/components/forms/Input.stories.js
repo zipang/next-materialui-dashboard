@@ -8,10 +8,12 @@ export default {
 	component: Input,
 	args: {
 		required: false,
-		label: "Let's input some number"
+		label: "Population",
+		size: 8
 	},
 	argTypes: {
-		required: { control: { type: "boolean" } }
+		required: { control: { type: "boolean" } },
+		size: { control: { type: "number" } }
 	}
 };
 
@@ -38,7 +40,7 @@ export const PercentInput = (args) => (
 	</StepForm>
 );
 PercentInput.args = {
-	label: "Saisissez un pourcentage"
+	label: "%"
 };
 
 export const DateInput = (args) => (
@@ -47,7 +49,7 @@ export const DateInput = (args) => (
 	</StepForm>
 );
 DateInput.args = {
-	label: "Entrez une date",
+	label: "Date",
 	dateFormat: "dd/mm/yyyy"
 };
 DateInput.argTypes = {

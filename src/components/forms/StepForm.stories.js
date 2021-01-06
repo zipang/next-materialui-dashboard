@@ -39,9 +39,9 @@ export const Step = withEventBus((props) => {
 				onErrors={setErrors}
 			>
 				<Input.Text label="Prénom" name="firstName" autoFocus={true} />
-				<Input.Text label="Nom" name="lastName" required />
-				<Input.Integer label="Age" name="age" required min={0} max={200} />
-				<Input.Date label="Date d'arrivée" name="job.startDate" required />
+				<Input.Text label="Nom" name="lastName" required={true} />
+				<Input.Integer label="Age" name="age" required={true} min={0} max={200} />
+				<Input.Date label="Date d'arrivée" name="job.startDate" required={true} />
 				<Input.Date label="Date de départ" name="job.endDate" />
 			</StepForm>
 			<button onClick={askValidation}>Validate</button>
