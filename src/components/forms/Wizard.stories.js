@@ -19,9 +19,13 @@ const existing_data = {
 const simpleStepForm = ({ name, type = "text", ...more }) => (data, onSubmit) => {
 	return (
 		<StepForm formId={name} data={data} onSubmit={onSubmit}>
-			{type === "text" && <Input.Text name={name} {...more} />}
-			{type === "select" && <Input.SelectBox name={name} {...more} />}
-			{type === "number" && <Input.Integer name={name} {...more} />}
+			{type === "text" && <Input.Text autoFocus={true} name={name} {...more} />}
+			{type === "select" && (
+				<Input.SelectBox autoFocus={true} name={name} {...more} />
+			)}
+			{type === "number" && (
+				<Input.Integer autoFocus={true} name={name} {...more} />
+			)}
 		</StepForm>
 	);
 };
@@ -42,6 +46,7 @@ const steps = [
 		title: "Step #2",
 		displayForm: simpleStepForm({
 			name: "age",
+			type: "number",
 			label: "Entrez votre age",
 			required: true
 		})
@@ -51,6 +56,7 @@ const steps = [
 		title: "Step #3",
 		displayForm: simpleStepForm({
 			name: "classe",
+			type: "select",
 			label: "Choisissez votre classe",
 			options: [
 				{ code: "magician", label: "Magician" },
