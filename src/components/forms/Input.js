@@ -7,7 +7,7 @@ import {
 	Box
 } from "@material-ui/core";
 import { useRifm } from "rifm";
-import { useFormContext, useController, control } from "react-hook-form";
+import { useFormContext } from "react-hook-form";
 
 const _BASE_INPUT_STYLES = {
 	variant: "outlined",
@@ -37,6 +37,7 @@ const Text = ({
 	autoComplete = false,
 	autoFocus = false,
 	validation = {},
+	size = 30,
 	control,
 	...moreProps
 }) => {
@@ -60,6 +61,9 @@ const Text = ({
 			autoComplete={autoComplete ? "" : "off"}
 			autoFocus={autoFocus}
 			helperText={errors[name] ? errors[name].message : " "}
+			inputProps={{
+				size
+			}}
 			{...mergedProps}
 		/>
 	);
@@ -100,6 +104,7 @@ export const Format = ({
 	value = "",
 	required = false,
 	validation = {},
+	size = 20,
 	...moreProps
 }) => {
 	// Pass the required attribute to the validation object
@@ -156,6 +161,9 @@ export const Format = ({
 					onChange={rifm.onChange}
 					error={Boolean(errors[name])}
 					helperText={errors[name] ? errors[name].message : " "}
+					inputProps={{
+						size
+					}}
 					{...mergedProps}
 				/>
 				<HiddenText
@@ -237,7 +245,7 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 			serialize={serializeInteger}
 			validation={validation}
 			inputType="number"
-			width="10ch"
+			size="4"
 			{...props}
 		/>
 	);
@@ -276,31 +284,6 @@ export const formatISODate = (dateFormat = "dd/mm/yyyy") => (str = "") => {
  * @return {Function} Usable inside Input.Date as the input formatter
  */
 export const dateFormatter = (dateFormat = "dd/mm/yyyy") => (str = "") => {
-	// const formatLength = dateFormat.length;
-	// let formatted = str
-	// 	.substr(0, formatLength)
-	// 	.split("")
-	// 	.reduce((formatted, letter, i) => {
-	// 		const formatPart = dateFormat[i];
-	// 		if (
-	// 			(/[dmy]/.test(formatPart) && /\d/.test(letter)) ||
-	// 			formatPart === letter
-	// 		) {
-	// 			formatted += letter;
-	// 		}
-	// 		return formatted;
-	// 	}, "");
-
-	// if (
-	// 	formatted.length < formatLength &&
-	// 	isDateSeparator(dateFormat[formatted.length])
-	// ) {
-	// 	formatted += dateFormat[formatted.length];
-	// }
-	// console.log(`Formatting date input '${str}' to '${formatted}'`);
-	// return formatted;
-
-	const dateFormatParts = dateFormat.split("");
 	const digits = getDigitsOnly(str).substr(0, 8);
 	const inputLength = digits.length;
 	if (!inputLength) return "";
@@ -311,9 +294,8 @@ export const dateFormatter = (dateFormat = "dd/mm/yyyy") => (str = "") => {
 			.reduce(
 				(prev, cur, i) =>
 					`${prev}${cur}` +
-					(i !== inputLength - 1 &&
-					isDateSeparator(dateFormatParts[i + decalage])
-						? dateFormatParts[i + decalage++]
+					(i !== inputLength - 1 && isDateSeparator(dateFormat[i + decalage])
+						? dateFormat[i + decalage++]
 						: ""),
 				""
 			)
@@ -365,7 +347,7 @@ export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => 
  * Text Input that specifically format dates on user input as they change
  * @param {InputProps} props
  */
-export const Date = ({ dateFormat = "dd/mm/yyyy", ...props }) => {
+export const Date = ({ dateFormat = "dd/mm/yyyy", size = 7, ...props }) => {
 	const validation = {
 		isDate: (ISODate) => typeof Date.parse(ISODate) === "number"
 	};
@@ -373,10 +355,10 @@ export const Date = ({ dateFormat = "dd/mm/yyyy", ...props }) => {
 		<Format
 			format={dateFormatter(dateFormat)}
 			load={formatISODate(dateFormat)}
-			append={dateSeparatorAppender(dateFormat)}
+			// append={dateSeparatorAppender(dateFormat)}
 			serialize={serializeDate(dateFormat)}
 			validation={validation}
-			width="10ch"
+			size={size}
 			{...props}
 		/>
 	);
@@ -387,7 +369,7 @@ export const Date = ({ dateFormat = "dd/mm/yyyy", ...props }) => {
  * @param {InputProps} props
  */
 export const Percent = ({ ...props }) => (
-	<Integer format={formatPercent} plage={[0, 100]} {...props} />
+	<Integer format={formatPercent} plage={[0, 100]} size={3} {...props} />
 );
 
 /**
@@ -415,9 +397,9 @@ export const Password = ({ ...props }) => <Text type="password" {...props} />;
  * Select a value amonst dome predefined options
  * @param {*} param0
  */
-export const SelectBox = ({ options = [], ...props }) => {
+export const SelectBox = ({ options = [], size = 25, ...props }) => {
 	return (
-		<Text select={true} {...props}>
+		<Text select={true} size={size} {...props}>
 			{options.map((option) => (
 				<MenuItem key={option.code} value={option.code}>
 					{option.label}
