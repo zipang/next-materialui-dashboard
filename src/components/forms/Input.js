@@ -7,7 +7,7 @@ import {
 	Box
 } from "@material-ui/core";
 import { useRifm } from "rifm";
-import { useFormContext } from "react-hook-form";
+import { useFormContext, useController, control } from "react-hook-form";
 
 const _BASE_INPUT_STYLES = {
 	variant: "outlined",
@@ -37,6 +37,7 @@ const Text = ({
 	autoComplete = false,
 	autoFocus = false,
 	validation = {},
+	control,
 	...moreProps
 }) => {
 	// Find the parent form to register our input
@@ -49,12 +50,13 @@ const Text = ({
 
 	return (
 		<TextField
-			name={name}
 			id={name}
-			label={label}
-			defaultValue={value}
-			error={Boolean(errors[name])}
+			// {...inputProps}
 			inputRef={register(validation)}
+			name={name}
+			defaultValue={value}
+			label={label}
+			error={Boolean(errors[name])}
 			autoComplete={autoComplete ? "" : "off"}
 			autoFocus={autoFocus}
 			helperText={errors[name] ? errors[name].message : " "}
@@ -100,12 +102,23 @@ export const Format = ({
 	validation = {},
 	...moreProps
 }) => {
+	// Pass the required attribute to the validation object
+	if (required === true) validation.required = `Saisissez un ${label}`;
+	if (validation.required) label += "*";
+
 	// Find the parent form to register our input
-	const { register, errors, handleSubmit } = useFormContext();
+	const { register, errors, trigger, watch } = useFormContext();
+
+	// Get the default values passed to the form
+	const defaultValue = watch(name) || value;
 
 	// As this input format the value for display, we use a distinct displayedValue state for the visible TextField
-	const [displayedValue, setDisplayedValue] = useState(format(load(value)));
-	const [hiddenValue, setHiddenValue] = useState(value);
+	const [displayedValue, setDisplayedValue] = useState(load(defaultValue));
+	const [hiddenValue, setHiddenValue] = useState(defaultValue);
+
+	console.log(
+		`Formatted input ${name} received ${defaultValue} to load and displayed ${displayedValue} while storing ${hiddenValue}`
+	);
 
 	// Depending on if we have a serializer function
 	// we store the real unformatted value in a hidden field
@@ -114,7 +127,7 @@ export const Format = ({
 			? (userInput) => {
 					setHiddenValue(serialize(userInput));
 					setDisplayedValue(userInput);
-					// if (errors[name]) handleSubmit();
+					if (Boolean(errors[name])) trigger();
 			  }
 			: setDisplayedValue;
 
@@ -129,15 +142,12 @@ export const Format = ({
 
 	const rifm = useRifm(rifmParams);
 
-	// Pass the required attribute to the validation object
-	if (required === true) validation.required = `Saisissez un ${label}`;
-	if (validation.required) label += "*";
-
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	if (typeof serialize === "function") {
-		// We create 2 synchronized input fields : one for the displayed and formatted value
-		// and a hidden one that stores the real unformatted value
+		// We create 2 synchronized input fields :
+		// one for the displayed and formatted value that is not tied to form data because it has no name
+		// and a hidden one that stores the real unformatted value tied to the control name
 		return (
 			<>
 				<TextField
@@ -150,9 +160,9 @@ export const Format = ({
 				/>
 				<HiddenText
 					id={`hidden-${name}`}
+					inputRef={register(validation)}
 					name={name}
 					inputType={inputType}
-					inputRef={register(validation)}
 					value={hiddenValue}
 					readOnly
 				/>
@@ -191,15 +201,13 @@ const formatInteger = (sep = " ") => (str = "") => {
 	const number = getDigitsOnly(str + "");
 	if (number === "" || sep === "") return number;
 	const len = number.length;
-	const formatted = number.split("").reduce(
+	return number.split("").reduce(
 		(prev, cur, i) =>
 			i > 0 && (len - i) % 3 === 0
 				? `${prev}${sep}${cur}` // add the separator between every 3 digits blocks
 				: `${prev}${cur}`,
 		""
 	);
-	console.log(`Formatting "${number}" to "${formatted}"`);
-	return formatted;
 };
 
 const serializeInteger = (str = "") =>
@@ -246,6 +254,18 @@ export const formatPercent = (str = "") => {
  * @param {String} char a single letter part of the date format
  */
 const isDateSeparator = (char) => !/[dmy]/i.test(char);
+
+export const formatISODate = (dateFormat = "dd/mm/yyyy") => (str = "") => {
+	if (!str) return "";
+
+	const [year, month, day] = str.split("-");
+	const formatted = dateFormat
+		.replace("dd", day)
+		.replace("mm", month)
+		.replace("yyyy", year);
+	console.log(`Formatting ${str} to ${formatted}`);
+	return formatted;
+};
 
 /**
  * Generate an input date formatter from a dateFormat
@@ -352,6 +372,7 @@ export const Date = ({ dateFormat = "dd/mm/yyyy", ...props }) => {
 	return (
 		<Format
 			format={dateFormatter(dateFormat)}
+			load={formatISODate(dateFormat)}
 			append={dateSeparatorAppender(dateFormat)}
 			serialize={serializeDate(dateFormat)}
 			validation={validation}
@@ -398,7 +419,9 @@ export const SelectBox = ({ options = [], ...props }) => {
 	return (
 		<Text select={true} {...props}>
 			{options.map((option) => (
-				<MenuItem value={option.code}>{option.label}</MenuItem>
+				<MenuItem key={option.code} value={option.code}>
+					{option.label}
+				</MenuItem>
 			))}
 		</Text>
 	);
