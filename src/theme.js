@@ -107,11 +107,22 @@ theme = {
 				backgroundColor: theme.palette.common.white
 			}
 		},
+		MuiOutlinedInput: {
+			inputMarginDense: {
+				padding: "0.5rem"
+			}
+		},
 		MuiFormLabel: {
 			root: {
 				backgroundColor: theme.palette.common.white
 			}
 		},
+		MuiSelect: {
+			select: {
+				minWidth: "30ch"
+			}
+		},
+
 		MuiFormHelperText: {
 			root: {
 				margin: 0,
