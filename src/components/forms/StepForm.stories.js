@@ -15,7 +15,14 @@ export default {
 export const Step = withEventBus((props) => {
 	const eb = useEventBus();
 	const [form, setForm] = useState({
-		data: {},
+		data: {
+			firstName: "Joe",
+			lastName: "Bingo",
+			age: 22,
+			job: {
+				startDate: "2015-10-01"
+			}
+		},
 		errors: false
 	});
 	const setSubmittedData = (data) => setForm({ data, errors: false });
@@ -26,6 +33,7 @@ export const Step = withEventBus((props) => {
 		<Box width="50%">
 			<StepForm
 				formId="person"
+				data={form.data}
 				mode="onBlur"
 				onSubmit={setSubmittedData}
 				onErrors={setErrors}
@@ -33,6 +41,8 @@ export const Step = withEventBus((props) => {
 				<Input.Text label="Prénom" name="firstName" autoFocus={true} />
 				<Input.Text label="Nom" name="lastName" required />
 				<Input.Integer label="Age" name="age" required min={0} max={200} />
+				<Input.Date label="Date d'arrivée" name="job.startDate" required />
+				<Input.Date label="Date de départ" name="job.endDate" />
 			</StepForm>
 			<button onClick={askValidation}>Validate</button>
 			<h2>Submitted Data</h2>
