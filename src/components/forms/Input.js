@@ -2,9 +2,12 @@ import React, { useState } from "react";
 import {
 	TextField,
 	Input as MaterialInput,
+	InputLabel,
+	Select,
 	Button,
 	MenuItem,
-	Box
+	FormControl,
+	FormHelperText
 } from "@material-ui/core";
 import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
@@ -14,6 +17,8 @@ const _BASE_INPUT_STYLES = {
 	fontSize: "large",
 	margin: "dense"
 };
+
+const noop = (val) => val;
 
 /**
  * @typedef InputProps
@@ -97,10 +102,10 @@ export const Format = ({
 	name = "formatted-input",
 	label = "Use a label",
 	inputType = "text",
-	format = (val) => val,
-	load = (val) => val,
+	format = noop,
+	load = noop,
+	serialize = noop,
 	append,
-	serialize,
 	value = "",
 	required = false,
 	validation = {},
@@ -117,25 +122,20 @@ export const Format = ({
 	// Get the default values passed to the form
 	const defaultValue = watch(name) || value;
 
-	// As this input format the value for display, we use a distinct displayedValue state for the visible TextField
-	const [displayedValue, setDisplayedValue] = useState(load(defaultValue));
-	const [hiddenValue, setHiddenValue] = useState(defaultValue);
-
-	console.log(
-		`Formatted input ${name} received ${defaultValue} to load and displayed ${displayedValue} while storing ${hiddenValue}`
-	);
+	// We store 2 distinct values : the hidden (real one) and the displayed (formatted) value for the visible TextField
+	const [[hiddenValue, displayedValue], setValues] = useState([
+		defaultValue,
+		load(defaultValue)
+	]);
 
 	// Depending on if we have a serializer function
 	// we store the real unformatted value in a hidden field
-	const onChange =
-		typeof serialize === "function"
-			? (userInput) => {
-					setHiddenValue(serialize(userInput));
-					setDisplayedValue(userInput);
-					if (Boolean(errors[name])) trigger();
-			  }
-			: setDisplayedValue;
-
+	const onChange = (userInput) => {
+		const displayedValue = format(userInput);
+		const hiddenValue = serialize(userInput);
+		setValues([hiddenValue, displayedValue]);
+		if (Boolean(errors[name])) trigger();
+	};
 	const rifmParams = {
 		value: displayedValue,
 		onChange,
@@ -149,46 +149,32 @@ export const Format = ({
 
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
-	if (typeof serialize === "function") {
-		// We create 2 synchronized input fields :
-		// one for the displayed and formatted value that is not tied to form data because it has no name
-		// and a hidden one that stores the real unformatted value tied to the control name
-		return (
-			<>
-				<TextField
-					label={label}
-					value={rifm.value}
-					onChange={rifm.onChange}
-					error={Boolean(errors[name])}
-					helperText={errors[name] ? errors[name].message : " "}
-					inputProps={{
-						size
-					}}
-					{...mergedProps}
-				/>
-				<HiddenText
-					id={`hidden-${name}`}
-					inputRef={register(validation)}
-					name={name}
-					inputType={inputType}
-					value={hiddenValue}
-					readOnly
-				/>
-			</>
-		);
-	} else {
-		// The formatted value is the value that we really use and store
-		return (
-			<Text
-				name={name}
+	// We create 2 synchronized input fields :
+	// one for the displayed and formatted value that is not tied to form data because it has no name
+	// and a hidden one that stores the real unformatted value tied to the control name
+	return (
+		<>
+			<TextField
 				label={label}
-				validation={validation}
 				value={rifm.value}
 				onChange={rifm.onChange}
+				error={Boolean(errors[name])}
+				helperText={errors[name] ? errors[name].message : " "}
+				inputProps={{
+					size
+				}}
 				{...mergedProps}
 			/>
-		);
-	}
+			<HiddenText
+				id={`hidden-${name}`}
+				inputRef={register(validation)}
+				name={name}
+				inputType={inputType}
+				value={hiddenValue}
+				readOnly
+			/>
+		</>
+	);
 };
 
 /**
@@ -288,24 +274,21 @@ export const dateFormatter = (dateFormat = "dd/mm/yyyy") => (str = "") => {
 	const inputLength = digits.length;
 	if (!inputLength) return "";
 	let decalage = 1;
-	return dateSeparatorAppender(dateFormat)(
-		digits
-			.split("")
-			.reduce(
-				(prev, cur, i) =>
-					`${prev}${cur}` +
-					(i !== inputLength - 1 && isDateSeparator(dateFormat[i + decalage])
-						? dateFormat[i + decalage++]
-						: ""),
-				""
-			)
-	);
+	return digits
+		.split("")
+		.reduce(
+			(prev, cur, i) =>
+				`${prev}${cur}` +
+				(i !== inputLength - 1 && isDateSeparator(dateFormat[i + decalage])
+					? dateFormat[i + decalage++]
+					: ""),
+			""
+		);
 };
 export const dateSeparatorAppender = (dateFormat = "dd/mm/yyyy") => (str = "") => {
 	if (str.length === dateFormat.length) return str;
 	const nextCharInFormat = dateFormat[str.length];
 	if (isDateSeparator(nextCharInFormat)) {
-		console.log(`Appending ${nextCharInFormat} to ${str}`);
 		return str + nextCharInFormat;
 	} else {
 		return str;
@@ -397,15 +380,50 @@ export const Password = ({ ...props }) => <Text type="password" {...props} />;
  * Select a value amonst dome predefined options
  * @param {*} param0
  */
-export const SelectBox = ({ options = [], size = 25, ...props }) => {
+export const SelectBox = ({
+	name = "select-box",
+	label = "Select",
+	value = "",
+	required = false,
+	autoFocus = false,
+	validation = {},
+	options = [],
+	size = 25,
+	...moreProps
+}) => {
+	// Find the parent form to register our input
+	const { register, errors } = useFormContext();
+	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
+
+	// Pass the required attribute to the validation object
+	if (required === true) validation.required = `Saisissez un ${label}`;
+	if (validation.required) label += "*";
+
 	return (
-		<Text select={true} size={size} {...props}>
-			{options.map((option) => (
-				<MenuItem key={option.code} value={option.code}>
-					{option.label}
-				</MenuItem>
-			))}
-		</Text>
+		<FormControl error={Boolean(errors[name])}>
+			<InputLabel id={`${name}-label`}>{label}</InputLabel>
+			<Select
+				id={name}
+				name={name}
+				labelId={`${name}-label`}
+				inputRef={register(validation)}
+				inputProps={{
+					size
+				}}
+				defaultValue={value}
+				autoFocus={autoFocus}
+				// onChange={handleChange}
+				// renderValue={(value) => `⚠️  - ${value}`}
+				{...mergedProps}
+			>
+				{options.map((option) => (
+					<MenuItem key={option.code} value={option.code}>
+						{option.label}
+					</MenuItem>
+				))}
+			</Select>
+			<FormHelperText>{errors[name] ? errors[name].message : " "}</FormHelperText>
+		</FormControl>
 	);
 };
 
