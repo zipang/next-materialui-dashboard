@@ -2,7 +2,7 @@
 import Input from "./Input";
 import StepForm from "./StepForm";
 import JSON from "@lib/utils/JSON";
-import { Box } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 import { withEventBus, useEventBus } from "@components/EventBusProvider";
 import { useState } from "react";
 
@@ -30,7 +30,7 @@ export const Step = withEventBus((props) => {
 
 	const askValidation = () => eb.send("person:validate");
 	return (
-		<Box width="50%">
+		<Box width="75%">
 			<StepForm
 				formId="person"
 				data={form.data}
@@ -38,11 +38,33 @@ export const Step = withEventBus((props) => {
 				onSubmit={setSubmittedData}
 				onErrors={setErrors}
 			>
-				<Input.Text label="Prénom" name="firstName" autoFocus={true} />
-				<Input.Text label="Nom" name="lastName" required={true} />
-				<Input.Integer label="Age" name="age" required={true} min={0} max={200} />
-				<Input.Date label="Date d'arrivée" name="job.startDate" required={true} />
-				<Input.Date label="Date de départ" name="job.endDate" />
+				<Grid container spacing={2}>
+					<Grid item sm={6}>
+						<Input.Text label="Prénom" name="firstName" autoFocus={true} />
+					</Grid>
+					<Grid item sm={6}>
+						<Input.Text label="Nom" name="lastName" required={true} />
+					</Grid>
+					<Grid item sm={12}>
+						<Input.Integer
+							label="Age"
+							name="age"
+							required={true}
+							min={0}
+							max={200}
+						/>
+					</Grid>
+					<Grid item sm={6}>
+						<Input.Date
+							label="Date d'arrivée"
+							name="job.startDate"
+							required={true}
+						/>
+					</Grid>
+					<Grid item sm={6}>
+						<Input.Date label="Date de départ" name="job.endDate" />
+					</Grid>
+				</Grid>
 			</StepForm>
 			<button onClick={askValidation}>Validate</button>
 			<h2>Submitted Data</h2>
