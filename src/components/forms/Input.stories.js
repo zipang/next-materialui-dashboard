@@ -67,3 +67,21 @@ DateInputWithData.args = {
 	label: "Date de création"
 };
 DateInputWithData.argTypes = {};
+
+export const SelectBoxInput = (args) => (
+	<StepForm mode="onChange">
+		<Input.SelectBox autoFocus={true} required name="genre" {...args} />
+	</StepForm>
+);
+SelectBoxInput.args = {
+	label: "Genre",
+	options: [
+		{ code: "M", label: "Monsieur" },
+		{ code: "F", label: "Madame" }
+	]
+};
+SelectBoxInput.argTypes = {
+	options: {
+		control: { type: "json" }
+	}
+};
