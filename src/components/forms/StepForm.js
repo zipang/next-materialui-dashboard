@@ -25,7 +25,7 @@ import useFormStyles from "./useFormStyles";
  */
 const StepForm = ({
 	formId = "form",
-	data = {},
+	data,
 	mode = "onSubmit",
 	onSubmit,
 	onErrors,
@@ -102,8 +102,9 @@ const StepForm = ({
 			clearErrors();
 			eb.on(`${formId}:validate`, trigger);
 			setFirstMount(false);
+		} else {
+			reset(data); // form default values are cached after the first mount so we have to reset them when navigating between steps
 		}
-		reset(data); // form default values are cached after the first mount so we have to reset them when navigating between steps
 		return () => eb && eb.off(`${formId}:validate`, trigger); // Clean on unmount
 	}, [data]);
 
