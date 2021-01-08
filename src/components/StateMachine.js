@@ -1,5 +1,6 @@
 import { createContext, useContext, useState } from "react";
 import { deepMerge } from "@lib/utils/deepMerge";
+import JSON from "@lib/utils/JSON";
 
 const StateMachinesContext = createContext();
 
@@ -20,7 +21,7 @@ const _MIDDLEWARES = {
 	 */
 	localStorage: (id, actionName, oldState, newState) => {
 		if (window && window.localStorage) {
-			window.localStorage.setItem(id, newState);
+			window.localStorage.setItem(id, JSON.stringify(newState));
 		}
 	}
 };
@@ -148,13 +149,19 @@ export const withStateMachine = (
 
 	if (useLocalStorage && window && window.localStorage) {
 		middlewares.push(_MIDDLEWARES.localStorage);
-		const savedState = window.localStorage.getItem(id);
-		if (savedState && typeof savedState === "object") {
-			console.log(
-				`Restoring saved state : ${JSON.stringify(savedState, null, "\t")}`
-			);
-			initialState = savedState;
-		}
+		// const savedState = window.localStorage.getItem(id);
+		// if (savedState) {
+		// 	try {
+		// 		initialState = JSON.parse(savedState);
+		// 	} catch (err) {
+		// 		window.localStorage.removeItem(id);
+		// 	}
+		// 	console.log(
+		// 		`Restoring saved state from localStorage: ${JSON.stringify(
+		// 			initialState
+		// 		)} `
+		// 	);
+		// }
 	}
 
 	const [state, setState] = useState(initialState);
