@@ -2,7 +2,6 @@
 import Wizard from "./Wizard";
 import Input from "./Input";
 import StepForm from "./StepForm";
-import { useStateMachine } from "../StateMachine";
 import { Box } from "@material-ui/core";
 
 const empty_data = {};
@@ -15,10 +14,11 @@ const existing_data = {
 /**
  * Create a simple displayForm function wich renders
  * a StepForm with a unique input element
+ * @return {Function<data,onSubmit>}
  */
-const simpleStepForm = ({ name, type = "text", ...more }) => (data, onSubmit) => {
+const displaySimpleStepForm = ({ name, type = "text", ...more }) => (data, onSubmit) => {
 	return (
-		<StepForm formId={name} data={data} onSubmit={onSubmit}>
+		<StepForm formId={name} data={data} onSubmit={onSubmit} rerender={new Date()}>
 			{type === "text" && <Input.Text autoFocus={true} name={name} {...more} />}
 			{type === "select" && (
 				<Input.SelectBox autoFocus={true} name={name} {...more} />
@@ -34,30 +34,39 @@ const simpleStepForm = ({ name, type = "text", ...more }) => (data, onSubmit) =>
 const steps = [
 	{
 		id: "firstName",
-		title: "Step #1",
-		displayForm: simpleStepForm({
+		title: "Entrez votre prénom",
+		displayForm: displaySimpleStepForm({
 			name: "firstName",
-			label: "Entrez votre prénom",
+			label: "Prénom",
+			required: true
+		})
+	},
+	{
+		id: "lastName",
+		title: "Entrez votre nom",
+		displayForm: displaySimpleStepForm({
+			name: "lastName",
+			label: "Nom",
 			required: true
 		})
 	},
 	{
 		id: "age",
-		title: "Step #2",
-		displayForm: simpleStepForm({
+		title: "Entrez votre age",
+		displayForm: displaySimpleStepForm({
 			name: "age",
 			type: "number",
-			label: "Entrez votre age",
+			label: "Age",
 			required: true
 		})
 	},
 	{
 		id: "classe",
-		title: "Step #3",
-		displayForm: simpleStepForm({
+		title: "Choisissez votre classe",
+		displayForm: displaySimpleStepForm({
 			name: "classe",
 			type: "select",
-			label: "Choisissez votre classe",
+			label: "Classe",
 			options: [
 				{ code: "magician", label: "Magician" },
 				{ code: "warrior", label: "Warrior" },
@@ -69,7 +78,8 @@ const steps = [
 
 // This default export determines where your story goes in the story list
 export default {
-	title: "Wizard"
+	title: "Wizard",
+	component: Wizard
 };
 
 /**
@@ -84,11 +94,13 @@ export const EmptySteps = () => (
 /**
  * Display the wizard with a non empty initial data object
  */
-export const ModifySteps = () => (
-	<Wizard
-		id="populated-3-steps-wizard"
-		steps={steps}
-		data={existing_data}
-		currentSlide={0}
-	/>
+export const PrefilledSteps = () => (
+	<Box width="600px" height="400px">
+		<Wizard
+			id="populated-3-steps-wizard"
+			steps={steps}
+			data={existing_data}
+			currentSlide={0}
+		/>
+	</Box>
 );

@@ -75,8 +75,6 @@ const StepForm = ({
 		} else {
 			eb && eb.emit(`${formId}:errors`, errors);
 		}
-		// const fieldName = Object.keys(errors)[0];
-		// setError(fieldName, errors[fieldName]);
 	};
 
 	const validateForm = handleSubmit(
@@ -96,7 +94,7 @@ const StepForm = ({
 
 	useEffect(() => {
 		console.log(
-			`Re-rendering form ${formId} with data`,
+			`${firstMount ? "Re-" : ""}Rendering form ${formId} with data`,
 			JSON.stringify(data, null, "\t")
 		);
 		// Listen to the event `form:validate`
@@ -106,7 +104,7 @@ const StepForm = ({
 			eb.on(`${formId}:validate`, trigger);
 			setFirstMount(false);
 		}
-		reset(data);
+		reset(data); // form default values are cached after the first mount so we have to reset them when navigating between steps
 		return () => eb && eb.off(`${formId}:validate`, trigger); // Clean on unmount
 	}, [data]);
 

@@ -1,5 +1,4 @@
 import CenteredPaperSheet from "@components/CenteredPaperSheet";
-// import SwipeableViews from "react-swipeable-views";
 
 import EventBusProvider from "@components/EventBusProvider";
 import Register from "@components/Register";
