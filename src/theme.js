@@ -102,6 +102,11 @@ theme = {
 				backgroundColor: theme.palette.background.dark
 			}
 		},
+		MuiFormControl: {
+			root: {
+				display: "block"
+			}
+		},
 		MuiInputBase: {
 			root: {
 				backgroundColor: theme.palette.common.white
