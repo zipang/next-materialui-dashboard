@@ -31,50 +31,6 @@ const noop = (val) => val;
  */
 
 /**
- * Text input that will automaticaly register itself to the nearest FormContext
- * @param {InputProps} props -
- */
-const UncontrolledText = ({
-	name = "text",
-	label = "Text",
-	value = "",
-	required = false,
-	autoComplete = false,
-	autoFocus = false,
-	validation = {},
-	size = 30,
-	control,
-	...moreProps
-}) => {
-	// Find the parent form to register our input
-	const { register, errors } = useFormContext();
-	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
-
-	// Pass the required attribute to the validation object
-	if (required === true) validation.required = `Saisissez un ${label}`;
-	if (validation.required) label += "*";
-
-	return (
-		<TextField
-			id={name}
-			// {...inputProps}
-			inputRef={register(validation)}
-			name={name}
-			defaultValue={value}
-			label={label}
-			error={Boolean(errors[name])}
-			autoComplete={autoComplete ? "" : "off"}
-			autoFocus={autoFocus}
-			helperText={errors[name] ? errors[name].message : " "}
-			inputProps={{
-				size
-			}}
-			{...mergedProps}
-		/>
-	);
-};
-
-/**
  * Basically same features as Text input
  * but with full control
  * @param {InputProps} props -
@@ -136,31 +92,11 @@ const Text = ({
 	);
 };
 
-const HiddenText = ({ name, value = "", inputType = "text", inputRef, ...moreProps }) => {
-	// // Find the parent form to register our input
-	// const { register, errors } = useFormContext();
-
-	// // Pass the required attribute to the validation object
-	// if (required === true) validation.required = true;
-
-	return (
-		<input
-			hidden
-			name={name}
-			id={name}
-			type={inputType}
-			ref={inputRef}
-			value={value}
-			{...moreProps}
-		/>
-	);
-};
-
 /**
  * Text input with special format
  * @param {FormattedInputProps} props -
  */
-export const Format = ({
+export const Formatted = ({
 	name = "formatted-input",
 	label = "Use a label",
 	inputType = "text",
@@ -168,74 +104,72 @@ export const Format = ({
 	load = noop,
 	serialize = noop,
 	append,
-	value = "",
 	required = false,
 	validation = {},
 	size = 20,
 	...moreProps
 }) => {
+	// Find the parent form to register our input
+	const inputRef = createRef();
+	const { register, errors, watch, setValue, trigger } = useFormContext();
+	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
+
 	// Pass the required attribute to the validation object
 	if (required === true) validation.required = `Saisissez un ${label}`;
 	if (validation.required) label += "*";
 
-	// Find the parent form to register our input
-	const { register, errors, trigger, watch } = useFormContext();
+	register(name, validation);
 
-	// Get the default values passed to the form
-	const defaultValue = watch(name) || value;
+	let value = watch(name) || "";
 
-	// We store 2 distinct values : the hidden (real one) and the displayed (formatted) value for the visible TextField
-	const [[hiddenValue, displayedValue], setValues] = useState([
-		defaultValue,
-		load(defaultValue)
-	]);
-
-	// Depending on if we have a serializer function
-	// we store the real unformatted value in a hidden field
+	// We store 2 distinct values : the real one
+	// and the displayed (formatted) value for the visible TextField
+	const [displayedValue, setDisplayedValues] = useState(load(value));
 	const onChange = (userInput) => {
-		const displayedValue = format(userInput);
-		const hiddenValue = serialize(userInput);
-		setValues([hiddenValue, displayedValue]);
-		if (Boolean(errors[name])) trigger();
+		setValue(name, (value = serialize(userInput)));
+		setDisplayedValues(format(userInput));
+		if (errors[name]) trigger();
 	};
 	const rifmParams = {
 		value: displayedValue,
+		mask: true,
 		onChange,
 		format
 	};
 	if (typeof append === "function") {
 		rifmParams.append = append;
 	}
-
 	const rifm = useRifm(rifmParams);
 
-	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
+	useLayoutEffect(() => {
+		console.log(
+			`Re-rendering ${name} formatted input. Errors : ${JSON.stringify(errors)}`
+		);
+		value = watch(name) || "";
+		if (errors[name]) {
+			console.log(`We've got an error on ${name} try to focus..`);
+			inputRef.current.focus();
+		}
+		// return () => unregister(name);
+	}, [name]);
 
 	// We create 2 synchronized input fields :
 	// one for the displayed and formatted value that is not tied to form data because it has no name
 	// and a hidden one that stores the real unformatted value tied to the control name
 	return (
-		<>
-			<TextField
-				label={label}
-				value={rifm.value}
-				onChange={rifm.onChange}
-				error={Boolean(errors[name])}
-				helperText={errors[name] ? errors[name].message : " "}
-				inputProps={{
-					size
-				}}
-				{...mergedProps}
-			/>
-			<HiddenText
-				id={`hidden-${name}`}
-				inputRef={register(validation)}
-				name={name}
-				inputType={inputType}
-				value={hiddenValue}
-				readOnly
-			/>
-		</>
+		<TextField
+			id={`formatted-${name}`}
+			inputRef={inputRef}
+			label={label}
+			value={rifm.value}
+			onChange={rifm.onChange}
+			error={Boolean(errors[name])}
+			helperText={errors[name] ? errors[name].message : " "}
+			inputProps={{
+				size
+			}}
+			{...mergedProps}
+		/>
 	);
 };
 
@@ -249,7 +183,7 @@ const getDigitsOnly = (str = "") => str.replace(/[^\d]+/gi, "");
 /**
  *
  * @param {String} sep the character that will separate the blocks of 3 digits
- * @return {Function} the real formatter fonction to use inside <Input.Format />
+ * @return {Function} the real formatter fonction to use inside <Input.Formatted />
  * @example
  *   formatInteger(" ")(12345678) => "12 345 678"
  */
@@ -288,7 +222,7 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 			Number.parseInt(str) <= max || `Ce nombre doit être plus petit que ${max}`;
 	}
 	return (
-		<Format
+		<Formatted
 			format={typeof format === "function" ? format : formatInteger(separator)}
 			serialize={serializeInteger}
 			validation={validation}
@@ -397,7 +331,7 @@ export const Date = ({ dateFormat = "dd/mm/yyyy", size = 7, ...props }) => {
 		isDate: (ISODate) => typeof Date.parse(ISODate) === "number"
 	};
 	return (
-		<Format
+		<Formatted
 			format={dateFormatter(dateFormat)}
 			load={formatISODate(dateFormat)}
 			// append={dateSeparatorAppender(dateFormat)}
@@ -505,7 +439,7 @@ const Input = {
 	Text,
 	Password,
 	Email,
-	Format,
+	Formatted,
 	Integer,
 	Percent,
 	Date,

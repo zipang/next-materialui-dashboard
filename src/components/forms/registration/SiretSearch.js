@@ -34,7 +34,7 @@ export const formatSiret = (str = "") => {
 export const SiretSearchForm = ({ onSuccess }) => {
 	return (
 		<APIForm action="/api/siret/search" onSuccess={onSuccess}>
-			<Input.Format
+			<Input.Formatted
 				label="No de Siret"
 				name="siret"
 				format={formatSiret}

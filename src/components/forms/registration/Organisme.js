@@ -16,7 +16,7 @@ const statusOptionsList = [
 export const OrganismeForm = ({ formId = "organisme", data = {}, onSubmit }) => {
 	return (
 		<StepForm formId={formId} data={data} onSubmit={onSubmit}>
-			<Input.Format
+			<Input.Formatted
 				label="No de Siret"
 				name="siret"
 				readOnly
