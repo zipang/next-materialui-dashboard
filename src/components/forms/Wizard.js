@@ -1,7 +1,6 @@
-import { forwardRef, useEffect, memo } from "react";
+import { useEffect, memo } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
-import { makeStyles } from "@material-ui/core/styles";
 
 import SvgIcon from "@components/SvgIcon";
 import { withStateMachine } from "@components/StateMachine";
@@ -61,17 +60,17 @@ const WizardControls = memo(({ children }) => (
  * @param {Object} state Initial state available to any actions
  */
 
-const transition = (state, to) => {
+const gotoSlide = (state, to) => {
 	return {
 		...state,
 		currentSlide: to
 	};
 };
 const next = (state) => {
-	return transition(state, state.currentSlide + 1);
+	return gotoSlide(state, state.currentSlide + 1);
 };
 const previous = (state) => {
-	return transition(state, state.currentSlide - 1);
+	return gotoSlide(state, state.currentSlide - 1);
 };
 
 /**
@@ -85,9 +84,17 @@ const InitWizard = ({ steps = [], state, actions }) => {
 
 	// Define a validate combo action that merge step data and transition to next step
 	const validateStep = (payload) => {
-		console.dir(`Validate step payload :`, payload);
-		actions.merge(state, { data: payload });
-		actions.next();
+		console.trace(`validateStep`);
+
+		const newData = [{ data: payload }];
+		if (currentSlide < steps.length - 1) {
+			// We can pass to next slide
+			console.log("Goto to next step.");
+			newData.push({ currentSlide: state.currentSlide + 1 });
+		}
+
+		const newState = actions.merge({}, { ...state }, ...newData); // << It's very important here to recreate a new state object
+		actions.transition("Wizard", "validateStep", state, newState);
 	};
 
 	/**
@@ -98,8 +105,8 @@ const InitWizard = ({ steps = [], state, actions }) => {
 	};
 
 	useEffect(() => {
-		console.log(`Re-rendering Wizard`);
-	});
+		console.log(`Re-rendering Wizard with ${JSON.stringify(data, null, "\t")}`);
+	}, [currentSlide]);
 
 	return (
 		<WizardContainer>
@@ -128,6 +135,7 @@ const InitWizard = ({ steps = [], state, actions }) => {
 				<Button
 					variant="contained"
 					color="secondary"
+					disabled={currentSlide < steps.length - 1}
 					startIcon={<SvgIcon name="Save" />}
 					onClick={triggerValidate}
 				>
@@ -145,7 +153,7 @@ InitWizard.StateMachine = {
 		currentSlide: 0
 	},
 	actions: {
-		transition,
+		gotoSlide,
 		next,
 		previous
 	}
