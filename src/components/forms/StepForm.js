@@ -99,7 +99,6 @@ const StepForm = ({
 		);
 		// Listen to the event `form:validate`
 		if (eb && firstMount) {
-			console.log("(first mount)");
 			clearErrors();
 			eb.on(`${formId}:validate`, trigger);
 			setFirstMount(false);
