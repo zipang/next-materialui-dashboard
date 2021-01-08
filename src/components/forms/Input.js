@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, createRef, useEffect, useLayoutEffect } from "react";
 import {
 	TextField,
 	Input as MaterialInput,
@@ -34,7 +34,7 @@ const noop = (val) => val;
  * Text input that will automaticaly register itself to the nearest FormContext
  * @param {InputProps} props -
  */
-const Text = ({
+const UncontrolledText = ({
 	name = "text",
 	label = "Text",
 	value = "",
@@ -62,6 +62,68 @@ const Text = ({
 			name={name}
 			defaultValue={value}
 			label={label}
+			error={Boolean(errors[name])}
+			autoComplete={autoComplete ? "" : "off"}
+			autoFocus={autoFocus}
+			helperText={errors[name] ? errors[name].message : " "}
+			inputProps={{
+				size
+			}}
+			{...mergedProps}
+		/>
+	);
+};
+
+/**
+ * Basically same features as Text input
+ * but with full control
+ * @param {InputProps} props -
+ */
+const Text = ({
+	name = "text",
+	label = "Text",
+	required = false,
+	autoComplete = false,
+	autoFocus = false,
+	validation = {},
+	size = 30,
+	...moreProps
+}) => {
+	// Find the parent form to register our input
+	const inputRef = createRef();
+	const { register, unregister, errors, watch, setValue, trigger } = useFormContext();
+	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
+
+	// Pass the required attribute to the validation object
+	if (required === true) validation.required = `Saisissez un ${label}`;
+	if (validation.required) label += "*";
+
+	register(name, validation);
+	const onChange = (evt) => {
+		setValue(name, (value = evt.target.value));
+		if (errors[name]) trigger();
+	};
+	let value = watch(name) || "";
+
+	useLayoutEffect(() => {
+		console.log(`Re-rendering ${name} input. Errors : ${JSON.stringify(errors)}`);
+		value = watch(name) || "";
+		if (errors[name]) {
+			console.log(`We've got an error on ${name} try to focus..`);
+			inputRef.current.focus();
+		}
+		// return () => unregister(name);
+	}, [name]);
+
+	return (
+		<TextField
+			id={name}
+			// {...inputProps}
+			inputRef={inputRef}
+			name={name}
+			value={value}
+			label={label}
+			onChange={onChange}
 			error={Boolean(errors[name])}
 			autoComplete={autoComplete ? "" : "off"}
 			autoFocus={autoFocus}
