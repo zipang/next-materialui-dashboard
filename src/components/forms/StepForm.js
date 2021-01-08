@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 import { useEventBus } from "@components/EventBusProvider";
 import { flattenErrors } from "./errors";
 import { useForm, FormProvider } from "react-hook-form";
@@ -33,27 +33,30 @@ const StepForm = ({
 }) => {
 	const eb = useEventBus();
 	const styles = useFormStyles();
+	const [firstMount, setFirstMount] = useState(true);
 
 	// @see https://react-hook-form.com/api/#handleSubmit
-	const { handleSubmit, ...formMethods } = useForm({
+	const { ...formMethods } = useForm({
 		defaultValues: data,
-		reValidateMode: "onChange",
+		reValidateMode: "onSubmit",
 		shouldFocusError: true,
+		shouldUnregister: true,
 		mode
 	});
+	const { handleSubmit, reset, clearErrors, trigger } = formMethods;
 
 	/**
 	 * Called when the form validation is a success
 	 * @param {Object} formData
 	 */
 	const handleSuccess = (formData) => {
+		console.dir(
+			`Receiving form data for ${formId}`,
+			JSON.stringify(formData, null, "\t")
+		);
 		if (typeof onSubmit === "function") {
 			onSubmit(formData);
 		} else {
-			console.dir(
-				`Receiving form data for ${formId}`,
-				JSON.stringify(formData, null, "\t")
-			);
 			eb && eb.emit(`${formId}:submit`, formData);
 		}
 	};
@@ -63,15 +66,17 @@ const StepForm = ({
 	 * @param {Object} errors
 	 */
 	const handleErrors = (errors) => {
+		console.log(
+			`Validation of ${formId} triggered errors`,
+			JSON.stringify(flattenErrors(errors), null, "\t")
+		);
 		if (typeof onErrors === "function") {
 			onErrors(flattenErrors(errors));
 		} else {
-			console.log(
-				`Validation of ${formId} triggered errors`,
-				JSON.stringify(flattenErrors(errors), null, "\t")
-			);
 			eb && eb.emit(`${formId}:errors`, errors);
 		}
+		// const fieldName = Object.keys(errors)[0];
+		// setError(fieldName, errors[fieldName]);
 	};
 
 	const validateForm = handleSubmit(
@@ -85,18 +90,25 @@ const StepForm = ({
 	 */
 	const onKeyPress = (e) => {
 		if (e.key === "Enter" && !e.shiftKey) {
-			validateForm();
+			trigger();
 		}
 	};
 
 	useEffect(() => {
-		if (eb) {
-			// Listen to the event `form:validate`
-			// and trigger a form submit
-			eb.on(`${formId}:validate`, validateForm);
-			return () => eb.off(`${formId}:validate`, validateForm); // Clean on unmount
+		console.log(
+			`Re-rendering form ${formId} with data`,
+			JSON.stringify(data, null, "\t")
+		);
+		// Listen to the event `form:validate`
+		if (eb && firstMount) {
+			console.log("(first mount)");
+			clearErrors();
+			eb.on(`${formId}:validate`, trigger);
+			setFirstMount(false);
 		}
-	}, [eb]);
+		reset(data);
+		return () => eb && eb.off(`${formId}:validate`, trigger); // Clean on unmount
+	}, [data]);
 
 	return (
 		<FormProvider {...formMethods}>
