@@ -1,4 +1,4 @@
-import React, { useState, createRef, useEffect, useLayoutEffect } from "react";
+import React, { useState, createRef, useLayoutEffect } from "react";
 import {
 	TextField,
 	Input as MaterialInput,
@@ -11,6 +11,7 @@ import {
 } from "@material-ui/core";
 import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
+import { getProperty } from "@lib/utils/NestedObjects";
 
 const _BASE_INPUT_STYLES = {
 	variant: "outlined",
@@ -47,7 +48,8 @@ const Text = ({
 }) => {
 	// Find the parent form to register our input
 	const inputRef = createRef();
-	const { register, unregister, errors, watch, setValue, trigger } = useFormContext();
+	const { register, errors, watch, setValue, trigger } = useFormContext();
+	const errorMessage = getProperty(errors, `${name}.message`, "");
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	// Pass the required attribute to the validation object
@@ -57,15 +59,15 @@ const Text = ({
 	register(name, validation);
 	const onChange = (evt) => {
 		setValue(name, (value = evt.target.value));
-		if (errors[name]) trigger();
+		if (errorMessage) trigger();
 	};
 	let value = watch(name) || "";
 
 	useLayoutEffect(() => {
-		console.log(`Re-rendering ${name} input. Errors : ${JSON.stringify(errors)}`);
+		console.log(`Re-rendering ${name} input. Error : ${errorMessage}`);
 		value = watch(name) || "";
-		if (errors[name]) {
-			console.log(`We've got an error on ${name} try to focus..`);
+		if (errorMessage) {
+			console.log(`We've got an error on ${name} (${errorMessage}) try to focus..`);
 			inputRef.current.focus();
 		}
 		// return () => unregister(name);
@@ -80,10 +82,10 @@ const Text = ({
 			value={value}
 			label={label}
 			onChange={onChange}
-			error={Boolean(errors[name])}
+			error={Boolean(errorMessage)}
 			autoComplete={autoComplete ? "" : "off"}
 			autoFocus={autoFocus}
-			helperText={errors[name] ? errors[name].message : " "}
+			helperText={errorMessage}
 			inputProps={{
 				size
 			}}
@@ -112,6 +114,7 @@ export const Formatted = ({
 	// Find the parent form to register our input
 	const inputRef = createRef();
 	const { register, errors, watch, setValue, trigger } = useFormContext();
+	const errorMessage = getProperty(errors, `${name}.message`, "");
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	// Pass the required attribute to the validation object
@@ -128,7 +131,7 @@ export const Formatted = ({
 	const onChange = (userInput) => {
 		setValue(name, (value = serialize(userInput)));
 		setDisplayedValues(format(userInput));
-		if (errors[name]) trigger();
+		if (errorMessage) trigger();
 	};
 	const rifmParams = {
 		value: displayedValue,
@@ -142,12 +145,9 @@ export const Formatted = ({
 	const rifm = useRifm(rifmParams);
 
 	useLayoutEffect(() => {
-		console.log(
-			`Re-rendering ${name} formatted input. Errors : ${JSON.stringify(errors)}`
-		);
 		value = watch(name) || "";
-		if (errors[name]) {
-			console.log(`We've got an error on ${name} try to focus..`);
+		if (errorMessage) {
+			console.log(`We've got an error on ${name} (${errorMessage}) try to focus..`);
 			inputRef.current.focus();
 		}
 		// return () => unregister(name);
@@ -163,8 +163,8 @@ export const Formatted = ({
 			label={label}
 			value={rifm.value}
 			onChange={rifm.onChange}
-			error={Boolean(errors[name])}
-			helperText={errors[name] ? errors[name].message : " "}
+			error={Boolean(errorMessage)}
+			helperText={errorMessage}
 			inputProps={{
 				size
 			}}
