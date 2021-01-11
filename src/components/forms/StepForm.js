@@ -1,6 +1,5 @@
 import { useEffect, useLayoutEffect, useState } from "react";
 import { useEventBus } from "@components/EventBusProvider";
-import { flattenErrors } from "./errors";
 import { useForm, FormProvider } from "react-hook-form";
 
 import useFormStyles from "./useFormStyles";
@@ -41,9 +40,10 @@ const StepForm = ({
 		reValidateMode: "onSubmit",
 		shouldFocusError: true,
 		shouldUnregister: true,
+		criteriaMode: "firstError",
 		mode
 	});
-	const { handleSubmit, reset, clearErrors, trigger } = formMethods;
+	const { handleSubmit, reset, clearErrors } = formMethods;
 
 	/**
 	 * Called when the form validation is a success
@@ -60,18 +60,22 @@ const StepForm = ({
 			eb && eb.emit(`${formId}:submit`, formData);
 		}
 	};
+
 	/**
 	 * Called when the form validation is a failure
 	 * @see https://react-hook-form.com/api#errors
 	 * @param {Object} errors
 	 */
 	const handleErrors = (errors) => {
-		console.log(
-			`Validation of ${formId} triggered errors`,
-			JSON.stringify(flattenErrors(errors), null, "\t")
-		);
+		console.log(`Validation of ${formId} triggered errors`, errors);
+		const firstError = Object.keys(errors)[0];
+		// We only want the first error
+		Object.keys(errors).forEach((fieldName) => {
+			if (fieldName !== firstError) delete errors[fieldName];
+		});
+		//errors[firstError].ref.current.focus();
 		if (typeof onErrors === "function") {
-			onErrors(flattenErrors(errors));
+			onErrors(errors);
 		} else {
 			eb && eb.emit(`${formId}:errors`, errors);
 		}
@@ -88,24 +92,30 @@ const StepForm = ({
 	 */
 	const onKeyPress = (e) => {
 		if (e.key === "Enter" && !e.shiftKey) {
-			trigger();
+			validateForm();
 		}
 	};
 
 	useEffect(() => {
 		console.log(
-			`${firstMount ? "Re-" : ""}Rendering form ${formId} with data`,
+			`${firstMount ? "" : "Re-"}Rendering form ${formId} with data`,
 			JSON.stringify(data, null, "\t")
 		);
 		// Listen to the event `form:validate`
 		if (eb && firstMount) {
 			clearErrors();
-			eb.on(`${formId}:validate`, trigger);
+			eb.on(`${formId}:validate`, () => {
+				console.log("Received ${formId}:validate event");
+				validateForm();
+			});
 			setFirstMount(false);
 		} else {
 			reset(data); // form default values are cached after the first mount so we have to reset them when navigating between steps
 		}
-		return () => eb && eb.off(`${formId}:validate`, trigger); // Clean on unmount
+		return () => {
+			console.log(`Cleaning form ${formId} events`);
+			eb && eb.off(`${formId}:validate`, validateForm); // Clean on unmount
+		};
 	}, [data]);
 
 	return (

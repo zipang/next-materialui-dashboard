@@ -2,7 +2,7 @@
 import Input from "./Input";
 import StepForm from "./StepForm";
 import JSON from "@lib/utils/JSON";
-import { Box, Grid } from "@material-ui/core";
+import { Box, Paper, Grid } from "@material-ui/core";
 import { withEventBus, useEventBus } from "@components/EventBusProvider";
 import { useState } from "react";
 
@@ -25,10 +25,12 @@ export const Step = withEventBus((props) => {
 		},
 		errors: false
 	});
+
 	const setSubmittedData = (data) => setForm({ data, errors: false });
-	const setErrors = (errors) => setForm({ data: {}, errors });
+	const setErrors = (errors) => setForm({ data: form.data, errors });
 
 	const askValidation = () => eb.send("person:validate");
+
 	return (
 		<Box width="75%">
 			<StepForm
@@ -38,21 +40,23 @@ export const Step = withEventBus((props) => {
 				onSubmit={setSubmittedData}
 				onErrors={setErrors}
 			>
-				<Grid container spacing={2}>
-					<Grid item sm={6}>
+				<Grid container>
+					<Grid item sm={5}>
 						<Input.Text label="Prénom" name="firstName" autoFocus={true} />
 					</Grid>
-					<Grid item sm={6}>
+					<Grid item sm={5}>
 						<Input.Text label="Nom" name="lastName" required={true} />
 					</Grid>
-					<Grid item sm={12}>
+					<Grid item sm={2}>
 						<Input.Integer
 							label="Age"
 							name="age"
 							required={true}
-							min={0}
-							max={200}
+							plage={[0, 150]}
 						/>
+					</Grid>
+					<Grid item sm={12}>
+						<Input.Text label="Profession" name="job.title" required={true} />
 					</Grid>
 					<Grid item sm={6}>
 						<Input.Date
@@ -67,14 +71,24 @@ export const Step = withEventBus((props) => {
 				</Grid>
 			</StepForm>
 			<button onClick={askValidation}>Validate</button>
-			<h2>Submitted Data</h2>
-			<pre style={{ width: "100%" }}>
-				<code>{JSON.stringify(form.data, null, "\t")}</code>
-			</pre>
-			<h2>Validation Error</h2>
-			<pre style={{ color: "red", width: "100%" }}>
-				<code>{JSON.stringify(form.errors, null, "\t")}</code>
-			</pre>
+			<Grid container spacing={4}>
+				<Grid item sm={6}>
+					<Paper>
+						<h2>Submitted Data</h2>
+						<pre style={{ width: "100%" }}>
+							<code>{JSON.stringify(form.data, null, "\t")}</code>
+						</pre>
+					</Paper>
+				</Grid>
+				<Grid item sm={6}>
+					<Paper>
+						<h2>Validation Error</h2>
+						<pre style={{ color: "red", width: "100%" }}>
+							<code>{JSON.stringify(form.errors, null, "\t")}</code>
+						</pre>
+					</Paper>
+				</Grid>
+			</Grid>
 		</Box>
 	);
 });
