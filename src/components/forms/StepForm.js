@@ -4,6 +4,8 @@ import { useForm, FormProvider } from "react-hook-form";
 
 import useFormStyles from "./useFormStyles";
 
+const noop = () => false;
+
 /**
  * @typedef StepFormProps
  * @field {String!} formId Unique id : required to communicate with the form through events
@@ -32,7 +34,9 @@ const StepForm = ({
 }) => {
 	const eb = useEventBus();
 	const styles = useFormStyles();
-	const [firstMount, setFirstMount] = useState(true);
+
+	// Keep track of the fields composing this step
+	const [step, setStep] = useState({});
 
 	// @see https://react-hook-form.com/api/#handleSubmit
 	const { ...formMethods } = useForm({
@@ -43,7 +47,14 @@ const StepForm = ({
 		criteriaMode: "firstError",
 		mode
 	});
-	const { handleSubmit, reset, clearErrors } = formMethods;
+	const {
+		handleSubmit,
+		errors,
+		reset,
+		clearErrors,
+		register,
+		unregister
+	} = formMethods;
 
 	/**
 	 * Called when the form validation is a success
@@ -52,10 +63,11 @@ const StepForm = ({
 	const handleSuccess = (formData) => {
 		console.dir(
 			`Receiving form data for ${formId}`,
-			JSON.stringify(formData, null, "\t")
+			JSON.stringify(formData, null, "\t"),
+			errors
 		);
 		if (typeof onSubmit === "function") {
-			onSubmit(formData);
+			onSubmit(formData, errors);
 		} else {
 			eb && eb.emit(`${formId}:submit`, formData);
 		}
@@ -73,7 +85,7 @@ const StepForm = ({
 		Object.keys(errors).forEach((fieldName) => {
 			if (fieldName !== firstError) delete errors[fieldName];
 		});
-		//errors[firstError].ref.current.focus();
+		step[firstError].current?.focus();
 		if (typeof onErrors === "function") {
 			onErrors(errors);
 		} else {
@@ -81,48 +93,69 @@ const StepForm = ({
 		}
 	};
 
-	const validateForm = handleSubmit(
-		handleSuccess, // no error : we can send the data
-		handleErrors
-	);
+	const validate = handleSubmit(handleSuccess, handleErrors);
 
-	/**
-	 * Validate on ENTER
-	 * @param {Event} e
-	 */
-	const onKeyPress = (e) => {
-		if (e.key === "Enter" && !e.shiftKey) {
-			validateForm();
+	const registerField = ({ name, ref, validation }) => {
+		if (!step[name]) {
+			console.log(`Registering field ${name} in step ${formId}`);
+			register(name, validation);
+			step[name] = ref;
 		}
 	};
 
+	/**
+	 * Validate on ENTER on goto next step
+	 * @param {Event} e
+	 */
+	const validateOnEnter = (e) => {
+		if (e.key === "Enter" && !e.shiftKey) {
+			console.log(`${formId} received ENTER keypress`);
+			validate();
+		}
+	};
+	let onKeyPress = noop;
+
 	useEffect(() => {
 		console.log(
-			`${firstMount ? "" : "Re-"}Rendering form ${formId} with data`,
+			`Rendering form ${formId} with data`,
 			JSON.stringify(data, null, "\t")
 		);
+		setStep({});
+		reset(data); // form default values are cached after the first mount so we have to reset them when navigating between steps
+		clearErrors();
+		onKeyPress = validateOnEnter;
 		// Listen to the event `form:validate`
-		if (eb && firstMount) {
-			clearErrors();
-			eb.on(`${formId}:validate`, () => {
-				console.log("Received ${formId}:validate event");
-				validateForm();
-			});
-			setFirstMount(false);
-		} else {
-			reset(data); // form default values are cached after the first mount so we have to reset them when navigating between steps
+		if (eb) {
+			eb.on(`${formId}:validate`, validate);
+			eb.on(`${formId}:register`, registerField);
 		}
 		return () => {
-			console.log(`Cleaning form ${formId} events`);
-			eb && eb.off(`${formId}:validate`, validateForm); // Clean on unmount
+			console.log(`Unmounting form ${formId}`);
+			onKeyPress = noop;
+			if (eb) {
+				// Clean up event handlers
+				eb.off(`${formId}:validate`, validate);
+				eb.off(`${formId}:register`, registerField);
+			}
+			// Unregister each field tied to this step
+			Object.keys(step).forEach((name) => {
+				console.log(`Unregistering field ${name}`);
+				unregister(name);
+				// delete step[name];
+			});
 		};
-	}, [data]);
+	}, [formId]);
 
 	return (
-		<FormProvider {...formMethods}>
+		<FormProvider
+			{...formMethods}
+			formId={formId}
+			registerField={registerField}
+			validate={validate}
+		>
 			<form
 				id={formId}
-				onSubmit={validateForm}
+				onSubmit={validate}
 				onKeyPress={onKeyPress}
 				className={styles.form}
 			>
