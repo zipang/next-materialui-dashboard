@@ -55,17 +55,17 @@ export const Step = withEventBus((props) => {
 							plage={[0, 150]}
 						/>
 					</Grid>
-					<Grid item sm={12}>
+					<Grid item sm={6}>
 						<Input.Text label="Profession" name="job.title" required={true} />
 					</Grid>
-					<Grid item sm={6}>
+					<Grid item sm={3}>
 						<Input.Date
 							label="Date d'arrivée"
 							name="job.startDate"
 							required={true}
 						/>
 					</Grid>
-					<Grid item sm={6}>
+					<Grid item sm={3}>
 						<Input.Date label="Date de départ" name="job.endDate" />
 					</Grid>
 				</Grid>

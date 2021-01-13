@@ -4,6 +4,16 @@ import Input from "./Input";
 import StepForm from "./StepForm";
 import { Box } from "@material-ui/core";
 
+const classes = {
+	magician: "Magicien",
+	warrior: "Guerrier",
+	thief: "Voleur"
+};
+const classesOptions = Object.keys(classes).reduce((prev, key) => {
+	prev.push({ code: key, label: classes[key] });
+	return prev;
+}, []);
+
 const empty_data = {};
 const existing_data = {
 	firstName: "Elric",
@@ -64,15 +74,21 @@ const steps = [
 		id: "classe",
 		title: "Choisissez votre classe",
 		displayForm: displaySimpleStepForm({
-			name: "classe",
+			name: "cls",
 			type: "select",
 			label: "Classe",
-			options: [
-				{ code: "magician", label: "Magician" },
-				{ code: "warrior", label: "Warrior" },
-				{ code: "thief", label: "Thief" }
-			]
+			options: classesOptions
 		})
+	},
+	{
+		id: "resume",
+		title: "Prêt à jouer",
+		displayForm: ({ firstName, lastName, age, cls }) => (
+			<Box width="100%">
+				<p>{`Bienvenue ${firstName} ${lastName}.
+Vous avez ${age} ans et vous êtes un(e) ${classes[cls]}`}</p>
+			</Box>
+		)
 	}
 ];
 
@@ -87,7 +103,7 @@ export default {
  */
 export const EmptySteps = () => (
 	<Box width="600px" height="400px">
-		<Wizard id="3-steps-wizard" steps={steps} data={empty_data} currentSlide={0} />
+		<Wizard id="4-steps-wizard" steps={steps} data={empty_data} currentSlide={0} />
 	</Box>
 );
 
@@ -97,7 +113,7 @@ export const EmptySteps = () => (
 export const PrefilledSteps = () => (
 	<Box width="600px" height="400px">
 		<Wizard
-			id="populated-3-steps-wizard"
+			id="populated-4-steps-wizard"
 			steps={steps}
 			data={existing_data}
 			currentSlide={0}
