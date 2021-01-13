@@ -3,7 +3,7 @@ import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 
 import SvgIcon from "@components/SvgIcon";
-import { withStateMachine } from "@components/StateMachine";
+import { useStateMachine, withStateMachine } from "@components/StateMachine";
 import { useEventBus, withEventBus } from "@components/EventBusProvider";
 
 /**
@@ -76,18 +76,18 @@ const previous = (state) => {
 /**
  * Receives the steps and the state machine altogether
  */
-const InitWizard = ({ steps = [], state, actions }) => {
+const InitWizard = ({ steps = [] }) => {
 	const eb = useEventBus();
+	const { state, actions } = useStateMachine();
 
 	// flatten the state
 	const { data, currentSlide } = state;
 
 	// Define a validate combo action that merge step data and transition to next step
-	const validateStep = (payload) => {
-		console.trace(`validateStep`);
-
+	const validateStep = (payload, errors) => {
 		const newData = [{ data: payload }];
-		if (currentSlide < steps.length - 1) {
+
+		if (Object.keys(errors).length === 0 && currentSlide < steps.length - 1) {
 			// We can pass to next slide
 			console.log("Goto to next step.");
 			newData.push({ currentSlide: state.currentSlide + 1 });
@@ -102,6 +102,14 @@ const InitWizard = ({ steps = [], state, actions }) => {
 	 */
 	const triggerValidate = () => {
 		eb.send(`${steps[currentSlide].id}:validate`);
+	};
+
+	const sendData = () => {
+		const lastStep = steps[steps.length - 1];
+		console.log("Sending last step data", data);
+		if (typeof lastStep.onSubmit === "function") {
+			lastStep.onSubmit(data);
+		}
 	};
 
 	useEffect(() => {
@@ -128,7 +136,7 @@ const InitWizard = ({ steps = [], state, actions }) => {
 				<Button
 					variant="outlined"
 					disabled={currentSlide >= steps.length - 1}
-					onClick={actions.next}
+					onClick={triggerValidate}
 				>
 					Etape suivante
 				</Button>
@@ -137,7 +145,7 @@ const InitWizard = ({ steps = [], state, actions }) => {
 					color="secondary"
 					disabled={currentSlide < steps.length - 1}
 					startIcon={<SvgIcon name="Save" />}
-					onClick={triggerValidate}
+					onClick={sendData}
 				>
 					Enregistrer
 				</Button>
