@@ -12,6 +12,7 @@ import {
 import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
 import { getProperty } from "@lib/utils/NestedObjects";
+import { useEventBus } from "@components/EventBusProvider";
 
 const _BASE_INPUT_STYLES = {
 	variant: "outlined",
@@ -48,7 +49,7 @@ const Text = ({
 }) => {
 	// Find the parent form to register our input
 	const inputRef = createRef();
-	const { register, errors, watch, setValue, trigger } = useFormContext();
+	const { registerField, errors, watch, setValue, validate } = useFormContext();
 	const errorMessage = getProperty(errors, `${name}.message`, "");
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
@@ -56,21 +57,21 @@ const Text = ({
 	if (required === true) validation.required = `Saisissez un ${label}`;
 	if (validation.required) label += "*";
 
-	register(name, validation);
 	const onChange = (evt) => {
 		setValue(name, (value = evt.target.value));
-		if (errorMessage) trigger();
+		if (errorMessage || (evt.key === "Enter" && !evt.shiftKey)) {
+			validate();
+		}
 	};
 	let value = watch(name) || "";
+	registerField({ name, ref: inputRef, validation });
 
 	useLayoutEffect(() => {
-		console.log(`Re-rendering ${name} input. Error : ${errorMessage}`);
-		value = watch(name) || "";
-		if (errorMessage) {
-			console.log(`We've got an error on ${name} (${errorMessage}) try to focus..`);
+		// value = watch(name) || "";
+		if (autoFocus || errorMessage) {
+			console.log(`Focus on ${name} (${errorMessage})`);
 			inputRef.current.focus();
 		}
-		// return () => unregister(name);
 	}, [name]);
 
 	return (
@@ -107,13 +108,14 @@ export const Formatted = ({
 	serialize = noop,
 	append,
 	required = false,
+	autoFocus = false,
 	validation = {},
 	size = 20,
 	...moreProps
 }) => {
 	// Find the parent form to register our input
 	const inputRef = createRef();
-	const { register, errors, watch, setValue, trigger } = useFormContext();
+	const { register, errors, watch, setValue, validate } = useFormContext();
 	const errorMessage = getProperty(errors, `${name}.message`, "");
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
@@ -131,7 +133,9 @@ export const Formatted = ({
 	const onChange = (userInput) => {
 		setValue(name, (value = serialize(userInput)));
 		setDisplayedValues(format(userInput));
-		if (errorMessage) trigger();
+		if (errorMessage) {
+			validate();
+		}
 	};
 	const rifmParams = {
 		value: displayedValue,
@@ -146,7 +150,7 @@ export const Formatted = ({
 
 	useLayoutEffect(() => {
 		value = watch(name) || "";
-		if (errorMessage) {
+		if (autoFocus || errorMessage) {
 			console.log(`We've got an error on ${name} (${errorMessage}) try to focus..`);
 			inputRef.current.focus();
 		}
@@ -163,6 +167,7 @@ export const Formatted = ({
 			label={label}
 			value={rifm.value}
 			onChange={rifm.onChange}
+			autoFocus={autoFocus}
 			error={Boolean(errorMessage)}
 			helperText={errorMessage}
 			inputProps={{
@@ -379,7 +384,6 @@ export const Password = ({ ...props }) => <Text type="password" {...props} />;
 export const SelectBox = ({
 	name = "select-box",
 	label = "Select",
-	value = "",
 	required = false,
 	autoFocus = false,
 	validation = {},
@@ -388,37 +392,53 @@ export const SelectBox = ({
 	...moreProps
 }) => {
 	// Find the parent form to register our input
-	const { register, errors } = useFormContext();
+	const { registerField, watch, errors, setValue, validate } = useFormContext();
+	const errorMessage = getProperty(errors, `${name}.message`, "");
+	const inputRef = createRef();
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	// Pass the required attribute to the validation object
 	if (required === true) validation.required = `Saisissez un ${label}`;
 	if (validation.required) label += "*";
 
+	registerField({ name, re: inputRef, validation });
+	const onChange = (evt) => {
+		setValue(name, (value = evt.target.value));
+		if (errorMessage || (evt.key === "Enter" && !evt.shiftKey)) {
+			validate();
+		}
+	};
+	let value = watch(name) || "";
+
 	return (
-		<FormControl error={Boolean(errors[name])}>
+		<FormControl error={Boolean(errorMessage)}>
 			<InputLabel id={`${name}-label`}>{label}</InputLabel>
 			<Select
 				id={name}
-				name={name}
 				labelId={`${name}-label`}
-				inputRef={register(validation)}
+				inputRef={inputRef}
 				inputProps={{
+					name,
 					size
 				}}
-				defaultValue={value}
+				value={value}
 				autoFocus={autoFocus}
-				// onChange={handleChange}
+				onChange={onChange}
 				// renderValue={(value) => `⚠️  - ${value}`}
 				{...mergedProps}
 			>
+				{!required && (
+					<MenuItem key={`${name}-empty-option`} value={null}>
+						&nbsp;
+					</MenuItem>
+				)}
 				{options.map((option) => (
 					<MenuItem key={option.code} value={option.code}>
 						{option.label}
 					</MenuItem>
 				))}
 			</Select>
-			<FormHelperText>{errors[name] ? errors[name].message : " "}</FormHelperText>
+			<FormHelperText>{errorMessage}</FormHelperText>
 		</FormControl>
 	);
 };
