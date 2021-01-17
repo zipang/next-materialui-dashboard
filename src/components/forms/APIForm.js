@@ -13,8 +13,9 @@ import useFormStyles from "./useFormStyles";
  * @param {JSX.Element} props.children the real form content (fields and submit button)
  * @param {Function} [props.onSubmit] an optional method to call before form submission. RETURNING false will cancel the submission
  * @param {Function} [props.onSuccess] an optional method to call when the form submission has been a success
+ * @param {Function} [props.onError] an optional method to call only when the API returned an error
  */
-const APIForm = ({ action, method = "POST", onSubmit, onSuccess, children }) => {
+const APIForm = ({ action, method = "POST", onSubmit, onSuccess, onError, children }) => {
 	const styles = useFormStyles();
 	const formMethods = useForm();
 	const [submitting, setSubmitting] = useState(false);
@@ -37,15 +38,18 @@ const APIForm = ({ action, method = "POST", onSubmit, onSuccess, children }) => 
 				if (typeof onSuccess === "function") {
 					onSuccess(apiResponse);
 				}
-				setSubmitting(false);
 			} else {
 				console.dir(`Form submission cancelled : `, JSON.stringify(formData));
 			}
 		} catch (err) {
 			// Display API error
-			alert(err.message);
-			setSubmitting(false);
+			if (typeof onError === "function") {
+				onError(err.message);
+			} else {
+				alert(`API Form ${err.message}`);
+			}
 		}
+		setSubmitting(false);
 	});
 
 	return (
