@@ -9,8 +9,8 @@ const search = async (req, resp) => {
 	try {
 		// Get the data and define the username as the login
 		console.log("/api/siret/search received query", JSON.stringify(req.body));
-		const { data } = req.body;
-		const sireneData = await getOrganismeBySiret(data.siret);
+		const { siret } = req.body;
+		const sireneData = await getOrganismeBySiret(siret);
 		resp.json(sireneData);
 	} catch (err) {
 		console.error(err);
