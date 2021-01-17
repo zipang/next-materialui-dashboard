@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import SvgIcon from "@components/SvgIcon";
 import { useStateMachine, withStateMachine } from "@components/StateMachine";
 import { useEventBus, withEventBus } from "@components/EventBusProvider";
+import Step from "@forms/Step";
 
 /**
  * @typedef Step
@@ -76,14 +77,14 @@ const previous = (state) => {
 /**
  * Receives the steps and the state machine altogether
  */
-const InitWizard = ({ steps = [] }) => {
+const InitWizard = ({ id, steps = [] }) => {
 	const eb = useEventBus();
 	const { state, actions } = useStateMachine();
 
 	// flatten the state
 	const { data, currentSlide } = state;
 
-	// Define a validate combo action that merge step data and transition to next step
+	// Define a validate combo action that merge current step data and transition to the next step
 	const validateStep = (payload, errors) => {
 		const newData = [{ data: payload }];
 
@@ -113,14 +114,20 @@ const InitWizard = ({ steps = [] }) => {
 	};
 
 	useEffect(() => {
-		console.log(`Re-rendering Wizard with ${JSON.stringify(data, null, "\t")}`);
+		console.log(
+			`Rendering slide ${currentSlide} of wizard ${id} with ${JSON.stringify(
+				data,
+				null,
+				"\t"
+			)}`
+		);
 	}, [currentSlide]);
 
 	return (
 		<WizardContainer>
 			<WizardViewport>
 				<DisplayStep
-					step={steps[currentSlide]}
+					step={new Step(steps[currentSlide])}
 					data={data}
 					onSubmit={validateStep}
 				/>
@@ -177,7 +184,7 @@ const Wizard = ({ id, steps = [], data = {}, currentSlide = 0 }) =>
 		withStateMachine(
 			InitWizard,
 			{ id, initialState: { data, currentSlide } },
-			{ steps }
+			{ id, steps }
 		)
 	)();
 
