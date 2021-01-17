@@ -45,6 +45,7 @@ EP.removeEventListener = function (name, fn) {
 	var eventMap = (this.__events = this.__events || {});
 	var handlerList = eventMap[name];
 	if (handlerList) {
+		console.log(`Removing event handler for ${name} event`, fn);
 		var index = handlerList.indexOf(fn);
 		if (index >= 0) {
 			handlerList.splice(index, 1);
@@ -61,6 +62,7 @@ EP.off = EP.removeEventListener;
  * @param {...*} var_args Arguments to call listeners with.
  */
 EP.emit = function (name, var_args) {
+	console.log(`Sending ${name} event`);
 	var eventMap = (this.__events = this.__events || {});
 	var handlerList = eventMap[name];
 	var args = Array.prototype.slice.call(arguments, 1);
@@ -75,6 +77,8 @@ EP.emit = function (name, var_args) {
 				);
 			}
 		}
+	} else {
+		console.warn(`No event handler for ${name} !`);
 	}
 };
 EP.send = EP.emit;
