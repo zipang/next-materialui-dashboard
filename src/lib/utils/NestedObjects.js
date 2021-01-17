@@ -1,8 +1,10 @@
 /**
- * Extract the property at the designed path
- * @param {Object} source
- * @param {String} path
- * @param {Object} defaultValue
+ * Extract the property value at the designed path
+ * @example getProperty({ person: { firstName: "John" }}, "person.firstName", "")
+ * @param {Object} source Object to extract the property from
+ * @param {String} path Usings dots and [] to access sub properties
+ * @param {Object} [defaultValue] what to return if the property is not found (undefined)
+ * @return {Any}
  */
 export const getProperty = (source = {}, path = "", defaultValue) => {
 	const result = path
