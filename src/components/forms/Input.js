@@ -49,7 +49,14 @@ const Text = ({
 }) => {
 	// Find the parent form to register our input
 	const inputRef = createRef();
-	const { registerField, errors, watch, setValue, validate } = useFormContext();
+	const {
+		registerField,
+		errors,
+		watch,
+		setValue,
+		validate,
+		trigger
+	} = useFormContext();
 	const errorMessage = getProperty(errors, `${name}.message`, "");
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
@@ -59,7 +66,9 @@ const Text = ({
 
 	const onChange = (evt) => {
 		setValue(name, (value = evt.target.value));
-		if (errorMessage || (evt.key === "Enter" && !evt.shiftKey)) {
+		if (errorMessage) {
+			trigger(); // Show when the input become valid again
+		} else if (evt.key === "Enter" && !evt.shiftKey) {
 			validate();
 		}
 	};
@@ -102,6 +111,7 @@ const Text = ({
 export const Formatted = ({
 	name = "formatted-input",
 	label = "Use a label",
+	helperText = "",
 	inputType = "text",
 	format = noop,
 	load = noop,
@@ -115,7 +125,14 @@ export const Formatted = ({
 }) => {
 	// Find the parent form to register our input
 	const inputRef = createRef();
-	const { register, errors, watch, setValue, validate } = useFormContext();
+	const {
+		registerField,
+		errors,
+		watch,
+		setValue,
+		trigger,
+		validate
+	} = useFormContext();
 	const errorMessage = getProperty(errors, `${name}.message`, "");
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
@@ -123,7 +140,7 @@ export const Formatted = ({
 	if (required === true) validation.required = `Saisissez un ${label}`;
 	if (validation.required) label += "*";
 
-	register(name, validation);
+	if (registerField) registerField({ name, ref: inputRef, validation });
 
 	let value = watch(name) || "";
 
@@ -134,8 +151,8 @@ export const Formatted = ({
 		setValue(name, (value = serialize(userInput)));
 		setDisplayedValues(format(userInput));
 		if (errorMessage) {
-			validate();
-		}
+			trigger(); // Show when the input become valid again
+		} // we don't have the original event here
 	};
 	const rifmParams = {
 		value: displayedValue,
@@ -151,10 +168,9 @@ export const Formatted = ({
 	useLayoutEffect(() => {
 		value = watch(name) || "";
 		if (autoFocus || errorMessage) {
-			console.log(`We've got an error on ${name} (${errorMessage}) try to focus..`);
+			console.log(`Focus on ${name} (${errorMessage})`);
 			inputRef.current.focus();
 		}
-		// return () => unregister(name);
 	}, [name]);
 
 	// We create 2 synchronized input fields :
@@ -169,7 +185,7 @@ export const Formatted = ({
 			onChange={rifm.onChange}
 			autoFocus={autoFocus}
 			error={Boolean(errorMessage)}
-			helperText={errorMessage}
+			helperText={helperText || errorMessage}
 			inputProps={{
 				size
 			}}
@@ -401,10 +417,13 @@ export const SelectBox = ({
 	if (required === true) validation.required = `Saisissez un ${label}`;
 	if (validation.required) label += "*";
 
-	registerField({ name, re: inputRef, validation });
+	if (registerField) registerField({ name, ref: inputRef, validation });
+
 	const onChange = (evt) => {
 		setValue(name, (value = evt.target.value));
-		if (errorMessage || (evt.key === "Enter" && !evt.shiftKey)) {
+		if (errorMessage) {
+			trigger(); // Show when the input become valid again
+		} else if (evt.key === "Enter" && !evt.shiftKey) {
 			validate();
 		}
 	};
@@ -470,6 +489,8 @@ const Input = ({ type, fieldProps }) => {
 			return <Percent {...fieldProps} />;
 		case "email":
 			return <Email {...fieldProps} />;
+		case "formatted":
+			return <Formatted {...fieldProps} />;
 
 		default:
 			return <Text {...fieldProps} />;
