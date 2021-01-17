@@ -93,22 +93,29 @@ const onError = (inputRef) => (errors) => {};
  * @param {Function} onSuccess Callback that receives the SIRET search API response data
  */
 export const SiretSearchForm = ({ onSubmit }) => {
-	const [apiError, setApiError] = useState(false);
+	const [apiErrorMessage, setApiErrorMessage] = useState(true);
+
+	const onError = (error) => {
+		console.log(`Siret search returned error`, error);
+		setApiErrorMessage(error.message);
+	};
+
 	return (
 		<APIForm
 			action="/api/siret/search"
 			onSuccess={mergeSiretData(onSubmit)}
-			onError={setApiError}
+			onError={onError}
 		>
 			<Input.Formatted
-				label="No de Siret"
 				name="siret"
+				label="No de Siret"
+				helperText={typeof apiErrorMessage === "string" ? apiErrorMessage : ""}
 				format={formatSiret}
 				serialize={unformatSiret}
 				autoFocus={true}
 				validation={{
 					required: "Saisissez un no de SIRET valide (14 chiffres)",
-					unknown: () => apiError
+					validate: () => apiErrorMessage
 				}}
 			/>
 			<Input.Submit label="Rechercher" />

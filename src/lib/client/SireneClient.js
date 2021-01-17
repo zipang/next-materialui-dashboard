@@ -1,3 +1,5 @@
+import { ApiError } from "next/dist/next-server/server/api-utils";
+
 /**
  * @see https://entreprise.data.gouv.fr/api_doc/sirene
  * @param {String} siret 14 chiffres
@@ -25,8 +27,12 @@ export const getOrganismeBySiret = async (siret) => {
 
 	const respBody = await resp.json();
 
-	if (respBody.error) {
-		throw new Error(respBody.error);
+	if (resp.status !== 200) {
+		// Error format contains a single message field
+		throw new ApiError(
+			resp.status,
+			resp.status === 404 ? "No de Siret inconnu" : respBody.message
+		);
 	} else {
 		return respBody;
 	}

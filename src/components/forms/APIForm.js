@@ -42,10 +42,11 @@ const APIForm = ({ action, method = "POST", onSubmit, onSuccess, onError, childr
 				console.dir(`Form submission cancelled : `, JSON.stringify(formData));
 			}
 		} catch (err) {
-			// Display API error
 			if (typeof onError === "function") {
-				onError(err.message);
+				// return API error to provided callback
+				onError(err);
 			} else {
+				// or display it
 				alert(`API Form ${err.message}`);
 			}
 		}
@@ -53,7 +54,7 @@ const APIForm = ({ action, method = "POST", onSubmit, onSuccess, onError, childr
 	});
 
 	return (
-		<FormProvider {...formMethods}>
+		<FormProvider {...formMethods} validate={handleSubmit}>
 			{!submitting && (
 				<form
 					action={action}

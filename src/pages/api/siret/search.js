@@ -13,10 +13,10 @@ const search = async (req, resp) => {
 		const sireneData = await getOrganismeBySiret(siret);
 		resp.json(sireneData);
 	} catch (err) {
-		console.error(err);
+		console.error(`/siret/search error`, err);
 		resp.status(err.code || 500).json({
 			success: false,
-			error: `API Call to /siret/search failed with error : ${err.message}`
+			error: err.message
 		});
 	}
 };
