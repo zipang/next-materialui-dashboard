@@ -64,7 +64,7 @@ const Text = ({
 		}
 	};
 	let value = watch(name) || "";
-	registerField({ name, ref: inputRef, validation });
+	if (registerField) registerField({ name, ref: inputRef, validation });
 
 	useLayoutEffect(() => {
 		// value = watch(name) || "";
@@ -443,28 +443,50 @@ export const SelectBox = ({
 	);
 };
 
-export const Submit = ({ label = "OK" }) => (
+export const Submit = ({ label = "OK", ...moreProps }) => (
 	<Button
 		type="submit"
 		fullWidth
 		variant="contained"
 		color="primary"
 		className="submit"
+		{...moreProps}
 	>
 		{label}
 	</Button>
 );
 
-const Input = {
+const Input = ({ type, fieldProps }) => {
+	switch (type) {
+		case "text":
+			return <Text {...fieldProps} />;
+		case "select":
+			return <SelectBox {...fieldProps} />;
+		case "date":
+			return <Date {...fieldProps} />;
+		case "integer":
+			return <Integer {...fieldProps} />;
+		case "percent":
+			return <Percent {...fieldProps} />;
+		case "email":
+			return <Email {...fieldProps} />;
+
+		default:
+			return <Text {...fieldProps} />;
+	}
+};
+
+// Allow to use <Input.Text ...> as well as <Input type="text" ...>
+Object.assign(Input, {
 	Text,
+	Date,
 	Password,
 	Email,
 	Formatted,
 	Integer,
 	Percent,
-	Date,
 	SelectBox,
 	Submit
-};
+});
 
 export default Input;
