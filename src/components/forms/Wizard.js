@@ -85,7 +85,7 @@ const InitWizard = ({ id, steps = [] }) => {
 	const { data, currentSlide } = state;
 
 	// Define a validate combo action that merge current step data and transition to the next step
-	const validateStep = (payload, errors) => {
+	const validateStep = (payload, errors = {}) => {
 		const newData = [{ data: payload }];
 
 		if (Object.keys(errors).length === 0 && currentSlide < steps.length - 1) {
