@@ -28,9 +28,9 @@ import StepForm from "./StepForm";
  */
 function Step(step) {
 	// Validate that all required fields are provided
-	["id", "title", "description"].forEach((fieldName) => {
+	["id", "title"].forEach((fieldName) => {
 		if (!step[fieldName]) {
-			throw new TypeError(`Field ${fieldName} is required to create a Step`);
+			throw new TypeError(`A '${fieldName}' is required to create a Step`);
 		}
 	});
 	if (!Array.isArray(step.fields) && typeof step.displayForm !== "function") {
@@ -42,7 +42,6 @@ ${JSON.stringify(step, null, "\t")}`
 	step.size = step.size || 1;
 	// It's ok : assign all
 	Object.assign(this, step);
-	console.log(`New step`, Object.keys(this));
 }
 
 Step.prototype = {
