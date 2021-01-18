@@ -43,6 +43,7 @@ export const mergeSiretData = (callback) => (siretData, errors) => {
 				"denomination_usuelle",
 				getProperty(etablissement, "unite_legale.denomination")
 			),
+			federation_reseau_enseigne: getProperty(etablissement, "enseigne_1"),
 			date_creation: getProperty(etablissement, "date_creation"),
 			adresse: {
 				rue1: getProperty(etablissement, "geo_l4"),
@@ -63,9 +64,16 @@ export const mergeSiretData = (callback) => (siretData, errors) => {
 			etablissement,
 			"unite_legale.etat_administratif"
 		);
-		if (etatAdministratif === "A") {
+		const numeroAssociation = getProperty(
+			etablissement,
+			"unite_legale.identifiant_association"
+		);
+
+		if (merged.federation_reseau_enseigne === "CCAS") {
+			merged.statut = "ccas-cias";
+		} else if (numeroAssociation) {
 			merged.statut = "association";
-		} else if (etatAdministratif === "F") {
+		} else {
 			merged.statut = "entreprise";
 		}
 
