@@ -10,7 +10,6 @@ import {
 	FormHelperText,
 	Checkbox as MaterialCheckbox,
 	FormControlLabel,
-	FormGroup,
 	Grid
 } from "@material-ui/core";
 import { useRifm } from "rifm";
@@ -74,9 +73,10 @@ const Text = ({
 		setValue(name, (value = evt.target.value));
 		if (errorMessage) {
 			trigger(); // Show when the input become valid again
-		} else if (evt.key === "Enter" && !evt.shiftKey) {
-			validate();
 		}
+		//  else if (evt.key === "Enter" && !evt.shiftKey) {
+		// 	validate();
+		// }
 	};
 	let value = watch(name) || "";
 	if (registerField) {
@@ -433,9 +433,9 @@ export const CheckBox = ({
 
 	const onChange = (evt) => {
 		setValue(name, (value = evt.target.checked ? valueIfChecked : undefined));
-		if (evt.key === "Enter" && !evt.shiftKey) {
-			validate();
-		}
+		// if (evt.key === "Enter" && !evt.shiftKey) {
+		// 	validate();
+		// }
 	};
 	let value = watch(name) || "";
 	if (registerField) {
@@ -524,9 +524,9 @@ export const CheckBoxes = ({
 			const valueToRemove = evt.target.name.split(":")[1];
 			setValue(name, (values = values.filter((val) => val !== valueToRemove)));
 		}
-		if (evt.key === "Enter" && !evt.shiftKey) {
-			validate();
-		}
+		// if (evt.key === "Enter" && !evt.shiftKey) {
+		// 	validate();
+		// }
 	};
 
 	useLayoutEffect(() => {
@@ -667,6 +667,14 @@ export const Submit = ({ label = "OK", ...moreProps }) => (
 		{label}
 	</Button>
 );
+/**
+ * This hidden submit button is able to intercept the ENTER key event
+ * to automatically submit the form
+ * @see https://stackoverflow.com/questions/11525726/hiding-an-html-forms-submit-button/11526065
+ */
+export const HiddenSubmit = () => (
+	<input type="submit" className="hidden" aria-hidden="true" />
+);
 
 const Input = ({ type, ...fieldProps }) => {
 	console.log(`Generating input ${type}`, fieldProps);
@@ -707,7 +715,8 @@ Object.assign(Input, {
 	Integer,
 	Percent,
 	SelectBox,
-	Submit
+	Submit,
+	HiddenSubmit
 });
 
 export default Input;

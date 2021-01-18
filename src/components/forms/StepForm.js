@@ -3,6 +3,7 @@ import { useEventBus } from "@components/EventBusProvider";
 import { useForm, FormProvider } from "react-hook-form";
 
 import useFormStyles from "./useFormStyles";
+import Input from "@forms/Input";
 
 const noop = () => false;
 
@@ -28,12 +29,14 @@ const StepForm = ({
 	formId = "form",
 	data,
 	mode = "onSubmit",
+	validateOnEnter = true,
 	onSubmit,
 	onErrors,
+	customStyles = {},
 	children
 }) => {
 	const eb = useEventBus();
-	const styles = useFormStyles();
+	const styles = useFormStyles(customStyles);
 
 	// Keep track of the fields composing this step
 	const [step, setStep] = useState({});
@@ -107,13 +110,13 @@ const StepForm = ({
 	 * Validate on ENTER on goto next step
 	 * @param {Event} e
 	 */
-	const validateOnEnter = (e) => {
-		if (e.key === "Enter" && !e.shiftKey) {
-			console.log(`${formId} received ENTER keypress`);
-			validate();
-		}
-	};
-	let onKeyPress = noop;
+	// const validateOnEnter = (e) => {
+	// 	if (e.key === "Enter" && !e.shiftKey) {
+	// 		console.log(`${formId} received ENTER keypress`);
+	// 		validate();
+	// 	}
+	// };
+	// let onKeyPress = noop;
 
 	useEffect(() => {
 		console.log(
@@ -123,7 +126,7 @@ const StepForm = ({
 		setStep({});
 		reset(data); // form default values are cached after the first mount so we have to reset them when navigating between steps
 		clearErrors();
-		onKeyPress = validateOnEnter;
+		// onKeyPress = validateOnEnter;
 		// Listen to the event `form:validate`
 		if (eb) {
 			eb.on(`${formId}:validate`, validate);
@@ -131,7 +134,7 @@ const StepForm = ({
 		}
 		return () => {
 			console.log(`Unmounting form ${formId}`);
-			onKeyPress = noop;
+			// onKeyPress = noop;
 			if (eb) {
 				// Clean up event handlers
 				eb.off(`${formId}:validate`, validate);
@@ -156,10 +159,11 @@ const StepForm = ({
 			<form
 				id={formId}
 				onSubmit={validate}
-				onKeyPress={onKeyPress}
+				// onKeyPress={onKeyPress}
 				className={styles.form}
 			>
 				{children}
+				{validateOnEnter && <Input.HiddenSubmit />}
 			</form>
 		</FormProvider>
 	);

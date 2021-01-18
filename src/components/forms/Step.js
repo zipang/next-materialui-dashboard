@@ -55,7 +55,6 @@ Step.prototype = {
 				rerender={new Date()}
 			>
 				<Grid container>{this.displayFields(this.fields)}</Grid>
-				<Input.Submit style={{ visibility: "hidden" }} />
 			</StepForm>
 		);
 	},
