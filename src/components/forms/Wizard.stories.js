@@ -2,17 +2,21 @@
 import Wizard from "./Wizard";
 import Input from "./Input";
 import StepForm from "./StepForm";
-import { Box } from "@material-ui/core";
+import { Box, Grid } from "@material-ui/core";
 
-const classes = {
+const _CLASSES = {
 	magician: "Magicien",
 	warrior: "Guerrier",
 	thief: "Voleur"
 };
-const classesOptions = Object.keys(classes).reduce((prev, key) => {
-	prev.push({ code: key, label: classes[key] });
-	return prev;
-}, []);
+const _CAPACITIES = {
+	flight: "Vol",
+	strength: "Super force",
+	magic: "Boules de Feu",
+	"laser-eyes": "Yeux lasers",
+	bodyless: "Traverser les murs",
+	invisible: "Invisibilité"
+};
 
 const empty_data = {};
 const existing_data = {
@@ -29,13 +33,11 @@ const existing_data = {
 const displaySimpleStepForm = ({ name, type = "text", ...more }) => (data, onSubmit) => {
 	return (
 		<StepForm formId={name} data={data} onSubmit={onSubmit} rerender={new Date()}>
-			{type === "text" && <Input.Text autoFocus={true} name={name} {...more} />}
-			{type === "select" && (
-				<Input.SelectBox autoFocus={true} name={name} {...more} />
-			)}
-			{type === "number" && (
-				<Input.Integer autoFocus={true} name={name} {...more} />
-			)}
+			<Grid container>
+				<Grid item>
+					<Input type={type} autoFocus={true} name={name} {...more} />
+				</Grid>
+			</Grid>
 		</StepForm>
 	);
 };
@@ -62,29 +64,65 @@ const steps = [
 	},
 	{
 		id: "age",
-		title: "Entrez votre age",
+		title: "Entrez votre nom",
+		displayForm: displaySimpleStepForm({
+			name: "age",
+			label: "Age",
+			type: "number",
+			required: true
+		})
+	},
+	{
+		id: "origine",
+		title: "Entrez votre ville de naissance",
 		fields: [
-			{ name: "age", label: "Age", type: "number", required: true },
-			{ name: "hometown", label: "Né à", required: true }
+			{
+				type: "group",
+				label: "Origine",
+				fields: [
+					{ name: "hometown", size: 2 / 3, label: "Né à", required: true },
+					{
+						name: "age",
+						size: 1 / 3,
+						label: "Age",
+						type: "number",
+						required: true
+					}
+				]
+			}
 		]
 	},
 	{
 		id: "classe",
 		title: "Choisissez votre classe",
 		displayForm: displaySimpleStepForm({
-			name: "cls",
+			name: "classe",
 			type: "select",
 			label: "Classe",
-			options: classesOptions
+			options: _CLASSES
 		})
 	},
 	{
+		id: "abilities",
+		title: "Indiquez vos capacités",
+		displayForm: displaySimpleStepForm({
+			name: "abilities",
+			label: "Capacités",
+			type: "checkboxes",
+			options: _CAPACITIES
+		})
+	},
+
+	{
 		id: "resume",
 		title: "Prêt à jouer",
-		displayForm: ({ firstName, lastName, age, cls }) => (
+		displayForm: ({ firstName, lastName, age, classe, abilities }) => (
 			<Box width="100%">
 				<p>{`Bienvenue ${firstName} ${lastName}.
-Vous avez ${age} ans et vous êtes un(e) ${classes[cls]}`}</p>
+Vous avez ${age} ans et vous êtes un(e) ${_CLASSES[classe]}
+Vos capacités exceptionnelles sont : ${abilities
+					.map((c) => _CAPACITIES[c])
+					.join(", ")}`}</p>
 			</Box>
 		)
 	}
