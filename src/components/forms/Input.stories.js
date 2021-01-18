@@ -8,12 +8,12 @@ export default {
 	component: Input,
 	args: {
 		required: false,
-		label: "Population",
-		size: 8
+		autoFocus: true,
+		label: "Population"
 	},
 	argTypes: {
 		required: { control: { type: "boolean" } },
-		size: { control: { type: "number" } }
+		autoFocus: { control: { type: "boolean" } }
 	}
 };
 
@@ -99,4 +99,50 @@ SelectBoxInputWithHashmap.argTypes = {
 	options: {
 		control: { type: "json" }
 	}
+};
+
+export const CheckBoxInput = (args) => (
+	<StepForm mode="onChange">
+		<Input.CheckBox
+			autoFocus={true}
+			name="certifications"
+			valueIfChecked="gold"
+			label="Gold Crown"
+		/>
+		<Input.CheckBox
+			name="certifications"
+			valueIfChecked="green"
+			label="Green Label"
+		/>
+		<Input.CheckBox name="certifications" valueIfChecked="bio" label="Bio Ethique" />
+	</StepForm>
+);
+CheckBoxInput.args = {};
+CheckBoxInput.argTypes = {};
+
+export const CheckBoxesInput = (args) => (
+	<StepForm mode="onChange">
+		<Input.CheckBoxes
+			autoFocus={true}
+			name="musical_genres"
+			label="Genres Musicaux"
+			{...args}
+		/>
+	</StepForm>
+);
+CheckBoxesInput.args = {
+	options: {
+		rock: "Rock",
+		blues: "Blues",
+		funk: "Funk",
+		hiphop: "Hip-Hop",
+		jazz: "Jazz",
+		classic: "Classique",
+		punk: "Punk",
+		disco: "Disco",
+		electro: "Electro"
+	}
+};
+CheckBoxesInput.argTypes = {
+	control: { type: "json" }
 };

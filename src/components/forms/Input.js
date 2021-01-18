@@ -7,12 +7,17 @@ import {
 	Button,
 	MenuItem,
 	FormControl,
-	FormHelperText
+	FormHelperText,
+	Checkbox as MaterialCheckbox,
+	FormControlLabel,
+	FormGroup,
+	Grid
 } from "@material-ui/core";
 import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
 import { getProperty } from "@lib/utils/NestedObjects";
 import { useEventBus } from "@components/EventBusProvider";
+import GroupLabel from "./GroupLabel";
 
 const _BASE_INPUT_STYLES = {
 	variant: "outlined",
@@ -403,11 +408,180 @@ export const Email = ({ validation = {}, ...props }) => {
  */
 export const Password = ({ ...props }) => <Text type="password" {...props} />;
 
+/**
+ * This checkbox
+ * @param {*} param0
+ */
+export const CheckBox = ({
+	name = "checkbox",
+	label = "Y/N",
+	valueIfChecked = "Y",
+	autoFocus = false,
+	...moreProps
+}) => {
+	// Find the parent form to register our input
+	const inputRef = createRef();
+	const {
+		register,
+		registerField,
+		watch,
+		setValue,
+		validate,
+		trigger
+	} = useFormContext();
+	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
+
+	const onChange = (evt) => {
+		setValue(name, (value = evt.target.checked ? valueIfChecked : undefined));
+		if (evt.key === "Enter" && !evt.shiftKey) {
+			validate();
+		}
+	};
+	let value = watch(name) || "";
+	if (registerField) {
+		registerField({ name, ref: inputRef, validation: {} });
+	} else {
+		register(name, {});
+	}
+
+	useLayoutEffect(() => {
+		if (autoFocus) {
+			console.log(`Focus on ${name}`);
+			inputRef.current.focus();
+		}
+	}, [name]);
+
+	return (
+		<FormControlLabel
+			control={
+				<MaterialCheckbox
+					name={name}
+					ref={inputRef}
+					value={valueIfChecked}
+					checked={value === valueIfChecked}
+					onChange={onChange}
+				/>
+			}
+			label={label}
+		/>
+	);
+};
+
 const convertOptions = (map) =>
 	Object.keys(map).reduce((options, key) => {
 		options.push({ code: key, label: map[key] });
 		return options;
 	}, []);
+
+/**
+ * This checkbox
+ * @param {*} param0
+ */
+export const CheckBoxes = ({
+	name = "checkbox",
+	label = "",
+	options = [],
+	autoFocus = false,
+	validation = {},
+	width = 1 / 3, // 3 columns
+	...moreProps
+}) => {
+	// Find the parent form to register our input
+	const {
+		register,
+		registerField,
+		watch,
+		setValue,
+		validate,
+		trigger
+	} = useFormContext();
+
+	const inputRef = createRef(); // This ref will reference the first checkbox in the serie
+	if (registerField) {
+		// StepForm context
+		registerField({ name, ref: inputRef, validation });
+	} else {
+		// Ordinary react-hook-form context
+		register(name, validation);
+	}
+
+	// This field value is in fact an array of values corresponding to checked elements
+	let values = watch(name, []);
+	console.log(`Loaded value of ${name}`, values);
+	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
+
+	// Accept a hashmap (key : value) as different format
+	if (!Array.isArray(options)) options = convertOptions(options);
+
+	/**
+	 * When a single checkbox change
+	 * @param {*} evt
+	 */
+	const onChange = (evt) => {
+		if (evt.target.checked) {
+			setValue(name, (values = [...values, evt.target.value]));
+		} else {
+			const valueToRemove = evt.target.name.split(":")[1];
+			setValue(name, (values = values.filter((val) => val !== valueToRemove)));
+		}
+		if (evt.key === "Enter" && !evt.shiftKey) {
+			validate();
+		}
+	};
+
+	useLayoutEffect(() => {
+		if (autoFocus) {
+			console.log(`Focus on ${name}`);
+			inputRef.current.focus();
+		}
+	}, [name]);
+
+	return (
+		<GroupLabel label={label}>
+			<Grid id={name} container>
+				{options.map(({ code, label }, i) => {
+					if (i === 0) {
+						return (
+							<Grid item sm={Number(width * 12)}>
+								<FormControlLabel
+									control={
+										<MaterialCheckbox
+											name={`${name}:${code}`}
+											key={`${name}:${code}`}
+											inputRef={inputRef} // the ref for focus is on the first element
+											value={code}
+											checked={values.includes(code)}
+											onChange={onChange}
+										/>
+									}
+									key={`${name}:${code}-label`}
+									label={label}
+								/>
+							</Grid>
+						);
+					} else {
+						return (
+							<Grid item sm={Number(width * 12)}>
+								<FormControlLabel
+									control={
+										<MaterialCheckbox
+											name={`${name}:${code}`}
+											key={`${name}:${code}`}
+											value={code}
+											checked={values.includes(code)}
+											onChange={onChange}
+										/>
+									}
+									label={label}
+								/>
+							</Grid>
+						);
+					}
+				})}
+			</Grid>
+		</GroupLabel>
+	);
+};
 
 /**
  * Select a value amonst dome predefined options
@@ -499,6 +673,10 @@ const Input = ({ type, ...fieldProps }) => {
 	switch (type) {
 		case "text":
 			return <Text {...fieldProps} />;
+		case "checkbox":
+			return <CheckBox {...fieldProps} />;
+		case "checkboxes":
+			return <CheckBoxes {...fieldProps} />;
 		case "select":
 			return <SelectBox {...fieldProps} />;
 		case "date":
@@ -520,9 +698,11 @@ const Input = ({ type, ...fieldProps }) => {
 // Allow to use <Input.Text ...> as well as <Input type="text" ...>
 Object.assign(Input, {
 	Text,
+	CheckBox,
+	CheckBoxes,
+	Email,
 	Date,
 	Password,
-	Email,
 	Formatted,
 	Integer,
 	Percent,
