@@ -8,6 +8,11 @@ let theme = createMuiTheme({
 			dark: "#006db3"
 		},
 		secondary: {
+			main: "#faa41a",
+			light: "#fbb037",
+			dark: "#faa00f"
+		},
+		success: {
 			main: "#aeea00",
 			light: "#e4ff54",
 			dark: "##c6ff00"
@@ -122,7 +127,18 @@ theme = {
 				backgroundColor: theme.palette.common.white
 			}
 		},
+		MuiInputLabel: {
+			root: {
+				zIndex: 10
+			},
+			shrink: {
+				transform: "translate(0.9em, -0.5em) scale(0.75)"
+			}
+		},
 		MuiSelect: {
+			root: {
+				//margin: "0.5em 0 0.25em 0"
+			},
 			select: {
 				minWidth: "30ch"
 			}
