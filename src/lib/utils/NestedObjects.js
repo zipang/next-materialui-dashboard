@@ -16,5 +16,7 @@ export const getProperty = (source = {}, path = "", defaultValue) => {
 			source
 		);
 
-	return result === undefined || result === source ? defaultValue : result;
+	return result === undefined || result === null || result === source
+		? defaultValue
+		: result;
 };
