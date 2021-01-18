@@ -8,8 +8,7 @@ export default {
 	component: Input,
 	args: {
 		required: false,
-		autoFocus: true,
-		label: "Population"
+		autoFocus: true
 	},
 	argTypes: {
 		required: { control: { type: "boolean" } },
@@ -19,10 +18,12 @@ export default {
 
 export const IntegerInput = (args) => (
 	<StepForm>
-		<Input.Integer autoFocus={true} {...args} />
+		<Input.Integer {...args} />
 	</StepForm>
 );
 IntegerInput.args = {
+	label: "Nombre",
+	plage: [0, 1000000],
 	separator: " "
 };
 IntegerInput.argTypes = {
@@ -31,12 +32,21 @@ IntegerInput.argTypes = {
 			type: "select",
 			options: [" ", "'", "."]
 		}
+	},
+	plage: {
+		control: {
+			type: "json"
+		}
 	}
 };
 
+/**
+ * Input a percentage ([0-100])
+ * @param {Object} args
+ */
 export const PercentInput = (args) => (
 	<StepForm mode="onChange">
-		<Input.Percent autoFocus={true} name="percent" {...args} />
+		<Input.Percent name="percent" {...args} />
 	</StepForm>
 );
 PercentInput.args = {
@@ -45,7 +55,7 @@ PercentInput.args = {
 
 export const DateInput = (args) => (
 	<StepForm mode="onChange">
-		<Input.Date autoFocus={true} required name="date" {...args} />
+		<Input.Date name="date" {...args} />
 	</StepForm>
 );
 DateInput.args = {
