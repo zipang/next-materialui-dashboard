@@ -1,6 +1,7 @@
 import { Grid } from "@material-ui/core";
 import Input from "@forms/Input";
 import StepForm from "./StepForm";
+import GroupLabel from "./GroupLabel";
 
 /**
  * @typedef StepDef
@@ -36,7 +37,7 @@ function Step(step) {
 	if (!Array.isArray(step.fields) && typeof step.displayForm !== "function") {
 		throw new TypeError(
 			`You must provide an array of fields definitions or a custom displayForm method to create a Step : 
-${JSON.stringify(step, null, "\t")}`
+			${JSON.stringify(step, null, "\t")}`
 		);
 	}
 	step.size = step.size || 1;
@@ -47,9 +48,26 @@ ${JSON.stringify(step, null, "\t")}`
 Step.prototype = {
 	displayForm: function (data, onSubmit) {
 		return (
-			<StepForm formId={`${this.id}`} data={data} onSubmit={onSubmit}>
-				<Grid container>
-					{this.fields.map(({ type = "text", size = 1, ...fieldProps }, i) => (
+			<StepForm
+				formId={`${this.id}`}
+				data={data}
+				onSubmit={onSubmit}
+				rerender={new Date()}
+			>
+				<Grid container>{this.displayFields(this.fields)}</Grid>
+				<Input.Submit style={{ visibility: "hidden" }} />
+			</StepForm>
+		);
+	},
+	displayFields: function (fields) {
+		return fields.map((field, i) => {
+			switch (field.type) {
+				case "group":
+					return this.displayBlock(field);
+
+				default:
+					const { type = "text", size = 1, ...fieldProps } = field;
+					return (
 						<Grid item sm={Number(size) * 12}>
 							<Input
 								key={`${this.id}-input-${i}`}
@@ -58,9 +76,15 @@ Step.prototype = {
 								{...fieldProps}
 							/>
 						</Grid>
-					))}
-				</Grid>
-			</StepForm>
+					);
+			}
+		});
+	},
+	displayBlock: function (block) {
+		return (
+			<GroupLabel label={block.label}>
+				{this.displayFields(block.fields)}
+			</GroupLabel>
 		);
 	}
 };
