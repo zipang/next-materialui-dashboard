@@ -15,8 +15,16 @@ import useFormStyles from "./useFormStyles";
  * @param {Function} [props.onSuccess] an optional method to call when the form submission has been a success
  * @param {Function} [props.onError] an optional method to call only when the API returned an error
  */
-const APIForm = ({ action, method = "POST", onSubmit, onSuccess, onError, children }) => {
-	const styles = useFormStyles();
+const APIForm = ({
+	action,
+	method = "POST",
+	onSubmit,
+	onSuccess,
+	onError,
+	children,
+	customStyles = {}
+}) => {
+	const styles = useFormStyles(customStyles);
 	const formMethods = useForm();
 	const [submitting, setSubmitting] = useState(false);
 
