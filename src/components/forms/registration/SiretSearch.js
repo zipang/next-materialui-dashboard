@@ -113,6 +113,7 @@ export const SiretSearchForm = ({ onSubmit }) => {
 			action="/api/siret/search"
 			onSuccess={mergeSiretData(onSubmit)}
 			onError={onError}
+			customStyles={{ width: "18em" }}
 		>
 			<Input.Formatted
 				name="siret"
