@@ -47,11 +47,16 @@ ${JSON.stringify(step, null, "\t")}`
 Step.prototype = {
 	displayForm: function (data, onSubmit) {
 		return (
-			<StepForm formId={`${this.id}-form`} data={data} onSubmit={onSubmit}>
+			<StepForm formId={`${this.id}`} data={data} onSubmit={onSubmit}>
 				<Grid container>
-					{this.fields.map(({ type = "text", size = 1, ...fieldProp }) => (
+					{this.fields.map(({ type = "text", size = 1, ...fieldProps }, i) => (
 						<Grid item sm={Number(size) * 12}>
-							<Input type={type} {...fieldProp} />
+							<Input
+								key={`${this.id}-input-${i}`}
+								type={type}
+								autoFocus={i === 0}
+								{...fieldProps}
+							/>
 						</Grid>
 					))}
 				</Grid>

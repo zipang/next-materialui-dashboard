@@ -63,12 +63,10 @@ const steps = [
 	{
 		id: "age",
 		title: "Entrez votre age",
-		displayForm: displaySimpleStepForm({
-			name: "age",
-			type: "number",
-			label: "Age",
-			required: true
-		})
+		fields: [
+			{ name: "age", label: "Age", type: "number", required: true },
+			{ name: "hometown", label: "Né à", required: true }
+		]
 	},
 	{
 		id: "classe",

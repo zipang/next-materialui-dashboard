@@ -50,6 +50,7 @@ const Text = ({
 	// Find the parent form to register our input
 	const inputRef = createRef();
 	const {
+		register,
 		registerField,
 		errors,
 		watch,
@@ -73,7 +74,11 @@ const Text = ({
 		}
 	};
 	let value = watch(name) || "";
-	if (registerField) registerField({ name, ref: inputRef, validation });
+	if (registerField) {
+		registerField({ name, ref: inputRef, validation });
+	} else {
+		register(name, validation);
+	}
 
 	useLayoutEffect(() => {
 		// value = watch(name) || "";
@@ -126,6 +131,7 @@ export const Formatted = ({
 	// Find the parent form to register our input
 	const inputRef = createRef();
 	const {
+		register,
 		registerField,
 		errors,
 		watch,
@@ -140,7 +146,11 @@ export const Formatted = ({
 	if (required === true) validation.required = `Saisissez un ${label}`;
 	if (validation.required) label += "*";
 
-	if (registerField) registerField({ name, ref: inputRef, validation });
+	if (registerField) {
+		registerField({ name, ref: inputRef, validation });
+	} else {
+		register(name, validation);
+	}
 
 	let value = watch(name) || "";
 
@@ -393,6 +403,12 @@ export const Email = ({ validation = {}, ...props }) => {
  */
 export const Password = ({ ...props }) => <Text type="password" {...props} />;
 
+const convertOptions = (map) =>
+	Object.keys(map).reduce((options, key) => {
+		options.push({ code: key, label: map[key] });
+		return options;
+	}, []);
+
 /**
  * Select a value amonst dome predefined options
  * @param {*} param0
@@ -418,6 +434,9 @@ export const SelectBox = ({
 	if (validation.required) label += "*";
 
 	if (registerField) registerField({ name, ref: inputRef, validation });
+
+	// Accept a hashmap (key : value) as different format
+	if (!Array.isArray(options)) options = convertOptions(options);
 
 	const onChange = (evt) => {
 		setValue(name, (value = evt.target.value));
@@ -475,7 +494,8 @@ export const Submit = ({ label = "OK", ...moreProps }) => (
 	</Button>
 );
 
-const Input = ({ type, fieldProps }) => {
+const Input = ({ type, ...fieldProps }) => {
+	console.log(`Generating input ${type}`, fieldProps);
 	switch (type) {
 		case "text":
 			return <Text {...fieldProps} />;

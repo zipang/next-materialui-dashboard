@@ -85,3 +85,18 @@ SelectBoxInput.argTypes = {
 		control: { type: "json" }
 	}
 };
+
+export const SelectBoxInputWithHashmap = (args) => (
+	<StepForm mode="onChange">
+		<Input.SelectBox autoFocus={true} required name="genre" {...args} />
+	</StepForm>
+);
+SelectBoxInputWithHashmap.args = {
+	label: "Genre",
+	options: { M: "Monsieur", F: "Madame" }
+};
+SelectBoxInputWithHashmap.argTypes = {
+	options: {
+		control: { type: "json" }
+	}
+};
