@@ -4,8 +4,24 @@ import { useForm, FormProvider } from "react-hook-form";
 
 import useFormStyles from "./useFormStyles";
 import Input from "@forms/Input";
+import { isAssetError } from "next/dist/client/route-loader";
+import { getProperty } from "@lib/utils/NestedObjects";
 
-const noop = () => false;
+/**
+ * Errors is now a hierarchical object
+ * @param {*} errors
+ */
+const getFirstError = (errors) => {
+	const errorPath = [];
+	let start = errors;
+
+	do {
+		const firstKey = Object.keys(start)[0];
+		start = start[firstKey];
+		errorPath.push(firstKey);
+	} while (!(start?.ref && start?.message));
+	return errorPath.join(".");
+};
 
 /**
  * @typedef StepFormProps
@@ -55,6 +71,7 @@ const StepForm = ({
 		errors,
 		reset,
 		clearErrors,
+		setError,
 		register,
 		unregister
 	} = formMethods;
@@ -83,12 +100,13 @@ const StepForm = ({
 	 */
 	const handleErrors = (errors) => {
 		console.log(`Validation of ${formId} triggered errors`, errors);
-		const firstError = Object.keys(errors)[0];
+		const firstError = getFirstError(errors);
 		// We only want the first error
-		Object.keys(errors).forEach((fieldName) => {
-			if (fieldName !== firstError) delete errors[fieldName];
-		});
+		errors = getProperty(errors, firstError);
+		console.log("Trimmed to first error", firstError, errors);
+		clearErrors();
 		step[firstError].current?.focus();
+		setError(firstError, errors);
 		if (typeof onErrors === "function") {
 			onErrors(errors);
 		} else {
