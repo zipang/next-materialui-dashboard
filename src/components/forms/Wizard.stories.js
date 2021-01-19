@@ -2,12 +2,12 @@
 import Wizard from "./Wizard";
 import Input from "./Input";
 import StepForm from "./StepForm";
-import { Box, Grid } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 
 const _CLASSES = {
-	magician: "Magicien",
-	warrior: "Guerrier",
-	thief: "Voleur"
+	magician: "Magicien(ne)",
+	warrior: "Guerrier(e)",
+	thief: "Voleur(se)"
 };
 const _CAPACITIES = {
 	flight: "Vol",
@@ -33,11 +33,7 @@ const existing_data = {
 const displaySimpleStepForm = ({ name, type = "text", ...more }) => (data, onSubmit) => {
 	return (
 		<StepForm formId={name} data={data} onSubmit={onSubmit} rerender={new Date()}>
-			<Grid container>
-				<Grid item>
-					<Input type={type} autoFocus={true} name={name} {...more} />
-				</Grid>
-			</Grid>
+			<Input type={type} autoFocus={true} name={name} {...more} />
 		</StepForm>
 	);
 };
@@ -81,13 +77,7 @@ const steps = [
 				label: "Origine",
 				fields: [
 					{ name: "hometown", size: 2 / 3, label: "Né à", required: true },
-					{
-						name: "age",
-						size: 1 / 3,
-						label: "Age",
-						type: "number",
-						required: true
-					}
+					{ name: "country", size: 1 / 3, label: "Pays" }
 				]
 			}
 		]
@@ -116,11 +106,20 @@ const steps = [
 	{
 		id: "resume",
 		title: "Prêt à jouer",
-		displayForm: ({ firstName, lastName, age, classe, abilities }) => (
+		displayForm: ({
+			firstName,
+			lastName,
+			age,
+			classe,
+			hometown,
+			country,
+			abilities
+		}) => (
 			<Box width="100%">
 				<p>{`Bienvenue ${firstName} ${lastName}.
-Vous avez ${age} ans et vous êtes un(e) ${_CLASSES[classe]}
-Vos capacités exceptionnelles sont : ${abilities
+Vous avez ${age} ans et vous êtes un(e) ${_CLASSES[classe]}.
+Vous êtes né(e) à ${hometown} (${country}) et 
+vos capacités exceptionnelles sont : ${abilities
 					.map((c) => _CAPACITIES[c])
 					.join(", ")}`}</p>
 			</Box>
