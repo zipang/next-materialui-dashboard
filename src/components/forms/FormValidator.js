@@ -54,8 +54,14 @@ const buildValidationContext = ({ mode = "onSubmit" }) => {
 				try {
 					const rule = validation[ruleName];
 					if (ruleName === "required") {
-					} else if (rule.pattern) {
+						if (fieldValue === null || fieldValue === undefined) {
+						}
+					} else if (rule.pattern && typeof rule.pattern.test === "function") {
+						if (!pattern.test(fieldValue)) {
+						}
 					} else if (typeof rule === "function") {
+						if (!rule(fieldValue)) {
+						}
 					}
 				} catch (err) {}
 			});
@@ -64,6 +70,7 @@ const buildValidationContext = ({ mode = "onSubmit" }) => {
 
 	return { fields, errors, register, unregister, validate };
 };
+
 /**
  *
  * @param {ValidationContextOptions} options
