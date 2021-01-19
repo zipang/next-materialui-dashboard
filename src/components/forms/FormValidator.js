@@ -1,3 +1,4 @@
+import { getProperty } from "@lib/utils/NestedObjects";
 import { Name } from "quicktype/dist/quicktype-core";
 import { useContext, createContext } from "react";
 
@@ -29,6 +30,40 @@ export const useFormValidationContext = () => {
 	return validationContext;
 };
 
+const buildValidationContext = ({ mode = "onSubmit" }) => {
+	const fields = {};
+	const errors = {};
+
+	const register = (name, ref, validation) => {
+		fields[name] = { ref, validation };
+	};
+
+	const unregister = (name) => {
+		delete fields[name];
+	};
+
+	/**
+	 * Do the validation of registered fields against the provided data
+	 */
+	const validate = (data) => {
+		Object.keys(fields).forEach((fieldName) => {
+			const { ref, validation } = fields[fieldName];
+			const fieldValue = getProperty(data, fieldName);
+			// Each key in the validation object is a validation rule
+			Object.keys(validation).forEach((ruleName) => {
+				try {
+					const rule = validation[ruleName];
+					if (ruleName === "required") {
+					} else if (rule.pattern) {
+					} else if (typeof rule === "function") {
+					}
+				} catch (err) {}
+			});
+		});
+	};
+
+	return { fields, errors, register, unregister, validate };
+};
 /**
  *
  * @param {ValidationContextOptions} options
