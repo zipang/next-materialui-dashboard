@@ -53,6 +53,19 @@ PercentInput.args = {
 	label: "%"
 };
 
+/**
+ * Input an URL
+ * @param {Object} args
+ */
+export const UrlInput = (args) => (
+	<StepForm mode="onChange">
+		<Input.Url name="site_web" {...args} />
+	</StepForm>
+);
+UrlInput.args = {
+	label: "URL"
+};
+
 export const DateInput = (args) => (
 	<StepForm mode="onChange">
 		<Input.Date name="date" {...args} />

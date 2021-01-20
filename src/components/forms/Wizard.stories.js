@@ -70,7 +70,7 @@ Appuyez sur ENTREE ou cliquez sur 'Etape suivante' à chaque fois que vous voule
 	},
 	{
 		id: "age",
-		title: "Entrez votre nom",
+		title: "Quel age avez vous ?",
 		displayForm: displaySimpleStepForm({
 			name: "age",
 			label: "Age",
@@ -147,7 +147,7 @@ export default {
  * Display the wizard with an empty initial data object
  */
 export const EmptySteps = () => (
-	<Box width="75vw" height="60vh">
+	<Box width="75vw" height="60vh" minHeight="500px">
 		<Wizard id="4-steps-wizard" steps={steps} data={empty_data} currentSlide={0} />
 	</Box>
 );
