@@ -48,7 +48,6 @@ const Text = ({
 	autoComplete = false,
 	autoFocus = false,
 	validation = {},
-	size = 30,
 	...moreProps
 }) => {
 	// Find the parent form to register our input
@@ -106,9 +105,7 @@ const Text = ({
 			autoComplete={autoComplete ? "" : "off"}
 			autoFocus={autoFocus}
 			helperText={errorMessage}
-			inputProps={{
-				size
-			}}
+			fullWidth={true}
 			{...mergedProps}
 		/>
 	);
@@ -263,7 +260,7 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 			serialize={serializeInteger}
 			validation={validation}
 			inputType="number"
-			size="4"
+			size="8"
 			{...props}
 		/>
 	);
@@ -362,7 +359,7 @@ export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => 
  * Text Input that specifically format dates on user input as they change
  * @param {InputProps} props
  */
-export const Date = ({ dateFormat = "dd/mm/yyyy", size = 7, ...props }) => {
+export const Date = ({ dateFormat = "dd/mm/yyyy", size = 10, ...props }) => {
 	const validation = {
 		isDate: (ISODate) => typeof Date.parse(ISODate) === "number"
 	};
@@ -400,6 +397,26 @@ export const Email = ({ validation = {}, ...props }) => {
 		}
 	};
 	return <Text validation={emailValidation} {...props} />;
+};
+/**
+ * Text Input with specific url validation
+ * @param {InputProps} props
+ */
+export const Url = ({ validation = {}, ...props }) => {
+	const urlValidation = {
+		...validation,
+		validate: {
+			invalid: (val) => {
+				try {
+					new URL(val);
+					return true;
+				} catch (err) {
+					return "URL invalide";
+				}
+			}
+		}
+	};
+	return <Text validation={urlValidation} {...props} />;
 };
 
 /**
@@ -594,7 +611,6 @@ export const SelectBox = ({
 	autoFocus = false,
 	validation = {},
 	options = [],
-	size = 25,
 	...moreProps
 }) => {
 	// Find the parent form to register our input
@@ -630,9 +646,9 @@ export const SelectBox = ({
 				labelId={`${name}-label`}
 				inputRef={inputRef}
 				inputProps={{
-					name,
-					size
+					name
 				}}
+				fullWidth={true}
 				value={value}
 				autoFocus={autoFocus}
 				onChange={onChange}
@@ -695,6 +711,8 @@ const Input = ({ type, ...fieldProps }) => {
 			return <Percent {...fieldProps} />;
 		case "email":
 			return <Email {...fieldProps} />;
+		case "url":
+			return <Url {...fieldProps} />;
 		case "formatted":
 			return <Formatted {...fieldProps} />;
 
@@ -709,6 +727,7 @@ Object.assign(Input, {
 	CheckBox,
 	CheckBoxes,
 	Email,
+	Url,
 	Date,
 	Password,
 	Formatted,
