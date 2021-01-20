@@ -105,7 +105,7 @@ const StepForm = ({
 		errors = getProperty(errors, firstError);
 		console.log("Trimmed to first error", firstError, errors);
 		clearErrors();
-		step[firstError].current?.focus();
+		step[firstError]?.current?.focus();
 		setError(firstError, errors);
 		if (typeof onErrors === "function") {
 			onErrors(errors);
