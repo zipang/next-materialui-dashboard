@@ -41,6 +41,16 @@ const displaySimpleStepForm = ({ name, type = "text", ...more }) => (data, onSub
 // Create some dummy steps to display
 const steps = [
 	{
+		id: "Intro",
+		title: "Créez votre personnage",
+		help: {
+			description: `Dans les étapes suivantes, vous allez renseigner votre personnage de jeu de rôle.
+Appuyez sur ENTREE ou cliquez sur 'Etape suivante' à chaque fois que vous voulez valider une étape.`,
+			backgroundImage:
+				"https://images.unsplash.com/photo-1499989545599-0800ab969152?auto=format&fit=crop&w=800&q=80"
+		}
+	},
+	{
 		id: "firstName",
 		title: "Entrez votre prénom",
 		displayForm: displaySimpleStepForm({
@@ -137,7 +147,7 @@ export default {
  * Display the wizard with an empty initial data object
  */
 export const EmptySteps = () => (
-	<Box width="600px" height="400px">
+	<Box width="75vw" height="60vh">
 		<Wizard id="4-steps-wizard" steps={steps} data={empty_data} currentSlide={0} />
 	</Box>
 );

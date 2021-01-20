@@ -1,11 +1,48 @@
 import { useEffect, memo } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import { makeStyles } from "@material-ui/core/styles";
 
 import SvgIcon from "@components/SvgIcon";
 import { useStateMachine, withStateMachine } from "@components/StateMachine";
 import { useEventBus, withEventBus } from "@components/EventBusProvider";
 import Step from "@forms/Step";
+
+const useWizardStyles = (customStyles = {}) =>
+	makeStyles((theme) => ({
+		viewport: {
+			overflow: "hidden",
+			display: "flex",
+			height: "100%",
+			width: "100%"
+		},
+		formContainer: {
+			display: "flex",
+			width: "100%",
+			height: "100%",
+			justifyContent: "center",
+			alignItems: "center",
+			alignContent: "flex-start",
+			flexWrap: "wrap",
+			padding: "0 1rem",
+			backgroundColor: theme.palette.background.light
+		},
+		formTitle: {
+			alignSelf: "flex-start",
+			flex: "1 1 100%"
+		},
+		form: {
+			alignSelf: "center",
+			flex: "0 1 auto"
+		},
+		helpContainer: {
+			display: "flex",
+			height: "100%",
+			width: "100%",
+			backgroundColor: "white",
+			padding: "2rem"
+		}
+	}))();
 
 /**
  * @typedef Step
@@ -33,9 +70,29 @@ const WizardContainer = ({ children }) => (
 		{children}
 	</Box>
 );
-const WizardViewport = ({ children }) => (
-	<Box flexGrow={1} overflow="hidden" position="relative" height="100%">
-		{children}
+/**
+ * The wizard view port may contain one or two children :
+ * - The Contextual help and description of the setp,
+ * - The Form container inside which the form should be centered
+ * @param {*} param0
+ */
+const WizardViewport = ({ classes, step, data, errors, onSubmit }) => (
+	<Box flexGrow={1} overflow="hidden" position="relative" height="100%" display="flex">
+		{step.help && (
+			<Box className={classes.helpContainer} style={step.getBackgroundImageStyle()}>
+				{step.displayHelp(data, errors, onSubmit)}
+			</Box>
+		)}
+		{step.displayForm && (
+			<Box className={classes.formContainer}>
+				{!step.help && (
+					<Box className={classes.formTitle}>
+						<h2>{step.title}</h2>
+					</Box>
+				)}
+				<Box className={classes.form}>{step.displayForm(data, onSubmit)}</Box>
+			</Box>
+		)}
 	</Box>
 );
 /**
@@ -78,6 +135,7 @@ const previous = (state) => {
  * Receives the steps and the state machine altogether
  */
 const InitWizard = ({ id, steps = [] }) => {
+	const classes = useWizardStyles();
 	const eb = useEventBus();
 	const { state, actions } = useStateMachine();
 
@@ -125,13 +183,12 @@ const InitWizard = ({ id, steps = [] }) => {
 
 	return (
 		<WizardContainer>
-			<WizardViewport>
-				<DisplayStep
-					step={new Step(steps[currentSlide])}
-					data={data}
-					onSubmit={validateStep}
-				/>
-			</WizardViewport>
+			<WizardViewport
+				classes={classes}
+				step={new Step(steps[currentSlide])}
+				data={data}
+				onSubmit={validateStep}
+			/>
 			<WizardControls>
 				<Button
 					variant="outlined"
