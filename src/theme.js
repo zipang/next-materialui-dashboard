@@ -109,7 +109,8 @@ theme = {
 		},
 		MuiFormControl: {
 			root: {
-				display: "block"
+				display: "block",
+				margin: "1.2em 0 0.2em"
 			}
 		},
 		MuiInputBase: {

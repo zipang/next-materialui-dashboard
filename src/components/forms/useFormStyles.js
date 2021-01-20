@@ -18,6 +18,9 @@ const useFormStyles = (customStyles = {}) =>
 			"& input": {
 				fontWeight: 800
 			},
+			"& select": {
+				fontWeight: 800
+			},
 			"& .submit": {
 				margin: theme.spacing(3, 0, 2)
 			},
