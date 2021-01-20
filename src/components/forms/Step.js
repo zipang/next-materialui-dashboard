@@ -103,11 +103,11 @@ Step.prototype = {
 			</StepForm>
 		);
 	},
-	displayFields: function (fields) {
+	displayFields: function (fields, startIndex = 0) {
 		return fields.map((field, i) => {
 			switch (field.type) {
 				case "group":
-					return this.displayBlock(field);
+					return this.displayBlock(field, i);
 
 				default:
 					const { type = "text", size = 1, ...fieldProps } = field;
@@ -116,7 +116,7 @@ Step.prototype = {
 							<Input
 								key={`${this.id}-input-${i}`}
 								type={type}
-								autoFocus={i === 0}
+								autoFocus={i + startIndex === 0}
 								{...fieldProps}
 							/>
 						</Grid>
@@ -124,10 +124,10 @@ Step.prototype = {
 			}
 		});
 	},
-	displayBlock: function (block) {
+	displayBlock: function (block, index) {
 		return (
 			<GroupLabel label={block.label}>
-				{this.displayFields(block.fields)}
+				{this.displayFields(block.fields, index)}
 			</GroupLabel>
 		);
 	}
