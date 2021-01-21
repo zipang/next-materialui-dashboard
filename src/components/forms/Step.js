@@ -111,7 +111,13 @@ Step.prototype = {
 					return this.displayBlock(field, i);
 
 				default:
-					const { type = "text", size = 1, ...fieldProps } = field;
+					const {
+						type = "text",
+						size = 1,
+						readOnly = false,
+						...fieldProps
+					} = field;
+					if (readOnly) startIndex--;
 					return (
 						<Grid item sm={Number(size) * 12} style={{ padding: "0 0.5em" }}>
 							<Input
