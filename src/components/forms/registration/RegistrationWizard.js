@@ -12,7 +12,9 @@ export const steps = [
 	{
 		id: "step-02-siret",
 		title: "Nouvel Organisme",
-		description: `Vérifiez l'adresse et la date de création de la structure à déclarer.`,
+		help: {
+			description: `Vérifiez l'adresse et la date de création de la structure à déclarer.`
+		},
 		fields: [
 			{
 				name: "siret",
@@ -23,11 +25,14 @@ export const steps = [
 			{
 				name: "nom",
 				label: "Nom",
-				required: true
+				validation: {
+					required: "Saisissez le nom de votre structure"
+				}
 			},
 			{
 				name: "date_creation",
-				label: "Date de création",
+				label: "Création",
+				type: "date",
 				size: 1 / 4,
 				validation: {
 					required: "Saisissez la date de création de l'entreprise"
@@ -54,7 +59,9 @@ export const steps = [
 					{
 						name: "adresse.rue1",
 						label: "Rue",
-						required: true
+						validation: {
+							required: "Indiquez la rue"
+						}
 					},
 					{
 						name: "adresse.rue2",
@@ -64,7 +71,9 @@ export const steps = [
 						name: "adresse.code_postal",
 						label: "CP",
 						size: 1 / 4,
-						required: true
+						validation: {
+							required: "Indiquez le code postal"
+						}
 					},
 					{
 						name: "adresse.commune",
@@ -176,6 +185,30 @@ ainsi que les sites internet liés à votre activité.`
 						size: 1 / 2
 					}
 				]
+			}
+		]
+	},
+	{
+		id: "step-systemes-gestion",
+		title: "Systèmes de Gestion",
+		help: {
+			description:
+				"Indiquez les systèmes de télégestion, télédéclaration mis en place dans votre structure."
+		},
+		fields: [
+			{
+				name: "systemes_gestion.dispositif_domycile",
+				label: "Dispositif Domycile",
+				type: "switch"
+			},
+			{
+				name: "systemes_gestion.telegestion",
+				label: "Système de télégestion"
+			},
+			{
+				name: "systemes_gestion.teletransmission",
+				label: "Système de télétransmission",
+				type: "switch"
 			}
 		]
 	},

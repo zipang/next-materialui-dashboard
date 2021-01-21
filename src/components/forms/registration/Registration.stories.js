@@ -13,7 +13,7 @@ export default {
  * Step Sample
  */
 export const SiretCreation = (args) => (
-	<CenteredPaperSheet fullHeight={true}>
+	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-02-siret")} />
 	</CenteredPaperSheet>
 );
@@ -22,7 +22,7 @@ export const SiretCreation = (args) => (
  * Step Sample
  */
 export const Contacts = (args) => (
-	<CenteredPaperSheet fullHeight={true}>
+	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-03-contacts")} />
 	</CenteredPaperSheet>
 );
@@ -31,7 +31,7 @@ export const Contacts = (args) => (
  * Step Sample
  */
 export const Declarations = (args) => (
-	<CenteredPaperSheet fullHeight={true}>
+	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-04-declarations")} />
 	</CenteredPaperSheet>
 );
@@ -40,7 +40,7 @@ export const Declarations = (args) => (
  * Step Sample
  */
 export const ActiviteBeneficiaires = (args) => (
-	<CenteredPaperSheet fullHeight={true}>
+	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-activite-beneficiaires")} />
 	</CenteredPaperSheet>
 );
@@ -49,7 +49,7 @@ export const ActiviteBeneficiaires = (args) => (
  * Step Sample
  */
 export const Certifications = (args) => (
-	<CenteredPaperSheet fullHeight={true}>
+	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-05-certifications")} />
 	</CenteredPaperSheet>
 );
@@ -58,7 +58,7 @@ export const Certifications = (args) => (
  * Step Sample
  */
 export const Syneos = (args) => (
-	<CenteredPaperSheet fullHeight={true}>
+	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-06-syneos")} />
 	</CenteredPaperSheet>
 );
@@ -67,7 +67,16 @@ export const Syneos = (args) => (
  * Step Sample
  */
 export const Effectifs = (args) => (
-	<CenteredPaperSheet fullHeight={true}>
+	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-effectifs")} />
+	</CenteredPaperSheet>
+);
+
+/**
+ * Step Sample
+ */
+export const SystemesGestion = (args) => (
+	<CenteredPaperSheet>
+		<Wizard steps={steps.filter(({ id }) => id === "step-systemes-gestion")} />
 	</CenteredPaperSheet>
 );
