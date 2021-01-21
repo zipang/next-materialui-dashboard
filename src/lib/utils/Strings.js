@@ -14,6 +14,12 @@ export const StringExtensions = {
 	contains: function (ss) {
 		return this.indexOf(ss) >= 0;
 	},
+	count: function (ss) {
+		return this.split("").reduce(
+			(prevCount, letter) => prevCount + (letter === ss ? 1 : 0),
+			0
+		);
+	},
 	equalsIgnoreCase: function (s) {
 		return this.toLowerCase() === s.toLowerCase();
 	},
