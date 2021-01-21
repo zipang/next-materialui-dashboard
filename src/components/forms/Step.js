@@ -96,6 +96,7 @@ Step.prototype = {
 				formId={`${this.id}`}
 				data={data}
 				onSubmit={onSubmit}
+				customStyles={{ minWidth: "40em" }}
 				rerender={new Date()}
 			>
 				{!this.help && <h2>{this.description}</h2>}

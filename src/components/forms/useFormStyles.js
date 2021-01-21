@@ -6,8 +6,6 @@ import { makeStyles } from "@material-ui/core/styles";
 const useFormStyles = (customStyles = {}) =>
 	makeStyles((theme) => ({
 		form: {
-			height: "100%",
-			width: "100%",
 			backgroundColor: theme.palette.background.light,
 			padding: "1rem",
 			marginTop: theme.spacing(1),
