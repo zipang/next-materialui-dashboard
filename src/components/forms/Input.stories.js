@@ -66,6 +66,28 @@ UrlInput.args = {
 	label: "URL"
 };
 
+/**
+ * Input a telephone number
+ * @param {Object} args
+ */
+export const TelInput = (args) => (
+	<StepForm mode="onChange">
+		<Input.Tel name="tel" {...args} />
+	</StepForm>
+);
+TelInput.args = {
+	label: "Téléphone",
+	format: "99 99 99 99 99"
+};
+TelInput.argTypes = {
+	format: {
+		control: {
+			type: "select",
+			options: ["99 99 99 99 99", "+(99) 9 99 99 99 99"]
+		}
+	}
+};
+
 export const DateInput = (args) => (
 	<StepForm mode="onChange">
 		<Input.Date name="date" {...args} />

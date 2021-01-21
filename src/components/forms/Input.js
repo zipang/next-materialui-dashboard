@@ -15,7 +15,7 @@ import {
 import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
 import { getProperty } from "@lib/utils/NestedObjects";
-import { useEventBus } from "@components/EventBusProvider";
+import { StringExtensions } from "@lib/utils/Strings";
 import GroupLabel from "./GroupLabel";
 
 const _BASE_INPUT_STYLES = {
@@ -31,8 +31,9 @@ const noop = (val) => val;
  * @field {String} name The name of the field (can use dots to describe a deeply nested property)
  * @field {String} label The field label
  * @field {Boolean} [required=false] Value required
- * @field {Boolean} [autoComplete=false] Allow auto-completion
+ * @field {String}  [placeHolder] Text shown before any input
  * @field {Boolean} [autoFocus=false] Get focus on this field on page load ?
+ * @field {Boolean} [readOnly=false] Can or cannot edit
  * @field {Object} [validation={}] Validation object
  */
 
@@ -120,6 +121,7 @@ export const Formatted = ({
 	label = "Use a label",
 	helperText = "",
 	inputType = "text",
+	mask = false,
 	format = noop,
 	load = noop,
 	serialize = noop,
@@ -128,6 +130,7 @@ export const Formatted = ({
 	autoFocus = false,
 	validation = {},
 	size = 20,
+	placeHolder = "",
 	...moreProps
 }) => {
 	// Find the parent form to register our input
@@ -168,7 +171,7 @@ export const Formatted = ({
 	};
 	const rifmParams = {
 		value: displayedValue,
-		mask: true,
+		mask: { mask },
 		onChange,
 		format
 	};
@@ -192,6 +195,7 @@ export const Formatted = ({
 		<TextField
 			id={`formatted-${name}`}
 			inputRef={inputRef}
+			placeholder={placeHolder}
 			label={label}
 			value={rifm.value}
 			onChange={rifm.onChange}
@@ -361,7 +365,8 @@ export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => 
  */
 export const Date = ({ dateFormat = "dd/mm/yyyy", size = 10, ...props }) => {
 	const validation = {
-		isDate: (ISODate) => typeof Date.parse(ISODate) === "number"
+		isDate: (ISODate) =>
+			typeof Date.parse(ISODate) === "number" ? true : "Date invalide"
 	};
 	return (
 		<Formatted
@@ -371,6 +376,60 @@ export const Date = ({ dateFormat = "dd/mm/yyyy", size = 10, ...props }) => {
 			serialize={serializeDate(dateFormat)}
 			validation={validation}
 			size={size}
+			placeHolder={dateFormat}
+			{...props}
+		/>
+	);
+};
+
+/**
+ * Generate an input formatter of digits only from a mask
+ * @example
+ *   const frenchTelMask = applyNumericMask("+(99) 9 99 99 99 99")
+ *   const frenchDateMask = applyNumericMask("99/99/9999")
+ * @param {String} mask Uses '9' to indicate the position of a digit ([0-9])
+ * @return {Function} Usable inside Input.Formatter, Input.Date, Input.Tel..
+ */
+export const applyNumericMask = (mask = "99 99 99 99") => (str = "") => {
+	const howManyDigits = mask.count("9");
+	const validInput = getDigitsOnly(str).substr(0, howManyDigits);
+	const digits = validInput.split("");
+	const formatted = mask
+		.split("")
+		.map((maskLetter, i) => {
+			return maskLetter === "9" ? digits.shift() || "_" : maskLetter;
+		})
+		.join("");
+	return formatted;
+};
+
+/**
+ * Formatted Input for telephone numbers
+ * @param {InputProps} props
+ */
+export const Tel = ({
+	format = "99 99 99 99 99",
+	placeHolder = "01 23 45 67 89",
+	...props
+}) => {
+	const validation = {
+		validate: {
+			isComplete: (formatted) =>
+				formatted.count("9") === mask.count("9") ? true : "No incomplet",
+			invalid: (formatted) =>
+				!["01", "06", "07"].includes(formatted.substr(0, 2))
+					? true
+					: "No invalide (ne commence pas par 01, 06, 07)"
+		}
+	};
+	return (
+		<Formatted
+			format={applyNumericMask(format)}
+			mask={true}
+			validation={validation}
+			size={14}
+			placeHolder={placeHolder}
+			inputType="tel"
 			{...props}
 		/>
 	);
@@ -692,6 +751,18 @@ export const HiddenSubmit = () => (
 	<input type="submit" className="hidden" aria-hidden="true" />
 );
 
+const customInputs = {};
+
+/**
+ * Register custom input to render them using
+ * <Input type="custom" {...props} />
+ * @param {String} name The custom type to register
+ * @param {Function} render
+ */
+export const registerInput = (name, render) => {
+	customInputs[name] = render;
+};
+
 const Input = ({ type, ...fieldProps }) => {
 	console.log(`Generating input ${type}`, fieldProps);
 	switch (type) {
@@ -711,13 +782,19 @@ const Input = ({ type, ...fieldProps }) => {
 			return <Percent {...fieldProps} />;
 		case "email":
 			return <Email {...fieldProps} />;
+		case "tel":
+			return <Tel {...fieldProps} />;
 		case "url":
 			return <Url {...fieldProps} />;
 		case "formatted":
 			return <Formatted {...fieldProps} />;
 
 		default:
-			return <Text {...fieldProps} />;
+			if (customInputs[type]) {
+				return customInputs[type]({ ...fieldProps });
+			} else {
+				return <Text {...fieldProps} />;
+			}
 	}
 };
 
@@ -727,6 +804,7 @@ Object.assign(Input, {
 	CheckBox,
 	CheckBoxes,
 	Email,
+	Tel,
 	Url,
 	Date,
 	Password,
