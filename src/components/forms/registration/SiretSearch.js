@@ -1,41 +1,16 @@
-import Input, { registerInput } from "@components/forms/Input";
+import Input, { applyNumericMask, getDigitsOnly } from "@components/forms/Input";
 import { getProperty } from "@lib/utils/NestedObjects";
 import { useState } from "react";
 import APIForm from "../APIForm";
 
-/**
- * Unformat the display format (takes only the digits and remove the spaces)
- * @param {String} str displayed format
- * @return {String}
- */
-export const unformatSiret = (str = "") => str.replace(/[^\d]+/gi, "");
-
-/**
- * Display SIRET code with spaces between blocks
- * 999 999 999 99999
- * @param {String} str current input value
- * @return {String}
- */
-export const formatSiret = (str = "") => {
-	const chars = unformatSiret(str).split("");
-	return chars.reduce(
-		(prev, cur, index) =>
-			(index === 3 || index === 6 || index === 9
-				? `${prev} ${cur}` // add a space between blocks
-				: `${prev}${cur}`
-			).substr(0, 17), // limit to 17 chars (14 + 3 spaces)
-		""
-	);
-};
+export const formatSiret = applyNumericMask("999 999 999 99999");
 
 export const SiretInput = ({ ...props }) => (
 	<Input.Formatted
-		label="No de Siret"
-		name="siret"
-		readOnly={true}
 		format={formatSiret}
-		serialize={unformatSiret}
+		serialize={getDigitsOnly}
 		validation={{ required: "Saisissez un no de SIRET valide (14 chiffres)" }}
+		{...props}
 	/>
 );
 
@@ -126,12 +101,10 @@ export const SiretSearchForm = ({ onSubmit }) => {
 			onError={onError}
 			customStyles={{ width: "18em" }}
 		>
-			<Input.Formatted
+			<SiretInput
 				name="siret"
 				label="No de Siret"
 				helperText={typeof apiErrorMessage === "string" ? apiErrorMessage : ""}
-				format={formatSiret}
-				serialize={unformatSiret}
 				autoFocus={true}
 				validation={{
 					required: "Saisissez un no de SIRET valide (14 chiffres)",

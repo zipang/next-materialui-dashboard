@@ -218,7 +218,7 @@ export const Formatted = ({
  * @param {String} str Input string
  * @return {String}
  */
-const getDigitsOnly = (str = "") => str.replace(/[^\d]+/gi, "");
+export const getDigitsOnly = (str = "") => str.replace(/[^\d]+/gi, "");
 
 /**
  *
@@ -380,22 +380,20 @@ export const Date = ({ dateFormat = "dd/mm/yyyy", size = 10, ...props }) => {
 export const Tel = ({
 	format = "99 99 99 99 99",
 	placeHolder = "01 23 45 67 89",
+	validation,
 	...props
 }) => {
-	const validation = {
+	const validationTel = {
+		...validation,
 		validate: {
-			isComplete: (formatted) =>
-				formatted.length === format.length ? true : "No incomplet",
 			invalid: (formatted) =>
-				["01", "06", "07"].includes(formatted.substr(0, 2))
-					? true
-					: "No invalide (ne commence pas par 01, 06, 07)"
+				formatted && formatted[0] === "0" ? true : "No invalide"
 		}
 	};
 	return (
 		<Formatted
 			format={applyNumericMask(format)}
-			validation={validation}
+			validation={validationTel}
 			size={14}
 			placeHolder={placeHolder}
 			inputType="tel"
@@ -667,12 +665,13 @@ export const SelectBox = ({
 	let value = watch(name) || "";
 
 	return (
-		<FormControl error={Boolean(errorMessage)}>
+		<FormControl margin="dense" error={Boolean(errorMessage)}>
 			<InputLabel id={`${name}-label`}>{label}</InputLabel>
 			<Select
 				id={name}
 				labelId={`${name}-label`}
 				inputRef={inputRef}
+				className="MuiFormControl-marginDense MuiFormControl-fullWidth"
 				inputProps={{
 					name
 				}}

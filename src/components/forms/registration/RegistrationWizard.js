@@ -90,21 +90,15 @@ ainsi que les sites internet liés à votre activité.`
 				type: "group",
 				fields: [
 					{
-						name: "representant.civilite",
-						label: "Civilité",
-						size: 1 / 12,
-						required: true
-					},
-					{
 						name: "representant.nom",
 						label: "Nom",
-						size: 5 / 12,
+						size: 1 / 2,
 						required: true
 					},
 					{
 						name: "representant.prenom",
 						label: "Prénom",
-						size: 6 / 12,
+						size: 1 / 2,
 						required: true
 					},
 					{
@@ -128,9 +122,58 @@ ainsi que les sites internet liés à votre activité.`
 				type: "group",
 				fields: [
 					{
-						name: "telephone",
-						label: "Fixe",
-						type: "tel"
+						name: "contact.telephone",
+						label: "Téléphone",
+						type: "tel",
+						size: 1 / 2
+					},
+					{
+						name: "contact.mail",
+						label: "Email",
+						type: "email",
+						size: 1 / 2
+					}
+				]
+			},
+			{
+				label: "Liens Internet",
+				type: "group",
+				fields: [
+					{
+						name: "contact.site_web",
+						label: "Site Web",
+						type: "url",
+						size: 1 / 2
+					},
+					{
+						name: "contact.facebook",
+						label: "Facebooks",
+						type: "url",
+						size: 1 / 2
+					},
+					{
+						name: "contact.linkedin",
+						label: "LinkedIn",
+						type: "url",
+						size: 1 / 2
+					},
+					{
+						name: "contact.twitter",
+						label: "Twitter",
+						type: "url",
+						size: 1 / 2
+					},
+					{
+						name: "contact.instagram",
+						label: "Instagram",
+						type: "url",
+						size: 1 / 2
+					},
+					{
+						name: "contact.autres",
+						label: "Autres",
+						type: "url",
+						size: 1 / 2
 					}
 				]
 			}
