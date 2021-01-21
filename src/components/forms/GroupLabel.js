@@ -8,7 +8,8 @@ import { Box } from "@material-ui/core";
  */
 const GroupLabel = ({ label = "", children }) => (
 	<Box
-		margin="1em 0"
+		marginTop="0.5em"
+		marginBottom="0.5em"
 		display="flex"
 		flexWrap="wrap"
 		flexGrow="1"

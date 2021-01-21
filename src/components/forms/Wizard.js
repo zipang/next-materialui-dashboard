@@ -12,9 +12,10 @@ const useWizardStyles = (customStyles = {}) =>
 	makeStyles((theme) => ({
 		viewport: {
 			overflow: "hidden",
+			width: "100%",
 			display: "flex",
-			height: "100%",
-			width: "100%"
+			flexGrow: "1",
+			borderBottom: "1px solid #aaa"
 		},
 		formContainer: {
 			display: "flex",
@@ -25,7 +26,7 @@ const useWizardStyles = (customStyles = {}) =>
 			alignContent: "flex-start",
 			flexWrap: "wrap",
 			padding: "0 1rem",
-			backgroundColor: theme.palette.background.light
+			backgroundColor: theme.palette.background.lighter
 		},
 		formTitle: {
 			alignSelf: "flex-start",
@@ -77,7 +78,7 @@ const WizardContainer = ({ children }) => (
  * @param {*} param0
  */
 const WizardViewport = ({ classes, step, data, errors, onSubmit }) => (
-	<Box flexGrow={1} overflow="hidden" position="relative" height="100%" display="flex">
+	<Box className={classes.viewport}>
 		{step.help && (
 			<Box className={classes.helpContainer} style={step.getBackgroundImageStyle()}>
 				{step.displayHelp(data, errors, onSubmit)}

@@ -16,7 +16,9 @@ const useStyles = makeStyles((theme) => ({
 	},
 	paper: {
 		background: "white",
-		minHeight: "90vh"
+		display: "grid",
+		minHeight: "50vh",
+		margin: "auto 10vw"
 	}
 }));
 
@@ -43,7 +45,7 @@ const CenteredPaperSheet = ({ fullPage = true, fullHeight = false, children }) =
 			)}
 		>
 			<Grid item>
-				<Paper square style={{ display: "grid", minHeight: "70vh" }}>
+				<Paper square elevation={5} className={styles.paper}>
 					{children}
 				</Paper>
 			</Grid>
