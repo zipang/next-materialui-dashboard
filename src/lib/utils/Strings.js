@@ -52,6 +52,21 @@ export const StringExtensions = {
 	replaceAll: function (ss, r) {
 		return this.split(ss).join(r);
 	},
+	/**
+	 * Split a string at given positions
+	 * @param  {Array<Integer>} positions
+	 * @return {Array<String>}
+	 */
+	splitAt: function (...positions) {
+		let start = 0;
+		let parts = positions.reduce((splitted, position) => {
+			splitted.push(this.substr(start, position - start));
+			start = position;
+			return splitted;
+		}, []);
+		parts.push(this.substr(start)); // what's
+		return parts;
+	},
 	startsWith: function (...prefixes) {
 		for (let i = 0; i < prefixes.length; ++i) {
 			if (this.lastIndexOf(prefixes[i], 0) === 0) return true;

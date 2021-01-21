@@ -1,4 +1,4 @@
-import React, { useState, createRef, useLayoutEffect } from "react";
+import React, { useState, createRef, useLayoutEffect, useEffect } from "react";
 import {
 	TextField,
 	Input as MaterialInput,
@@ -12,7 +12,6 @@ import {
 	FormControlLabel,
 	Grid
 } from "@material-ui/core";
-import { useRifm } from "rifm";
 import { useFormContext } from "react-hook-form";
 import { getProperty } from "@lib/utils/NestedObjects";
 import { StringExtensions } from "@lib/utils/Strings";
@@ -162,23 +161,15 @@ export const Formatted = ({
 	// We store 2 distinct values : the real one
 	// and the displayed (formatted) value for the visible TextField
 	const [displayedValue, setDisplayedValues] = useState(load(value));
-	const onChange = (userInput) => {
-		setValue(name, (value = serialize(userInput)));
-		setDisplayedValues(format(userInput));
+	const onChange = (evt) => {
+		const userInput = format(evt.target.value);
+		setDisplayedValues(userInput);
+		setValue(name, (value = serialize(userInput[0])));
+		console.log(`Serialize ${userInput[0]} to ${value}`);
 		if (errorMessage) {
 			trigger(); // Show when the input become valid again
 		} // we don't have the original event here
 	};
-	const rifmParams = {
-		value: displayedValue,
-		mask: { mask },
-		onChange,
-		format
-	};
-	if (typeof append === "function") {
-		rifmParams.append = append;
-	}
-	const rifm = useRifm(rifmParams);
 
 	useLayoutEffect(() => {
 		value = watch(name) || "";
@@ -187,6 +178,16 @@ export const Formatted = ({
 			inputRef.current.focus();
 		}
 	}, [name]);
+
+	useEffect(() => {
+		if (Array.isArray(displayedValue)) {
+			inputRef.current.selectionStart = inputRef.current.selectionEnd =
+				displayedValue[0].length;
+		} else {
+			inputRef.current.selectionStart = inputRef.current.selectionEnd =
+				displayedValue.length;
+		}
+	}, [displayedValue]);
 
 	// We create 2 synchronized input fields :
 	// one for the displayed and formatted value that is not tied to form data because it has no name
@@ -197,8 +198,10 @@ export const Formatted = ({
 			inputRef={inputRef}
 			placeholder={placeHolder}
 			label={label}
-			value={rifm.value}
-			onChange={rifm.onChange}
+			value={
+				Array.isArray(displayedValue) ? displayedValue.join("") : displayedValue
+			}
+			onChange={onChange}
 			autoFocus={autoFocus}
 			error={Boolean(errorMessage)}
 			helperText={helperText || errorMessage}
@@ -272,7 +275,29 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 
 export const formatPercent = (str = "") => {
 	const number = getDigitsOnly(str + "").substr(0, 3);
-	return number.length ? `${number}%` : "";
+	return number.length ? [number, "%"] : "";
+};
+
+/**
+ * Generate an input formatter of digits only from a mask
+ * @example
+ *   const frenchTelMask = applyNumericMask("+(99) 9 99 99 99 99")
+ *   const frenchDateMask = applyNumericMask("99/99/9999")
+ * @param {String} mask Uses '9' to indicate the position of a digit ([0-9])
+ * @return {Function} Usable as 'format' property inside Input.Formatter, Input.Date, Input.Tel..
+ */
+export const applyNumericMask = (mask = "99 99 99 99") => (str = "") => {
+	const howManyDigits = mask.count("9");
+	const validInput = getDigitsOnly(str).substr(0, howManyDigits);
+	const digits = validInput.split("");
+	const formatted = mask
+		.split("")
+		.map((maskLetter) => {
+			return maskLetter === "9" ? digits.shift() || "_" : maskLetter;
+		})
+		.join("");
+	const cursorPosition = formatted.indexOf("_"); // where is the rest of the mask ?
+	return cursorPosition === -1 ? [formatted, ""] : formatted.splitAt(cursorPosition);
 };
 
 /**
@@ -292,40 +317,6 @@ export const formatISODate = (dateFormat = "dd/mm/yyyy") => (str = "") => {
 		.replace("yyyy", year);
 	console.log(`Formatting ${str} to ${formatted}`);
 	return formatted;
-};
-
-/**
- * Generate an input date formatter from a dateFormat
- * @example
- *   const frenchDateFormatter = dateFormatter("dd/mm/yyyy")
- *   const usDateFormatter = dateFormatter("mm-dd-yyyy")
- * @param {String} dateFormat Uses d, m or y to indicate the relative position of day month or year digit
- * @return {Function} Usable inside Input.Date as the input formatter
- */
-export const dateFormatter = (dateFormat = "dd/mm/yyyy") => (str = "") => {
-	const digits = getDigitsOnly(str).substr(0, 8);
-	const inputLength = digits.length;
-	if (!inputLength) return "";
-	let decalage = 1;
-	return digits
-		.split("")
-		.reduce(
-			(prev, cur, i) =>
-				`${prev}${cur}` +
-				(i !== inputLength - 1 && isDateSeparator(dateFormat[i + decalage])
-					? dateFormat[i + decalage++]
-					: ""),
-			""
-		);
-};
-export const dateSeparatorAppender = (dateFormat = "dd/mm/yyyy") => (str = "") => {
-	if (str.length === dateFormat.length) return str;
-	const nextCharInFormat = dateFormat[str.length];
-	if (isDateSeparator(nextCharInFormat)) {
-		return str + nextCharInFormat;
-	} else {
-		return str;
-	}
 };
 
 /**
@@ -356,6 +347,7 @@ export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => 
 			day: ""
 		}
 	);
+	console.log(`serializeDate ${formattedDate} to "${year}-${month}-${day}"`);
 	return `${year}-${month}-${day}`;
 };
 
@@ -370,9 +362,8 @@ export const Date = ({ dateFormat = "dd/mm/yyyy", size = 10, ...props }) => {
 	};
 	return (
 		<Formatted
-			format={dateFormatter(dateFormat)}
+			format={applyNumericMask(dateFormat.replace(/[dmy]/g, "9"))}
 			load={formatISODate(dateFormat)}
-			// append={dateSeparatorAppender(dateFormat)}
 			serialize={serializeDate(dateFormat)}
 			validation={validation}
 			size={size}
@@ -380,27 +371,6 @@ export const Date = ({ dateFormat = "dd/mm/yyyy", size = 10, ...props }) => {
 			{...props}
 		/>
 	);
-};
-
-/**
- * Generate an input formatter of digits only from a mask
- * @example
- *   const frenchTelMask = applyNumericMask("+(99) 9 99 99 99 99")
- *   const frenchDateMask = applyNumericMask("99/99/9999")
- * @param {String} mask Uses '9' to indicate the position of a digit ([0-9])
- * @return {Function} Usable inside Input.Formatter, Input.Date, Input.Tel..
- */
-export const applyNumericMask = (mask = "99 99 99 99") => (str = "") => {
-	const howManyDigits = mask.count("9");
-	const validInput = getDigitsOnly(str).substr(0, howManyDigits);
-	const digits = validInput.split("");
-	const formatted = mask
-		.split("")
-		.map((maskLetter, i) => {
-			return maskLetter === "9" ? digits.shift() || "_" : maskLetter;
-		})
-		.join("");
-	return formatted;
 };
 
 /**
@@ -415,9 +385,9 @@ export const Tel = ({
 	const validation = {
 		validate: {
 			isComplete: (formatted) =>
-				formatted.count("9") === mask.count("9") ? true : "No incomplet",
+				formatted.length === format.length ? true : "No incomplet",
 			invalid: (formatted) =>
-				!["01", "06", "07"].includes(formatted.substr(0, 2))
+				["01", "06", "07"].includes(formatted.substr(0, 2))
 					? true
 					: "No invalide (ne commence pas par 01, 06, 07)"
 		}
@@ -425,7 +395,6 @@ export const Tel = ({
 	return (
 		<Formatted
 			format={applyNumericMask(format)}
-			mask={true}
 			validation={validation}
 			size={14}
 			placeHolder={placeHolder}
