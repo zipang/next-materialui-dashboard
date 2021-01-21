@@ -1,4 +1,4 @@
-import Input from "@components/forms/Input";
+import Input, { registerInput } from "@components/forms/Input";
 import { getProperty } from "@lib/utils/NestedObjects";
 import { useState } from "react";
 import APIForm from "../APIForm";
@@ -27,6 +27,17 @@ export const formatSiret = (str = "") => {
 		""
 	);
 };
+
+export const SiretInput = ({ ...props }) => (
+	<Input.Formatted
+		label="No de Siret"
+		name="siret"
+		readOnly={true}
+		format={formatSiret}
+		serialize={unformatSiret}
+		validation={{ required: "Saisissez un no de SIRET valide (14 chiffres)" }}
+	/>
+);
 
 /**
  * Take the format returned by /siret/search API
