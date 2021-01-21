@@ -2,7 +2,7 @@ import { useAuthentication } from "@components/AuthenticationProvider";
 import { SiretSearchForm } from "./SiretSearch";
 import Wizard from "@forms/Wizard";
 
-const steps = [
+export const steps = [
 	{
 		id: "step-01-siret-search",
 		title: "Recherche de l'organisme par son no de SIRET",
@@ -301,8 +301,241 @@ Puis indiquez vos numéros d'agrémentation.`
 		]
 	},
 	{
+		id: "step-05-certifications",
+		title: "Vos certifications",
+		help: {
+			description: `Indiquez les certifications obtenues
+et celles que vous souhaiteriez mettre en oeuvre.`
+		},
+		fields: [
+			{
+				label: "CERTIFICATION AFNOR",
+				type: "group",
+				fields: [
+					{
+						name: "certifications.afnor.en_cours",
+						label: "En Cours",
+						type: "checkbox",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.afnor.date",
+						label: "Date",
+						type: "date",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.afnor.no",
+						label: "No",
+						size: 6 / 12
+					}
+				]
+			},
+			{
+				label: "CERTIFICATION QUALICERT",
+				type: "group",
+				fields: [
+					{
+						name: "certifications.qualicert.en_cours",
+						label: "En Cours",
+						type: "checkbox",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.qualicert.date",
+						label: "Date",
+						type: "date",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.qualicert.no",
+						label: "No",
+						size: 6 / 12
+					}
+				]
+			},
+			{
+				label: "CERTIFICATION QUALISAP",
+				type: "group",
+				fields: [
+					{
+						name: "certifications.qualisap.en_cours",
+						label: "En Cours",
+						type: "checkbox",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.qualisap.date",
+						label: "Date",
+						type: "date",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.qualisap.no",
+						label: "No",
+						size: 6 / 12
+					}
+				]
+			},
+			{
+				label: "CERTIFICATION CAP'HANDEO",
+				type: "group",
+				fields: [
+					{
+						name: "certifications.cap_handeo.en_cours",
+						label: "En Cours",
+						type: "checkbox",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.cap_handeo.date",
+						label: "Date",
+						type: "date",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.cap_handeo.no",
+						label: "No",
+						size: 6 / 12
+					}
+				]
+			}
+		]
+	},
+	{
+		id: "step-06-syneos",
+		title: "Le Label Syneos",
+		help: {
+			description: `Indiquez les clés obtenues
+et celles que vous souhaiteriez mettre en oeuvre.`
+		},
+		fields: [
+			{
+				label: "LABEL SYNEOS",
+				type: "group",
+				fields: [
+					{
+						name: "certifications.syneos.en_cours",
+						label: "En Cours",
+						type: "checkbox",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.syneos.date",
+						label: "Date",
+						type: "date",
+						size: 3 / 12
+					},
+					{
+						name: "certifications.syneos.no",
+						label: "No",
+						size: 6 / 12
+					},
+					{
+						name: "certifications.syneos.cles",
+						label: "Clés obtenues",
+						type: "checkboxes",
+						options: {
+							cle1: "Clé 1",
+							cle2: "Clé 2",
+							cle3: "Clé 3",
+							cle4: "Clé 4",
+							cle5: "Clé 5",
+							cle6: "Clé 6"
+						}
+					}
+				]
+			},
+			{
+				name: "certifications.syneos.a_mettre_en_place",
+				label: "Je souhaite mettre en place ce label",
+				type: "checkbox"
+			},
+			{
+				name: "certifications.syneos.commentaires",
+				label: "Commentaires",
+				placeHolder: "Souhaitez-vous obtenir une ou des clés supplémentaires ?"
+			}
+		]
+	},
+	{
+		id: "step-effectifs",
+		title: "Vos Effectifs",
+		help: {
+			description: `Indiquez vos effectifs en distinguant bien :
+l'effectif total par catégorie dans la colonne de gauche
+les équivalents temps plein (ETP) dans la colonne de droite`
+		},
+		fields: [
+			{
+				label: "Nombre de salariés",
+				type: "group",
+				fields: [
+					{
+						name: "effectifs.total",
+						label: "Total",
+						type: "integer",
+						size: 1 / 2,
+						defaultValue: 0
+					},
+					{
+						name: "effectifs.etp",
+						label: "ETP",
+						type: "integer",
+						size: 1 / 2,
+						defaultValue: 0
+					}
+				]
+			},
+			{
+				label: "Nombre d'intervenants",
+				type: "group",
+				fields: [
+					{
+						name: "effectifs.intervenants",
+						label: "Total",
+						type: "integer",
+						size: 1 / 2,
+						defaultValue: 0
+					},
+					{
+						name: "effectifs.intervenants_etp",
+						label: "ETP",
+						type: "integer",
+						size: 1 / 2,
+						defaultValue: 0
+					}
+				]
+			},
+			{
+				label: "Nombre de cadres intermédiaires",
+				type: "group",
+				fields: [
+					{
+						name: "effectifs.cadres_intermediaires",
+						label: "Total",
+						type: "integer",
+						size: 1 / 2,
+						defaultValue: 0
+					},
+					{
+						name: "effectifs.cadres_intermediaires_etp",
+						label: "ETP",
+						type: "integer",
+						size: 1 / 2,
+						defaultValue: 0
+					}
+				]
+			}
+		]
+	},
+	{
 		id: "step-activite-beneficiaires",
 		title: "Votre activité (ratios) et vos bénéficiaires",
+		help: {
+			description: `Indiquez tout d'abord les ratios (%) d'activité dans chaque catégorie d'intervention.
+Indiquez ensuite les effectifs (nb de personnes bénéficiaires) pour ces mêmes catégories d'intervention.`
+		},
 		fields: [
 			{
 				label: "Votre Activité (ratios)",
@@ -413,9 +646,9 @@ Puis indiquez vos numéros d'agrémentation.`
 		]
 	},
 	{
-		id: "step-domaines-activites",
-		title: "Domaines d'activité",
-		description: `Cochez chacun des domaines d'activité qui s'applique.`,
+		id: "step-domaines-intervention",
+		title: "Domaines d'intervention",
+		description: `Cochez chacun des domaines d'intervention qui s'applique à votre activité.`,
 		fields: [
 			{
 				name: "domaines.codes",
