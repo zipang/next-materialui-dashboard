@@ -47,6 +47,7 @@ const Text = ({
 	required = false,
 	autoComplete = false,
 	autoFocus = false,
+	readOnly = false,
 	validation = {},
 	...moreProps
 }) => {
@@ -106,6 +107,9 @@ const Text = ({
 			autoFocus={autoFocus}
 			helperText={errorMessage}
 			fullWidth={true}
+			inputProps={{
+				readOnly
+			}}
 			{...mergedProps}
 		/>
 	);
@@ -254,12 +258,16 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 	};
 	const [min, max] = plage;
 	if (typeof min === "number") {
-		validation.min = (str) =>
-			Number.parseInt(str) >= min || `Ce nombre doit être plus grand que ${min}`;
+		validation.min = {
+			validate: (str) =>
+				Number.parseInt(str) >= min || `Ce nombre doit être plus grand que ${min}`
+		};
 	}
 	if (typeof max === "number") {
-		validation.max = (str) =>
-			Number.parseInt(str) <= max || `Ce nombre doit être plus petit que ${max}`;
+		validation.max = {
+			validate: (str) =>
+				Number.parseInt(str) <= max || `Ce nombre doit être plus petit que ${max}`
+		};
 	}
 	return (
 		<Formatted
@@ -267,7 +275,7 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 			serialize={serializeInteger}
 			validation={validation}
 			inputType="number"
-			size="8"
+			inputProps={{ style: { textAlign: "right" } }}
 			{...props}
 		/>
 	);
@@ -301,12 +309,12 @@ export const applyNumericMask = (mask = "99 99 99 99") => (str = "") => {
 };
 
 /**
- * Everything that is not a letter indicating the day, month or year digit
- * is considered as a separator in the date format
- * @param {String} char a single letter part of the date format
+ * Take an ISO date (eg. '2000-12-31')
+ * and return it in the appropriate format
+ * where 'dd' 'mm' 'yyyy' represent the position of 'day' 'month' and 'year' digits
+ * @param {String} dateFormat desired output format
+ * @return {Function} formatter function
  */
-const isDateSeparator = (char) => !/[dmy]/i.test(char);
-
 export const formatISODate = (dateFormat = "dd/mm/yyyy") => (str = "") => {
 	if (!str) return "";
 
@@ -387,7 +395,7 @@ export const Tel = ({
 		...validation,
 		validate: {
 			invalid: (formatted) =>
-				formatted && formatted[0] === "0" ? true : "No invalide"
+				!formatted || formatted[0] === "0" ? true : "No invalide"
 		}
 	};
 	return (
@@ -407,7 +415,7 @@ export const Tel = ({
  * @param {InputProps} props
  */
 export const Percent = ({ ...props }) => (
-	<Integer format={formatPercent} plage={[0, 100]} size={3} {...props} />
+	<Integer format={formatPercent} plage={[0, 100]} size={10} {...props} />
 );
 
 /**
@@ -433,6 +441,7 @@ export const Url = ({ validation = {}, ...props }) => {
 		...validation,
 		validate: {
 			invalid: (val) => {
+				if (!val) return true;
 				try {
 					new URL(val);
 					return true;
@@ -640,7 +649,14 @@ export const SelectBox = ({
 	...moreProps
 }) => {
 	// Find the parent form to register our input
-	const { registerField, watch, errors, setValue, validate } = useFormContext();
+	const {
+		registerField,
+		watch,
+		errors,
+		setValue,
+		trigger,
+		validate
+	} = useFormContext();
 	const errorMessage = getProperty(errors, `${name}.message`, "");
 	const inputRef = createRef();
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
