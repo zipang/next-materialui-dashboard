@@ -42,7 +42,7 @@ const CenteredPaperSheet = ({ fullPage = true, fullHeight = false, children }) =
 				fullHeight && styles.fullHeight
 			)}
 		>
-			<Grid item xs={10} md={8}>
+			<Grid item>
 				<Paper square style={{ display: "grid", minHeight: "70vh" }}>
 					{children}
 				</Paper>

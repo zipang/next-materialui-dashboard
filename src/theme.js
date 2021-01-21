@@ -133,15 +133,20 @@ theme = {
 				zIndex: 10
 			},
 			shrink: {
-				transform: "translate(0.9em, -0.5em) scale(0.75)"
+				transform: "translate(0.9em, -0.1em) scale(0.75)"
 			}
 		},
 		MuiSelect: {
 			root: {
-				//margin: "0.5em 0 0.25em 0"
+				margin: "0"
 			},
 			select: {
 				minWidth: "30ch"
+			},
+			selectMenu: {
+				minHeight: "1.8em",
+				padding: "0.5em 0.5em 0 0.5em",
+				fontWeight: 800
 			}
 		},
 

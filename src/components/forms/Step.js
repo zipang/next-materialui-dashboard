@@ -113,7 +113,7 @@ Step.prototype = {
 				default:
 					const { type = "text", size = 1, ...fieldProps } = field;
 					return (
-						<Grid item sm={Number(size) * 12} style={{ padding: "0 1em" }}>
+						<Grid item sm={Number(size) * 12} style={{ padding: "0 0.5em" }}>
 							<Input
 								key={`${this.id}-input-${i}`}
 								type={type}
