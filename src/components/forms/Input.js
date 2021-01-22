@@ -133,6 +133,7 @@ export const Formatted = ({
 	required = false,
 	autoFocus = false,
 	validation = {},
+	defaultValue = "",
 	size = 20,
 	placeHolder = "",
 	...moreProps
@@ -161,7 +162,7 @@ export const Formatted = ({
 		register(name, validation);
 	}
 
-	let value = watch(name) || "";
+	let value = watch(name) || defaultValue;
 
 	// We store 2 distinct values : the real one
 	// and the displayed (formatted) value for the visible TextField
@@ -253,10 +254,21 @@ const serializeInteger = (str = "") =>
  * or with a custom formatter
  * Optionally provide a plage for min and max values
  */
-export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
+export const Integer = ({
+	separator = " ",
+	required = false,
+	defaultValue,
+	format,
+	plage = [],
+	...props
+}) => {
 	const validation = {
 		valueAsNumber: true
 	};
+	if (required) {
+		validation.required = "Saisissez un chiffre";
+		if (defaultValue === undefined) defaultValue = 0;
+	}
 	const [min, max] = plage;
 	if (typeof min === "number") {
 		validation.min = {
@@ -275,6 +287,7 @@ export const Integer = ({ separator = " ", format, plage = [], ...props }) => {
 			format={typeof format === "function" ? format : formatInteger(separator)}
 			serialize={serializeInteger}
 			validation={validation}
+			defaultValue={defaultValue}
 			inputType="number"
 			inputProps={{ style: { textAlign: "right" } }}
 			{...props}
@@ -681,7 +694,11 @@ export const SelectBox = ({
 	let value = watch(name) || "";
 
 	return (
-		<FormControl margin="dense" error={Boolean(errorMessage)}>
+		<FormControl
+			margin="dense"
+			style={{ marginTop: 0 }}
+			error={Boolean(errorMessage)}
+		>
 			<InputLabel id={`${name}-label`}>{label}</InputLabel>
 			<Select
 				id={name}
