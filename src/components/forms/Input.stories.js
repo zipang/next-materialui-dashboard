@@ -146,24 +146,19 @@ SelectBoxInputWithHashmap.argTypes = {
 	}
 };
 
-export const CheckBoxInput = (args) => (
+export const SwitchInput = (args) => (
 	<StepForm mode="onChange">
-		<Input.CheckBox
+		<Input.Switch name="activated" label="Activation" />
+		<Input.Switch
 			autoFocus={true}
-			name="certifications"
-			valueIfChecked="gold"
-			label="Gold Crown"
+			name="power"
+			values={["ON", "OFF"]}
+			label="On/Off"
 		/>
-		<Input.CheckBox
-			name="certifications"
-			valueIfChecked="green"
-			label="Green Label"
-		/>
-		<Input.CheckBox name="certifications" valueIfChecked="bio" label="Bio Ethique" />
 	</StepForm>
 );
-CheckBoxInput.args = {};
-CheckBoxInput.argTypes = {};
+SwitchInput.args = {};
+SwitchInput.argTypes = {};
 
 export const CheckBoxesInput = (args) => (
 	<StepForm mode="onChange">

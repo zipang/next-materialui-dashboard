@@ -9,6 +9,7 @@ import {
 	FormControl,
 	FormHelperText,
 	Checkbox as MaterialCheckbox,
+	Switch as MaterialSwitch,
 	FormControlLabel,
 	Grid
 } from "@material-ui/core";
@@ -464,10 +465,10 @@ export const Password = ({ ...props }) => <Text type="password" {...props} />;
  * This checkbox
  * @param {*} param0
  */
-export const CheckBox = ({
+export const Switch = ({
 	name = "checkbox",
 	label = "Y/N",
-	valueIfChecked = "Y",
+	values = [true, false],
 	autoFocus = false,
 	...moreProps
 }) => {
@@ -484,12 +485,12 @@ export const CheckBox = ({
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	const onChange = (evt) => {
-		setValue(name, (value = evt.target.checked ? valueIfChecked : undefined));
-		// if (evt.key === "Enter" && !evt.shiftKey) {
-		// 	validate();
-		// }
+		setValue(name, (value = evt.target.checked ? values[0] : values[1]));
+		if (evt.key === "Enter" && !evt.shiftKey) {
+			validate(name);
+		}
 	};
-	let value = watch(name) || "";
+	let value = watch(name) || values[1];
 	if (registerField) {
 		registerField({ name, ref: inputRef, validation: {} });
 	} else {
@@ -506,11 +507,10 @@ export const CheckBox = ({
 	return (
 		<FormControlLabel
 			control={
-				<MaterialCheckbox
+				<MaterialSwitch
 					name={name}
-					ref={inputRef}
-					value={valueIfChecked}
-					checked={value === valueIfChecked}
+					inputRef={inputRef}
+					checked={value === values[0]}
 					onChange={onChange}
 				/>
 			}
@@ -752,8 +752,8 @@ const Input = ({ type, ...fieldProps }) => {
 	switch (type) {
 		case "text":
 			return <Text {...fieldProps} />;
-		case "checkbox":
-			return <CheckBox {...fieldProps} />;
+		case "switch":
+			return <Switch {...fieldProps} />;
 		case "checkboxes":
 			return <CheckBoxes {...fieldProps} />;
 		case "select":
@@ -785,7 +785,7 @@ const Input = ({ type, ...fieldProps }) => {
 // Allow to use <Input.Text ...> as well as <Input type="text" ...>
 Object.assign(Input, {
 	Text,
-	CheckBox,
+	Switch,
 	CheckBoxes,
 	Email,
 	Tel,

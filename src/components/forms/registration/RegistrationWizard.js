@@ -348,7 +348,7 @@ et celles que vous souhaiteriez mettre en oeuvre.`
 					{
 						name: "certifications.afnor.en_cours",
 						label: "En Cours",
-						type: "checkbox",
+						type: "switch",
 						size: 3 / 12
 					},
 					{
@@ -371,7 +371,7 @@ et celles que vous souhaiteriez mettre en oeuvre.`
 					{
 						name: "certifications.qualicert.en_cours",
 						label: "En Cours",
-						type: "checkbox",
+						type: "switch",
 						size: 3 / 12
 					},
 					{
@@ -394,7 +394,7 @@ et celles que vous souhaiteriez mettre en oeuvre.`
 					{
 						name: "certifications.qualisap.en_cours",
 						label: "En Cours",
-						type: "checkbox",
+						type: "switch",
 						size: 3 / 12
 					},
 					{
@@ -417,7 +417,7 @@ et celles que vous souhaiteriez mettre en oeuvre.`
 					{
 						name: "certifications.cap_handeo.en_cours",
 						label: "En Cours",
-						type: "checkbox",
+						type: "switch",
 						size: 3 / 12
 					},
 					{
@@ -450,7 +450,7 @@ et celles que vous souhaiteriez mettre en oeuvre.`
 					{
 						name: "certifications.syneos.en_cours",
 						label: "En Cours",
-						type: "checkbox",
+						type: "switch",
 						size: 3 / 12
 					},
 					{
@@ -482,7 +482,7 @@ et celles que vous souhaiteriez mettre en oeuvre.`
 			{
 				name: "certifications.syneos.a_mettre_en_place",
 				label: "Je souhaite mettre en place ce label",
-				type: "checkbox"
+				type: "switch"
 			},
 			{
 				name: "certifications.syneos.commentaires",
