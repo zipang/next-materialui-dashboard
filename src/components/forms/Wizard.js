@@ -26,7 +26,7 @@ const useWizardStyles = (customStyles = {}) =>
 			alignContent: "flex-start",
 			flexWrap: "wrap",
 			padding: "0 1rem",
-			backgroundColor: theme.palette.background.lighter
+			backgroundColor: theme.palette.background.light
 		},
 		formTitle: {
 			alignSelf: "flex-start",
@@ -58,6 +58,7 @@ const useWizardStyles = (customStyles = {}) =>
  * @field {Step[]} steps the array of steps that will be executed in sequence
  * @field {Object} initialData the initial data to render
  * @field {Number} [currentSlide=0] the current slide to render
+ * @field {Function} onComplete The function to call with the complete data payload (last step)
  */
 
 const WizardContainer = ({ children }) => (
@@ -65,8 +66,8 @@ const WizardContainer = ({ children }) => (
 		display="flex"
 		flexDirection="column"
 		alignItems="stretch"
-		height="100%"
-		width="100%"
+		// height="100%"
+		// width="100%"
 	>
 		{children}
 	</Box>
@@ -96,16 +97,7 @@ const WizardViewport = ({ classes, step, data, errors, onSubmit }) => (
 		)}
 	</Box>
 );
-/**
- * Being used inside a Slide component, the Display Step must forward a ref
- * @see https://material-ui.com/guides/composition/#caveat-with-refs
- */
-const DisplayStep = ({ step, data, onSubmit }) => (
-	<Box width="100%" height="100%">
-		<h2>{step.title}</h2>
-		{step.displayForm(data, onSubmit)}
-	</Box>
-);
+
 const WizardControls = memo(({ children }) => (
 	<Box display="flex" flexDirection="row" justifyContent="flex-end" padding="1rem">
 		{children}
@@ -131,11 +123,14 @@ const next = (state) => {
 const previous = (state) => {
 	return gotoSlide(state, state.currentSlide - 1);
 };
+const onComplete = (data) => {
+	console.log(`Last step completed`, JSON.stringify(data, null, "\t"));
+};
 
 /**
  * Receives the steps and the state machine altogether
  */
-const InitWizard = ({ id, steps = [] }) => {
+const InitWizard = ({ id, steps = [], onComplete }) => {
 	const classes = useWizardStyles();
 	const eb = useEventBus();
 	const { state, actions } = useStateMachine();
@@ -186,7 +181,9 @@ const InitWizard = ({ id, steps = [] }) => {
 		<WizardContainer>
 			<WizardViewport
 				classes={classes}
-				step={new Step(steps[currentSlide])}
+				step={
+					new Step(steps[currentSlide], `${currentSlide + 1}/${steps.length}`)
+				}
 				data={data}
 				onSubmit={validateStep}
 			/>
@@ -212,7 +209,7 @@ const InitWizard = ({ id, steps = [] }) => {
 					startIcon={<SvgIcon name="Save" />}
 					onClick={sendData}
 				>
-					Enregistrer
+					Valider
 				</Button>
 			</WizardControls>
 		</WizardContainer>

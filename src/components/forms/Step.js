@@ -1,4 +1,6 @@
 import { Box, Grid } from "@material-ui/core";
+import ReactMarkdown from "react-markdown";
+import breaks from "remark-breaks";
 import Input from "@forms/Input";
 import StepForm from "./StepForm";
 import GroupLabel from "./GroupLabel";
@@ -35,7 +37,10 @@ import { useEffect } from "react";
  * From a flat description of the required fields
  * @param {StepDef} step
  */
-function Step({ id, title, help = false, fields = false, displayForm = false }) {
+function Step(
+	{ id, title, help = false, fields = false, displayForm = false },
+	position = ""
+) {
 	// Validate that all required fields are provided
 	if (!id || !title) {
 		throw new TypeError(
@@ -48,7 +53,7 @@ function Step({ id, title, help = false, fields = false, displayForm = false }) 
 		);
 	}
 	// It's ok : assign all
-	Object.assign(this, { id, title, help, fields });
+	Object.assign(this, { id, title, help, fields }, { position });
 	if (typeof displayForm === "function") {
 		this.displayForm = displayForm.bind(this);
 	} else if (!fields) {
@@ -57,15 +62,25 @@ function Step({ id, title, help = false, fields = false, displayForm = false }) 
 	}
 }
 
+const _BACKGROUND_IMAGE_STYLE = {
+	backgroundRepeat: "no-repeat",
+	backgroundPosition: "center"
+};
 Step.prototype = {
 	getBackgroundImageStyle: function () {
 		const backgroundImage = this.help?.backgroundImage;
 		if (!backgroundImage) {
 			return {};
 		} else if (backgroundImage.startsWith("http")) {
-			return { backgroundImage: `url(${backgroundImage})` };
+			return {
+				..._BACKGROUND_IMAGE_STYLE,
+				backgroundImage: `url(${backgroundImage})`
+			};
 		} else {
-			return { backgroundImage: `url(/img/${backgroundImage})` };
+			return {
+				..._BACKGROUND_IMAGE_STYLE,
+				backgroundImage: `url(/img/${backgroundImage})`
+			};
 		}
 	},
 	displayHelp: function (data, errors, onSubmit) {
@@ -82,7 +97,7 @@ Step.prototype = {
 		return (
 			<div>
 				<h2>{this.title}</h2>
-				<p>{description}</p>
+				<ReactMarkdown plugins={[breaks]}>{description}</ReactMarkdown>
 			</div>
 		);
 	},
@@ -99,7 +114,9 @@ Step.prototype = {
 				customStyles={{ minWidth: "40em" }}
 				rerender={new Date()}
 			>
-				{!this.help && <h2>{this.description}</h2>}
+				<h2>{`${this.help ? "" : this.description + " - "}Etape ${
+					this.position
+				}`}</h2>
 				<Grid container>{this.displayFields(this.fields)}</Grid>
 			</StepForm>
 		);
