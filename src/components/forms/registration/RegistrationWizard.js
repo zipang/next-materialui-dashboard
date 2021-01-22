@@ -237,9 +237,10 @@ Puis indiquez vos numéros d'agrémentation.`
 						name: "declaration.no",
 						label: "No",
 						size: 1 / 2,
+						placeHolder: "SAP123456789",
 						validation: {
 							pattern: {
-								value: /^SAP(\d){9}/,
+								value: /^SAP(\d){9}$/,
 								message:
 									"Le no de déclaration doit commencer par SAP suivi de 9 chiffres.\n Exemple: SAP123456789"
 							}
@@ -261,9 +262,10 @@ Puis indiquez vos numéros d'agrémentation.`
 						name: "agrement.no",
 						label: "No",
 						size: 1 / 2,
+						placeHolder: "SAP123456789",
 						validation: {
 							pattern: {
-								value: /^SAP(\d){9}/,
+								value: /^SAP(\d){9}$/,
 								message:
 									"Le no d'agrément doit commencer par SAP suivi de 9 chiffres.\n Exemple: SAP123456789"
 							}
@@ -284,12 +286,13 @@ Puis indiquez vos numéros d'agrémentation.`
 					{
 						name: "autorisation.no",
 						label: "No",
+						placeHolder: "2020-999",
 						size: 1 / 2,
 						validation: {
 							pattern: {
-								value: /(\d){4}-(\d){2-3}/,
+								value: /^(\d){4}-(\d){2,3}$/,
 								message:
-									"Le no d'autorisation doit commencer par une année, un tiret puis 2 ou 3 chiffres.\n Exemple : 2018-34"
+									"Le n° d'autorisation doit commencer par une année, un tiret puis 2 ou 3 chiffres.\n Exemple : 2018-34"
 							}
 						}
 					}
