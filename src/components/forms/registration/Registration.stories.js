@@ -80,3 +80,12 @@ export const SystemesGestion = (args) => (
 		<Wizard steps={steps.filter(({ id }) => id === "step-systemes-gestion")} />
 	</CenteredPaperSheet>
 );
+
+/**
+ * Step Sample
+ */
+export const LastStep = (args) => (
+	<CenteredPaperSheet>
+		<Wizard steps={steps.filter(({ id }) => id === "step-registration-recap")} />
+	</CenteredPaperSheet>
+);
