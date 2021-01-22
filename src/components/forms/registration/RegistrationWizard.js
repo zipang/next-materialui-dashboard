@@ -15,8 +15,8 @@ Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à to
 	},
 	{
 		id: "step-01-siret-search",
-		title: "Recherche de l'organisme par son no de SIRET",
-		description: "Entrez le no de Siret et cliquez sur Rechercher",
+		title: "Recherche de l'organisme par son N° de SIRET",
+		description: "Entrez le n° de Siret et cliquez sur Rechercher",
 		displayForm: (data, onSubmit) => <SiretSearchForm onSubmit={onSubmit} />
 	},
 	{

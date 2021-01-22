@@ -133,7 +133,7 @@ export const Formatted = ({
 	required = false,
 	autoFocus = false,
 	validation = {},
-	defaultValue = "",
+	defaultValue,
 	size = 20,
 	placeHolder = "",
 	...moreProps
@@ -171,14 +171,13 @@ export const Formatted = ({
 		const userInput = format(evt.target.value);
 		setDisplayedValues(userInput);
 		setValue(name, (value = serialize(userInput[0])));
-		console.log(`Serialize ${userInput[0]} to ${value}`);
 		if (errorMessage) {
 			trigger(); // Show when the input become valid again
 		} // we don't have the original event here
 	};
 
 	useLayoutEffect(() => {
-		value = watch(name) || "";
+		value = watch(name) || defaultValue;
 		if (autoFocus || errorMessage) {
 			console.log(`Focus on ${name} (${errorMessage})`);
 			inputRef.current.focus();
@@ -189,7 +188,7 @@ export const Formatted = ({
 		if (Array.isArray(displayedValue)) {
 			inputRef.current.selectionStart = inputRef.current.selectionEnd =
 				displayedValue[0].length;
-		} else {
+		} else if (displayedValue && displayedValue.length) {
 			inputRef.current.selectionStart = inputRef.current.selectionEnd =
 				displayedValue.length;
 		}
@@ -234,6 +233,7 @@ export const getDigitsOnly = (str = "") => str.replace(/[^\d]+/gi, "");
  *   formatInteger(" ")(12345678) => "12 345 678"
  */
 const formatInteger = (sep = " ") => (str = "") => {
+	console.log(`Formatting integer input : `, str);
 	const number = getDigitsOnly(str + "");
 	if (number === "" || sep === "") return number;
 	const len = number.length;
@@ -246,8 +246,8 @@ const formatInteger = (sep = " ") => (str = "") => {
 	);
 };
 
-const serializeInteger = (str = "") =>
-	str.length ? Number.parseInt(getDigitsOnly(str)) : "";
+const serializeInteger = (defaultValue = 0) => (str) =>
+	typeof str === "string" ? Number.parseInt(getDigitsOnly(str)) : defaultValue;
 
 /**
  * Display a number with thousands separator like `1 000 000 000`
@@ -266,26 +266,35 @@ export const Integer = ({
 		valueAsNumber: true
 	};
 	if (required) {
-		validation.required = "Saisissez un chiffre";
+		validation.isNumber = {
+			validate: (val) => {
+				console.log(`Validating Integer Input for ${val}`);
+				if (parseInt(val) === NaN) {
+					return "Saisissez un chiffre";
+				} else {
+					return true;
+				}
+			}
+		};
 		if (defaultValue === undefined) defaultValue = 0;
 	}
 	const [min, max] = plage;
 	if (typeof min === "number") {
 		validation.min = {
 			validate: (str) =>
-				Number.parseInt(str) >= min || `Ce nombre doit être plus grand que ${min}`
+				parseInt(str) >= min || `Ce nombre doit être plus grand que ${min}`
 		};
 	}
 	if (typeof max === "number") {
 		validation.max = {
 			validate: (str) =>
-				Number.parseInt(str) <= max || `Ce nombre doit être plus petit que ${max}`
+				parseInt(str) <= max || `Ce nombre doit être plus petit que ${max}`
 		};
 	}
 	return (
 		<Formatted
 			format={typeof format === "function" ? format : formatInteger(separator)}
-			serialize={serializeInteger}
+			serialize={serializeInteger(defaultValue)}
 			validation={validation}
 			defaultValue={defaultValue}
 			inputType="number"
@@ -765,7 +774,6 @@ export const registerInput = (name, render) => {
 };
 
 const Input = ({ type, ...fieldProps }) => {
-	console.log(`Generating input ${type}`, fieldProps);
 	switch (type) {
 		case "text":
 			return <Text {...fieldProps} />;
