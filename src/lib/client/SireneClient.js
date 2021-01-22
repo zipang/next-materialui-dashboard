@@ -13,9 +13,9 @@ export const getOrganismeBySiret = async (siret) => {
 
 	const apiEntryPoint = `https://entreprise.data.gouv.fr/api/sirene/v3/etablissements/${siret}`;
 
-	if (!process.env.SIRENE_API_TOKEN) {
-		throw new Error(`Le Token pour l'API Sirene n'a pas été trouvé`);
-	}
+	// if (!process.env.SIRENE_API_TOKEN) {
+	// 	throw new Error(`Le Token pour l'API Sirene n'a pas été trouvé`);
+	// }
 
 	const resp = await fetch(apiEntryPoint, {
 		method: "GET",
