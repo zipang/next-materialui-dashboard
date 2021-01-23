@@ -1,15 +1,20 @@
 import { getProperty } from "@lib/utils/NestedObjects";
-import { Name } from "quicktype/dist/quicktype-core";
 import { useContext, createContext } from "react";
 
 const FormValidatorContext = createContext();
 
 /**
+ * @typedef FieldReference Holds a reference to an input and its validation rules
+ * @field {inputRef} Reference to set focus on field whan validation fails
+ * @field {Object} validation rules
+ */
+/**
  * @typedef ValidationContext
- * @param {Function<Name, ref, validation>} register Register a field by its name
- * @param {Function<Name>} unregister Unregister a field by its name
- * @param {Function} validate Function to validate the current form data
- * @param {Object} errors
+ * @field {Function<name, inputRef, validation>} register Register a field by its name
+ * @field {Function<name>} unregister Unregister a field by its name
+ * @field {Function} validate Function to validate the current form data or a single field
+ * @field {Object} [data={}]
+ * @field {Object} [errors={}]
  */
 
 /**
@@ -20,6 +25,9 @@ export const FormValidatorProvider = ({ ...validationContext }) => (
 	<FormValidatorContext value={validationContext}>{children}</FormValidatorContext>
 );
 
+/**
+ * @return {ValidationContext}
+ */
 export const useFormValidationContext = () => {
 	const validationContext = useContext(FormValidatorContext);
 	if (!validationContext) {
@@ -30,6 +38,10 @@ export const useFormValidationContext = () => {
 	return validationContext;
 };
 
+/**
+ *
+ * @param {ValidationContextOptions} options
+ */
 const buildValidationContext = ({ mode = "onSubmit" }) => {
 	const fields = {};
 	const errors = {};
@@ -40,6 +52,7 @@ const buildValidationContext = ({ mode = "onSubmit" }) => {
 
 	const unregister = (name) => {
 		delete fields[name];
+		return { ...fields };
 	};
 
 	/**
@@ -68,7 +81,7 @@ const buildValidationContext = ({ mode = "onSubmit" }) => {
 		});
 	};
 
-	return { fields, errors, register, unregister, validate };
+	return { fields, data, errors, register, unregister, validate };
 };
 
 /**
