@@ -513,7 +513,9 @@ indiquez le avec un commentaire sur vos attentes.`
 		help: {
 			description: `Indiquez vos effectifs en distinguant bien :
 l'_effectif total_ par catégorie dans la colonne de gauche
-les _équivalents temps plein_ (ETP) dans la colonne de droite`
+les _équivalents temps plein_ (ETP) dans la colonne de droite.
+
+Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affaire de votre activité.`
 		},
 		fields: [
 			{
@@ -571,6 +573,26 @@ les _équivalents temps plein_ (ETP) dans la colonne de droite`
 						name: "effectifs.cadres_intermediaires_etp",
 						label: "ETP",
 						type: "integer",
+						size: 1 / 2,
+						required: true
+					}
+				]
+			},
+			{
+				label: "Synthèse",
+				type: "group",
+				fields: [
+					{
+						name: "activite.heures_cumulees",
+						label: "Volume d'heures cumulées",
+						type: "integer",
+						size: 1 / 2,
+						required: true
+					},
+					{
+						name: "activite.chiffre_affaires",
+						label: "Chiffre d'affaires",
+						type: "euros",
 						size: 1 / 2,
 						required: true
 					}
