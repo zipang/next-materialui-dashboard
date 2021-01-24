@@ -275,12 +275,12 @@ const requiredInt = (str) => {
 };
 const validateMin = (min) => (str) => {
 	const result =
-		parseInt(str) <= min ? true : `Ce nombre doit être plus petit que ${min}`;
+		parseInt(str) >= min ? true : `Ce nombre doit être plus grand que ${min}`;
 	console.log(`Validating Min Integer '${str}' => ${result}`);
 	return result;
 };
 const validateMax = (max) => (str) =>
-	parseInt(str) >= max ? true : `Ce nombre doit être plus grand que ${max}`;
+	parseInt(str) <= max ? true : `Ce nombre doit être plus petit que ${max}`;
 
 /**
  * Display a number with thousands separator like `1 000 000 000`
