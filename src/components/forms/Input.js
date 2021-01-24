@@ -153,8 +153,10 @@ export const Formatted = ({
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	// Pass the required attribute to the validation object
-	if (required === true) validation.required = `Saisissez un ${label}`;
-	if (validation.required) label += "*";
+	if (required === true) {
+		validation.required = `Saisissez un ${label}`;
+		label += "*";
+	}
 
 	if (registerField) {
 		registerField({ name, ref: inputRef, validation });
@@ -162,7 +164,12 @@ export const Formatted = ({
 		register(name, validation);
 	}
 
-	let value = watch(name) || defaultValue;
+	let value = watch(name, defaultValue);
+	console.log(`Loaded value for ${name} : ${value}`);
+	if ((value === undefined || value === NaN) && defaultValue !== undefined) {
+		setValue(name, (value = defaultValue));
+		console.log(`No value found for ${name}. Set value to ${value}`);
+	}
 
 	// We store 2 distinct values : the real one
 	// and the displayed (formatted) value for the visible TextField
@@ -246,8 +253,34 @@ const formatInteger = (sep = " ") => (str = "") => {
 	);
 };
 
+/**
+ * Format a decimal number
+ * @param {Char} decimalSeparator
+ * @param {Char} thousandsSeparator
+ * @return {String}
+ */
+const formatDecimal = (decimalSeparator = ".", thousandsSeparator = " ") => (str = "") =>
+	str
+		.split(decimalSeparator)
+		.map(formatInteger(thousandsSeparator))
+		.join(decimalSeparator);
+
 const serializeInteger = (defaultValue = 0) => (str) =>
 	typeof str === "string" ? Number.parseInt(getDigitsOnly(str)) : defaultValue;
+
+const requiredInt = (str) => {
+	const result = parseInt(str) === NaN ? "Saisissez un chiffre" : true;
+	console.log(`Validating required Integer '${str}' => ${result}`);
+	return result;
+};
+const validateMin = (min) => (str) => {
+	const result =
+		parseInt(str) <= min ? true : `Ce nombre doit être plus petit que ${min}`;
+	console.log(`Validating Min Integer '${str}' => ${result}`);
+	return result;
+};
+const validateMax = (max) => (str) =>
+	parseInt(str) >= max ? true : `Ce nombre doit être plus grand que ${max}`;
 
 /**
  * Display a number with thousands separator like `1 000 000 000`
@@ -263,33 +296,19 @@ export const Integer = ({
 	...props
 }) => {
 	const validation = {
-		valueAsNumber: true
+		// valueAsNumber: true,
+		validate: {}
 	};
 	if (required) {
-		validation.isNumber = {
-			validate: (val) => {
-				console.log(`Validating Integer Input for ${val}`);
-				if (parseInt(val) === NaN) {
-					return "Saisissez un chiffre";
-				} else {
-					return true;
-				}
-			}
-		};
+		validation.validate.required = requiredInt;
 		if (defaultValue === undefined) defaultValue = 0;
 	}
 	const [min, max] = plage;
 	if (typeof min === "number") {
-		validation.min = {
-			validate: (str) =>
-				parseInt(str) >= min || `Ce nombre doit être plus grand que ${min}`
-		};
+		validation.validate.min = validateMin(min);
 	}
 	if (typeof max === "number") {
-		validation.max = {
-			validate: (str) =>
-				parseInt(str) <= max || `Ce nombre doit être plus petit que ${max}`
-		};
+		validation.validate.max = validateMax(max);
 	}
 	return (
 		<Formatted
@@ -297,7 +316,7 @@ export const Integer = ({
 			serialize={serializeInteger(defaultValue)}
 			validation={validation}
 			defaultValue={defaultValue}
-			inputType="number"
+			inputType="tel"
 			inputProps={{ style: { textAlign: "right" } }}
 			{...props}
 		/>
@@ -305,8 +324,19 @@ export const Integer = ({
 };
 
 export const formatPercent = (str = "") => {
-	const number = getDigitsOnly(str + "").substr(0, 3);
+	const number = getDigitsOnly(str).substr(0, 3);
 	return number.length ? [number, "%"] : "";
+};
+
+export const formatIntegerWithUnit = (
+	decimalSeparator = ",",
+	thousandsSeparator = " ",
+	unit = " €"
+) => (str = "") => {
+	const number = getDigitsOnly(str);
+	return number.length
+		? [formatDecimal(decimalSeparator, thousandsSeparator)(number), unit]
+		: unit;
 };
 
 /**
@@ -439,6 +469,14 @@ export const Tel = ({
  */
 export const Percent = ({ ...props }) => (
 	<Integer format={formatPercent} plage={[0, 100]} size={10} {...props} />
+);
+
+/**
+ * Format number and append a unit symbol after
+ * @param {InputProps} props
+ */
+export const QuantityOf = ({ unit, ...props }) => (
+	<Integer format={formatIntegerWithUnit(unit)} size={10} {...props} />
 );
 
 /**
@@ -787,6 +825,8 @@ const Input = ({ type, ...fieldProps }) => {
 			return <Date {...fieldProps} />;
 		case "integer":
 			return <Integer {...fieldProps} />;
+		case "euros":
+			return <QuantityOf unit=" €" {...fieldProps} />;
 		case "percent":
 			return <Percent {...fieldProps} />;
 		case "email":
@@ -820,6 +860,7 @@ Object.assign(Input, {
 	Formatted,
 	Integer,
 	Percent,
+	QuantityOf,
 	SelectBox,
 	Submit,
 	HiddenSubmit
