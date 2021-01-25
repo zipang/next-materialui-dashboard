@@ -749,7 +749,7 @@ Indiquez ensuite les _effectifs_ (nb de personnes bénéficiaires) pour ces mêm
 					courses: "Courses",
 					garde_enfants: "Garde d'enfants",
 					garde_malade: "Garde Malade / de nuit",
-					soutien_scolaire: "Soutine scolaire",
+					soutien_scolaire: "Soutien scolaire",
 					homme_a_tout_faire: "Homme 'toutes mains'",
 					jardinage: "Jardinage",
 					menage: "Ménage",
@@ -770,7 +770,7 @@ Indiquez ensuite les _effectifs_ (nb de personnes bénéficiaires) pour ces mêm
 		id: "step-registration-recap",
 		title: "Dernière étape",
 		help: {
-			description: `###Félicitation !
+			description: `## Félicitation !
 Votre process de registration est presque terminé.
 Vous pouvez revenir en arrière pour vérifier une dernière fois les informations saisies
 puis cliquez sur **Valider** pour envoyer votre demande.`,
