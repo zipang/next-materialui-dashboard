@@ -1,5 +1,3 @@
-import { StringProducerTransformer } from "quicktype/dist/quicktype-core/Transformers";
-
 /**
  * Split a path to a property into its keys
  * (property names or array indexes)
@@ -32,19 +30,24 @@ export const getProperty = (source = {}, path = "", defaultValue) => {
 export const setProperty = (source = {}, path = "", newValue) => {
 	let property = source;
 	const keys = splitPath(path);
+	const lastKey = keys.pop();
 	keys.forEach((key, i) => {
 		if (property[key] === undefined) {
-			// Look ahead to see if we need to create an array or an object
-			if (keys[i + 1] !== undefined) {
-				if (parseInt(keys[i + 1]) !== NaN) {
-					// It's an array index
-					property[key] = Array(parseInt(keys[i + 1]) + 1).fill(undefined);
-				} else {
-					property[key] = {};
-				}
-				property = property[key];
+			// Look ahead to see if we need to create an array or an object as receptor of the property
+			if (Number.isInteger(parseInt(keys[i + 1]))) {
+				// It's an array index
+				console.log(`Set property array '${key}' to length ${keys[i + 1]}`);
+				property[key] = Array(parseInt(keys[i + 1]) + 1).fill(undefined);
+			} else {
+				property[key] = {};
 			}
 		}
+		property = property[key];
 	});
-	property = newValue;
+	console.log(
+		`Setting property ${lastKey} value : ${newValue} on receptor :`,
+		property
+	);
+	property[lastKey] = newValue;
+	return source;
 };
