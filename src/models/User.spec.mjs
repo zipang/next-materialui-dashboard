@@ -1,9 +1,9 @@
-import test from "baretest";
+import { suite } from "uvu";
 import code from "@hapi/code";
 import User from "./User.js";
 
 const { expect } = code;
-const testSuite = test("User");
+const UserTestSuite = suite("User");
 
 const testUser1 = {
 	username: "1234",
@@ -18,7 +18,9 @@ const testUser2 = {
 	lastName: "Desguez"
 };
 
-testSuite("User.register() can create a new user", async () => {
+UserTestSuite.before(() => {});
+
+UserTestSuite("User.register() can create a new user", async () => {
 	const newUser = await User.register({ username: "jojo", password: "jojo" });
 	console.log(
 		`Logged user: ${newUser.get("username")} ${newUser.get(
@@ -27,7 +29,7 @@ testSuite("User.register() can create a new user", async () => {
 	);
 });
 
-testSuite("User.login() can retrieve an existing user", async () => {
+UserTestSuite("User.login() can retrieve an existing user", async () => {
 	const jojo = await User.logIn({ username: "jojo", password: "jojo" });
 	console.log(
 		`Logged user: ${jojo.get("username")} ${jojo.get("firstName")} ${jojo.get(
@@ -36,4 +38,4 @@ testSuite("User.login() can retrieve an existing user", async () => {
 	);
 });
 
-export default testSuite;
+// UserTestSuite.run(); // not ready for prime time

@@ -1,4 +1,5 @@
 import Parse from "parse/node.js";
+import { loadEnv } from "../utils/Env.js";
 
 let parseInstance = null;
 
@@ -9,11 +10,12 @@ let parseInstance = null;
  */
 export const getParseInstance = () => {
 	if (typeof window === "undefined" && !parseInstance) {
-		// if (process.env.NODE_ENV === "test") {
-		// 	// Help us for the test
-		// 	console.log("Loading the environment variables");
-		// 	loadEnvConfig();
-		// }
+		console.log(process.env.NODE_ENV);
+		if (process.env.NODE_ENV === "test") {
+			// Help us for the test
+			console.log("Loading the environment variables");
+			loadEnv();
+		}
 		const { PARSE_APP_ID, PARSE_JS_KEY, PARSE_SERVER_URL } = process.env;
 
 		if (!PARSE_APP_ID || !PARSE_JS_KEY || !PARSE_SERVER_URL) {
