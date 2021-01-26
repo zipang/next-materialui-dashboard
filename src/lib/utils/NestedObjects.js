@@ -27,6 +27,12 @@ export const getProperty = (source = {}, path = "", defaultValue) => {
 		: result;
 };
 
+/**
+ * Set a new property value by its path
+ * @param {Object} source
+ * @param {String} path
+ * @param {Any} newValue
+ */
 export const setProperty = (source = {}, path = "", newValue) => {
 	let property = source;
 	const keys = splitPath(path);
@@ -34,20 +40,16 @@ export const setProperty = (source = {}, path = "", newValue) => {
 	keys.forEach((key, i) => {
 		if (property[key] === undefined) {
 			// Look ahead to see if we need to create an array or an object as receptor of the property
-			if (Number.isInteger(parseInt(keys[i + 1]))) {
+			const nextKey = keys[i + 1] === undefined ? lastKey : keys[i + 1];
+			if (Number.isInteger(parseInt(nextKey))) {
 				// It's an array index
-				console.log(`Set property array '${key}' to length ${keys[i + 1]}`);
-				property[key] = Array(parseInt(keys[i + 1]) + 1).fill(undefined);
+				property[key] = Array(parseInt(nextKey) + 1).fill(undefined);
 			} else {
 				property[key] = {};
 			}
 		}
 		property = property[key];
 	});
-	console.log(
-		`Setting property ${lastKey} value : ${newValue} on receptor :`,
-		property
-	);
 	property[lastKey] = newValue;
 	return source;
 };

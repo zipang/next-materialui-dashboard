@@ -61,6 +61,10 @@ NestedObjectsSpec("Set deep preoperties", () => {
 	setProperty(testObject, "members[2].lastName", "Gallagher");
 	expect(testObject.members.length).to.equal(3);
 	expect(testObject.members[2].lastName).to.equal("Gallagher");
+	// creating a non existing array
+	setProperty(testObject, "stats.visits[0]", 0);
+	expect(testObject.stats.visits).to.be.an.array().length(1);
+	expect(testObject.stats.visits[0]).to.equal(0);
 	// Updating existying properties
 	setProperty(testObject, "members[0].lastName", "X");
 	setProperty(testObject, "members[0].address.city", "SF");
