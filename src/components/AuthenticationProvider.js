@@ -5,9 +5,9 @@ import User from "@models/User";
 
 /**
  * @typedef AuthContext
- * @field {User} loggedUser
- * @field {Function} setLoggedUser Define the logged user after a successful login
- * @field {Function} logout
+ * @property {User} loggedUser
+ * @property {Function} setLoggedUser Define the logged user after a successful login
+ * @property {Function} logout
  */
 
 const AuthContext = createContext();
@@ -46,7 +46,7 @@ export const useAuthentication = () => {
 
 /**
  * @typedef AuthenticationOptions
- * @field {String[]} profiles check that the logged user has at least one of these profiles
+ * @property {String[]} profiles check that the logged user has at least one of these profiles
  * @param {String} [redirectTo="/"] path to redirect if no logged user is found
  */
 /**

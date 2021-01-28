@@ -25,12 +25,12 @@ const getFirstError = (errors) => {
 
 /**
  * @typedef StepFormProps
- * @field {String!} formId Unique id : required to communicate with the form through events
- * @field {Object} data Object to populate the form with their initial values
- * @field {String} [mode=onSubmit] Auto-validation mode, same values as react-form-hooks mode
- * @field {Function} onSubmit method to call on form submission.
- * @field {Function} onErrors optional method to call on form validation errors.
- * @field {JSX.Element} children the real form content (fields and submit button)
+ * @property {String!} formId Unique id : required to communicate with the form through events
+ * @property {Object} data Object to populate the form with their initial values
+ * @property {String} [mode=onSubmit] Auto-validation mode, same values as react-form-hooks mode
+ * @property {Function} onSubmit method to call on form submission.
+ * @property {Function} onErrors optional method to call on form validation errors.
+ * @property {JSX.Element} children the real form content (fields and submit button)
  */
 
 /**

@@ -47,18 +47,18 @@ const useWizardStyles = (customStyles = {}) =>
 
 /**
  * @typedef Step
- * @field {String} id
- * @field {String} title
- * @field {Function} displayForm
+ * @property {String} id
+ * @property {String} title
+ * @property {Function} displayForm
  */
 
 /**
  * @typedef WizardProps
- * @field {String} id required a unique id for this wizard
- * @field {Step[]} steps the array of steps that will be executed in sequence
- * @field {Object} initialData the initial data to render
- * @field {Number} [currentSlide=0] the current slide to render
- * @field {Function} onComplete The function to call with the complete data payload (last step)
+ * @property {String} id required a unique id for this wizard
+ * @property {Step[]} steps the array of steps that will be executed in sequence
+ * @property {Object} initialData the initial data to render
+ * @property {Number} [currentSlide=0] the current slide to render
+ * @property {Function} onComplete The function to call with the complete data payload (last step)
  */
 
 const WizardContainer = ({ children }) => (

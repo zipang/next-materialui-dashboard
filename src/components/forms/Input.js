@@ -28,13 +28,13 @@ const noop = (val) => val;
 
 /**
  * @typedef InputProps
- * @field {String} name The name of the field (can use dots to describe a deeply nested property)
- * @field {String} label The field label
- * @field {Boolean} [required=false] Value required
- * @field {String}  [placeHolder] Text shown before any input
- * @field {Boolean} [autoFocus=false] Get focus on this field on page load ?
- * @field {Boolean} [readOnly=false] Can or cannot edit
- * @field {Object} [validation={}] Validation object
+ * @property {String} name The name of the field (can use dots to describe a deeply nested property)
+ * @property {String} label The field label
+ * @property {Boolean} [required=false] Value required
+ * @property {String}  [placeHolder] Text shown before any input
+ * @property {Boolean} [autoFocus=false] Get focus on this field on page load ?
+ * @property {Boolean} [readOnly=false] Can or cannot edit
+ * @property {Object} [validation={}] Validation object
  */
 
 /**

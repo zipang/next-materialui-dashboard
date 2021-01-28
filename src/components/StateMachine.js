@@ -28,11 +28,11 @@ const _MIDDLEWARES = {
 
 /**
  * @typedef StateMachineDef
- * @field {String} id a unique name for this state machine
- * @field {Object} [initialState={}] the initial state
- * @field {Object} actions an objects where keys are action names
+ * @property {String} id a unique name for this state machine
+ * @property {Object} [initialState={}] the initial state
+ * @property {Object} actions an objects where keys are action names
  *                 and values are functions that return a new state
- * @field {Array} [middlewares=[]] an optional array of function to be runned each times just before the state changes
+ * @property {Array} [middlewares=[]] an optional array of function to be runned each times just before the state changes
  */
 
 export const useStateMachine = () => {
