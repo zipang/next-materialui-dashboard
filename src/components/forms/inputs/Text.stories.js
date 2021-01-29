@@ -40,14 +40,26 @@ export default {
 	argTypes: {
 		required: { control: { type: "boolean" } },
 		autoFocus: { control: { type: "boolean" } },
-		readOnly: { control: { type: "boolean" } }
+		readOnly: { control: { type: "boolean" } },
+		defaultValue: { control: { type: "text" } }
 	}
 };
 
-export const SimpleText = ({ ...args }) => (
+export const SimpleText = ({ defaultValue, ...args }) => (
 	<FormValidationProvider>
+		<VForm id="simple-text-form">
+			<Text {...args} name="firstName" label="Prénom" defaultValue={defaultValue} />
+		</VForm>
+	</FormValidationProvider>
+);
+
+export const ReadOnlyTextWithData = ({ ...args }) => (
+	<FormValidationProvider data={{ firstName: "John" }}>
 		<VForm id="simple-text-form">
 			<Text {...args} name="firstName" label="Prénom" />
 		</VForm>
 	</FormValidationProvider>
 );
+ReadOnlyTextWithData.args = {
+	readOnly: true
+};
