@@ -23,9 +23,9 @@ export class ValidationError extends TypeError {
 }
 
 /**
- * @typedef {Object} FieldRef Holds a reference to an input and its validation rules
- * @property {inputRef} Reference to set focus on field whan validation fails
- * @property {Any} defaultValue The default value if not set by the context
+ * @typedef {Object} FieldDef Holds a reference to an input and its validation rules
+ * @property {inputRef} Reference to set focus on field when validation fails
+ * @property {Any} [defaultValue] The default value if not set by the context
  * @property {Boolean} [required=false]
  * @property {Object} validation rules
  */
@@ -47,8 +47,7 @@ const registerField = (fields, data) => (
 		setProperty(data, name, defaultValue);
 	}
 	// @TODO rework that
-	console.log(`Registered ${name}`, inputRef);
-	// inputRef.current.value = getProperty(data, name);
+	console.log(`ValidationContext: registered field ${name}`, inputRef);
 };
 
 /**
@@ -59,7 +58,10 @@ const registerField = (fields, data) => (
  * @param {Object} validation Validation rules with their own keys
  */
 export const validateField = (name, value, required = false, validation = {}) => {
-	console.log(`Validating ${name}=${value} (required=${required})`, validation);
+	console.log(
+		`ValidationContext: validating ${name}=${value} (required=${required})`,
+		validation
+	);
 	if (isUndefinedOrEmpty(value)) {
 		if (required) {
 			throw new ValidationError(
@@ -165,7 +167,7 @@ const validate = (validationContext) => (name, options) => {
 
 /**
  * @typedef ValidationContextOptions
- * @param {Object} [defaultValues={}] load pre-existing data
+ * @param {Object} [data={}] load pre-existing data
  */
 
 /**
@@ -177,7 +179,7 @@ export const ValidationContext = (options = {}) => {
 	console.log(`Building a new validation context`, options);
 	const fields = {};
 	const errors = _EMPTY_ERRORS; // Empty errors state will allways point to the same object instance
-	const data = options.defaultValues || {};
+	const data = options.data || {};
 
 	const register = registerField(fields, data);
 	const getData = (name, defaultValue) => getProperty(data, name, defaultValue);
