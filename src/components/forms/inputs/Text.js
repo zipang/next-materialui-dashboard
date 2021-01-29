@@ -8,8 +8,6 @@ const _BASE_INPUT_STYLES = {
 	margin: "dense"
 };
 
-const noop = (val) => val;
-
 /**
  * @typedef TextInputProps
  * @property {String} name The name of the field (can use dots to describe a deeply nested property)
@@ -37,7 +35,7 @@ const Text = ({
 	validation = {},
 	...moreProps
 }) => {
-	// Find the parent form to register our input
+	// Find the form validation context to register our input
 	const inputRef = createRef();
 	const { register, errors, setData, getData, validate } = useFormValidationContext();
 
