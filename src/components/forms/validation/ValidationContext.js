@@ -116,7 +116,7 @@ const validate = (validationContext) => (name, options) => {
 		name = null;
 	}
 
-	if (typeof name === "string" && fieds[name] === undefined) {
+	if (typeof name === "string" && fields[name] === undefined) {
 		return {
 			unregistered: `Property ${name} is not registered and therefore cannot be validated`
 		};
@@ -153,7 +153,9 @@ const validate = (validationContext) => (name, options) => {
 	}
 
 	// Return a new validationContext instance with the updated errors object
-	return { ...validationContext, errors: errors || {} };
+	// return { ...validationContext, errors: errors || {} };
+	validationContext.errors = errors || {};
+	return validationContext;
 };
 
 /**
@@ -167,6 +169,7 @@ const validate = (validationContext) => (name, options) => {
  * @return {ValidationContext}
  */
 export const ValidationContext = (options = {}) => {
+	console.log(`Building a new validation context`, options);
 	const fields = {};
 	const errors = {};
 	const data = options.defaultValues || {};
