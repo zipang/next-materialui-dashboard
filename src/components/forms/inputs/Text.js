@@ -1,4 +1,4 @@
-import React, { createRef, useLayoutEffect } from "react";
+import React, { createRef, useEffect, useLayoutEffect } from "react";
 import { TextField } from "@material-ui/core";
 import { useFormValidationContext } from "../validation/FormValidationProvider";
 
@@ -23,7 +23,7 @@ const noop = (val) => val;
 
 /**
  * Basically same features as Text input
- * but with full control
+ * but with validation
  * @param {TextInputProps} props -
  */
 const Text = ({
@@ -39,14 +39,7 @@ const Text = ({
 }) => {
 	// Find the parent form to register our input
 	const inputRef = createRef();
-	const {
-		register,
-		errors,
-		setData,
-		getData,
-		validate,
-		data
-	} = useFormValidationContext();
+	const { register, errors, setData, getData, validate } = useFormValidationContext();
 
 	const errorMessage = errors[name]?.message || "";
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
@@ -54,6 +47,7 @@ const Text = ({
 	// Pass the required attribute to the validation object
 	if (required) label += "*";
 
+	// Keep form context data in sync
 	const onChange = (evt) => {
 		setData(name, evt.target.value);
 		if (errorMessage) {
@@ -63,14 +57,15 @@ const Text = ({
 
 	// Register our Input so that the validation can take effect
 	register(name, { inputRef, required, defaultValue, validation });
-	// const value = getData(name);
-	// console.log(`Loaded ${name} value : ${value} from data : `, data);
+
+	useEffect(() => {
+		console.log(`Re-rendering text field ${name}`);
+	});
 
 	useLayoutEffect(() => {
-		inputRef.current.value = getData(name);
+		inputRef.current.value = getData(name); // Apply the default value
 		if (autoFocus || errorMessage) {
 			console.log(`Focus on ${name} (${errorMessage})`);
-
 			inputRef.current.focus();
 		}
 	}, [name]);
@@ -81,7 +76,6 @@ const Text = ({
 			inputRef={inputRef}
 			name={name}
 			label={label}
-			// value={value}
 			onChange={onChange}
 			error={Boolean(errorMessage)}
 			autoComplete={autoComplete ? "" : "off"}
