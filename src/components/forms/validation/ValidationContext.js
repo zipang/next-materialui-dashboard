@@ -1,7 +1,8 @@
 import { setProperty, getProperty } from "../../../lib/utils/NestedObjects.js";
 
+const _EMPTY_ERRORS = {};
 const noop = (val) => val;
-const allways = (val) => () => val; // Allways return teh same value
+const allways = (val) => () => val; // Allways return the same value
 const filterByValue = (good) => (testVal) => testVal === good; // A filter that let only the 'good' values pass
 export const isUndefined = (val) =>
 	val === undefined || val === null || Number.isNaN(val);
@@ -122,38 +123,44 @@ const validate = (validationContext) => (name, options) => {
 		};
 	}
 
+	// Check to see if we have a filter to apply
 	const filterFields = typeof name === "string" ? filterByValue(name) : allways(true);
 
 	const errors = Object.keys(fields)
 		.filter(filterFields)
 		.reduce((foundAnError, name) => {
-			if (foundAnError) {
+			if (foundAnError !== _EMPTY_ERRORS) {
 				return foundAnError; // The first encountered error is good for us
 			}
 
-			const { validation, required } = fields[name];
 			try {
+				const { validation, required } = fields[name];
 				validateField(name, getProperty(data, name), required, validation);
 				// found an error ? nope
-				return false;
+				return _EMPTY_ERRORS;
 			} catch (err) {
 				const { code, message } = err; // Extract the error parts
-				const error = {};
-				error[name] = { code, message };
-				return error;
+				const newFoundError = {}; // IMPORTANT : create a new instance
+				newFoundError[name] = { code, message };
+				return newFoundError;
 			}
-		}, false);
+		}, _EMPTY_ERRORS);
 
-	if (options?.onSuccess && !errors) {
+	if (options?.onSuccess && errors === _EMPTY_ERRORS) {
 		options.onSuccess(data);
 	}
 
-	if (options?.onError && errors) {
+	if (options?.onError && errors !== _EMPTY_ERRORS) {
 		options.onError(errors);
 	}
 
-	// Return a new validationContext instance with the updated errors object
-	return { ...validationContext, errors: errors || {} };
+	if (validationContext.errors !== errors) {
+		// Return a new validationContext instance with the updated errors object
+		return { ...validationContext, errors };
+	} else {
+		// Return the same validationContext instance
+		return validationContext;
+	}
 };
 
 /**
@@ -168,7 +175,7 @@ const validate = (validationContext) => (name, options) => {
  */
 export const ValidationContext = (options = {}) => {
 	const fields = {};
-	const errors = {};
+	const errors = _EMPTY_ERRORS; // Empty errors state will allways point to the same object instance
 	const data = options.defaultValues || {};
 
 	const register = registerField(fields, data);
