@@ -1,9 +1,31 @@
 // Text.stories.js
 import Text from "./Text";
-import { withFormValidationContext } from "@forms/validation/FormValidationProvider";
+import {
+	useFormValidationContext,
+	FormValidationProvider
+} from "@forms/validation/FormValidationProvider";
+import useFormStyles from "../useFormStyles";
 
-const VForm = ({ children, ...options }) =>
-	withFormValidationContext("form", options)({ children });
+const VForm = ({ children, ...props }) => {
+	const styles = useFormStyles();
+	const { validate } = useFormValidationContext();
+
+	// Just log what's goin on when submitting
+	const onSubmit = (evt) => {
+		evt.preventDefault();
+		validate({
+			onSuccess: console.log,
+			onError: console.error
+		});
+	};
+
+	return (
+		<form onSubmit={onSubmit} className={styles.form} {...props}>
+			{children}
+			<input type="submit" className="hidden" aria-hidden="true" />
+		</form>
+	);
+};
 
 // This default export determines where your story goes in the story list
 export default {
@@ -22,8 +44,10 @@ export default {
 	}
 };
 
-export const SimpleText = (args) => (
-	<VForm defaultValues={{ firstName: "Jean" }}>
-		<Text {...args} name="firstName" label="Prénom" />
-	</VForm>
+export const SimpleText = ({ ...args }) => (
+	<FormValidationProvider>
+		<VForm id="simple-text-form">
+			<Text {...args} name="firstName" label="Prénom" />
+		</VForm>
+	</FormValidationProvider>
 );
