@@ -4,23 +4,22 @@ import ValidationContext from "./ValidationContext";
 const FormValidatorContext = createContext();
 
 /**
- * @typedef ValidationContext
- * @property {Function<name, inputRef, validation>} register Register a field by its name
- * @property {Function} validate Function to validate the current form data or a single field
- * @property {Object} [data={}]
- * @property {Object} [errors={}]
- */
-
-/**
- * Provide the form validator context
- * @param {ValidationContext} props
+ * Provide the form validation context to children
+ * IMPORTANT : Calling validate() will trigger a re-render if the validationState changes
+ * @param {PropsWithChildren} props
+ * @param {ValidationContextOptions} [props.options]
  */
 export const FormValidationProvider = ({ children, ...options }) => {
+	// Store the initial validationContext state
 	const [validationContext, setValidationContext] = useState(
 		ValidationContext(options)
 	);
+
+	// Validation context can change after a call to the `validate` method
+	// Therefore we automatically apply a state change with the result of the validate() call
 	const _validate = validationContext.validate;
 	if (!_validate._enhanced) {
+		// Note : be careful not to wrap the validate method multiple times
 		validationContext.validate = (...args) => {
 			const updatedValidationContext = _validate(...args);
 			setValidationContext(updatedValidationContext);
@@ -37,6 +36,7 @@ export const FormValidationProvider = ({ children, ...options }) => {
 };
 
 /**
+ * Hook to retrieve the parent Form ValidationContext
  * @return {ValidationContext}
  */
 export const useFormValidationContext = () => {
@@ -50,14 +50,14 @@ export const useFormValidationContext = () => {
 };
 
 /**
- *
- * @param {ValidationContextOptions} options
+ * HOC : Wrap a component inside a Form Validation Context provider
+ * @param {JSXElementConstructor} Component
+ * @param {ValidationContextOptions} options like `initialValues`
+ * @param {Props} initialProps Pass these to the wrapped component (he can receive more)
  */
-export const withFormValidationContext = (
-	Component,
-	options = {},
-	{ ...initialProps }
-) => ({ ...props }) => {
+export const withFormValidationContext = (Component, options = {}, initialProps) => ({
+	...props
+}) => {
 	return (
 		<FormValidationProvider options={options}>
 			<Component {...initialProps} {...props} />
