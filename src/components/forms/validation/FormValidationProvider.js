@@ -15,14 +15,19 @@ const FormValidatorContext = createContext();
  * Provide the form validator context
  * @param {ValidationContext} props
  */
-export const FormValidationProvider = ({ children, options = {} }) => {
+export const FormValidationProvider = ({ children, ...options }) => {
 	const [validationContext, setValidationContext] = useState(
 		ValidationContext(options)
 	);
 	const _validate = validationContext.validate;
-	validationContext.validate = (...args) => {
-		setValidationContext(_validate(...args));
-	};
+	if (!_validate._enhanced) {
+		validationContext.validate = (...args) => {
+			const updatedValidationContext = _validate(...args);
+			setValidationContext(updatedValidationContext);
+			return updatedValidationContext;
+		};
+		validationContext.validate._enhanced = true;
+	}
 
 	return (
 		<FormValidatorContext.Provider value={validationContext}>
@@ -48,10 +53,14 @@ export const useFormValidationContext = () => {
  *
  * @param {ValidationContextOptions} options
  */
-export const withFormValidationContext = (Component, options = {}) => ({ ...props }) => {
+export const withFormValidationContext = (
+	Component,
+	options = {},
+	{ ...initialProps }
+) => ({ ...props }) => {
 	return (
 		<FormValidationProvider options={options}>
-			<Component {...props} />
+			<Component {...initialProps} {...props} />
 		</FormValidationProvider>
 	);
 };
