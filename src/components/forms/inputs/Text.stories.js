@@ -48,10 +48,20 @@ export default {
 export const SimpleText = ({ defaultValue, ...args }) => (
 	<FormValidationProvider>
 		<VForm id="simple-text-form">
-			<Text {...args} name="firstName" label="Prénom" defaultValue={defaultValue} />
+			<Text
+				{...args}
+				defaultValue={defaultValue}
+				helperText="With default value"
+				name="firstName"
+				label="Prénom"
+			/>
+			<Text {...args} placeHolder="Valjean" name="lastName" label="Nom" />
 		</VForm>
 	</FormValidationProvider>
 );
+SimpleText.args = {
+	defaultValue: "Jean"
+};
 
 export const ReadOnlyTextWithData = ({ ...args }) => (
 	<FormValidationProvider data={{ firstName: "John" }}>
