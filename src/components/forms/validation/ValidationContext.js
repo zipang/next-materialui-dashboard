@@ -144,6 +144,7 @@ const validate = (validationContext) => (name, options) => {
 				const { code, message } = err; // Extract the error parts
 				const newFoundError = {}; // IMPORTANT : create a new instance
 				newFoundError[name] = { code, message };
+				fields[name].inputRef?.current?.focus();
 				return newFoundError;
 			}
 		}, _EMPTY_ERRORS);
