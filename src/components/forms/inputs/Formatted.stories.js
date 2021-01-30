@@ -12,6 +12,8 @@ import useFormStyles from "../useFormStyles";
  * @param {String} input
  */
 const uppercaseAlpha = (input = "") => input.replace(/[^a-z\d]+/gi, "").toUpperCase();
+const onlyDigits = (length) => (input = "") =>
+	input.replace(/[^\d]+/gi, "").substr(0, length);
 
 const VForm = ({ children, ...props }) => {
 	const styles = useFormStyles();
@@ -66,13 +68,36 @@ export const AlphaUppercaseFormatted = ({ ...args }) => (
 	</FormValidationProvider>
 );
 
-export const ReadOnlyFormattedWithData = ({ ...args }) => (
-	<FormValidationProvider data={{ firstName: "John" }}>
+export const HowManyDigits = ({ length, ...args }) => (
+	<FormValidationProvider data={{ cp: "12345" }}>
 		<VForm id="simple-text-form">
-			<Formatted {...args} name="firstName" label="Prénom" />
+			<Formatted
+				{...args}
+				readOnly={true}
+				helperText="Read-only"
+				format={onlyDigits(length)}
+				name="cp"
+				label="CP"
+			/>
+			<Formatted
+				{...args}
+				format={onlyDigits(length)}
+				helperText="With default value"
+				defaultValue="67890"
+				name="cp1"
+				label="CP"
+			/>
+			<Formatted
+				{...args}
+				format={onlyDigits(length)}
+				helperText="Required"
+				required={true}
+				name="cp2"
+				label="CP"
+			/>
 		</VForm>
 	</FormValidationProvider>
 );
-ReadOnlyFormattedWithData.args = {
-	readOnly: true
+HowManyDigits.args = {
+	length: 5
 };
