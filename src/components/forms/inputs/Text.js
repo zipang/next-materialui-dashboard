@@ -80,7 +80,7 @@ const Text = ({
 			autoFocus={autoFocus}
 			helperText={errorMessage}
 			fullWidth={true}
-			inputProps={{
+			InputProps={{
 				readOnly
 			}}
 			{...mergedProps}
