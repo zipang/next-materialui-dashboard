@@ -1,6 +1,31 @@
+import { StringExtensions } from "../../../lib/utils/Strings.js";
+
 export const _DEFAULT_MESSAGES = {
 	isInteger: "This value must be an integer",
-	isBetween: "This value must be between ${0} and ${1}"
+	isBetween: "This value must be between ${0} and ${1}",
+	isDate: "Invalid Date"
+};
+
+/**
+ * Generate an input formatter of digits only from a mask
+ * @example
+ *   const frenchTelMask = applyNumericMask("+(99) 9 99 99 99 99")
+ *   const frenchDateMask = applyNumericMask("99/99/9999")
+ * @param {String} mask Uses '9' to indicate the position of a digit ([0-9])
+ * @return {Function} Usable as 'format' property inside Input.Formatter, Input.Date, Input.Tel..
+ */
+export const applyNumericMask = (mask = "99 99 99 99") => (str = "") => {
+	const howManyDigits = mask.count("9");
+	const validInput = getDigitsOnly(str).substr(0, howManyDigits);
+	const digits = validInput.split("");
+	const formatted = mask
+		.split("")
+		.map((maskLetter) => {
+			return maskLetter === "9" ? digits.shift() || "_" : maskLetter;
+		})
+		.join("");
+	const cursorPosition = formatted.indexOf("_"); // where is the rest of the mask ?
+	return cursorPosition === -1 ? [formatted, ""] : formatted.splitAt(cursorPosition);
 };
 
 /**
@@ -116,6 +141,76 @@ export const formatDecimalWithUnit = (
 	} else {
 		return prefix + decimalParts;
 	}
+};
+
+/**
+ * Build the validation function for ISO dates
+ * @param {String} errorMessage
+ * @return {Function}
+ */
+export const isDate = (errorMessage = _DEFAULT_MESSAGES.isDate) => (isoDate) =>
+	Number.isNaN(Date.parse(isoDate)) ? errorMessage : true;
+
+/**
+ * Build a masked input function following the given date format
+ * The mask function return an array splitted on the next cursor position
+ * @example
+ *   applyDateMask("dd/mm/yyyy")("0102") => ["01/02/", "____"]
+ * @param {String} format Like "dd/mm/yyyy"
+ * @return {Function} Usable as format property
+ */
+export const applyDateMask = (format) => (str = "") =>
+	applyNumericMask(format.replace(/[dmy]/gi, "9"))(str);
+
+/**
+ * Given a date formatted with the given format
+ * (using d for day positions, m for month position and y for year position)
+ * Build the serializer function that will serialize the date representation back to ISO Format (yyyy-mm-dd)
+ * @param {String} format
+ * @return {Function} ISO date serializer usable inside <Date serialize />
+ */
+export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => {
+	if (formattedDate.length !== format.length) return null; // uncomplete date input is not serializable
+	const formatLetters = format.split("");
+	const dateDigits = formattedDate.split("");
+	const { year, month, day } = dateDigits.reduce(
+		(prev, cur, i) => {
+			if (formatLetters[i] === "d") {
+				prev.day += cur;
+			} else if (formatLetters[i] === "m") {
+				prev.month += cur;
+			} else if (formatLetters[i] === "y") {
+				prev.year += cur;
+			}
+			return prev;
+		},
+		{
+			year: "",
+			month: "",
+			day: ""
+		}
+	);
+	console.log(`serializeDate ${formattedDate} to "${year}-${month}-${day}"`);
+	return `${year}-${month}-${day}`;
+};
+
+/**
+ * Take an ISO date (eg. '2000-12-31')
+ * and return it in the appropriate format
+ * where 'dd' 'mm' 'yyyy' represent the position of 'day' 'month' and 'year' digits
+ * @param {String} dateFormat desired output format
+ * @return {Function} formatter function
+ */
+export const formatISODate = (dateFormat = "dd/mm/yyyy") => (str = "") => {
+	if (!str) return "";
+
+	const [year, month, day] = str.split("-");
+	const formatted = dateFormat
+		.replace("dd", day)
+		.replace("mm", month)
+		.replace("yyyy", year);
+	console.log(`Formatting ${str} to ${formatted}`);
+	return formatted;
 };
 
 /**
