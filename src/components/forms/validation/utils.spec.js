@@ -1,7 +1,12 @@
 import { suite } from "uvu";
 import { expect } from "@hapi/code";
 
-import { formatInteger, formatIntegerWithUnit } from "./utils.js";
+import {
+	formatInteger,
+	formatIntegerWithUnit,
+	applyNumericMask,
+	applyDateMask
+} from "./utils.js";
 
 const UtilsTestSuite = suite("Validation utils");
 
@@ -15,6 +20,10 @@ UtilsTestSuite("Format Integers with a unit", () => {
 	expect(formatIntegerWithUnit(" ", "$")("9")).equal("$9");
 	expect(formatIntegerWithUnit("", "", "€")("9")).to.equal(["9", "€"]);
 	expect(formatIntegerWithUnit(" ", "", "j/H")("9999")).to.equal(["9 999", "j/H"]);
+});
+
+UtilsTestSuite("Numeric masks", () => {
+	expect(applyNumericMask("99 99 99 99")("1234")).equal(["12 34 ", "__ __"]);
 });
 
 UtilsTestSuite.run();
