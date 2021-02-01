@@ -55,15 +55,24 @@ export const formatInteger = (sep = " ") => (str = "") => {
 	);
 };
 
-export const formatIntegerWithUnit = (thousandsSeparator = " ", unit = "") => (
-	str = ""
-) => {
-	const formatted = [formatInteger(thousandsSeparator)(str), unit];
-	console.log(
-		`Formatting user input '${str}' to '${thousandsSeparator}' separated integer : `,
-		formatted
-	);
-	return formatted;
+/**
+ * Format an integer and then append a unit before (prefix) or after (suffix)
+ * @param {String} thousandsSeparator Separate every 000 blocks of digits
+ * @param {String} [prefix=""]
+ * @param {String} [suffix=""]
+ * @return {String|Array<String,String>}
+ */
+export const formatIntegerWithUnit = (
+	thousandsSeparator = ".",
+	prefix = "",
+	suffix = ""
+) => (str = "") => {
+	const integerPart = formatInteger(thousandsSeparator)(str);
+	if (suffix) {
+		return [integerPart, suffix]; // This array splits at the cursor position for the next insertion
+	} else {
+		return prefix + integerPart;
+	}
 };
 
 /**
@@ -79,6 +88,35 @@ export const formatDecimal = (thousandsSeparator = " ", decimalSeparator = ".") 
 		.split(decimalSeparator)
 		.map(formatInteger(thousandsSeparator))
 		.join(decimalSeparator);
+
+/**
+ * Format an integer and then append a unit before (prefix) or after (suffix)
+ * @param {String} thousandsSeparator Separate every 000 blocks of digits
+ * @param {String} decimalsSeparator Decimal separator
+ * @param {Numbre} [maxDecimals=2] Maximum number of decimals allowed
+ * @param {String} [prefix=""]
+ * @param {String} [suffix=""]
+ * @return {String|Array<String,String>}
+ */
+export const formatDecimalWithUnit = (
+	thousandsSeparator = ".",
+	decimalsSeparator = ",",
+	maxDecimals = 2,
+	prefix = "",
+	suffix = ""
+) => (str = "") => {
+	const decimalParts = (str + "")
+		.split(decimalsSeparator)
+		.map(formatInteger(thousandsSeparator))
+		.map((val, i) => (i === 1 ? val.substr(0, maxDecimals) : val))
+		.join(decimalsSeparator);
+
+	if (suffix) {
+		return [decimalParts, suffix]; // This array splits at the cursor position for the next insertion
+	} else {
+		return prefix + decimalParts;
+	}
+};
 
 /**
  * Validate that an integer is between 0 and 100 (strict percentage)
