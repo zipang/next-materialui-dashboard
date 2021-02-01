@@ -74,13 +74,11 @@ const Formatted = ({
 
 	useLayoutEffect(() => {
 		// inputRef.current.value = format(load(getData(name))); // Load and format the default value
-		// Formatted controls are controled
-		// value = format(load(getData(name))); // Load and format the default value
 		if (autoFocus || errorMessage) {
 			console.log(`Focus on ${name} (${errorMessage})`);
 			inputRef.current.focus();
 		}
-	}, [name]); // Only at first load
+	}, [name]); // Only on first load
 
 	useEffect(() => {
 		if (Array.isArray(displayedValue)) {
@@ -104,10 +102,9 @@ const Formatted = ({
 				Array.isArray(displayedValue) ? displayedValue.join("") : displayedValue
 			}
 			onChange={onChange}
-			// autoFocus={autoFocus}
 			error={Boolean(errorMessage)}
-			helperText={helperText || errorMessage}
-			inputProps={{
+			helperText={errorMessage || helperText}
+			InputProps={{
 				size,
 				readOnly
 			}}
