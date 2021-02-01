@@ -17,7 +17,8 @@ export const serializeInteger = (str) => {
  * @field {Boolean|String} [required=false]
  * @field {Object} validation Custom  validation rules
  * @field {String} [thousandsSeparator=" "] How to separate thousands groups of digits
- * @field {String} [unit] Optional unit (sufix)
+ * @field {String} [prefix] Optional unit symbol (prefix)
+ * @field {String} [sufix]  Optional unit symbol (sufix)
  * @field {Array<Integer,Integer>} [plage] Optional plage of values to restrict the input
  * @fiels {String} [errorMessage] A custom error message when teh validation fails
  */
@@ -31,7 +32,8 @@ const Integer = ({
 	defaultValue = null,
 	required = false,
 	errorMessage,
-	unit = "",
+	prefix = "",
+	suffix = "",
 	plage,
 	...props
 }) => {
@@ -48,7 +50,7 @@ const Integer = ({
 	return (
 		<Formatted
 			required={required}
-			format={formatIntegerWithUnit(thousandsSeparator, unit)}
+			format={formatIntegerWithUnit(thousandsSeparator, prefix, suffix)}
 			serialize={serializeInteger}
 			defaultValue={defaultValue}
 			validation={validation}

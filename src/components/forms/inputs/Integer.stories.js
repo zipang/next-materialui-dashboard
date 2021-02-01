@@ -1,34 +1,7 @@
 // Integer.stories.js
 import Integer from "./Integer";
-import {
-	useFormValidationContext,
-	FormValidationProvider
-} from "@forms/validation/FormValidationProvider";
-import useFormStyles from "../useFormStyles";
-
-const onlyDigits = (length) => (input = "") =>
-	input.replace(/[^\d]+/gi, "").substr(0, length);
-
-const VForm = ({ children, ...props }) => {
-	const styles = useFormStyles();
-	const { validate } = useFormValidationContext();
-
-	// Just log what's goin on when submitting
-	const onSubmit = (evt) => {
-		evt.preventDefault();
-		validate({
-			onSuccess: console.log,
-			onError: console.error
-		});
-	};
-
-	return (
-		<form onSubmit={onSubmit} className={styles.form} {...props}>
-			{children}
-			<input type="submit" className="hidden" aria-hidden="true" />
-		</form>
-	);
-};
+import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
+import { VForm } from "../validation/VForm";
 
 // This default export determines where your story goes in the story list
 export default {
@@ -53,35 +26,43 @@ export const SimpleInteger = ({ ...args }) => (
 		<VForm id="simple-integer-form">
 			<Integer
 				{...args}
-				helperText="Entre un chiffre"
-				name="value"
-				label="Shoupi"
+				helperText="Entrez un chiffre"
+				name="count"
+				label="Compte"
 			/>
 		</VForm>
 	</FormValidationProvider>
 );
 
-export const HowManyDigits = ({ unit, ...args }) => (
+export const MoreIntegerInputs = ({ unit, ...args }) => (
 	<FormValidationProvider data={{ cp: "12345" }}>
 		<VForm id="multiple-integer-inputs">
 			<Integer
 				{...args}
 				helperText="Restricted to plage 0-10000"
 				name="many"
-				label="Guess how many"
+				label="Quantity"
 				plage={[0, 10000]}
 			/>
 			<Integer
 				{...args}
 				required={true}
-				helperText="Use any unit"
-				name="donation"
-				label="Donation"
-				unit={unit}
+				helperText="Use a prefix unit"
+				name="donation_dollars"
+				label="Donation ($)"
+				prefix="$"
+			/>
+			<Integer
+				{...args}
+				required={true}
+				helperText="Use a suffix unit"
+				name="donation_euros"
+				label="Donation (€)"
+				suffix=" €"
 			/>
 		</VForm>
 	</FormValidationProvider>
 );
-HowManyDigits.args = {
+MoreIntegerInputs.args = {
 	unit: "€"
 };
