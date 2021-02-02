@@ -2,22 +2,13 @@ import { createRef, useState, useEffect, useLayoutEffect } from "react";
 import { Checkbox as MaterialCheckbox, FormControlLabel, Grid } from "@material-ui/core";
 import GroupLabel from "@forms/GroupLabel";
 import { useFormValidationContext } from "@forms/validation/FormValidationProvider";
+import { convertOptions } from "@forms/validation/utils";
 
 const _BASE_INPUT_STYLES = {
 	variant: "outlined",
 	fontSize: "large",
 	margin: "dense"
 };
-
-/**
- * Takes a map code:value and return an array
- * @param {Object} map
- */
-const convertOptions = (map) =>
-	Object.keys(map).reduce((options, key) => {
-		options.push({ code: key, label: map[key] });
-		return options;
-	}, []);
 
 /**
  * @typedef CheckBoxesProps
