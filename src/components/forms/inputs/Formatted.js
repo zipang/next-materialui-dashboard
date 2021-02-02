@@ -57,9 +57,10 @@ const Formatted = ({
 	// Register our Input so that the validation can take effect
 	register(name, { inputRef, required, defaultValue, validation });
 
-	// We store 2 distinct values : the real one
-	// and the displayed (formatted) value for the visible TextField
+	// Use a local state for the displayed (formatted) value
 	const [displayedValue, setDisplayedValues] = useState(format(load(getData(name))));
+
+	// Re-format on every modification and send teh real value to the Validation Context
 	const onChange = (evt) => {
 		const formattedInputParts = format(evt.target.value); // format can return an array to tell the correct cursor position
 		setDisplayedValues(formattedInputParts);
@@ -73,7 +74,6 @@ const Formatted = ({
 	};
 
 	useLayoutEffect(() => {
-		// inputRef.current.value = format(load(getData(name))); // Load and format the default value
 		if (autoFocus || errorMessage) {
 			console.log(`Focus on ${name} (${errorMessage})`);
 			inputRef.current.focus();
