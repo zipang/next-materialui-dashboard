@@ -39,15 +39,17 @@ const registerField = (fields, data) => (
 	name,
 	{ inputRef, defaultValue = null, required = false, validation = {} }
 ) => {
-	// Store this references in our fields map
+	// Store these references in our fields map
 	fields[name] = { inputRef, required, validation };
+	console.log(
+		`Registering field '${name}', required: ${required}, defaultValue: '${defaultValue}'`,
+		inputRef
+	);
 
-	// Apply the default value if the context has no data on this property
+	// Apply the default value if the context has no existing data for this property
 	if (isUndefined(getProperty(data, name))) {
 		setProperty(data, name, defaultValue);
 	}
-	// @TODO rework that
-	console.log(`ValidationContext: registered field ${name}`, inputRef);
 };
 
 /**
