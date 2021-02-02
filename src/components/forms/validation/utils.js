@@ -220,3 +220,13 @@ export const isPercentage = {
 	validate: isBetween(0, 100),
 	message: "This percentage must be between 0 and 100"
 };
+
+/**
+ * Takes a key:value map and return an array with {code, label} entries
+ * @param {Object} map
+ */
+export const convertOptions = (map) =>
+	Object.keys(map).reduce((options, key) => {
+		options.push({ code: key, label: map[key] });
+		return options;
+	}, []);
