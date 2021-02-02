@@ -1,7 +1,7 @@
 // Date.stories.js
 import Date from "./Date";
 import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import { VForm } from "../validation/VForm";
+import { VForm } from "@forms/validation/VForm";
 
 const today = "2021-02-01"; //new Date().toISOString().substr(0, 10);
 
@@ -23,11 +23,7 @@ export default {
 		readOnly: { control: { type: "boolean" } },
 		defaultValue: { control: { type: null } },
 		name: { control: { type: null } },
-		label: {
-			control: {
-				type: null
-			}
-		},
+		label: { control: { type: null } },
 		format: {
 			control: {
 				type: "select",
