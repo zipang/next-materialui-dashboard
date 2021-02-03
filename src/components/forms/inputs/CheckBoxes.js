@@ -3,12 +3,7 @@ import { Checkbox as MaterialCheckbox, FormControlLabel, Grid } from "@material-
 import GroupLabel from "@forms/GroupLabel";
 import { useFormValidationContext } from "@forms/validation/FormValidationProvider";
 import { convertOptions } from "@forms/validation/utils";
-
-const _BASE_INPUT_STYLES = {
-	variant: "outlined",
-	fontSize: "large",
-	margin: "dense"
-};
+import _BASE_INPUT_STYLES from "./styles";
 
 /**
  * @typedef CheckBoxesProps

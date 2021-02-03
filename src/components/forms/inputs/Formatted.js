@@ -1,12 +1,7 @@
 import { createRef, useState, useEffect, useLayoutEffect } from "react";
 import { TextField } from "@material-ui/core";
 import { useFormValidationContext } from "../validation/FormValidationProvider";
-
-const _BASE_INPUT_STYLES = {
-	variant: "outlined",
-	fontSize: "large",
-	margin: "dense"
-};
+import _BASE_INPUT_STYLES from "./styles";
 
 const noop = (val) => val;
 

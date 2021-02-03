@@ -1,4 +1,4 @@
-import { createRef, useState, useEffect, useLayoutEffect } from "react";
+import { createRef } from "react";
 import {
 	Select,
 	MenuItem,
@@ -8,12 +8,7 @@ import {
 } from "@material-ui/core";
 import { useFormValidationContext } from "@forms/validation/FormValidationProvider";
 import { convertOptions } from "@forms/validation/utils";
-
-const _BASE_INPUT_STYLES = {
-	variant: "outlined",
-	fontSize: "large",
-	margin: "dense"
-};
+import _BASE_INPUT_STYLES from "./styles";
 
 /**
  * Select a value amonst one defined list of options
