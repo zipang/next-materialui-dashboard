@@ -64,7 +64,7 @@ const Formatted = ({
 			: formattedInputParts;
 		setData(name, serialize(formatted));
 		if (errorMessage) {
-			validate(name); // Show when the input become valid again
+			validate(name); // Show when the input becomes valid again
 		}
 	};
 

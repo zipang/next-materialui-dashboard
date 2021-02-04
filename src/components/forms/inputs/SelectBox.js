@@ -47,7 +47,7 @@ const SelectBox = ({
 		setData(name, evt.target.value || null);
 		console.log(`Changing ${name} selected value to ${evt.target.value}`);
 		if (errorMessage) {
-			validate(name); // Show when the input become valid again
+			validate(name); // Show when the input becomes valid again
 		}
 	};
 

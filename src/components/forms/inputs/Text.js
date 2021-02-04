@@ -44,7 +44,7 @@ const Text = ({
 	const onChange = (evt) => {
 		setData(name, evt.target.value);
 		if (errorMessage) {
-			validate(name); // Show when the input become valid again
+			validate(name); // Show when the input becomes valid again
 		}
 	};
 
