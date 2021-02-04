@@ -1,5 +1,5 @@
 import { getParseInstance } from "../lib/server/ParseSDK.js";
-import ServerError from "../lib/ServerError.js";
+import ApiError from "../lib/ApiError.js";
 
 const Parse = getParseInstance();
 
@@ -46,7 +46,8 @@ export const register = (User.register = async (userData) => {
 		const user = new Parse.User(userData);
 		return await user.signUp();
 	} catch (err) {
-		throw new ServerError(
+		throw new ApiError(
+			500,
 			`Echec de création d'un nouvel utilisateur : ${err.message}`
 		);
 	}
@@ -60,11 +61,11 @@ export const logIn = (User.logIn = async ({ username, password }) => {
 		return await Parse.User.logIn(username, password);
 	} catch (err) {
 		if (err.code === Parse.Error.OBJECT_NOT_FOUND) {
-			throw new ServerError(`Login ou mot de passe inconnu`, 404);
+			throw new ApiError(404, `Login ou mot de passe inconnu`);
 		} else {
-			throw new ServerError(
-				`Echec de l'authentification : ${err.message}`,
-				err.code
+			throw new ApiError(
+				err.code || 500,
+				`Echec de l'authentification : ${err.message}`
 			);
 		}
 	}
@@ -79,11 +80,11 @@ export const getByUsername = (User.getByUsername = async (username) => {
 		return await getUser(username);
 	} catch (err) {
 		if (err.code === Parse.Error.OBJECT_NOT_FOUND) {
-			throw new ServerError(`Login ou mot de passe inconnu`, 404);
+			throw new ApiError(404, `Login ou mot de passe inconnu`);
 		} else {
-			throw new ServerError(
-				`Echec de l'authentification : ${err.message}`,
-				err.code
+			throw new ApiError(
+				err.code || 500,
+				`Echec de l'authentification : ${err.message}`
 			);
 		}
 	}
