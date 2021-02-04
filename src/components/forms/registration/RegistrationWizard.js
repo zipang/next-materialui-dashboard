@@ -8,7 +8,7 @@ export const steps = [
 		title: "Création d'un nouvel Organisme",
 		help: {
 			description: `Bonjour,
-Bienvenue dans le processus de déclaration d'un nouvel organisme sur la plateform **INVIE**.
+Bienvenue dans le processus de déclaration d'un nouvel organisme sur la plateforme **INVIE**.
 Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à tout moment.`,
 			backgroundImage: "login.svg"
 		}
@@ -324,7 +324,7 @@ Puis indiquez vos numéros d'agrémentation.`
 	},
 	{
 		id: "step-systemes-gestion",
-		title: "Systèmes de Gestion",
+		title: "Systèmes de Télégestion",
 		help: {
 			description: `Indiquez vos systèmes de télégestion (**Domycile** ou autre), 
 et si la télédéclaration est mise en place dans votre structure.`
@@ -474,11 +474,6 @@ indiquez le avec un commentaire sur vos attentes.`
 						label: "Date",
 						type: "date",
 						size: 3 / 12
-					},
-					{
-						name: "certifications.syneos.no",
-						label: "No",
-						size: 6 / 12
 					},
 					{
 						name: "certifications.syneos.cles",
