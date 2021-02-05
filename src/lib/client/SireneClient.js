@@ -1,4 +1,4 @@
-import { ApiError } from "next/dist/next-server/server/api-utils";
+import ApiError from "@lib/ApiError";
 
 /**
  * @see https://entreprise.data.gouv.fr/api_doc/sirene
