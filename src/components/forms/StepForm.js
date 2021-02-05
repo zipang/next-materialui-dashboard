@@ -1,190 +1,90 @@
-import { useEffect, useLayoutEffect, useState } from "react";
+import { useEffect } from "react";
 import { useEventBus } from "@components/EventBusProvider";
-import { useForm, FormProvider } from "react-hook-form";
-
 import useFormStyles from "./useFormStyles";
-import Input from "@forms/Input";
-import { isAssetError } from "next/dist/client/route-loader";
-import { getProperty } from "@lib/utils/NestedObjects";
-
-/**
- * Errors is now a hierarchical object
- * @param {*} errors
- */
-const getFirstError = (errors) => {
-	const errorPath = [];
-	let start = errors;
-
-	do {
-		const firstKey = Object.keys(start)[0];
-		start = start[firstKey];
-		errorPath.push(firstKey);
-	} while (!(start?.ref && start?.message));
-	return errorPath.join(".");
-};
+import {
+	FormValidationProvider,
+	useFormValidationContext
+} from "./validation/FormValidationProvider";
+import VForm from "./validation/VForm";
 
 /**
  * @typedef StepFormProps
  * @property {String!} formId Unique id : required to communicate with the form through events
  * @property {Object} data Object to populate the form with their initial values
- * @property {String} [mode=onSubmit] Auto-validation mode, same values as react-form-hooks mode
  * @property {Function} onSubmit method to call on form submission.
- * @property {Function} onErrors optional method to call on form validation errors.
  * @property {JSX.Element} children the real form content (fields and submit button)
  */
 
 /**
  * StepForm
  * A piece of a bigger Form that doesn't need have its own submit button or action
- * We can trigger the form validation by sending the custom event `formId:validate`
+ * We can trigger the form validation by sending the custom event `${formId}:validate`
  * If it succeeds, data is received inside the `onSubmit` callback
  * If it fails, errors are retrieved inside the `onErrors` callback
  * @param {StepFormProps} props
  */
-const StepForm = ({
+const VStepForm = ({
 	formId = "form",
-	data,
-	mode = "onSubmit",
-	validateOnEnter = true,
 	onSubmit,
-	onErrors,
+	onError,
+	validateOnEnter = true,
 	customStyles = {},
 	children
 }) => {
 	const eb = useEventBus();
 	const styles = useFormStyles(customStyles);
-
-	// Keep track of the fields composing this step
-	const [step, setStep] = useState({});
-
-	// @see https://react-hook-form.com/api/#handleSubmit
-	const { ...formMethods } = useForm({
-		defaultValues: data,
-		reValidateMode: "onSubmit",
-		shouldFocusError: true,
-		shouldUnregister: true,
-		criteriaMode: "firstError",
-		mode
-	});
-	const {
-		handleSubmit,
-		errors,
-		reset,
-		clearErrors,
-		setError,
-		register,
-		unregister
-	} = formMethods;
+	const { validate } = useFormValidationContext();
 
 	/**
 	 * Called when the form validation is a success
 	 * @param {Object} formData
 	 */
-	const handleSuccess = (formData) => {
+	const onSuccess = (formData) => {
 		console.dir(
-			`Receiving form data for ${formId}`,
-			JSON.stringify(formData, null, "\t"),
-			errors
+			`Receiving data for step ${formId}`,
+			JSON.stringify(formData, null, "\t")
 		);
 		if (typeof onSubmit === "function") {
-			onSubmit(formData, errors);
+			onSubmit(formData);
 		} else {
 			eb && eb.emit(`${formId}:submit`, formData);
 		}
 	};
 
-	/**
-	 * Called when the form validation is a failure
-	 * @see https://react-hook-form.com/api#errors
-	 * @param {Object} errors
-	 */
-	const handleErrors = (errors) => {
-		console.log(`Validation of ${formId} triggered errors`, errors);
-		const firstError = getFirstError(errors);
-		// We only want the first error
-		errors = getProperty(errors, firstError);
-		console.log("Trimmed to first error", firstError, errors);
-		clearErrors();
-		step[firstError]?.current?.focus();
-		setError(firstError, errors);
-		if (typeof onErrors === "function") {
-			onErrors(errors);
-		} else {
-			eb && eb.emit(`${formId}:errors`, errors);
-		}
-	};
-
-	const validate = handleSubmit(handleSuccess, handleErrors);
-
-	const registerField = ({ name, ref, validation }) => {
-		if (!step[name]) {
-			console.log(`Registering field ${name} in step ${formId}`);
-			register(name, validation);
-			step[name] = ref;
-		}
-	};
-
-	/**
-	 * Validate on ENTER on goto next step
-	 * @param {Event} e
-	 */
-	// const validateOnEnter = (e) => {
-	// 	if (e.key === "Enter" && !e.shiftKey) {
-	// 		console.log(`${formId} received ENTER keypress`);
-	// 		validate();
-	// 	}
-	// };
-	// let onKeyPress = noop;
+	// Call onSuccess if the validation is a success
+	const validateStep = () => validate({ onSuccess, onError });
 
 	useEffect(() => {
-		console.log(
-			`Rendering form ${formId} with data`,
-			JSON.stringify(data, null, "\t")
-		);
-		setStep({});
-		reset(data); // form default values are cached after the first mount so we have to reset them when navigating between steps
-		clearErrors();
-		// onKeyPress = validateOnEnter;
 		// Listen to the event `form:validate`
 		if (eb) {
-			eb.on(`${formId}:validate`, validate);
-			eb.on(`${formId}:register`, registerField);
+			eb.on(`${formId}:validate`, validateStep);
 		}
 		return () => {
 			console.log(`Unmounting form ${formId}`);
 			// onKeyPress = noop;
 			if (eb) {
 				// Clean up event handlers
-				eb.off(`${formId}:validate`, validate);
-				eb.off(`${formId}:register`, registerField);
+				eb.off(`${formId}:validate`, validateStep);
 			}
-			// Unregister each field tied to this step
-			Object.keys(step).forEach((name) => {
-				console.log(`Unregistering field ${name}`);
-				unregister(name);
-				// delete step[name];
-			});
 		};
 	}, [formId]);
 
 	return (
-		<FormProvider
-			{...formMethods}
-			formId={formId}
-			registerField={registerField}
-			validate={validate}
+		<VForm
+			id={formId}
+			onSuccess={onSuccess}
+			onError={onError}
+			className={styles.form}
+			validateOnEnter={validateOnEnter}
 		>
-			<form
-				id={formId}
-				onSubmit={validate}
-				// onKeyPress={onKeyPress}
-				className={styles.form}
-			>
-				{children}
-				{validateOnEnter && <Input.HiddenSubmit />}
-			</form>
-		</FormProvider>
+			{children}
+		</VForm>
 	);
 };
 
+const StepForm = ({ data, ...props }) => (
+	<FormValidationProvider data={data}>
+		<VStepForm {...props} />
+	</FormValidationProvider>
+);
 export default StepForm;

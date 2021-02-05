@@ -62,31 +62,38 @@ const useWizardStyles = (customStyles = {}) =>
  */
 
 const WizardContainer = ({ children }) => (
-	<Box
-		display="flex"
-		flexDirection="column"
-		alignItems="stretch"
-		// height="100%"
-		// width="100%"
-	>
+	<Box display="flex" flexDirection="column" alignItems="stretch">
 		{children}
 	</Box>
 );
+
+/**
+ * @typedef WizardViewportProps
+ * @param {Object} classes Styling for the viewport
+ * @param {Step} step The current step to display
+ * @param {Object} data The current data payload
+ * @param {Object} errors Contains the key of the first input whose validation ruiles failed
+ * @param {Function} onSubmit Callback to be called with the forma data when validation has passed
+ */
 /**
  * The wizard view port may contain one or two children :
  * - The Contextual help and description of the setp,
  * - The Form container inside which the form should be centered
- * @param {*} param0
+ * @param {WizardViewportProps} props
  */
 const WizardViewport = ({ classes, step, data, errors, onSubmit }) => (
 	<Box className={classes.viewport}>
 		{step.help && (
-			<Box className={classes.helpContainer} style={step.getBackgroundImageStyle()}>
+			<Box
+				key="help-container"
+				className={classes.helpContainer}
+				style={step.getBackgroundImageStyle()}
+			>
 				{step.displayHelp(data, errors, onSubmit)}
 			</Box>
 		)}
 		{step.displayForm && (
-			<Box className={classes.formContainer}>
+			<Box key="form-container" className={classes.formContainer}>
 				{!step.help && (
 					<Box className={classes.formTitle}>
 						<h2>{step.title}</h2>
@@ -180,6 +187,7 @@ const InitWizard = ({ id, steps = [], onComplete }) => {
 	return (
 		<WizardContainer>
 			<WizardViewport
+				key={`viewport-${currentSlide}`}
 				classes={classes}
 				step={
 					new Step(steps[currentSlide], `${currentSlide + 1}/${steps.length}`)

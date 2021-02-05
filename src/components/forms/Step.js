@@ -1,11 +1,17 @@
-import { Box, Grid } from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
-import Input from "@forms/Input";
+import Input from "@forms/inputs/Input";
+import YesNo from "@forms/inputs/YesNo";
 import StepForm from "./StepForm";
 import GroupLabel from "./GroupLabel";
 import { useEventBus } from "@components/EventBusProvider";
 import { useEffect } from "react";
+
+/**
+ * Register a custom ysn type to render as 2 radio buttons labelled Oui and Non
+ */
+Input.registerInput("ysn", YesNo("Oui", "Non"));
 
 /**
  * @typedef StepDef

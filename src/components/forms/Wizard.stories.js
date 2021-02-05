@@ -1,6 +1,6 @@
 // Wizard.stories.js
 import Wizard from "./Wizard";
-import Input from "./Input";
+import Input from "./inputs/Input";
 import StepForm from "./StepForm";
 import { Box } from "@material-ui/core";
 

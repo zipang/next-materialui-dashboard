@@ -1,10 +1,12 @@
 // StepForm.stories.js
-import Input from "./Input";
 import StepForm from "./StepForm";
 import JSON from "@lib/utils/JSON";
 import { Box, Paper, Grid } from "@material-ui/core";
 import { withEventBus, useEventBus } from "@components/EventBusProvider";
 import { useState } from "react";
+import Text from "./inputs/Text";
+import Integer from "./inputs/Integer";
+import Date from "./inputs/Date";
 
 // This default export determines where your story goes in the story list
 export default {
@@ -36,19 +38,18 @@ export const Step = withEventBus((props) => {
 			<StepForm
 				formId="person"
 				data={form.data}
-				mode="onBlur"
 				onSubmit={setSubmittedData}
-				onErrors={setErrors}
+				onError={setErrors}
 			>
 				<Grid container>
 					<Grid item sm={5}>
-						<Input.Text label="Prénom" name="firstName" autoFocus={true} />
+						<Text label="Prénom" name="firstName" autoFocus={true} />
 					</Grid>
 					<Grid item sm={5}>
-						<Input.Text label="Nom" name="lastName" required={true} />
+						<Text label="Nom" name="lastName" required={true} />
 					</Grid>
 					<Grid item sm={2}>
-						<Input.Integer
+						<Integer
 							label="Age"
 							name="age"
 							required={true}
@@ -56,17 +57,17 @@ export const Step = withEventBus((props) => {
 						/>
 					</Grid>
 					<Grid item sm={6}>
-						<Input.Text label="Profession" name="job.title" required={true} />
+						<Text label="Profession" name="job.title" required={true} />
 					</Grid>
 					<Grid item sm={3}>
-						<Input.Date
+						<Date
 							label="Date d'arrivée"
 							name="job.startDate"
 							required={true}
 						/>
 					</Grid>
 					<Grid item sm={3}>
-						<Input.Date label="Date de départ" name="job.endDate" />
+						<Date label="Date de départ" name="job.endDate" />
 					</Grid>
 				</Grid>
 			</StepForm>
