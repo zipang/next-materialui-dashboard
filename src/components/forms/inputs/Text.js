@@ -54,7 +54,7 @@ const Text = ({
 
 	useEffect(() => {
 		console.log(`Re-rendering text field ${name}`);
-	}, [name]);
+	});
 
 	useLayoutEffect(() => {
 		inputRef.current.value = getData(name); // Apply the default value
