@@ -1,7 +1,10 @@
 import APIForm from "@forms/APIForm";
-import Input from "@forms/Input";
 import { useState } from "react";
 import { Typography } from "@material-ui/core";
+import Text from "./inputs/Text";
+import Email from "./inputs/Email";
+import Password from "./inputs/Password";
+import Submit from "./inputs/Submit";
 
 /**
  * Displays the first form to create a new user
@@ -14,28 +17,20 @@ const RegisterForm = ({ onRegistration }) => {
 		<>
 			{!submitted && (
 				<APIForm action="/api/user/register" onSuccess={() => setSubmitted(true)}>
-					<Input.Text
+					<Text
 						label="Prénom"
 						name="firstName"
 						autoFocus={true}
-						validation={{ required: "Saisissez votre prénom" }}
+						required="Saisissez votre prénom"
 					/>
-					<Input.Text
-						label="Nom"
-						name="lastName"
-						validation={{ required: "Saisissez votre nom" }}
-					/>
-					<Input.Email
-						label="Email"
-						name="email"
-						validation={{ required: "Saisissez votre email" }}
-					/>
-					<Input.Password
+					<Text label="Nom" name="lastName" required="Saisissez votre nom" />
+					<Email label="Email" name="email" required="Saisissez votre email" />
+					<Password
 						label="Mot de passe"
 						name="password"
-						validation={{ required: "Saisissez votre mot de passe" }}
+						required="Saisissez votre mot de passe"
 					/>
-					<Input.Submit />
+					<Submit />
 				</APIForm>
 			)}
 			{submitted && (

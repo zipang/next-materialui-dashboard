@@ -2,8 +2,10 @@ import { useRouter } from "next/router";
 import { useAuthentication } from "../AuthenticationProvider";
 
 import APIForm from "@forms/APIForm";
-import Input from "@forms/Input";
+import Input from "@forms/inputs/Input";
 import User from "@models/User";
+import Email from "./inputs/Email";
+import Password from "./inputs/Password";
 
 /**
  * Displays a form to log the user
@@ -24,16 +26,16 @@ const LoginForm = () => {
 
 	return (
 		<APIForm action="/api/user/login" onSuccess={onSuccess}>
-			<Input.Email
+			<Email
 				label="Email"
 				name="username"
 				autoFocus={true}
-				validation={{ required: "Saisissez votre email" }}
+				required="Saisissez votre email"
 			/>
-			<Input.Password
+			<Password
 				label="Mot de passe"
 				name="password"
-				validation={{ required: "Saisissez votre mot de passe" }}
+				required="Saisissez votre mot de passe"
 			/>
 			<Input.Submit />
 		</APIForm>
