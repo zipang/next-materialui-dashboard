@@ -22,6 +22,7 @@ import _BASE_INPUT_STYLES from "./styles";
 const Text = ({
 	name = "text",
 	label = "Text",
+	placeHolder,
 	required = false,
 	defaultValue = "",
 	autoComplete = false,
@@ -53,7 +54,7 @@ const Text = ({
 
 	useEffect(() => {
 		console.log(`Re-rendering text field ${name}`);
-	});
+	}, [name]);
 
 	useLayoutEffect(() => {
 		inputRef.current.value = getData(name); // Apply the default value
@@ -76,7 +77,8 @@ const Text = ({
 			helperText={errorMessage}
 			fullWidth={true}
 			InputProps={{
-				readOnly
+				readOnly,
+				placeholder: placeHolder
 			}}
 			{...mergedProps}
 		/>
