@@ -1,7 +1,7 @@
 // CheckBoxes.stories.js
 import CheckBoxes from "./CheckBoxes";
 import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import { VForm } from "@forms/validation/VForm";
+import VForm from "@forms/validation/VForm";
 
 const musicOptions = {
 	rock: "Rock",

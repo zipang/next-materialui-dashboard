@@ -1,7 +1,7 @@
 // SelectBox.stories.js
 import SelectBox from "./SelectBox";
 import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import { VForm } from "@forms/validation/VForm";
+import VForm from "@forms/validation/VForm";
 import { Button } from "@material-ui/core";
 
 const musicOptions = {
