@@ -1,15 +1,19 @@
-import Input, { applyNumericMask, getDigitsOnly } from "@components/forms/Input";
-import { getProperty } from "@lib/utils/NestedObjects";
 import { useState } from "react";
+import { getProperty } from "@lib/utils/NestedObjects";
+import { applyNumericMask, getDigitsOnly } from "@components/forms/validation/utils";
 import APIForm from "../APIForm";
+import Formatted from "../inputs/Formatted";
+import Submit from "../inputs/Submit";
 
 export const formatSiret = applyNumericMask("999 999 999 99999");
+export const isSiretValid = (str = "") =>
+	(str && str.length === 14) || "Saisissez un no de SIRET valide (14 chiffres)";
 
-export const SiretInput = ({ ...props }) => (
-	<Input.Formatted
+export const SiretInput = ({ validation, ...props }) => (
+	<Formatted
 		format={formatSiret}
 		serialize={getDigitsOnly}
-		validation={{ required: "Saisissez un no de SIRET valide (14 chiffres)" }}
+		validation={{ isSiretValid, ...validation }}
 		{...props}
 	/>
 );
@@ -79,15 +83,24 @@ export const mergeSiretData = (callback) => (siretData, errors) => {
 	}
 };
 
-const onError = (inputRef) => (errors) => {};
-
 /**
  * A specific SIRET search for that sends sirets number to our internal API
  * which uses the Open Data
  * @param {Function} onSuccess Callback that receives the SIRET search API response data
  */
 export const SiretSearchForm = ({ onSubmit }) => {
-	const [apiErrorMessage, setApiErrorMessage] = useState(true);
+	const [apiErrorMessage, setApiErrorMessage] = useState(false);
+
+	const displayApiErrorMessage = () => {
+		console.log(`SiretSearch displayApiErrorMessage()`);
+		if (apiErrorMessage) {
+			const forgetMe = apiErrorMessage;
+			setApiErrorMessage(false);
+			return forgetMe;
+		} else {
+			return true;
+		}
+	};
 
 	const onError = (error) => {
 		console.log(`Siret search returned error`, error);
@@ -107,11 +120,10 @@ export const SiretSearchForm = ({ onSubmit }) => {
 				helperText={typeof apiErrorMessage === "string" ? apiErrorMessage : ""}
 				autoFocus={true}
 				validation={{
-					required: "Saisissez un no de SIRET valide (14 chiffres)",
-					validate: () => apiErrorMessage
+					displayApiErrorMessage
 				}}
 			/>
-			<Input.Submit label="Rechercher" />
+			<Submit label="Rechercher" />
 		</APIForm>
 	);
 };
