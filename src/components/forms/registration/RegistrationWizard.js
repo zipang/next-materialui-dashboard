@@ -351,10 +351,10 @@ sinon indiquez la date de certification et le n° de certification)`
 				type: "group",
 				fields: [
 					{
-						name: "certifications.afnor.en_cours",
-						label: "En Cours",
-						type: "ysn",
-						size: 3 / 12
+						name: "certifications.afnor.status",
+						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
+						type: "radio",
+						size: 1
 					},
 					{
 						name: "certifications.afnor.date",
@@ -365,7 +365,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.afnor.no",
 						label: "No",
-						size: 6 / 12
+						size: 8 / 12
 					}
 				]
 			},
@@ -374,10 +374,10 @@ sinon indiquez la date de certification et le n° de certification)`
 				type: "group",
 				fields: [
 					{
-						name: "certifications.qualicert.en_cours",
-						label: "En Cours",
-						type: "ysn",
-						size: 3 / 12
+						name: "certifications.qualicert.statut",
+						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
+						type: "radio",
+						size: 1
 					},
 					{
 						name: "certifications.qualicert.date",
@@ -388,7 +388,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.qualicert.no",
 						label: "No",
-						size: 6 / 12
+						size: 8 / 12
 					}
 				]
 			},
@@ -397,10 +397,10 @@ sinon indiquez la date de certification et le n° de certification)`
 				type: "group",
 				fields: [
 					{
-						name: "certifications.qualisap.en_cours",
-						label: "En Cours",
-						type: "ysn",
-						size: 3 / 12
+						name: "certifications.qualisap.statut",
+						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
+						type: "radio",
+						size: 1
 					},
 					{
 						name: "certifications.qualisap.date",
@@ -411,7 +411,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.qualisap.no",
 						label: "No",
-						size: 6 / 12
+						size: 8 / 12
 					}
 				]
 			},
@@ -420,10 +420,10 @@ sinon indiquez la date de certification et le n° de certification)`
 				type: "group",
 				fields: [
 					{
-						name: "certifications.cap_handeo.en_cours",
-						label: "En Cours",
-						type: "ysn",
-						size: 3 / 12
+						name: "certifications.cap_handeo.statut",
+						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
+						type: "radio",
+						size: 1
 					},
 					{
 						name: "certifications.cap_handeo.date",
@@ -434,7 +434,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.cap_handeo.no",
 						label: "No",
-						size: 6 / 12
+						size: 8 / 12
 					}
 				]
 			}
@@ -454,16 +454,16 @@ indiquez le avec un commentaire sur vos attentes.`
 				type: "group",
 				fields: [
 					{
-						name: "certifications.syneos.en_cours",
-						label: "En Cours",
-						type: "ysn",
-						size: 3 / 12
+						name: "certifications.syneos.statut",
+						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
+						type: "radio",
+						size: 6 / 12
 					},
 					{
 						name: "certifications.syneos.date",
 						label: "Date",
 						type: "date",
-						size: 3 / 12
+						size: 4 / 12
 					},
 					{
 						name: "certifications.syneos.cles",
@@ -517,7 +517,7 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 					{
 						name: "effectifs.etp",
 						label: "ETP",
-						type: "integer",
+						type: "decimal",
 						size: 1 / 2,
 						required: true
 					}
@@ -537,7 +537,7 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 					{
 						name: "effectifs.intervenants_etp",
 						label: "ETP",
-						type: "integer",
+						type: "decimal",
 						size: 1 / 2,
 						required: true
 					}
@@ -557,7 +557,7 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 					{
 						name: "effectifs.cadres_intermediaires_etp",
 						label: "ETP",
-						type: "integer",
+						type: "decimal",
 						size: 1 / 2,
 						required: true
 					}
@@ -587,70 +587,14 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 		]
 	},
 	{
-		id: "step-activite-beneficiaires",
-		title: "Votre activité (ratios) et vos bénéficiaires",
+		id: "step-beneficiaires",
+		title: "Vos bénéficiaires",
 		help: {
-			description: `Indiquez tout d'abord les _ratios_ (%) d'activité dans chaque catégorie d'intervention.
-Indiquez ensuite les _effectifs_ (nb de personnes bénéficiaires) pour ces mêmes catégories d'intervention.`
+			description: `Indiquez le décompte de bénéficiaires de prestations à la personne par catégorie.`
 		},
 		fields: [
 			{
-				label: "Votre Activité (ratios)",
-				type: "group",
-				fields: [
-					{
-						name: "activite.ratios.pa",
-						label: "Personnes Agées",
-						type: "percent",
-						required: true,
-						size: 1 / 2
-					},
-					{
-						name: "activite.ratios.ph",
-						label: "Personnes Handicapées",
-						type: "percent",
-						required: true,
-						size: 1 / 2
-					},
-					{
-						name: "activite.ratios.transport",
-						label: "Transport adapté",
-						type: "percent",
-						required: true,
-						size: 1 / 2
-					},
-					{
-						name: "activite.ratios.petite_enfance",
-						label: "Enfance (-3 ans)",
-						type: "percent",
-						required: true,
-						size: 1 / 2
-					},
-					{
-						name: "activite.ratios.mandataire",
-						label: "Part Mandataires",
-						type: "percent",
-						required: true,
-						size: 1 / 2
-					},
-					{
-						name: "activite.ratios.prestataire",
-						label: "Part Prestataires",
-						type: "percent",
-						required: true,
-						size: 1 / 2
-					},
-					{
-						name: "activite.ratios.confort",
-						label: "Activité de confort",
-						type: "percent",
-						required: true,
-						size: 1 / 2
-					}
-				]
-			},
-			{
-				label: "Vos Bénéficiaires (effectif)",
+				label: "Vos Bénéficiaires (décompte)",
 				type: "group",
 				fields: [
 					{
@@ -711,6 +655,70 @@ Indiquez ensuite les _effectifs_ (nb de personnes bénéficiaires) pour ces mêm
 					{
 						name: "activite.beneficiaires.autres_detail",
 						label: "Autre Bénéficiaires : Préciser si nécessaire"
+					}
+				]
+			}
+		]
+	},
+	{
+		id: "step-activite-ratios",
+		title: "Votre activité (ratios)",
+		help: {
+			description: `Indiquez votre _ratio_ d'activité (%) dans chaque catégorie de prestation.`
+		},
+		fields: [
+			{
+				label: "Votre Activité (ratios)",
+				type: "group",
+				fields: [
+					{
+						name: "activite.ratios.pa",
+						label: "Personnes Agées",
+						type: "percent",
+						required: true,
+						size: 1 / 2
+					},
+					{
+						name: "activite.ratios.ph",
+						label: "Personnes Handicapées",
+						type: "percent",
+						required: true,
+						size: 1 / 2
+					},
+					{
+						name: "activite.ratios.transport",
+						label: "Transport adapté",
+						type: "percent",
+						required: true,
+						size: 1 / 2
+					},
+					{
+						name: "activite.ratios.petite_enfance",
+						label: "Enfance (-3 ans)",
+						type: "percent",
+						required: true,
+						size: 1 / 2
+					},
+					{
+						name: "activite.ratios.mandataire",
+						label: "Part Mandataires",
+						type: "percent",
+						required: true,
+						size: 1 / 2
+					},
+					{
+						name: "activite.ratios.prestataire",
+						label: "Part Prestataires",
+						type: "percent",
+						required: true,
+						size: 1 / 2
+					},
+					{
+						name: "activite.ratios.confort",
+						label: "Activité de confort",
+						type: "percent",
+						required: true,
+						size: 1 / 2
 					}
 				]
 			}

@@ -39,9 +39,27 @@ export const Declarations = (args) => (
 /**
  * Step Sample
  */
-export const ActiviteBeneficiaires = (args) => (
+export const Beneficiaires = (args) => (
 	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-activite-beneficiaires")} />
+		<Wizard steps={steps.filter(({ id }) => id === "step-beneficiaires")} />
+	</CenteredPaperSheet>
+);
+
+/**
+ * Step Sample
+ */
+export const Effectifs = (args) => (
+	<CenteredPaperSheet>
+		<Wizard steps={steps.filter(({ id }) => id === "step-effectifs")} />
+	</CenteredPaperSheet>
+);
+
+/**
+ * Step Sample
+ */
+export const RatiosActivite = (args) => (
+	<CenteredPaperSheet>
+		<Wizard steps={steps.filter(({ id }) => id === "step-activite-ratios")} />
 	</CenteredPaperSheet>
 );
 
@@ -60,15 +78,6 @@ export const Certifications = (args) => (
 export const Syneos = (args) => (
 	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-06-syneos")} />
-	</CenteredPaperSheet>
-);
-
-/**
- * Step Sample
- */
-export const Effectifs = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-effectifs")} />
 	</CenteredPaperSheet>
 );
 

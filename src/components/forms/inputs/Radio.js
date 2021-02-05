@@ -28,7 +28,7 @@ import { isUndefined, noop } from "../validation/ValidationContext";
  */
 const Radio = ({
 	name = "radio",
-	label = "Select a value",
+	label = "",
 	helperText = "",
 	options = [],
 	defaultValue,
@@ -80,7 +80,7 @@ const Radio = ({
 			readOnly={readOnly}
 			error={Boolean(errorMessage)}
 		>
-			<FormLabel component="legend">{label}</FormLabel>
+			{label && <FormLabel component="legend">{label}</FormLabel>}
 			<RadioGroup
 				row
 				aria-label={label}
