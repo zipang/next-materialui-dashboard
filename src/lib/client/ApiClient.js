@@ -1,4 +1,25 @@
+import ApiError from "@lib/ApiError";
+
 const APIClient = {};
+
+/**
+ * We expect the response to be in JSON format, but sometimes.. shit happens..
+ * @param {HttpResponse} resp
+ * @return {Object}
+ */
+const readResponseBody = async (resp) => {
+	try {
+		return await resp.json();
+	} catch (err) {
+		// Error parsing JSON format
+		const textBody = await resp.text();
+		return {
+			code: resp.status,
+			success: false,
+			error: textBody
+		};
+	}
+};
 
 export const get = (APIClient.get = async (...apiParams) => {});
 
@@ -19,14 +40,18 @@ export const post = (APIClient.post = async (postUrl, postBody = {}) => {
 		body: JSON.stringify(postBody)
 	});
 
-	const respBody = await resp.json();
-	console.dir(`API POST to ${postUrl} returned`, respBody);
+	try {
+		const respBody = await readResponseBody(resp);
+		console.dir(`API POST to ${postUrl} returned`, respBody);
 
-	if (respBody.error) {
-		throw new Error(respBody.error);
+		if (respBody.error) {
+			throw new ApiError(respBody.code, respBody.error);
+		}
+
+		return respBody;
+	} catch (err) {
+		throw new ApiError(resp.status, `${err.message} (${resp.statusText})`);
 	}
-
-	return respBody;
 });
 
 export default APIClient;
