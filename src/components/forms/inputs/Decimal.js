@@ -22,8 +22,9 @@ export const serializeDecimal = (decimalsSeparator) => (str = "") => {
  * @field {Object} validation Custom  validation rules
  * @field {String} [thousandsSeparator=" "] How to separate thousands groups of digits
  * @field {String} [decimalsSeparator=","] Decimal point symbol
- * @field {String} [unit] Optional unit (sufix)
+ * @field {String} [unit] Optional unit (suffix)
  * @field {Array<Decimal,Decimal>} [plage] Optional plage of values to restrict the input
+ * @field {Object} [validation] Custom validation rules
  * @fiels {String} [errorMessage] A custom error message when teh validation fails
  */
 /**
@@ -41,12 +42,12 @@ const Decimal = ({
 	prefix = "",
 	suffix = "",
 	plage,
+	validation = {},
 	...props
 }) => {
 	if (required) {
 		defaultValue = 0;
 	}
-	const validation = {};
 	if (Array.isArray(plage)) {
 		validation.isBetween = isBetween(plage[0], plage[1], errorMessage);
 	}
