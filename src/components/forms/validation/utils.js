@@ -7,6 +7,15 @@ export const _DEFAULT_MESSAGES = {
 };
 
 /**
+ * Extracts only the digits from a given input string
+ * Usable as the `format` property of a Formatted input
+ * @return {String}
+ */
+export const getDigitsOnly = (str = "") => {
+	return str.replace(/[^\d]+/gi, "");
+};
+
+/**
  * Generate an input formatter of digits only from a mask
  * @example
  *   const frenchTelMask = applyNumericMask("+(99) 9 99 99 99 99")
@@ -26,15 +35,6 @@ export const applyNumericMask = (mask = "99 99 99 99") => (str = "") => {
 		.join("");
 	const cursorPosition = formatted.indexOf("_"); // where is the rest of the mask ?
 	return cursorPosition === -1 ? [formatted, ""] : formatted.splitAt(cursorPosition);
-};
-
-/**
- * Extracts only the digits from a given input string
- * Usable as the `format` property of a Formatted input
- * @return {String}
- */
-export const getDigitsOnly = (str = "") => {
-	return str.replace(/[^\d]+/gi, "");
 };
 
 /**

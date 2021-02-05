@@ -1,9 +1,9 @@
 import { setProperty, getProperty } from "../../../lib/utils/NestedObjects.js";
 
 const _EMPTY_ERRORS = {};
-const noop = (val) => val;
-const allways = (val) => () => val; // Allways return the same value
-const filterByValue = (good) => (testVal) => testVal === good; // A filter that let only the 'good' values pass
+export const noop = (val) => val;
+export const allways = (val) => () => val; // Allways return the same value
+export const filterByValue = (good) => (testVal) => testVal === good; // A filter that let only the 'good' values pass
 export const isUndefined = (val) =>
 	val === undefined || val === null || Number.isNaN(val);
 export const isUndefinedOrEmpty = (val) => val === "" || isUndefined(val);
@@ -61,10 +61,6 @@ const registerField = (fields, data) => (
  * @param {Object} validation Validation rules with their own keys
  */
 export const validateField = (name, value, required = false, validation = {}) => {
-	console.log(
-		`ValidationContext: validating ${name}=${value} (required=${required})`,
-		validation
-	);
 	if (isUndefinedOrEmpty(value)) {
 		if (required) {
 			throw new ValidationError(
@@ -126,6 +122,9 @@ const validate = (validationContext) => (name, options) => {
 		return {
 			unregistered: `Property ${name} is not registered and therefore cannot be validated`
 		};
+	}
+	if (name === null) {
+		console.log(`validate() called on registered fields ${Object.keys(fields)}`);
 	}
 
 	// Check to see if we have a filter to apply
