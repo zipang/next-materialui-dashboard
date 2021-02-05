@@ -35,18 +35,14 @@ Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à to
 			{
 				name: "nom",
 				label: "Nom",
-				validation: {
-					required: "Saisissez le nom de votre structure"
-				}
+				required: "Saisissez le nom de votre structure"
 			},
 			{
 				name: "date_creation",
 				label: "Création",
 				type: "date",
 				size: 1 / 4,
-				validation: {
-					required: "Saisissez la date de création de l'entreprise"
-				}
+				required: "Saisissez la date de création de l'entreprise"
 			},
 			{
 				name: "statut",
@@ -58,9 +54,7 @@ Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à to
 					{ code: "ccas-cias", label: "CCAS / CIAS" }
 				],
 				size: 3 / 4,
-				validation: {
-					required: "Saisissez le statut de l'entreprise"
-				}
+				required: "Saisissez le statut de l'entreprise"
 			},
 			{
 				type: "group",
@@ -69,9 +63,7 @@ Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à to
 					{
 						name: "adresse.rue1",
 						label: "Rue",
-						validation: {
-							required: "Indiquez la rue"
-						}
+						required: "Indiquez la rue"
 					},
 					{
 						name: "adresse.rue2",
@@ -81,15 +73,13 @@ Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à to
 						name: "adresse.code_postal",
 						label: "CP",
 						size: 1 / 4,
-						validation: {
-							required: "Indiquez le code postal"
-						}
+						required: "Indiquez le code postal"
 					},
 					{
 						name: "adresse.commune",
 						label: "Ville",
 						size: 3 / 4,
-						required: true
+						required: "Indiquez la commune"
 					}
 				]
 			}
@@ -105,7 +95,7 @@ ainsi que les sites internet liés à votre activité.`
 		},
 		fields: [
 			{
-				label: "Représentant",
+				label: "Contact privilégié",
 				type: "group",
 				fields: [
 					{
@@ -137,7 +127,7 @@ ainsi que les sites internet liés à votre activité.`
 				]
 			},
 			{
-				label: "Contact",
+				label: "Accueil",
 				type: "group",
 				fields: [
 					{
@@ -239,8 +229,8 @@ Puis indiquez vos numéros d'agrémentation.`
 						size: 1 / 2,
 						placeHolder: "SAP123456789",
 						validation: {
-							pattern: {
-								value: /^SAP(\d){9}$/,
+							formatInvalid: {
+								pattern: /^SAP(\d){9}$/,
 								message:
 									"Le no de déclaration doit commencer par SAP suivi de 9 chiffres.\n Exemple: SAP123456789"
 							}
@@ -264,8 +254,8 @@ Puis indiquez vos numéros d'agrémentation.`
 						size: 1 / 2,
 						placeHolder: "SAP123456789",
 						validation: {
-							pattern: {
-								value: /^SAP(\d){9}$/,
+							formatInvalid: {
+								pattern: /^SAP(\d){9}$/,
 								message:
 									"Le no d'agrément doit commencer par SAP suivi de 9 chiffres.\n Exemple: SAP123456789"
 							}
@@ -289,8 +279,8 @@ Puis indiquez vos numéros d'agrémentation.`
 						placeHolder: "2020-999",
 						size: 1 / 2,
 						validation: {
-							pattern: {
-								value: /^(\d){4}-(\d){2,3}$/,
+							formatInvalid: {
+								pattern: /^(\d){4}-(\d){2,3}$/,
 								message:
 									"Le n° d'autorisation doit commencer par une année, un tiret puis 2 ou 3 chiffres.\n Exemple : 2018-34"
 							}
@@ -333,7 +323,7 @@ et si la télédéclaration est mise en place dans votre structure.`
 			{
 				name: "systemes_gestion.dispositif_domycile",
 				label: "Dispositif Domycile",
-				type: "switch"
+				type: "ysn"
 			},
 			{
 				name: "systemes_gestion.telegestion",
@@ -342,7 +332,7 @@ et si la télédéclaration est mise en place dans votre structure.`
 			{
 				name: "systemes_gestion.teletransmission",
 				label: "Système de télétransmission",
-				type: "switch"
+				type: "ysn"
 			}
 		]
 	},
@@ -363,7 +353,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.afnor.en_cours",
 						label: "En Cours",
-						type: "switch",
+						type: "ysn",
 						size: 3 / 12
 					},
 					{
@@ -386,7 +376,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.qualicert.en_cours",
 						label: "En Cours",
-						type: "switch",
+						type: "ysn",
 						size: 3 / 12
 					},
 					{
@@ -409,7 +399,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.qualisap.en_cours",
 						label: "En Cours",
-						type: "switch",
+						type: "ysn",
 						size: 3 / 12
 					},
 					{
@@ -432,7 +422,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.cap_handeo.en_cours",
 						label: "En Cours",
-						type: "switch",
+						type: "ysn",
 						size: 3 / 12
 					},
 					{
@@ -466,7 +456,7 @@ indiquez le avec un commentaire sur vos attentes.`
 					{
 						name: "certifications.syneos.en_cours",
 						label: "En Cours",
-						type: "switch",
+						type: "ysn",
 						size: 3 / 12
 					},
 					{
@@ -493,7 +483,7 @@ indiquez le avec un commentaire sur vos attentes.`
 			{
 				name: "certifications.syneos.a_mettre_en_place",
 				label: "Je souhaite mettre en place ce label",
-				type: "switch"
+				type: "ysn"
 			},
 			{
 				name: "certifications.syneos.commentaires",
@@ -587,7 +577,8 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 					{
 						name: "activite.chiffre_affaires",
 						label: "Chiffre d'affaires",
-						type: "euros",
+						type: "decimal",
+						suffix: " €",
 						size: 1 / 2,
 						required: true
 					}
