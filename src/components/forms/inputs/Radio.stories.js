@@ -1,7 +1,7 @@
 // Radio.stories.js
 import Radio from "./Radio";
 import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import { VForm } from "@forms/validation/VForm";
+import VForm from "@forms/validation/VForm";
 
 const musicOptions = {
 	rock: "Rock",
@@ -37,7 +37,7 @@ export default {
 
 export const SimpleRadioOutput = ({ ...args }) => (
 	<FormValidationProvider>
-		<VForm id="simple-checkboxes-input">
+		<VForm id="simple-checkboxes-input" validateOnEnter={true}>
 			<Radio
 				{...args}
 				name="choices.music"

@@ -10,7 +10,7 @@ import {
 import { useFormValidationContext } from "../validation/FormValidationProvider";
 import { convertOptions } from "@forms/validation/utils";
 import _BASE_INPUT_STYLES from "./styles";
-import { isUndefined } from "../validation/ValidationContext";
+import { isUndefined, noop } from "../validation/ValidationContext";
 
 /**
  * @typedef RadioProps
@@ -32,6 +32,8 @@ const Radio = ({
 	helperText = "",
 	options = [],
 	defaultValue,
+	load = noop,
+	serialize = noop,
 	autoFocus = false,
 	readOnly = false,
 	validation = {},
@@ -55,12 +57,12 @@ const Radio = ({
 	register(name, { inputRef, defaultValue, validation });
 
 	// Load the initial value from the Validation Context
-	const selectedValue = getData(name);
+	const selectedValue = load(getData(name));
 	const errorMessage = errors[name]?.message || "";
 
 	const onChange = (evt) => {
 		const selectedValue = evt.target.value;
-		setData(name, selectedValue);
+		setData(name, serialize(selectedValue));
 		if (errorMessage) {
 			validate(name); // Show when the selection becomes valid again
 		}
@@ -93,6 +95,7 @@ const Radio = ({
 						<FormControlLabel
 							key={`${name}-${code}`}
 							inputRef={inputRef}
+							autoFocus={autoFocus}
 							value={code}
 							control={<MaterialRadio />}
 							label={label}
