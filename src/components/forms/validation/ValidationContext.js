@@ -48,7 +48,9 @@ const registerField = (fields, data) => (
 	}
 
 	console.log(
-		`Registering field '${name}', required: ${required}, value: '${currentPropertyValue}'`,
+		`Registering field '${name}', required: ${required}, ${Object.keys(
+			validation
+		)}, value: '${currentPropertyValue}'`,
 		inputRef
 	);
 };
@@ -57,16 +59,21 @@ const registerField = (fields, data) => (
  * Validate a value against a set of validation rules
  * @param {String} name The name of the property to validate (for error report)
  * @param {Any} value The current value of the property to validate
- * @param {String|Boolean} required If required is a string, it's the error message to return
+ * @param {Function|String|Boolean} required If required is a string, it's the error message to return
  * @param {Object} validation Validation rules with their own keys
+ * @param {Object} data The whole data object in the validation context
  */
-export const validateField = (name, value, required = false, validation = {}) => {
+export const validateField = (name, value, required = false, validation = {}, data) => {
 	if (isUndefinedOrEmpty(value)) {
-		if (required) {
+		const fieldIsRequired =
+			(typeof required === "function" && required(data)) || required;
+		if (fieldIsRequired) {
 			throw new ValidationError(
 				value,
 				"required",
-				typeof required === "string" ? required : `${name} is required.`
+				typeof fieldIsRequired === "string"
+					? fieldIsRequired
+					: `${name} is required.`
 			);
 		} else {
 			if (!Number.isNaN(value)) {
@@ -75,8 +82,8 @@ export const validateField = (name, value, required = false, validation = {}) =>
 		}
 	}
 
-	Object.keys(validation).forEach((ruleName) => {
-		const rule = validation[ruleName];
+	Object.keys(validation).forEach((ruleId) => {
+		const rule = validation[ruleId];
 
 		// What kind of validation is it (using duck typing to guess)
 		if (rule.pattern && typeof rule.pattern.test === "function") {
@@ -85,23 +92,23 @@ export const validateField = (name, value, required = false, validation = {}) =>
 				console.log(`ValidationError : "${value}" against pattern`, rule.pattern);
 				throw new ValidationError(
 					value,
-					ruleName,
+					ruleId,
 					rule.message || `${name} has an invalid format`
 				);
 			}
 		} else if (typeof rule === "function") {
-			const test = rule(value);
+			const test = rule(value, data);
 			if (test !== true) {
 				throw new ValidationError(
 					value,
-					ruleName,
-					test || `${name} validation failed (${ruleName})`
+					ruleId,
+					test || `${name} validation failed (${ruleId})`
 				);
 			}
 		} else if (typeof rule?.validate === "function") {
-			const test = rule.validate(value);
+			const test = rule.validate(value, data);
 			if (test !== true) {
-				throw new ValidationError(value, ruleName, test || rule.message);
+				throw new ValidationError(value, ruleId, test || rule.message);
 			}
 		}
 	});
@@ -139,7 +146,7 @@ const validate = (validationContext) => (name, options) => {
 
 			try {
 				const { validation, required } = fields[name];
-				validateField(name, getProperty(data, name), required, validation);
+				validateField(name, getProperty(data, name), required, validation, data);
 				// found an error ? nope
 				return _EMPTY_ERRORS;
 			} catch (err) {

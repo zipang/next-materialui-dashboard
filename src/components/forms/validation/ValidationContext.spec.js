@@ -1,15 +1,24 @@
 import { suite } from "uvu";
-import { expect } from "@hapi/code";
+import code from "@hapi/code";
 import {
 	ValidationError,
 	validateField,
 	ValidationContext
 } from "./ValidationContext.js";
+const { expect } = code;
 
-const johnDoe = { firstName: "John", lastName: "DOE", age: 20, address: { state: "CA" } };
+const johnDoe = {
+	firstName: "John",
+	lastName: "DOE",
+	age: 20,
+	address: {
+		state: "CA"
+	}
+};
 const janeDoe = {
 	firstName: "Jane",
 	last_name: "DOE",
+	licenceId: "7654321",
 	address: { city: "LA", state: "CA" }
 };
 
@@ -62,6 +71,43 @@ ValidationContextTestSuite("validateField", () => {
 	expect(() =>
 		validateField("percent", 110, true, { isInteger, percentStrict })
 	).to.throw(ValidationError, "This percentage must be between 0 and 100");
+});
+
+/**
+ * Test a ValidationContext with empty initial values
+ */
+ValidationContextTestSuite("validateField with interdependant validation rules", () => {
+	const { register, setData, validate } = ValidationContext({
+		data: janeDoe
+	});
+
+	register("age", {
+		required: (data) => (data.licenceId ? "Age is required for a licence id" : false)
+	});
+	register("licenceId", {
+		validation: {
+			sevenDigits,
+			ageRestriction: (licenceId, data) =>
+				licenceId && data.age < 20
+					? "You must be over twenty to have a licence id"
+					: true
+		}
+	});
+
+	let { data, errors } = validate();
+	expect(errors.age.code).to.equal("required");
+	expect(errors.age.message).to.equal("Age is required for a licence id");
+
+	// Now let's set the age
+	setData("age", 18);
+
+	// Validate this again
+	({ data, errors } = validate());
+	console.log(errors);
+	expect(errors.licenceId.code).to.equal("ageRestriction");
+	expect(errors.licenceId.message).to.equal(
+		"You must be over twenty to have a licence id"
+	);
 });
 
 /**
