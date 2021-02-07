@@ -65,14 +65,14 @@ const registerField = (fields, data) => (
  */
 export const validateField = (name, value, required = false, validation = {}, data) => {
 	if (isUndefinedOrEmpty(value)) {
-		const fieldIsRequired =
-			(typeof required === "function" && required(data)) || required;
-		if (fieldIsRequired) {
+		const isValueRequired =
+			typeof required === "function" ? required(data) : required;
+		if (isValueRequired) {
 			throw new ValidationError(
 				value,
 				"required",
-				typeof fieldIsRequired === "string"
-					? fieldIsRequired
+				typeof isValueRequired === "string"
+					? isValueRequired
 					: `${name} is required.`
 			);
 		} else {

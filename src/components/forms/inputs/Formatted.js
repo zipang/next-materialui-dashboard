@@ -1,6 +1,7 @@
 import { createRef, useState, useEffect, useLayoutEffect } from "react";
 import { TextField } from "@material-ui/core";
 import { useFormValidationContext } from "../validation/FormValidationProvider";
+import { isRequired } from "../validation/utils";
 import _BASE_INPUT_STYLES from "./styles";
 
 const noop = (val) => val;
@@ -41,13 +42,20 @@ const Formatted = ({
 }) => {
 	// Find the form validation context to register our input
 	const inputRef = createRef();
-	const { register, errors, setData, getData, validate } = useFormValidationContext();
+	const {
+		register,
+		data,
+		errors,
+		setData,
+		getData,
+		validate
+	} = useFormValidationContext();
 
 	const errorMessage = errors[name]?.message || "";
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	// Pass the required attribute to the validation object
-	if (required) label += "*";
+	if (isRequired(data, required)) label += "*";
 
 	// Register our Input so that the validation can take effect
 	register(name, { inputRef, required, defaultValue, validation });

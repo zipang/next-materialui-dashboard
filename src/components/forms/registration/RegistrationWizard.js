@@ -134,12 +134,14 @@ ainsi que les sites internet liés à votre activité.`
 						name: "contact.telephone",
 						label: "Téléphone",
 						type: "tel",
+						required: "Quel est le n° de téléphone du standard ?",
 						size: 1 / 2
 					},
 					{
 						name: "contact.mail",
 						label: "Email",
 						type: "email",
+						required: "Saisissez un email de contact",
 						size: 1 / 2
 					}
 				]
@@ -351,20 +353,29 @@ sinon indiquez la date de certification et le n° de certification)`
 				type: "group",
 				fields: [
 					{
-						name: "certifications.afnor.status",
+						name: "certifications.afnor.statut",
 						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
 						type: "radio",
+						defaultValue: "N",
 						size: 1
 					},
 					{
 						name: "certifications.afnor.date",
 						label: "Date",
 						type: "date",
+						required: (data) =>
+							data.certifications.afnor.statut === "Y"
+								? "Indiquez votre date de certification"
+								: false,
 						size: 3 / 12
 					},
 					{
 						name: "certifications.afnor.no",
 						label: "No",
+						required: (data) =>
+							data.certifications.afnor.statut === "Y"
+								? "Indiquez votre n° de certification"
+								: false,
 						size: 8 / 12
 					}
 				]
@@ -377,17 +388,26 @@ sinon indiquez la date de certification et le n° de certification)`
 						name: "certifications.qualicert.statut",
 						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
 						type: "radio",
+						defaultValue: "N",
 						size: 1
 					},
 					{
 						name: "certifications.qualicert.date",
 						label: "Date",
 						type: "date",
+						required: (data) =>
+							data.certifications.qualicert.statut === "Y"
+								? "Indiquez votre date de certification"
+								: false,
 						size: 3 / 12
 					},
 					{
 						name: "certifications.qualicert.no",
 						label: "No",
+						required: (data) =>
+							data.certifications.qualicert.statut === "Y"
+								? "Indiquez votre n° de certification"
+								: false,
 						size: 8 / 12
 					}
 				]
@@ -400,17 +420,26 @@ sinon indiquez la date de certification et le n° de certification)`
 						name: "certifications.qualisap.statut",
 						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
 						type: "radio",
+						defaultValue: "N",
 						size: 1
 					},
 					{
 						name: "certifications.qualisap.date",
 						label: "Date",
 						type: "date",
+						required: (data) =>
+							data.certifications.qualisap.statut === "Y"
+								? "Indiquez votre date de certification"
+								: false,
 						size: 3 / 12
 					},
 					{
 						name: "certifications.qualisap.no",
 						label: "No",
+						required: (data) =>
+							data.certifications.qualisap.statut === "Y"
+								? "Indiquez votre n° de certification"
+								: false,
 						size: 8 / 12
 					}
 				]
@@ -423,17 +452,26 @@ sinon indiquez la date de certification et le n° de certification)`
 						name: "certifications.cap_handeo.statut",
 						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
 						type: "radio",
+						defaultValue: "N",
 						size: 1
 					},
 					{
 						name: "certifications.cap_handeo.date",
 						label: "Date",
 						type: "date",
+						required: (data) =>
+							data.certifications.cap_handeo.statut === "Y"
+								? "Indiquez votre date de certification"
+								: false,
 						size: 3 / 12
 					},
 					{
 						name: "certifications.cap_handeo.no",
 						label: "No",
+						required: (data) =>
+							data.certifications.cap_handeo.statut === "Y"
+								? "Indiquez votre n° de certification"
+								: false,
 						size: 8 / 12
 					}
 				]

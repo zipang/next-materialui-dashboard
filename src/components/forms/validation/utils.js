@@ -16,6 +16,15 @@ export const getDigitsOnly = (str = "") => {
 };
 
 /**
+ * The `required` property can be a function depending of the Validataion context
+ * @param {Object} data Current data in the Validation Context
+ * @param {Boolean|String|Function} required The required definition (can be a function, a boolean or a string)
+ * @return {Boolean|String} that evaluates if the current required property is true or false
+ */
+export const isRequired = (data, required) =>
+	typeof required === "function" ? required(data) : required;
+
+/**
  * Generate an input formatter of digits only from a mask
  * @example
  *   const frenchTelMask = applyNumericMask("+(99) 9 99 99 99 99")
