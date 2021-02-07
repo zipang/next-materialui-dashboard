@@ -6742,9 +6742,9 @@ js-base64@^2.4.3:
   integrity sha512-pZe//GGmwJndub7ZghVHz7vjb2LgC1m8B07Au3eYqeqv9emhESByMXxaEgkUkEqJe87oBbSniGYoQNIBklc7IQ==
 
 js-beautify@^1.8.9:
-  version "1.13.0"
-  resolved "https://registry.yarnpkg.com/js-beautify/-/js-beautify-1.13.0.tgz#a056d5d3acfd4918549aae3ab039f9f3c51eebb2"
-  integrity sha512-/Tbp1OVzZjbwzwJQFIlYLm9eWQ+3aYbBXLSaqb1mEJzhcQAfrqMMQYtjb6io+U6KpD0ID4F+Id3/xcjH3l/sqA==
+  version "1.13.5"
+  resolved "https://registry.yarnpkg.com/js-beautify/-/js-beautify-1.13.5.tgz#a08a97890cae55daf1d758d3f6577bd4a64d7014"
+  integrity sha512-MsXlH6Z/BiRYSkSRW3clNDqDjSpiSNOiG8xYVUBXt4k0LnGvDhlTGOlHX1VFtAdoLmtwjxMG5qiWKy/g+Ipv5w==
   dependencies:
     config-chain "^1.1.12"
     editorconfig "^0.15.3"
@@ -9909,9 +9909,9 @@ store2@^2.7.1:
   integrity sha512-7t+/wpKLanLzSnQPX8WAcuLCCeuSHoWdQuh9SB3xD0kNOM38DNf+0Oa+wmvxmYueRzkmh6IcdKFtvTa+ecgPDw==
 
 storybook-addon-material-ui@^0.9.0-alpha.22:
-  version "0.9.0-alpha.22"
-  resolved "https://registry.yarnpkg.com/storybook-addon-material-ui/-/storybook-addon-material-ui-0.9.0-alpha.22.tgz#418d786154284dde5ea4905b4f34c3230d1a519f"
-  integrity sha512-KJNR6h4rfUvYCM3ziyXECVEwGHTM4YZl0fpBRp4tJdflfunnldXXPDb3C0L9Uc2lKew2yZs5Q4ste+OZe/+w/w==
+  version "0.9.0-alpha.23"
+  resolved "https://registry.yarnpkg.com/storybook-addon-material-ui/-/storybook-addon-material-ui-0.9.0-alpha.23.tgz#4e073767f212a2a72744371859b82866a7a7bd1a"
+  integrity sha512-kMLb73hGV5AAFNLeevkzZqY1N98jngZldO2/hJ+0Id50Z0Y/SzUnIwuDzeGPTHChTVA8+PTKBrfvXuZ9lj2xxA==
   dependencies:
     "@emotion/core" "^10.0.4"
     "@emotion/styled" "^10.0.4"
