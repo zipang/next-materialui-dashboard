@@ -1,5 +1,6 @@
 import { suite } from "uvu";
-import { expect } from "@hapi/code";
+import code from "@hapi/code";
+const { expect } = code;
 
 import {
 	formatInteger,

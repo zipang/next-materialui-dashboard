@@ -1,6 +1,8 @@
 import { suite } from "uvu";
 import { splitPath, getProperty, setProperty } from "./NestedObjects.js";
-import { expect } from "@hapi/code";
+import code from "@hapi/code";
+
+const { expect } = code;
 
 const testObject = {
 	org: "X",

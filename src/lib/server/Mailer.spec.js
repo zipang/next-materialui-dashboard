@@ -1,8 +1,9 @@
 import { suite } from "uvu";
-import { expect } from "@hapi/code";
+import code from "@hapi/code";
 import Mailer from "./Mailer.js";
 import ApiError from "../ApiError.js";
 
+const { expect } = code;
 const MailerTestSuite = suite("Mailer Test Suite");
 
 const shouldSucceed = async () => {

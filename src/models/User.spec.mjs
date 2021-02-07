@@ -1,7 +1,8 @@
 import { suite } from "uvu";
-import { expect } from "@hapi/code";
+import code from "@hapi/code";
 import User from "./User.js";
 
+const { expect } = code;
 const UserTestSuite = suite("User");
 
 const testUser1 = {
