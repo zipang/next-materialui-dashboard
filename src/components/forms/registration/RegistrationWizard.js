@@ -330,7 +330,7 @@ Puis indiquez vos numéros d'agrémentation.`
 			},
 			{
 				name: "systemes_gestion.telegestion_editeur",
-				label: "Si oui, quel est son éditeur"
+				label: "Si oui, quel est votre éditeur"
 			},
 			{
 				name: "systemes_gestion.teletransmission",
