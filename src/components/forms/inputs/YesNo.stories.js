@@ -3,6 +3,7 @@ import YesNo from "./YesNo";
 import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
 import VForm from "@forms/validation/VForm";
 import Submit from "./Submit";
+import Text from "./Text";
 
 const OuiNon = YesNo("Oui", "Non");
 const YSN = YesNo();
@@ -35,11 +36,12 @@ export const SimpleYesNoOutput = ({ ...args }) => (
 				label="Do you like ice cream ?"
 			/>
 			<OuiNon {...args} name="choices.glace" label="Aimez-vous les glaces ?" />
+			<Submit />
 		</VForm>
 	</FormValidationProvider>
 );
 
-export const MoreYesNoInputs = ({ prefix, suffix, ...args }) => (
+export const MoreYesNoInputsWithData = ({ prefix, suffix, ...args }) => (
 	<FormValidationProvider
 		data={{ choices: { icecream: true, glaces: true, fish: false } }}
 	>
@@ -62,6 +64,23 @@ export const MoreYesNoInputs = ({ prefix, suffix, ...args }) => (
 				{...args}
 				name="choices.fish"
 				label="Aimez-vous le poisson surgelé ?"
+			/>
+			<Submit />
+		</VForm>
+	</FormValidationProvider>
+);
+
+export const YesNoInputsWithDependant = ({ prefix, suffix, ...args }) => (
+	<FormValidationProvider>
+		<VForm id="more-checkboxes-inputs">
+			<YSN {...args} name="icecream.like" label="Do you like ice-cream ?" />
+			<Text
+				{...args}
+				name="icecream.favourite"
+				label="Favourite flavour ?"
+				required={(data) => data.icecream.like}
+				disabled={(data) => !data.icecream.like}
+				helperText="Dependant"
 			/>
 			<Submit />
 		</VForm>

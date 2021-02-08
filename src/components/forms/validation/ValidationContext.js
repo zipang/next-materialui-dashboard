@@ -37,20 +37,27 @@ export class ValidationError extends TypeError {
  */
 const registerField = (fields, data) => (
 	name,
-	{ inputRef, defaultValue = null, required = false, validation = {} }
+	{ inputRef, defaultValue = null, required = false, disabled = false, validation = {} }
 ) => {
 	// Store these references in our fields map
 	fields[name] = { inputRef, required, validation };
-	let currentPropertyValue = getProperty(data, name);
+
+	// Check to see if this field must be refreshed when external data changes
+	if (typeof required === "function" || typeof disabled === "function") {
+		fields._needsRefreshAfterDataChange = true;
+	}
+
+	let currentValue = getProperty(data, name);
+
 	// Apply the default value if the context has no existing data for this property
-	if (isUndefined(currentPropertyValue)) {
-		setProperty(data, name, (currentPropertyValue = defaultValue));
+	if (isUndefined(currentValue)) {
+		setProperty(data, name, (currentValue = defaultValue));
 	}
 
 	console.log(
 		`Registering field '${name}', required: ${required}, ${Object.keys(
 			validation
-		)}, value: '${currentPropertyValue}'`,
+		)}, value: '${currentValue}'`,
 		inputRef
 	);
 };
@@ -167,10 +174,11 @@ const validate = (validationContext) => (name, options) => {
 	}
 
 	if (validationContext.errors !== errors) {
+		console.log(`Validation errors have been raised. Return a new ValidationContext`);
 		// Return a new validationContext instance with the updated errors object
 		return { ...validationContext, errors };
 	} else {
-		// Return the same validationContext instance
+		// Return the SAME validationContext instance
 		return validationContext;
 	}
 };
@@ -193,12 +201,19 @@ export const ValidationContext = (options = {}) => {
 
 	const register = registerField(fields, data);
 	const getData = (name, defaultValue) => getProperty(data, name, defaultValue);
-	const setData = (name, value) => {
-		setProperty(data, name, value);
-	};
 
-	const validationContext = { fields, data, errors, register, getData, setData };
+	const validationContext = { fields, data, errors, register, getData };
+
+	// Now for the method that can have side-effects on the ValidationContext instance
 	validationContext.validate = validate(validationContext);
+	validationContext.setData = (name, value) => {
+		setProperty(data, name, value);
+		if (fields._needsRefreshAfterDataChange) {
+			return { ...validationContext }; // return a new instance
+		} else {
+			return validationContext;
+		}
+	};
 
 	return validationContext;
 };

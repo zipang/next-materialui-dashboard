@@ -1,7 +1,7 @@
 import React, { createRef, useEffect, useLayoutEffect } from "react";
 import { TextField } from "@material-ui/core";
 import { useFormValidationContext } from "../validation/FormValidationProvider";
-import { isRequired } from "../validation/utils";
+import { evalContextualProp } from "../validation/utils";
 
 import _BASE_INPUT_STYLES from "./styles";
 
@@ -26,6 +26,7 @@ const Text = ({
 	label = "Text",
 	placeHolder,
 	required = false,
+	disabled = false,
 	defaultValue = "",
 	autoComplete = false,
 	autoFocus = false,
@@ -48,7 +49,7 @@ const Text = ({
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	// Pass the required attribute to the validation object
-	if (isRequired(data, required)) label += "*";
+	if (evalContextualProp(data, required)) label += "*";
 
 	// Keep form context data in sync
 	const onChange = (evt) => {
@@ -83,6 +84,7 @@ const Text = ({
 			error={Boolean(errorMessage)}
 			autoComplete={autoComplete ? "" : "off"}
 			autoFocus={autoFocus}
+			disabled={evalContextualProp(data, disabled)}
 			helperText={errorMessage}
 			fullWidth={true}
 			InputProps={{

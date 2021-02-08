@@ -15,18 +15,22 @@ export const FormValidationProvider = ({ children, ...options }) => {
 		ValidationContext(options)
 	);
 
-	// Validation context can change after a call to the `validate` method
-	// Therefore we automatically apply a state change with the result of the validate() call
-	const _validate = validationContext.validate;
-	if (!_validate._enhanced) {
+	// Validation context can globally change after a call to the `validate` or `setData` methods
+	// Therefore we will check to apply a state change with the result of the validate() or setData() call
+	["validate", "setData"].forEach((methodName) => {
+		const originalMethod = validationContext[methodName];
 		// Note : be careful not to wrap the validate method multiple times
-		validationContext.validate = (...args) => {
-			const updatedValidationContext = _validate(...args);
-			setValidationContext(updatedValidationContext);
-			return updatedValidationContext;
-		};
-		validationContext.validate._enhanced = true;
-	}
+		if (!originalMethod._enhanced) {
+			validationContext[methodName] = (...args) => {
+				const updatedValidationContext = originalMethod(...args);
+				if (updatedValidationContext !== validationContext) {
+					setValidationContext(updatedValidationContext);
+				}
+				return updatedValidationContext;
+			};
+			validationContext[methodName]._enhanced = true;
+		}
+	});
 
 	return (
 		<FormValidatorContext.Provider value={validationContext}>

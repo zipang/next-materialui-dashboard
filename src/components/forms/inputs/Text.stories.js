@@ -55,7 +55,13 @@ export const SimpleText = ({ defaultValue, ...args }) => (
 				name="firstName"
 				label="Prénom"
 			/>
-			<Text {...args} placeHolder="Valjean" name="lastName" label="Nom" />
+			<Text
+				{...args}
+				placeHolder="Valjean"
+				helperText="With place holder"
+				name="lastName"
+				label="Nom"
+			/>
 		</VForm>
 	</FormValidationProvider>
 );

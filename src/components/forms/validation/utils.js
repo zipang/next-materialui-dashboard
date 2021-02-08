@@ -16,13 +16,13 @@ export const getDigitsOnly = (str = "") => {
 };
 
 /**
- * The `required` property can be a function depending of the Validataion context
+ * Eval properties like `required` or `disabled` can be a function depending
  * @param {Object} data Current data in the Validation Context
- * @param {Boolean|String|Function} required The required definition (can be a function, a boolean or a string)
+ * @param {Boolean|String|Function} prop The property definition (can be a function, a boolean or a string)
  * @return {Boolean|String} that evaluates if the current required property is true or false
  */
-export const isRequired = (data, required) =>
-	typeof required === "function" ? required(data) : required;
+export const evalContextualProp = (data, prop) =>
+	typeof prop === "function" ? prop(data) : prop;
 
 /**
  * Generate an input formatter of digits only from a mask

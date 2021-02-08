@@ -1,7 +1,7 @@
 import { createRef, useState, useEffect, useLayoutEffect } from "react";
 import { TextField } from "@material-ui/core";
 import { useFormValidationContext } from "../validation/FormValidationProvider";
-import { isRequired } from "../validation/utils";
+import { evalContextualProp } from "../validation/utils";
 import _BASE_INPUT_STYLES from "./styles";
 
 const noop = (val) => val;
@@ -12,7 +12,8 @@ const noop = (val) => val;
  * @property {String} label The field label
  * @property {Function} format a function that takes the current input of the field and reformat it
  * @property {Function} serialize a function that takes formatted input of the field and serialize it to its actual storage format
- * @property {Boolean} [required=false] Value required
+ * @property {Boolean} [required=false] required
+ * @property {Boolean} [disabled=false] disabled (cannot be edited)
  * @property {String}  [placeHolder] Text shown before any input
  * @property {Boolean} [autoFocus=false] Get focus on this field on page load ?
  * @property {Boolean} [readOnly=false] Can or cannot edit
@@ -32,6 +33,7 @@ const Formatted = ({
 	load = noop,
 	serialize = noop,
 	required = false,
+	disabled = false,
 	autoFocus = false,
 	readOnly = false,
 	validation = {},
@@ -55,7 +57,7 @@ const Formatted = ({
 	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
 
 	// Pass the required attribute to the validation object
-	if (isRequired(data, required)) label += "*";
+	if (evalContextualProp(data, required)) label += "*";
 
 	// Register our Input so that the validation can take effect
 	register(name, { inputRef, required, defaultValue, validation });
@@ -105,6 +107,7 @@ const Formatted = ({
 				Array.isArray(displayedValue) ? displayedValue.join("") : displayedValue
 			}
 			onChange={onChange}
+			disabled={evalContextualProp(data, disabled)}
 			error={Boolean(errorMessage)}
 			helperText={errorMessage || helperText}
 			InputProps={{
