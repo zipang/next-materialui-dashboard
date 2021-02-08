@@ -16,7 +16,7 @@ import _BASE_INPUT_STYLES from "./styles";
  */
 const SelectBox = ({
 	name = "select-box",
-	label = "Select",
+	label = "",
 	required = false,
 	defaultValue = "",
 	helperText = "",
