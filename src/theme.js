@@ -125,7 +125,11 @@ theme = {
 		},
 		MuiFormLabel: {
 			root: {
-				backgroundColor: theme.palette.common.white
+				backgroundColor: theme.palette.common.white,
+				"&.radioLabel": {
+					color: "black",
+					backgroundColor: "transparent"
+				}
 			}
 		},
 		MuiInputLabel: {
