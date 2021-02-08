@@ -89,8 +89,8 @@ Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à to
 		id: "step-03-contacts",
 		title: "Contacts",
 		help: {
-			description: `Indiquez les coordonnées du représentant de l'organisme, 
-les emails et numéros de téléphone du standard
+			description: `Indiquez les coordonnées du contact privilégié de l'organisme, 
+puis les emails et numéros de téléphone du standard
 ainsi que les sites internet liés à votre activité.`
 		},
 		fields: [
@@ -102,27 +102,27 @@ ainsi que les sites internet liés à votre activité.`
 						name: "representant.prenom",
 						label: "Prénom",
 						size: 1 / 2,
-						required: true
+						required: "Indiquez le prénom du contact privilégié"
 					},
 					{
 						name: "representant.nom",
 						label: "Nom",
 						size: 1 / 2,
-						required: true
+						required: "Indiquez le nom du contact privilégié"
 					},
 					{
 						name: "representant.email",
 						label: "Email",
 						type: "email",
 						size: 1 / 2,
-						required: true
+						required: "Indiquez le mail du contact privilégié"
 					},
 					{
 						name: "representant.mobile",
 						label: "Mobile",
 						type: "tel",
 						size: 1 / 2,
-						required: true
+						required: "Indiquez le n° de mobile du contact privilégié"
 					}
 				]
 			},
@@ -141,7 +141,7 @@ ainsi que les sites internet liés à votre activité.`
 						name: "contact.mail",
 						label: "Email",
 						type: "email",
-						required: "Saisissez un email de contact",
+						required: "Indiquez le mail de contact officiel",
 						size: 1 / 2
 					}
 				]

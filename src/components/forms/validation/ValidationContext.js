@@ -78,9 +78,7 @@ export const validateField = (name, value, required = false, validation = {}, da
 			throw new ValidationError(
 				value,
 				"required",
-				typeof isValueRequired === "string"
-					? isValueRequired
-					: `${name} is required.`
+				typeof isValueRequired === "string" ? isValueRequired : `Required field.`
 			);
 		} else {
 			if (!Number.isNaN(value)) {
