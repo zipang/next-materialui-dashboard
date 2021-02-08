@@ -325,12 +325,14 @@ Puis indiquez vos numéros d'agrémentation.`
 			},
 			{
 				name: "systemes_gestion.telegestion",
-				label: "Avez-vous déployé un système de Télégestion ?",
+				label: "Avez-vous déployé un système de télégestion ?",
 				type: "ysn"
 			},
 			{
 				name: "systemes_gestion.telegestion_editeur",
-				label: "Si oui, quel est votre éditeur"
+				label: "Si oui, quel est votre éditeur",
+				required: (data) => data.systemes_gestion.telegestion,
+				disabled: (data) => !data.systemes_gestion.telegestion
 			},
 			{
 				name: "systemes_gestion.teletransmission",
@@ -559,7 +561,7 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 						label: "Total",
 						type: "integer",
 						size: 1 / 2,
-						required: true
+						required: "Quel est le nombre total de salarié ?"
 					},
 					{
 						name: "effectifs.etp",

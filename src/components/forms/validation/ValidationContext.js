@@ -71,6 +71,7 @@ const registerField = (fields, data) => (
  * @param {Object} data The whole data object in the validation context
  */
 export const validateField = (name, value, required = false, validation = {}, data) => {
+	// First thing first : is this value required ?
 	if (isUndefinedOrEmpty(value)) {
 		const isValueRequired =
 			typeof required === "function" ? required(data) : required;
@@ -87,6 +88,7 @@ export const validateField = (name, value, required = false, validation = {}, da
 		}
 	}
 
+	// Then the other validation rules
 	Object.keys(validation).forEach((ruleId) => {
 		const rule = validation[ruleId];
 
@@ -117,10 +119,16 @@ export const validateField = (name, value, required = false, validation = {}, da
 			}
 		}
 	});
+
 	return true; // It's validated !
 };
 
-const validate = (validationContext) => (name, options) => {
+/**
+ * Build the validate function
+ * @param {ValidationContext} validationContext
+ * @return {Function} Validate a single property or the whole registered fields in the context
+ */
+const buildValidate = (validationContext) => (name, options) => {
 	// Extract what we need
 	const { fields, data } = validationContext;
 
@@ -135,12 +143,14 @@ const validate = (validationContext) => (name, options) => {
 			unregistered: `Property ${name} is not registered and therefore cannot be validated`
 		};
 	}
+
 	if (name === null) {
 		console.log(`validate() called on registered fields ${Object.keys(fields)}`);
 	}
 
 	// Check to see if we have a filter to apply
-	const filterFields = typeof name === "string" ? filterByValue(name) : allways(true);
+	const validateASingleField = typeof name === "string";
+	const filterFields = validateASingleField ? filterByValue(name) : allways(true);
 
 	const errors = Object.keys(fields)
 		.filter(filterFields)
@@ -171,12 +181,14 @@ const validate = (validationContext) => (name, options) => {
 		options.onError(errors);
 	}
 
-	if (validationContext.errors !== errors) {
+	if (validateASingleField || validationContext.errors !== errors) {
 		console.log(`Validation errors have been raised. Return a new ValidationContext`);
 		// Return a new validationContext instance with the updated errors object
+		// => WILL re-render all the registered fields
 		return { ...validationContext, errors };
 	} else {
 		// Return the SAME validationContext instance
+		// => will NOT re-render all the fields
 		return validationContext;
 	}
 };
@@ -203,7 +215,7 @@ export const ValidationContext = (options = {}) => {
 	const validationContext = { fields, data, errors, register, getData };
 
 	// Now for the method that can have side-effects on the ValidationContext instance
-	validationContext.validate = validate(validationContext);
+	validationContext.validate = buildValidate(validationContext);
 	validationContext.setData = (name, value) => {
 		setProperty(data, name, value);
 		if (fields._needsRefreshAfterDataChange) {
