@@ -331,7 +331,10 @@ Puis indiquez vos numéros d'agrémentation.`
 			{
 				name: "systemes_gestion.telegestion_editeur",
 				label: "Si oui, quel est votre éditeur",
-				required: (data) => data.systemes_gestion.telegestion,
+				required: (data) =>
+					data.systemes_gestion.telegestion
+						? "Indiquez votre éditeur ou le nom de votre système de télégestion"
+						: false,
 				disabled: (data) => !data.systemes_gestion.telegestion
 			},
 			{
