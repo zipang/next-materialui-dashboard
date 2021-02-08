@@ -120,9 +120,7 @@ Step.prototype = {
 				customStyles={{ minWidth: "40em" }}
 				rerender={new Date()}
 			>
-				<h2>{`${this.help ? "" : this.description + " - "}Etape ${
-					this.position
-				}`}</h2>
+				<h2>{`Etape ${this.position}`}</h2>
 				<Grid container>{this.displayFields(this.fields)}</Grid>
 			</StepForm>
 		);
