@@ -80,7 +80,11 @@ const Radio = ({
 			readOnly={readOnly}
 			error={Boolean(errorMessage)}
 		>
-			{label && <FormLabel component="legend">{label}</FormLabel>}
+			{label && (
+				<FormLabel className="radioLabel" component="legend">
+					{label}
+				</FormLabel>
+			)}
 			<RadioGroup
 				row
 				aria-label={label}
