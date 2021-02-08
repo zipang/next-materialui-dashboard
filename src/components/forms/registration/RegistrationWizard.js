@@ -364,6 +364,7 @@ sinon indiquez la date de certification et le n° de certification)`
 						name: "certifications.afnor.date",
 						label: "Date",
 						type: "date",
+						disabled: (data) => data.certifications.afnor.statut !== "Y",
 						required: (data) =>
 							data.certifications.afnor.statut === "Y"
 								? "Indiquez votre date de certification"
@@ -373,6 +374,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.afnor.no",
 						label: "No",
+						disabled: (data) => data.certifications.afnor.statut !== "Y",
 						required: (data) =>
 							data.certifications.afnor.statut === "Y"
 								? "Indiquez votre n° de certification"
@@ -396,6 +398,7 @@ sinon indiquez la date de certification et le n° de certification)`
 						name: "certifications.qualicert.date",
 						label: "Date",
 						type: "date",
+						disabled: (data) => data.certifications.qualicert.statut !== "Y",
 						required: (data) =>
 							data.certifications.qualicert.statut === "Y"
 								? "Indiquez votre date de certification"
@@ -405,6 +408,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.qualicert.no",
 						label: "No",
+						disabled: (data) => data.certifications.qualicert.statut !== "Y",
 						required: (data) =>
 							data.certifications.qualicert.statut === "Y"
 								? "Indiquez votre n° de certification"
@@ -428,6 +432,7 @@ sinon indiquez la date de certification et le n° de certification)`
 						name: "certifications.qualisap.date",
 						label: "Date",
 						type: "date",
+						disabled: (data) => data.certifications.qualisap.statut !== "Y",
 						required: (data) =>
 							data.certifications.qualisap.statut === "Y"
 								? "Indiquez votre date de certification"
@@ -437,6 +442,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.qualisap.no",
 						label: "No",
+						disabled: (data) => data.certifications.qualisap.statut !== "Y",
 						required: (data) =>
 							data.certifications.qualisap.statut === "Y"
 								? "Indiquez votre n° de certification"
@@ -460,6 +466,7 @@ sinon indiquez la date de certification et le n° de certification)`
 						name: "certifications.cap_handeo.date",
 						label: "Date",
 						type: "date",
+						disabled: (data) => data.certifications.cap_handeo.statut !== "Y",
 						required: (data) =>
 							data.certifications.cap_handeo.statut === "Y"
 								? "Indiquez votre date de certification"
@@ -469,6 +476,7 @@ sinon indiquez la date de certification et le n° de certification)`
 					{
 						name: "certifications.cap_handeo.no",
 						label: "No",
+						disabled: (data) => data.certifications.cap_handeo.statut !== "Y",
 						required: (data) =>
 							data.certifications.cap_handeo.statut === "Y"
 								? "Indiquez votre n° de certification"
