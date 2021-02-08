@@ -317,23 +317,24 @@ Puis indiquez vos numéros d'agrémentation.`
 	{
 		id: "step-systemes-gestion",
 		title: "Systèmes de Télégestion",
-		help: {
-			description: `Indiquez vos systèmes de télégestion (**Domycile** ou autre), 
-et si la télédéclaration est mise en place dans votre structure.`
-		},
 		fields: [
 			{
 				name: "systemes_gestion.dispositif_domycile",
-				label: "Dispositif Domycile",
+				label: "Avez-vous déployé le dispositif Domycile ?",
 				type: "ysn"
 			},
 			{
 				name: "systemes_gestion.telegestion",
-				label: "Autre système de télégestion"
+				label: "Avez-vous déployé un système de Télégestion ?",
+				type: "ysn"
+			},
+			{
+				name: "systemes_gestion.telegestion_editeur",
+				label: "Si oui, quel est son éditeur"
 			},
 			{
 				name: "systemes_gestion.teletransmission",
-				label: "Système de télétransmission",
+				label: "Etes-vous en télétransmission ?",
 				type: "ysn"
 			}
 		]
