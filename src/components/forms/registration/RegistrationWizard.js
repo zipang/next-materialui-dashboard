@@ -191,7 +191,7 @@ ainsi que les sites internet liés à votre activité.`
 		]
 	},
 	{
-		id: "step-04-declarations",
+		id: "step-declarations",
 		title: "Réseau, Déclarations, Agréments..",
 		help: {
 			description: `Indiquez votre convention collective, les antennes et ou réseau, enseigne..
@@ -796,6 +796,17 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 			{
 				name: "domaines.autres",
 				label: "Autres activités"
+			}
+		]
+	},
+	{
+		id: "step-demande-contact",
+		title: "Demande de contact",
+		fields: [
+			{
+				name: "demande_contact_adherent",
+				label: "Souhaitez-vous être recontacté pour un RV adhérent ?",
+				type: "ysn"
 			}
 		]
 	},

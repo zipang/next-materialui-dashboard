@@ -32,7 +32,7 @@ export const Contacts = (args) => (
  */
 export const Declarations = (args) => (
 	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-04-declarations")} />
+		<Wizard steps={steps.filter(({ id }) => id === "step-declarations")} />
 	</CenteredPaperSheet>
 );
 
@@ -87,6 +87,15 @@ export const Syneos = (args) => (
 export const SystemesGestion = (args) => (
 	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-systemes-gestion")} />
+	</CenteredPaperSheet>
+);
+
+/**
+ * Step Sample
+ */
+export const DemandeContact = (args) => (
+	<CenteredPaperSheet>
+		<Wizard steps={steps.filter(({ id }) => id === "step-demande-contact")} />
 	</CenteredPaperSheet>
 );
 
