@@ -1,4 +1,4 @@
-import { getParseInstance } from "../lib/server/ParseSDK.js";
+import { getParseInstance } from "../lib/services/ParseSDK.js";
 import ApiError from "../lib/ApiError.js";
 
 const Parse = getParseInstance();

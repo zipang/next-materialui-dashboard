@@ -1,4 +1,4 @@
-import Mailer from "@lib/server/Mailer";
+import Mailer from "@lib/services/Mailer";
 
 /**
  * The API entry point (POST) to send an email

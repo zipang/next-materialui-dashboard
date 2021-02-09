@@ -1,4 +1,4 @@
-import { getParseInstance } from "@lib/server/ParseSDK";
+import { getParseInstance } from "@lib/services/ParseSDK";
 import User from "@models/User";
 
 /**

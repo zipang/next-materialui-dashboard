@@ -12,9 +12,9 @@ const shouldSucceed = async () => {
 		text: `This is the text body.
 No formatted text.`,
 		html: `This is the text body.<br><i>Fancy Looking</i>`,
-		recipient: {
+		to: {
 			name: "zipang",
-			email: "christophe.desguez@gmail.com"
+			address: "christophe.desguez@gmail.com"
 		}
 	});
 };
@@ -30,9 +30,7 @@ MailerTestSuite("Checking bad parameters responses", async () => {
 		await shouldFail();
 	} catch (err) {
 		expect(err.code).to.equal(400);
-		expect(err.message).to.equal(
-			"Missing parameter 'subject', 'text' or 'recipient'"
-		);
+		expect(err.message).to.equal("Missing parameter 'subject', 'text' or 'to'");
 	}
 });
 
