@@ -1,10 +1,14 @@
 import MailTemplate from "../../templates/mails/MailTemplate.js";
+import PdfTemplate from "../../templates/pdfs/PdfTemplate.js";
 import ApiError from "@lib/ApiError";
 
 import welcome from "../../templates/mails/welcome.md";
 
 const mailTemplates = {
 	welcome: new MailTemplate(welcome)
+};
+const mailTemplates = {
+	registration: new PdfTemplate(welcome)
 };
 
 /**

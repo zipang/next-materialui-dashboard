@@ -22,11 +22,13 @@ const _DEFAULT_OPTIONS = {
  */
 export const generatePdf = async (html, options) => {
 	let browser;
+	const startTime = Date.now();
 	try {
 		browser = await getInstance();
 		const page = await browser.newPage();
 		await page.setContent(html);
 		const pdfBuffer = await page.pdf({ ..._DEFAULT_OPTIONS, ...options });
+		console.log(`PDF Generation took ${Date.now() - startTime}ms`);
 		return pdfBuffer;
 	} catch (err) {
 		console.error(err);
