@@ -4,7 +4,7 @@ import clsx from "clsx";
 
 const useStyles = makeStyles((theme) => ({
 	background: {
-		backgroundColor: ""#6c828d"",
+		backgroundColor: "#6c828d",
 		margin: 0,
 		width: "100%"
 	},
