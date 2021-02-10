@@ -12,6 +12,15 @@ export default {
 /**
  * Step Sample
  */
+export const Intro = (args) => (
+	<CenteredPaperSheet>
+		<Wizard steps={steps.filter(({ id }) => id === "step-00-intro")} />
+	</CenteredPaperSheet>
+);
+
+/**
+ * Step Sample
+ */
 export const SiretCreation = (args) => (
 	<CenteredPaperSheet>
 		<Wizard steps={steps.filter(({ id }) => id === "step-02-siret")} />

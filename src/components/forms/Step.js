@@ -70,7 +70,8 @@ function Step(
 
 const _BACKGROUND_IMAGE_STYLE = {
 	backgroundRepeat: "no-repeat",
-	backgroundPosition: "center"
+	backgroundPosition: "bottom",
+	backgroundSize: "cover"
 };
 Step.prototype = {
 	getBackgroundImageStyle: function () {

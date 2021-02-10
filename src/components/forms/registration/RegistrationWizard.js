@@ -10,7 +10,7 @@ export const steps = [
 			description: `Bonjour,
 Bienvenue dans le processus de déclaration d'un nouvel organisme sur la plateforme **INVIE**.
 Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à tout moment.`,
-			backgroundImage: "login.svg"
+			backgroundImage: "bg_step1.jpg"
 		}
 	},
 	{
