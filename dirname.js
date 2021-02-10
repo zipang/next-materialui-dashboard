@@ -9,4 +9,4 @@
  */
 
 console.log(`__dirname : ${__dirname}, process.cwd(): ${process.cwd()}`);
-module.exports = process.cwd();
+module.exports = process.env.NODE_ENV === "test" ? __dirname : process.cwd();
