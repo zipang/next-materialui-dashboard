@@ -317,11 +317,16 @@ Puis indiquez vos numéros d'agrémentation.`
 	{
 		id: "step-systemes-gestion",
 		title: "Systèmes de Télégestion",
+		help: {
+			description: `Indiquez vos systèmes de télégestion.`,
+			backgroundImage: ""
+		},
 		fields: [
 			{
 				name: "systemes_gestion.dispositif_domycile",
 				label: "Avez-vous déployé le dispositif Domycile ?",
-				type: "ysn"
+				type: "ysn",
+				defaultValue: false
 			},
 			{
 				name: "systemes_gestion.telegestion",
