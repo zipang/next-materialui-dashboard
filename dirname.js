@@ -7,4 +7,6 @@
  * @see https://github.com/rocicorp/replicache-sdk-js/issues/151
  *
  */
-module.exports = __dirname;
+
+console.log(`__dirname : ${__dirname}, process.cwd(): ${process.cwd()}`);
+module.exports = process.cwd();
