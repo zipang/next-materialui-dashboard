@@ -10,7 +10,7 @@ export const steps = [
 			description: `Bonjour,
 Bienvenue dans le processus de déclaration d'un nouvel organisme sur la plateforme **INVIE**.
 Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à tout moment.`,
-			backgroundImage: "bg_step1.jpg"
+			backgroundImage: "https://invie78.fr/images/background-registration.jpg"
 		}
 	},
 	{
@@ -23,7 +23,8 @@ Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à to
 		id: "step-02-siret",
 		title: "Nouvel Organisme",
 		help: {
-			description: `Vérifiez l'adresse, le nom et la date de création de la structure à déclarer.`
+			description: `Vérifiez l'adresse, le nom et la date de création de la structure à déclarer.`,
+				backgroundImage: "https://invie78.fr/images/background-registration.jpg"
 		},
 		fields: [
 			{
