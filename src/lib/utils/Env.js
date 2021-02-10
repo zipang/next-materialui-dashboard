@@ -1,5 +1,5 @@
 import Env from "@next/env";
-import baseDir from "../../../dirname.cjs"; // HACK TO AVOID READING import.meta.url
+import baseDir from "../../../dirname.js"; // HACK TO AVOID READING import.meta.url
 
 /**
  * Load the .env files
