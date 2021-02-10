@@ -8,17 +8,17 @@ import ApiError from "../../lib/ApiError.js";
 // Export a map that allows to load a template by its name
 const templates = {};
 
-if (process.env.NODE_ENV !== "test") {
-	// Pre-load using Webpack gray-matter-loader
-	// (Test environment doesn't support Webpack loaders)
-	import("./attestation.md")
-		.then((attestationContent) => {
-			templates.attestation = new PdfTemplate(attestationContent.default);
-		})
-		.catch((err) => {
-			console.error(`Pre-loading of attestation PDF template failed`, err);
-		});
-}
+// if (process.env.NODE_ENV !== "test") {
+// 	// Pre-load using Webpack gray-matter-loader
+// 	// (Test environment doesn't support Webpack loaders)
+// 	import("./attestation.md")
+// 		.then((attestationContent) => {
+// 			templates.attestation = new PdfTemplate(attestationContent.default);
+// 		})
+// 		.catch((err) => {
+// 			console.error(`Pre-loading of attestation PDF template failed`, err);
+// 		});
+// }
 
 /**
  * Dynamically load a local PDF template by its name
