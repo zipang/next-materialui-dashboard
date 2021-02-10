@@ -18,6 +18,16 @@ import dot from "dot";
  * @param {MailTemplateDef} templateDef where the content is a markdown template
  */
 function MailTemplate({ subject, content, cc = [], bcc = [], attachments = [] }) {
+	if (!content || !subject) {
+		throw new TypeError(
+			`MailTemplate() constructor expect a non-empty 'subject' and 'content' field.`
+		);
+	}
+	if (typeof attachments === "string") {
+		// We've got only the name of the PDF templates
+		// like : "attestation, facture"
+		attachments = attachments.split(",").map((s) => createPdfTemplate(s.trim()));
+	}
 	Object.assign(this, { cc, bcc });
 	this.subject = dot.compile(subject);
 	this.text = dot.compile(content);
@@ -29,7 +39,7 @@ MailTemplate.prototype = {
 	 * Pass data through the template function
 	 * Returns a message object that is suitable to use with nodemailer `transport.sendMessage()`
 	 * @param {Object} data
-	 * @return {MailMessage}
+	 * @return {Promise<MailMessage>}
 	 */
 	createMessage: async function (data) {
 		const attachments = await Promise.all(
@@ -47,10 +57,10 @@ MailTemplate.prototype = {
 	},
 	/**
 	 * Add a PDF attachment
-	 * @param {String} name Name of the PDF template to include
+	 * @param {PdfTemplate} pdfTemplate PDF template to render with the same data
 	 */
-	addAttachment: function (name) {
-		this.attachments.push(createPdfTemplate(name));
+	addAttachment: function (pdfTemplate) {
+		this.attachments.push(pdfTemplate);
 		return this;
 	},
 	/**
