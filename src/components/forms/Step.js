@@ -33,7 +33,7 @@ Input.registerInput("ysn", YesNo("Oui", "Non"));
  * @param {String} name
  * @param {String} label
  * @param {String} type=text|date|integer|percent|mail|url
- * @param {Boolean} required
+ * @param {Boolean|String|Function} required
  * @param {Object} [validation] custom validation rules
  * @param {Function} [displayForm] custom implementation (optional)
  */
@@ -70,7 +70,8 @@ function Step(
 
 const _BACKGROUND_IMAGE_STYLE = {
 	backgroundRepeat: "no-repeat",
-	backgroundPosition: "center"
+	backgroundPosition: "bottom",
+	backgroundSize: "cover"
 };
 Step.prototype = {
 	getBackgroundImageStyle: function () {
