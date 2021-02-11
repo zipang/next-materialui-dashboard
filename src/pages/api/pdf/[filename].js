@@ -20,6 +20,7 @@ export default async (req, resp) => {
 			const respBody = {
 				success: true,
 				filename,
+				format: "base64",
 				content: pdfBuffer.toString("base64")
 			};
 			console.log(`PDF generate response`, respBody);
