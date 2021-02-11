@@ -5,6 +5,8 @@ const useStyles = makeStyles((theme) => ({
 	twoColumnsContainer: {
 		height: "100%",
 		minHeight: "80vh",
+		minWidth: "1024px",
+		width: "60vw",
 		"& .image": {
 			backgroundColor: "blue",
 			backgroundRepeat: "no-repeat",

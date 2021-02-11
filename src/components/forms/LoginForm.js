@@ -2,10 +2,10 @@ import { useRouter } from "next/router";
 import { useAuthentication } from "../AuthenticationProvider";
 
 import APIForm from "@forms/APIForm";
-import Input from "@forms/inputs/Input";
 import User from "@models/User";
 import Email from "./inputs/Email";
 import Password from "./inputs/Password";
+import Submit from "./inputs/Submit";
 
 /**
  * Displays a form to log the user
@@ -37,7 +37,7 @@ const LoginForm = () => {
 				name="password"
 				required="Saisissez votre mot de passe"
 			/>
-			<Input.Submit />
+			<Submit />
 		</APIForm>
 	);
 };
