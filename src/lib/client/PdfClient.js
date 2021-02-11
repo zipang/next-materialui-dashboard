@@ -1,10 +1,11 @@
+import APIClient from "./ApiClient";
+import ApiError from "@lib/ApiError";
+
 /**
  * @typedef PdfAttachment
  * @param {String} filename
  * @param {Buffer} content Binary PDF content
  */
-
-const { default: ApiError } = require("@lib/ApiError");
 
 /**
  *

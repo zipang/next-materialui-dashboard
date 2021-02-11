@@ -8,22 +8,26 @@ import Mailer from "@lib/services/Mailer";
  *     "subject": "Subject of the mail",
  *     "text": "The plain text body",
  *     "html": "The <b>HTML</b> text body",
- *     "recipient": {
+ *     "to": [{
  *         "name": "John DOE",
- *         "email": "john.doe@x.org"
- *     }
+ *         "address": "john.doe@x.org"
+ *     }],
+ *     "bcc": "logger@x.org"
  * }
  */
 export default async (req, resp) => {
-	const { subject, text, html, recipient } = req.body;
+	const message = req.body;
+
+	// Recreate the Buffers in the attachments
+	if (Array.isArray(message.attachments)) {
+		message.attachments = message.attachments.map((a) => {
+			a.content = Buffer.from(a.content);
+			return a;
+		});
+	}
 
 	try {
-		const mailerResponse = await Mailer.sendMail({
-			subject,
-			text,
-			html,
-			recipient
-		});
+		const mailerResponse = await Mailer.sendMail(message);
 		resp.json({
 			success: true,
 			message: `Mail '${subject}' sent`,
@@ -31,7 +35,7 @@ export default async (req, resp) => {
 		});
 	} catch (err) {
 		resp.status(err.code).json({
-			sucess: false,
+			success: false,
 			error: err.message
 		});
 	}
