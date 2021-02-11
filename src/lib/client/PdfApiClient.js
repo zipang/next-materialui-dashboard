@@ -26,7 +26,6 @@ export const generateFromHtml = async (filename, html, decodeBuffer = true) => {
 			filename
 		};
 	} catch (err) {
-		console.error(err);
 		throw new ApiError(err.code || 500, err.message);
 	}
 };

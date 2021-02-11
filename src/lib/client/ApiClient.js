@@ -30,10 +30,6 @@ export const get = (APIClient.get = async (...apiParams) => {});
  * @return {Promise<Object>} return the parsed API response
  */
 export const post = (APIClient.post = async (postUrl, postBody = {}) => {
-	if (typeof window === "undefined") {
-		throw new Error("This method can only be called on the front-side !");
-	}
-
 	const resp = await fetch(postUrl, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
@@ -50,6 +46,7 @@ export const post = (APIClient.post = async (postUrl, postBody = {}) => {
 
 		return respBody;
 	} catch (err) {
+		console.error(`POST to ${postUrl} raised an API error response`, err);
 		throw new ApiError(resp.status, `${err.message} (${resp.statusText})`);
 	}
 });
