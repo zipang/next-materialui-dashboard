@@ -11,17 +11,18 @@ import ApiError from "@lib/ApiError";
  *
  * @param {String} filename
  * @param {String} html
+ * @param {Boolean} decodeBuffer Keep the buffer as a base64 encoded string or restore it ?
  * @return {Promise<PdfAttachment>} suitable to use as a message attachment in `nodemailer.send(message)`
  */
-export const generateFromHtml = async (filename, html) => {
+export const generateFromHtml = async (filename, html, decodeBuffer = true) => {
 	try {
 		const { content } = await APIClient.post(`/api/pdf/${filename}`, {
 			html,
-			format: "base64"
+			format: "base64" // the returned buffer will be encoded as a base64 string
 		});
 
 		return {
-			content: Buffer.from(content, "base64"),
+			content: decodeBuffer ? Buffer.from(content, "base64") : content,
 			filename
 		};
 	} catch (err) {
