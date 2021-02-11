@@ -92,7 +92,8 @@ Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à to
 		help: {
 			description: `Indiquez les coordonnées du contact privilégié de l'organisme, 
 puis les emails et numéros de téléphone du standard
-ainsi que les sites internet liés à votre activité.`
+ainsi que les sites internet liés à votre activité.`,
+			backgroundImage: "https://invie78.fr/images/background-contact.jpg"
 		},
 		fields: [
 			{
