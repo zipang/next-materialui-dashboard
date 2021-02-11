@@ -7,6 +7,16 @@ import {
 	useFormValidationContext
 } from "./validation/FormValidationProvider";
 
+/**
+ * @typedef APIFormProps
+ * @field {String} action local URL of an API page
+ * @field {Function<FormData>} [onSubmit] optional function to handle the form data submission
+ * @field {onSuccess} [onSuccess] optional function to handle the successfull API response
+ * @field {onError} [onError] optional function to handle the failed API response
+ */
+/**
+ * @param {APIFormProps} props
+ */
 const VAPIForm = ({
 	action,
 	method = "POST",
