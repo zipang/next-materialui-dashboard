@@ -77,7 +77,7 @@ const getTransporter = () => {
  */
 const sendMail = async (message) => {
 	// Check required parameters
-	const { subject, text, html, to } = message;
+	const { subject, text, to, attachments } = message;
 
 	if (!subject || !text || !to) {
 		throw new ApiError(400, "Missing parameter 'subject', 'text' or 'to'");
@@ -90,15 +90,29 @@ const sendMail = async (message) => {
 		}
 	}
 
-	const transporter = getTransporter();
+	// Check if the attachments are in base64
+	attachments.map(({ filename, content, format }) => {
+		if (typeof content === "string" && format === "base64") {
+			return {
+				filename,
+				content: Buffer.from(content, "base64")
+			};
+		} else {
+			return {
+				filename,
+				content
+			};
+		}
+	});
 
 	try {
+		const transporter = getTransporter();
 		console.log(`Sending the mail`, message);
 		const resp = await transporter.sendMail(message);
 		return resp;
 	} catch (err) {
 		console.error(`Mail not sent`, err);
-		throw new ApiError(500, `Mail not send. ${err.message}`);
+		throw new ApiError(500, `Mail ${subject} not send. ${err.message}`);
 	}
 };
 
