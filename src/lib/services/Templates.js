@@ -1,27 +1,49 @@
-import MailTemplate from "../../templates/mails/MailTemplate.js";
-import PdfTemplate from "../../templates/pdfs/PdfTemplate.js";
-import ApiError from "@lib/ApiError";
+import { getTemplate } from "../../templates/index.js";
+import { generateFromHtml } from "../client/PdfApiClient.js";
+import ApiError from "../ApiError.js";
 
-import welcome from "../../templates/mails/welcome.md";
-
-const mailTemplates = {
-	welcome: new MailTemplate(welcome)
-};
-const mailTemplates = {
-	registration: new PdfTemplate(welcome)
+const loadEnv = (data) => {
+	data.env = process.env;
 };
 
 /**
- *
+ * Create a message from a mail template
  * @param {String!} templateName
  * @param {Object} data
  * @return {MailMessage}
  */
-export const createMessage = (templateName, data) => {
-	const template = mailTemplates[templateName];
+export const render = async (templateName, data) => {
+	try {
+		const template = getTemplate(templateName);
 
-	if (!template) {
-		throw new ApiError(500, `Unknown mail template ${templateName}`);
+		// Add the environment variables
+		loadEnv(data);
+
+		// Render the template by applying the data
+		const message = template(data);
+
+		if (message.attachments) {
+			// Now we've got to render the attachments : each attachment is just the name of the next template to use
+			const attachmentNames = message.attachments
+				.split(",")
+				.map((name) => name.trim());
+
+			message.attachments = await Promise.all(
+				attachmentNames.map(async (name) => {
+					const attachmentTemplate = getTemplate(name);
+					const { filename, html } = attachmentTemplate(data);
+					// And last thing last : we must convert this html to a base64 encoded PDF string
+					return await generateFromHtml(filename, html, false);
+				})
+			);
+		}
+
+		return message;
+	} catch (err) {
+		console.error(err);
+		throw new ApiError(
+			err.code || 500,
+			`Generation of template ${templateName} failed`
+		);
 	}
-	return template.createMessage(data);
 };
