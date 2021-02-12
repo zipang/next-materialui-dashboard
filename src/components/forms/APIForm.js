@@ -20,6 +20,7 @@ import {
 const VAPIForm = ({
 	action,
 	method = "POST",
+	onSubmit,
 	onSuccess,
 	onError,
 	children,
@@ -57,7 +58,7 @@ const VAPIForm = ({
 	const handleValidation = (evt) => {
 		evt.preventDefault();
 		validate({
-			onSuccess: onValidationSuccess
+			onSuccess: onSubmit || onValidationSuccess
 		});
 	};
 
