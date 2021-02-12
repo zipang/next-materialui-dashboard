@@ -23,7 +23,6 @@ export default async (req, resp) => {
 				format: "base64",
 				content: pdfBuffer.toString("base64")
 			};
-			console.log(`PDF generate response`, respBody);
 			resp.json(respBody);
 		} else {
 			// Render the PDF inline

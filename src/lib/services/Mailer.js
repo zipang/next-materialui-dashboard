@@ -92,8 +92,9 @@ const sendMail = async (message) => {
 
 	if (Array.isArray(attachments)) {
 		// Check if the attachments are in base64
-		attachments.map(({ filename, content, format }) => {
+		message.attachments = attachments.map(({ filename, content, format }) => {
 			if (typeof content === "string" && format === "base64") {
+				console.log(`Disencoding base64 attachment for ${filename}`);
 				return {
 					filename,
 					content: Buffer.from(content, "base64")
@@ -109,7 +110,11 @@ const sendMail = async (message) => {
 
 	try {
 		const transporter = getTransporter();
-		console.log(`Sending the mail`, message);
+		console.log(
+			`Sending the mail ${subject}. Attachments : ${message.attachments.map(
+				({ content, filename }) => filename + " (" + content.length + "bytes)"
+			)}`
+		);
 		const resp = await transporter.sendMail(message);
 		return resp;
 	} catch (err) {
