@@ -1,4 +1,5 @@
-import ApiError from "@lib/ApiError";
+import "isomorphic-fetch";
+import ApiError from "../ApiError.js";
 
 const APIClient = {};
 
@@ -30,6 +31,11 @@ export const get = (APIClient.get = async (...apiParams) => {});
  * @return {Promise<Object>} return the parsed API response
  */
 export const post = (APIClient.post = async (postUrl, postBody = {}) => {
+	// Complete the relative URL
+	if (!postUrl.startsWith("http")) {
+		postUrl = new URL(postUrl, process.env.SITE_URL);
+	}
+
 	const resp = await fetch(postUrl, {
 		method: "POST",
 		headers: { "Content-Type": "application/json" },
