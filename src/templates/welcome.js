@@ -6,7 +6,7 @@
  * @param {Object} data
  * @return {String}
  */
-export const text = (data) => '<img src="https://invie78.fr/images/logo.jpg" alt="logo" />Paris, le '+((new Date).toISOString().substr(0,10))+'Bonjour **'+(data.representant.prenom)+' '+(data.representant.nom)+'**,L\'enregistrement de votre société **'+(data.nom)+'** a bien été pris en compte en date du '+(data.date_creation)+'.';;
+export const text = (data) => '<img src="https://invie78.fr/images/logo.jpg" alt="logo" />\n\nParis, le '+((new Date).toISOString().substr(0,10))+'\n\nBonjour **'+(data.representant.prenom)+' '+(data.representant.nom)+'**,\n\nL\'enregistrement de votre société **'+(data.nom)+'** a bien été pris en compte en date du '+(data.date_creation)+'.\n\n';;
 
 /**
  * Apply the data to the compiled HTML template

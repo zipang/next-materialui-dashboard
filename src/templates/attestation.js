@@ -6,32 +6,33 @@
  * @return {String}
  */
 export const text = (data) =>
-	'<img src="https://invie78.fr/images/logo.jpg" alt="logo" />Paris, le ' +
+	'<img src="https://invie78.fr/images/logo.jpg" alt="logo" />\n\nParis, le ' +
 	new Date().toISOString().substr(0, 10) +
-	"# ATTESTATION D'ADHESIONCe document confirme que votre société **" +
+	"\n\n\n# ATTESTATION D'ADHESION\n\nCe document confirme que votre société **" +
 	data.nom +
 	"** (N° de Siret " +
 	data.siret +
 	") a bien souscrit un contrat d'adhésion auprès du service **INVIE** en date du " +
 	data.date_adhesion +
-	"Le contrat a été signé par votre représentant " +
+	"\n\nLe contrat a été signé par votre représentant " +
 	data.representant.prenom +
 	" " +
 	data.representant.prenom +
-	".Les coordonnées de votre société sont les suivantes :**" +
+	".\n\nLes coordonnées de votre société sont les suivantes :\n\n**" +
 	data.nom +
-	"** " +
+	"**  \n" +
 	data.adresse?.rue1 +
-	" " +
+	"  \n" +
 	data.adresse?.rue2 +
-	" " +
+	"  \n" +
 	data.adresse?.code_postal +
 	" " +
 	data.adresse?.commune +
-	" Standard: " +
+	"  \n\nStandard: " +
 	data.contact?.telephone +
-	" Email: " +
-	data.contact?.email;
+	"  \nEmail: " +
+	data.contact?.email +
+	"\n\n";
 
 /**
  * Apply the data to the compiled HTML template

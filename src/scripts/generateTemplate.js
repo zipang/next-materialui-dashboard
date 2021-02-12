@@ -9,7 +9,7 @@ import { convertToHtml } from "../lib/services/MarkdownToHtml.js";
 
 const { terminal } = tk;
 
-Object.assign(dot.templateSettings, {
+const defaultTemplateSettings = Object.assign(dot.templateSettings, {
 	varname: "data"
 });
 
@@ -33,7 +33,6 @@ const rewriteDotTemplate = (fn) =>
 var out=`,
 			"(data) => "
 		)
-		// .replace(/it\./g, "data.")
 		.replace(
 			`;return out;
 }`,
@@ -45,9 +44,9 @@ var out=`,
  * @param {String} md
  */
 const MarkdownTemplateLoader = (templateName, md, properties = {}) => {
-	const textTemplate = dot.compile(md);
+	const textTemplate = dot.template(md, { ...defaultTemplateSettings, strip: false }); // Do not alter spaces and newlines in markdown !
 	const html = convertToHtml(md);
-	const htmlTemplate = dot.compile(html);
+	const htmlTemplate = dot.template(html, defaultTemplateSettings);
 
 	// Each property in the front matter may be a dot template function too
 	const propertiesSource = Object.keys(properties).reduce((code, propertyName) => {
@@ -60,7 +59,10 @@ const MarkdownTemplateLoader = (templateName, md, properties = {}) => {
  * @return {String}
  */
 export const ${propertyName} = ${rewriteDotTemplate(
-				dot.compile(properties[propertyName])
+				dot.template(properties[propertyName], {
+					...defaultTemplateSettings,
+					strip: false
+				})
 			)}
 
 `
