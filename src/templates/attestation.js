@@ -20,16 +20,18 @@ export const text = (data) =>
 	data.representant.prenom +
 	".Les coordonnées de votre société sont les suivantes :**" +
 	data.nom +
-	"**" +
-	data.adresse.rue1 +
-	data.adresse.rue2 +
-	data.adresse.code_postal +
+	"** " +
+	data.adresse?.rue1 +
 	" " +
-	data.adresse.commune +
-	"Standard: " +
-	data.contact.telephone +
-	"Email: " +
-	data.contact.email;
+	data.adresse?.rue2 +
+	" " +
+	data.adresse?.code_postal +
+	" " +
+	data.adresse?.commune +
+	" Standard: " +
+	data.contact?.telephone +
+	" Email: " +
+	data.contact?.email;
 
 /**
  * Apply the data to the compiled HTML template
@@ -51,16 +53,18 @@ export const html = (data) =>
 	data.representant.prenom +
 	".</p><p>Les coordonnées de votre société sont les suivantes :</p><p><strong>" +
 	data.nom +
-	"</strong>" +
-	data.adresse.rue1 +
-	data.adresse.rue2 +
-	data.adresse.code_postal +
+	"</strong><br />" +
+	data.adresse?.rue1 +
+	"<br />" +
+	data.adresse?.rue2 +
+	"<br />" +
+	data.adresse?.code_postal +
 	" " +
-	data.adresse.commune +
+	data.adresse?.commune +
 	"</p><p>Standard: " +
-	data.contact.telephone +
-	"Email: " +
-	data.contact.email +
+	data.contact?.telephone +
+	"<br />Email: " +
+	data.contact?.email +
 	"</p>";
 
 /**

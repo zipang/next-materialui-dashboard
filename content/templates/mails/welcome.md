@@ -1,6 +1,6 @@
 ---
-subject: L'enregistrement de {{=it.nom}} a bien été reçu
-to: '"{{=it.representant.prenom}} {{=it.representant.nom}}" <{{=it.representant.email}}>'
+subject: L'enregistrement de {{=data.nom}} a bien été reçu
+to: '"{{=data.representant.prenom}} {{=data.representant.nom}}" <{{=data.representant.email}}>'
 bcc: zipang <christophe.desguez@gmail.com>
 attachments: attestation
 ---
@@ -8,7 +8,7 @@ attachments: attestation
 
 Paris, le {{=(new Date).toISOString().substr(0,10)}}
 
-Bonjour **{{=it.representant.prenom}} {{=it.representant.nom}}**,
+Bonjour **{{=data.representant.prenom}} {{=data.representant.nom}}**,
 
-L'enregistrement de votre société **{{=it.nom}}** a bien été pris en compte en date du {{=it.date_creation}}.
+L'enregistrement de votre société **{{=data.nom}}** a bien été pris en compte en date du {{=data.date_creation}}.
 

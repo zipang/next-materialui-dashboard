@@ -1,17 +1,13 @@
 #!/usr/bin/env node
 
-import fs from "fs-extra";
-import path from "path";
-import gm from "gray-matter";
-import tk from "terminal-kit";
-import dot from "dot";
-import { convertToHtml } from "../lib/services/MarkdownToHtml.js";
+const fs = require("fs-extra");
+const path = require("path");
+const gm = require("gray-matter");
+const tk = require("terminal-kit");
+const dot = require("dot");
+import { convertToHtml } from "../src/lib/services/MarkdownToHtml.js";
 
 const { terminal } = tk;
-
-Object.assign(dot.templateSettings, {
-	varname: "data"
-});
 
 /**
  * dot functions are compiled as
@@ -33,7 +29,6 @@ const rewriteDotTemplate = (fn) =>
 var out=`,
 			"(data) => "
 		)
-		// .replace(/it\./g, "data.")
 		.replace(
 			`;return out;
 }`,
@@ -45,9 +40,13 @@ var out=`,
  * @param {String} md
  */
 const MarkdownTemplateLoader = (templateName, md, properties = {}) => {
-	const textTemplate = dot.compile(md);
+	const textTemplate = dot(md, {
+		strip: false, // Don't strip whitespaces in markdown !
+		varname: "data",
+		encode: false
+	});
 	const html = convertToHtml(md);
-	const htmlTemplate = dot.compile(html);
+	const htmlTemplate = dot(html, { varname: "data", encode: false });
 
 	// Each property in the front matter may be a dot template function too
 	const propertiesSource = Object.keys(properties).reduce((code, propertyName) => {
@@ -59,9 +58,7 @@ const MarkdownTemplateLoader = (templateName, md, properties = {}) => {
  * @param {Object} data
  * @return {String}
  */
-export const ${propertyName} = ${rewriteDotTemplate(
-				dot.compile(properties[propertyName])
-			)}
+export const ${propertyName} = ${rewriteDotTemplate(dot(properties[propertyName]))}
 
 `
 		);
@@ -103,16 +100,16 @@ export default render;
 	return templateSource;
 };
 
-export default MarkdownTemplateLoader;
+module.exports = MarkdownTemplateLoader;
 
 /**
  * Command line
  */
 const generation = async () => {
-	// Chhose the markdown template
+	// Choose the markdown template
 	terminal.cyan("Choose a Markdown template file (use TAB for completion): ");
 	const markdownFile = await terminal.fileInput({
-		baseDir: "../../content/templates",
+		baseDir: path.join(__dirname, "../content/templates"),
 		autoComplete: true
 	});
 	// Extract its name
@@ -134,8 +131,8 @@ ${content}`);
 
 	// The generated JS will be located inside src/templates
 	const destination = path.join(
-		path.dirname(markdownFile),
-		"../../../src/templates",
+		__dirname,
+		"../src/templates",
 		path.basename(markdownFile).replace(/.md$/, ".js")
 	);
 	terminal.cyan(`Copying the JS template to :
@@ -147,12 +144,13 @@ ${destination}
 `);
 };
 
-(async function run() {
-	try {
-		await generation();
-		process.exit(0);
-	} catch (err) {
-		console.error(err);
-		process.exit(1);
-	}
-})();
+require.main !== module &&
+	(async function run() {
+		try {
+			await generation();
+			process.exit(0);
+		} catch (err) {
+			console.error(err);
+			process.exit(1);
+		}
+	})();
