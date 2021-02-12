@@ -23,21 +23,23 @@ const defaultTemplateSettings = Object.assign(dot.templateSettings, {
  *
  * We transform them as arrow function : (data) => '...'
  * @param {Function} fn Compiled dot template
+ * @param {Boolean} stripHTML Pass TRUE to remove all HTML tags (for the text template)
  */
-const rewriteDotTemplate = (fn) =>
+const rewriteDotTemplate = (fn, stripHTML) =>
 	fn
 		.toString()
 		.replace(
 			`function anonymous(data
 ) {
 var out=`,
-			"(data) => "
+			"(data) => ("
 		)
 		.replace(
 			`;return out;
 }`,
-			";"
-		);
+			");"
+		)
+		.replace(/\);$/, stripHTML ? `).replace(/(<([^>]+)>)/gi, "");` : ");");
 
 /**
  * Webpack loader to load markdown file with dot syntax
@@ -78,7 +80,7 @@ export const ${propertyName} = ${rewriteDotTemplate(
  * @param {Object} data
  * @return {String}
  */
-export const text = ${rewriteDotTemplate(textTemplate)};
+export const text = ${rewriteDotTemplate(textTemplate, true)};
 
 /**
  * Apply the data to the compiled HTML template

@@ -6,33 +6,35 @@
  * @return {String}
  */
 export const text = (data) =>
-	'<img src="https://invie78.fr/images/logo.jpg" alt="logo" />\n\nParis, le ' +
-	new Date().toISOString().substr(0, 10) +
-	"\n\n\n# ATTESTATION D'ADHESION\n\nCe document confirme que votre société **" +
-	data.nom +
-	"** (N° de Siret " +
-	data.siret +
-	") a bien souscrit un contrat d'adhésion auprès du service **INVIE** en date du " +
-	data.date_adhesion +
-	"\n\nLe contrat a été signé par votre représentant " +
-	data.representant.prenom +
-	" " +
-	data.representant.prenom +
-	".\n\nLes coordonnées de votre société sont les suivantes :\n\n**" +
-	data.nom +
-	"**  \n" +
-	data.adresse?.rue1 +
-	"  \n" +
-	data.adresse?.rue2 +
-	"  \n" +
-	data.adresse?.code_postal +
-	" " +
-	data.adresse?.commune +
-	"  \n\nStandard: " +
-	data.contact?.telephone +
-	"  \nEmail: " +
-	data.contact?.email +
-	"\n\n";
+	(
+		'<img src="https://invie78.fr/images/logo.jpg" alt="logo" />\n\nParis, le ' +
+		new Date().toISOString().substr(0, 10) +
+		"\n\n\n# ATTESTATION D'ADHESION\n\nCe document confirme que votre société **" +
+		data.nom +
+		"** (N° de Siret `" +
+		data.siret +
+		"`) a bien souscrit un contrat d'adhésion auprès du service **INVIE** en date du " +
+		data.date_adhesion +
+		"\n\nLe contrat a été signé par votre représentant " +
+		data.representant.prenom +
+		" " +
+		data.representant.nom +
+		".\n\nLes coordonnées de votre société sont les suivantes :\n\n**" +
+		data.nom +
+		"**  \n" +
+		data.adresse?.rue1 +
+		"  \n" +
+		data.adresse?.rue2 +
+		"  \n" +
+		data.adresse?.code_postal +
+		" " +
+		data.adresse?.commune +
+		"  \n\nStandard: " +
+		data.contact?.telephone +
+		"  \nEmail: " +
+		data.contact?.email +
+		"\n\n"
+	).replace(/(<([^>]+)>)/gi, "");
 
 /**
  * Apply the data to the compiled HTML template
@@ -44,14 +46,14 @@ export const html = (data) =>
 	new Date().toISOString().substr(0, 10) +
 	"</p><h1>ATTESTATION D'ADHESION</h1><p>Ce document confirme que votre société <strong>" +
 	data.nom +
-	"</strong> (N° de Siret " +
+	"</strong> (N° de Siret <code>" +
 	data.siret +
-	") a bien souscrit un contrat d'adhésion auprès du service <strong>INVIE</strong> en date du " +
+	"</code>) a bien souscrit un contrat d'adhésion auprès du service <strong>INVIE</strong> en date du " +
 	data.date_adhesion +
 	"</p><p>Le contrat a été signé par votre représentant " +
 	data.representant.prenom +
 	" " +
-	data.representant.prenom +
+	data.representant.nom +
 	".</p><p>Les coordonnées de votre société sont les suivantes :</p><p><strong>" +
 	data.nom +
 	"</strong><br />" +
