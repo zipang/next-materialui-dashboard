@@ -1,5 +1,5 @@
-import APIClient from "./ApiClient";
-import ApiError from "@lib/ApiError";
+import APIClient from "./ApiClient.js";
+import ApiError from "../ApiError.js";
 
 /**
  * @typedef PdfAttachment
@@ -23,6 +23,7 @@ export const generateFromHtml = async (filename, html, decodeBuffer = true) => {
 
 		return {
 			content: decodeBuffer ? Buffer.from(content, "base64") : content,
+			format: decodeBuffer ? "Buffer" : "base64",
 			filename
 		};
 	} catch (err) {
@@ -30,8 +31,8 @@ export const generateFromHtml = async (filename, html, decodeBuffer = true) => {
 	}
 };
 
-const PdfClient = {
+const PdfApiClient = {
 	generateFromHtml
 };
 
-export default PdfClient;
+export default PdfApiClient;
