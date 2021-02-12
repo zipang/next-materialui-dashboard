@@ -90,20 +90,22 @@ const sendMail = async (message) => {
 		}
 	}
 
-	// Check if the attachments are in base64
-	attachments.map(({ filename, content, format }) => {
-		if (typeof content === "string" && format === "base64") {
-			return {
-				filename,
-				content: Buffer.from(content, "base64")
-			};
-		} else {
-			return {
-				filename,
-				content
-			};
-		}
-	});
+	if (Array.isArray(attachments)) {
+		// Check if the attachments are in base64
+		attachments.map(({ filename, content, format }) => {
+			if (typeof content === "string" && format === "base64") {
+				return {
+					filename,
+					content: Buffer.from(content, "base64")
+				};
+			} else {
+				return {
+					filename,
+					content
+				};
+			}
+		});
+	}
 
 	try {
 		const transporter = getTransporter();
