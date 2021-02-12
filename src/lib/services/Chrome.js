@@ -25,13 +25,14 @@ export const getInstance = async () => {
 			args: chromium.args,
 			defaultViewport: chromium.defaultViewport,
 			executablePath: await chromium.executablePath,
-			headless: chromium.headless,
+			headless: true,
 			ignoreHTTPSErrors: true
 		});
 	} else {
 		// For dev and test environments we have the full puppeteer package installed
 		return await puppeteer.launch({
-			ignoreHTTPSErrors: true
+			ignoreHTTPSErrors: true,
+			headless: true
 		});
 	}
 };
