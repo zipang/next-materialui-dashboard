@@ -7,7 +7,7 @@
  */
 export const text = (data) =>
 	"|                                                | Date                      || :--------------------------------------------- | ------------------------: || ![logo](" +
-	(data.env.SITE_URL + "/logo.svg") +
+	(data.env.NEXT_PUBLIC_SITE_URL + "/logo.svg") +
 	")    |  ||     | Paris, le " +
 	new Date().toISOString().substr(0, 10) +
 	" |# ATTESTATION D'ADHESIONCe document confirme que votre société " +
@@ -26,7 +26,7 @@ export const text = (data) =>
  */
 export const html = (data) =>
 	'<table><thead><tr><th align="left"></th><th align="right">Date</th></tr></thead><tbody><tr><td align="left">![logo](' +
-	(data.env.SITE_URL + "/logo.svg") +
+	(data.env.NEXT_PUBLIC_SITE_URL + "/logo.svg") +
 	')</td><td align="right"></td></tr><tr><td align="left"></td><td align="right">Paris, le ' +
 	new Date().toISOString().substr(0, 10) +
 	"</td></tr></tbody></table><h1>ATTESTATION D'ADHESION</h1><p>Ce document confirme que votre société " +

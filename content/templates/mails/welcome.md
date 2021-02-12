@@ -13,5 +13,5 @@ Bonjour **{{=it.representant.prenom}} {{=it.representant.nom}}**,
 
 L'enregistrement de votre société **{{=it.nom}}** a bien été pris en compte en date du {{=it.date_creation}}.
 
-![logo]({{=it.env.SITE_URL + '/'}})
+![logo]({{=it.env.NEXT_PUBLIC_SITE_URL + '/'}})
 

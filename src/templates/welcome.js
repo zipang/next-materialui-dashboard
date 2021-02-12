@@ -17,7 +17,7 @@ export const text = (data) =>
 	"** a bien été pris en compte en date du " +
 	data.date_creation +
 	".![logo](" +
-	(data.env.SITE_URL + "/") +
+	(data.env.NEXT_PUBLIC_SITE_URL + "/") +
 	")";
 
 /**
@@ -37,7 +37,7 @@ export const html = (data) =>
 	"</strong> a bien été pris en compte en date du " +
 	data.date_creation +
 	".</p><p>![logo](" +
-	(data.env.SITE_URL + "/") +
+	(data.env.NEXT_PUBLIC_SITE_URL + "/") +
 	")</p>";
 
 /**

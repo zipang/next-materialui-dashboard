@@ -3,7 +3,7 @@ filename: "Attestation-Adhésion-{{=it.siret}}.pdf"
 ---
 |                                                | Date                      |
 | :--------------------------------------------- | ------------------------: |
-| ![logo]({{=it.env.SITE_URL + '/logo.svg'}})    |  |
+| ![logo]({{=it.env.NEXT_PUBLIC_SITE_URL + '/logo.svg'}})    |  |
 |     | Paris, le {{=(new Date).toISOString().substr(0,10)}} |
 
 
