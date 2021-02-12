@@ -26,8 +26,7 @@ const ForgotPassword = () => {
 	};
 
 	return (
-		
-		<TwoColumnsFormContainer image="https://invie78.fr/background-login.jpg?auto=format&fit=crop&w=800&q=80">
+		<TwoColumnsFormContainer image="https://invie78.fr/images/background-login.jpg">
 			<Avatar className={styles.avatar}>
 				<ContactMailIcon fontSize="large" />
 			</Avatar>

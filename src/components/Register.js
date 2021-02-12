@@ -26,7 +26,7 @@ const Register = () => {
 	};
 
 	return (
-		<TwoColumnsFormContainer image="https://invie78.fr/background-login.jpg?auto=format&fit=crop&w=800&q=80">
+		<TwoColumnsFormContainer image="https://invie78.fr/image/background-login.jpg">
 			<Avatar className={styles.avatar}>
 				<AccountBoxIcon fontSize="large" />
 			</Avatar>
