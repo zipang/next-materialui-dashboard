@@ -6,9 +6,9 @@
  * @return {String}
  */
 export const text = (data) =>
-	"|     | Date                      || --- | ------------------------: ||     | Paris, le " +
+	'<img src="https://invie78.fr/images/logo.jpg" alt="logo" />Paris, le ' +
 	new Date().toISOString().substr(0, 10) +
-	" |Bonjour **" +
+	"Bonjour **" +
 	data.representant.prenom +
 	" " +
 	data.representant.nom +
@@ -16,9 +16,7 @@ export const text = (data) =>
 	data.nom +
 	"** a bien été pris en compte en date du " +
 	data.date_creation +
-	".![logo](" +
-	(data.env.NEXT_PUBLIC_SITE_URL + "/") +
-	")";
+	".";
 
 /**
  * Apply the data to the compiled HTML template
@@ -26,9 +24,9 @@ export const text = (data) =>
  * @return {String}
  */
 export const html = (data) =>
-	'<table><thead><tr><th></th><th align="right">Date</th></tr></thead><tbody><tr><td></td><td align="right">Paris, le ' +
+	'<img src="https://invie78.fr/images/logo.jpg" alt="logo" /><p>Paris, le ' +
 	new Date().toISOString().substr(0, 10) +
-	"</td></tr></tbody></table><p>Bonjour <strong>" +
+	"</p><p>Bonjour <strong>" +
 	data.representant.prenom +
 	" " +
 	data.representant.nom +
@@ -36,9 +34,7 @@ export const html = (data) =>
 	data.nom +
 	"</strong> a bien été pris en compte en date du " +
 	data.date_creation +
-	".</p><p>![logo](" +
-	(data.env.NEXT_PUBLIC_SITE_URL + "/") +
-	")</p>";
+	".</p>";
 
 /**
  * Front matter subject
@@ -53,11 +49,11 @@ export const subject = (data) => "L'enregistrement de " + data.nom + " a bien é
  * @return {String}
  */
 export const to = (data) =>
-	"" +
+	'"' +
 	data.representant.prenom +
 	" " +
 	data.representant.nom +
-	" <" +
+	'" <' +
 	data.representant.email +
 	">";
 

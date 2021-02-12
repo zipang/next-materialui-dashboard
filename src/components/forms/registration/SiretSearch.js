@@ -9,8 +9,9 @@ export const formatSiret = applyNumericMask("999 999 999 99999");
 export const isSiretValid = (str = "") =>
 	(str && str.length === 14) || "Saisissez un no de SIRET valide (14 chiffres)";
 
-export const SiretInput = ({ validation, ...props }) => (
+export const SiretInput = ({ validation, label = "N° de Siret", ...props }) => (
 	<Formatted
+		label={label}
 		format={formatSiret}
 		serialize={getDigitsOnly}
 		validation={{ isSiretValid, ...validation }}
