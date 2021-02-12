@@ -24,7 +24,7 @@ Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à to
 		title: "Nouvel Organisme",
 		help: {
 			description: `Vérifiez l'adresse, le nom et la date de création de la structure à déclarer.`,
-				backgroundImage: "https://invie78.fr/images/background-nouvel-organisme.jpg"
+			backgroundImage: "https://invie78.fr/images/background-nouvel-organisme.jpg"
 		},
 		fields: [
 			{
@@ -140,7 +140,7 @@ ainsi que les sites internet liés à votre activité.`,
 						size: 1 / 2
 					},
 					{
-						name: "contact.mail",
+						name: "contact.email",
 						label: "Email",
 						type: "email",
 						required: "Indiquez le mail de contact officiel",
