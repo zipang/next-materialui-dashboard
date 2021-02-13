@@ -8,9 +8,9 @@ Paris, le {{=(new Date).toISOString().substr(0,10)}}
 
 # ATTESTATION D'ADHESION
 
-Ce document confirme que votre société **{{=data.nom}}** (N° de Siret {{=data.siret}}) a bien souscrit un contrat d'adhésion auprès du service **INVIE** en date du {{=data.date_adhesion}}
+Ce document confirme que votre société **{{=data.nom}}** (N° de Siret `{{=data.siret}}`) a bien souscrit un contrat d'adhésion auprès du service **INVIE** en date du {{=data.date_adhesion}}
 
-Le contrat a été signé par votre représentant {{=data.representant.prenom}} {{=data.representant.prenom}}.
+Le contrat a été signé par votre représentant {{=data.representant.prenom}} {{=data.representant.nom}}.
 
 Les coordonnées de votre société sont les suivantes :
 

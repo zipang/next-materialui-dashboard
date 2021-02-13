@@ -1,5 +1,5 @@
 import { createContext, useContext, useState } from "react";
-import { deepMerge } from "@lib/utils/deepMerge";
+import { merge } from "@lib/utils/deepMerge";
 import JSON from "@lib/utils/JSON";
 
 const StateMachinesContext = createContext();
@@ -8,7 +8,7 @@ const StateMachinesContext = createContext();
  * Utility action on which more complex actions can rely
  */
 const _DEFAULT_ACTIONS = {
-	merge: deepMerge
+	merge
 };
 
 const _MIDDLEWARES = {

@@ -1,3 +1,4 @@
+import ApiError from "@lib/ApiError.js";
 import Parse from "parse/node.js";
 import { loadEnv } from "../utils/Env.js";
 
@@ -10,10 +11,8 @@ let parseInstance = null;
  */
 export const getParseInstance = () => {
 	if (typeof window === "undefined" && !parseInstance) {
-		console.log(process.env.NODE_ENV);
+		// Manually load the environment variables for the test
 		if (process.env.NODE_ENV === "test") {
-			// Help us for the test
-			console.log("Loading the environment variables");
 			loadEnv();
 		}
 		const { PARSE_APP_ID, PARSE_JS_KEY, PARSE_SERVER_URL } = process.env;
@@ -28,5 +27,27 @@ export const getParseInstance = () => {
 		parseInstance = Parse;
 	}
 
-	return parseInstance;
+	return Object.assign(parseInstance, ParseExtensions);
+};
+
+const ParseExtensions = {
+	/**
+	 *
+	 * @param {*} className
+	 * @param {*} fieldName
+	 * @param {*} value
+	 */
+	retrieveByUniqueKey: async (className, fieldName, value) => {
+		try {
+			const query = new Parse.Query(className);
+			query.equalTo(fieldName, value);
+			return await query.first();
+		} catch (err) {
+			console.error(err);
+			throw new ApiError(
+				err.code || 500,
+				`Couldn't retrieve ${className}('${value}') : ${err.message}`
+			);
+		}
+	}
 };

@@ -836,9 +836,29 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 		help: {
 			description: `## Félicitation !
 Votre process de registration est presque terminé.
-Vous pouvez revenir en arrière pour vérifier une dernière fois les informations saisies
+Vous pouvez revenir en arrière pour vérifier une dernière fois les informations saisies.
+Choisissez votre formule de paiement
 puis cliquez sur **Valider** pour envoyer votre demande.`,
 			backgroundImage: "registration-complete-background.svg"
+		},
+		fields: [
+			{
+				type: "group",
+				label: "Choisissez votre formule.",
+				fields: [
+					{
+						name: "formule_paiement",
+						type: "radio",
+						options: {
+							60: "Abonnement 1 an. 60€",
+							200: "Abonnement 1 an (complet). 200€"
+						}
+					}
+				]
+			}
+		],
+		validate: async (formData) => {
+			console.log(formData);
 		}
 	}
 ];

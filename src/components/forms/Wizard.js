@@ -213,9 +213,9 @@ const InitWizard = ({ id, steps = [], onComplete }) => {
 				<Button
 					variant="contained"
 					color="secondary"
-					disabled={currentSlide < steps.length - 1}
+					disabled={currentSlide.validate === undefined}
 					startIcon={<SvgIcon name="Save" />}
-					onClick={sendData}
+					onClick={currentSlide.validate}
 				>
 					Valider
 				</Button>

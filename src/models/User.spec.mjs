@@ -1,9 +1,12 @@
 import { suite } from "uvu";
 import code from "@hapi/code";
 import User from "./User.js";
+import { loadEnv } from "../lib/utils/Env.js";
 
 const { expect } = code;
 const UserTestSuite = suite("User");
+
+loadEnv(); // needed to retrieve the Parse environment variables
 
 const testUser1 = {
 	username: "1234",
@@ -38,4 +41,4 @@ UserTestSuite("User.login() can retrieve an existing user", async () => {
 	);
 });
 
-// UserTestSuite.run(); // not ready for prime time
+UserTestSuite.run(); // not ready for prime time

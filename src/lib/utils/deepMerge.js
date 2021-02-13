@@ -59,7 +59,7 @@ export const deepCloneArray = (arr) => {
 			} else if (isSpecificValue(item)) {
 				clone[index] = cloneSpecificValue(item);
 			} else {
-				clone[index] = deepMerge({}, item);
+				clone[index] = merge({}, item);
 			}
 		} else {
 			clone[index] = item;
@@ -73,19 +73,22 @@ const safeGetProperty = (object, property) => {
 };
 
 /**
- * Deeply merge new objects values inside a target object.
- * A new object instance is returned with the fusion of all properties
+ * Deeply merge new objects values inside the target object.
+ * Different from Object.assign() in that all existing values are preserved and not replaced
  *
  * Returns extended object or false if have no target object or incorrect type.
- * @example merged = deepMerge(initial, payload1, payload2, ...);
+ * @example
+ *   merge(target, payload1, payload2, ...); // Will add all new keys to target
+ *   const merged =
+ * @return {Object} a new object instance with the fusion of all properties
  */
-export const deepMerge = (...args) => {
+export const merge = (...args) => {
 	if (!args.length) {
 		return {};
 	}
 
 	if (typeof args[0] !== "object") {
-		throw TypeError(`deepMerge() target first argument is not an object`);
+		throw TypeError(`merge() target first argument is not an object`);
 	}
 
 	if (args.length === 1) {
@@ -125,11 +128,11 @@ export const deepMerge = (...args) => {
 				return;
 			} else if (typeof src !== "object" || src === null || Array.isArray(src)) {
 				// overwrite by new value if source isn't object or array
-				target[key] = deepMerge({}, val);
+				target[key] = merge({}, val);
 				return;
 			} else {
 				// source value and new value is objects both, extending...
-				target[key] = deepMerge(src, val);
+				target[key] = merge(src, val);
 				return;
 			}
 		});

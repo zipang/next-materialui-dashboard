@@ -31,7 +31,9 @@ export default {
 		readOnly: { control: { type: "boolean" } },
 		defaultValue: { control: { type: null } },
 		name: { control: { type: null } },
-		label: { control: { type: null } }
+		label: { control: { type: null } },
+		load: { control: { type: null } },
+		serialize: { control: { type: null } }
 	}
 };
 
