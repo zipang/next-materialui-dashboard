@@ -34,7 +34,7 @@ export const post = (APIClient.post = async (postUrl, postBody = {}) => {
 	// Complete the relative URL
 	if (!postUrl.startsWith("http")) {
 		const baseUrl = process.env.NEXT_PUBLIC_SITE_URL;
-		if (!baseUrl.startsWith("http")) {
+		if (!baseUrl || !baseUrl.startsWith("http")) {
 			throw new ApiError(
 				500,
 				`ApiClient.post() failed : the environment variable NEXT_PUBLIC_SITE_URL is ${baseUrl}`
