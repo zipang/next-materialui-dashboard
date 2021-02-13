@@ -1,8 +1,6 @@
 import { getParseInstance } from "../lib/services/ParseSDK.js";
 import ApiError from "../lib/ApiError.js";
 
-const Parse = getParseInstance();
-
 class User {
 	constructor(userData) {
 		// Just copy all the attributes
@@ -36,6 +34,8 @@ class User {
  */
 export const register = (User.register = async (userData) => {
 	try {
+		const Parse = getParseInstance();
+
 		if (!userData.username) {
 			userData.username = userData.email;
 		}

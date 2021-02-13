@@ -1,7 +1,6 @@
 import { useState, useContext, createContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { NoSsr } from "@material-ui/core";
-import User from "@models/User";
 
 /**
  * @typedef AuthContext

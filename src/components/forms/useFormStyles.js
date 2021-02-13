@@ -11,6 +11,7 @@ const useFormStyles = (customStyles = {}) =>
 			marginTop: theme.spacing(1),
 			marginLeft: "auto",
 			marginRight: "auto",
+			width: "100%",
 			alignItems: "center",
 			justify: "center",
 			"& input": {

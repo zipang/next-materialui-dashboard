@@ -10,7 +10,11 @@ let parseInstance = null;
  * @return {Parse}
  */
 export const getParseInstance = () => {
-	if (typeof window === "undefined" && !parseInstance) {
+	if (typeof window !== "undefined") {
+		throw new Error(
+			"getParseInstance cannot be called on the front-end ! Use APIClient instead."
+		);
+	} else if (!parseInstance) {
 		// Manually load the environment variables for the test
 		if (process.env.NODE_ENV === "test") {
 			loadEnv();

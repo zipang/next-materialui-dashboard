@@ -3,8 +3,6 @@ import ParseProxy from "./ParseProxy.js";
 import ApiError from "../lib/ApiError.js";
 import fs from "fs-extra";
 
-const Parse = getParseInstance();
-
 class Organisme extends Parse.Object {
 	constructor(data) {
 		// Just copy all the attributes
