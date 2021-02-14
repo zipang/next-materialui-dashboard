@@ -333,11 +333,12 @@ Puis indiquez vos numéros d'agrémentation.`
 			{
 				name: "systemes_gestion.telegestion",
 				label: "Avez-vous déployé un système de télégestion ?",
-				type: "ysn"
+				type: "ysn",
+				defaultValue: false
 			},
 			{
 				name: "systemes_gestion.telegestion_editeur",
-				label: "Si oui, quel est votre éditeur",
+				label: "Si oui, quel est votre éditeur ?",
 				required: (data) =>
 					data.systemes_gestion.telegestion
 						? "Indiquez votre éditeur ou le nom de votre système de télégestion"
@@ -347,7 +348,8 @@ Puis indiquez vos numéros d'agrémentation.`
 			{
 				name: "systemes_gestion.teletransmission",
 				label: "Etes-vous en télétransmission ?",
-				type: "ysn"
+				type: "ysn",
+				defaultValue: false
 			}
 		]
 	},
@@ -516,7 +518,8 @@ indiquez le avec un commentaire sur vos attentes.`
 						name: "certifications.syneos.statut",
 						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
 						type: "radio",
-						size: 6 / 12
+						size: 6 / 12,
+						defaultValue: "N"
 					},
 					{
 						name: "certifications.syneos.date",
@@ -542,12 +545,17 @@ indiquez le avec un commentaire sur vos attentes.`
 			{
 				name: "certifications.syneos.a_mettre_en_place",
 				label: "Je souhaite mettre en place ce label",
-				type: "ysn"
+				type: "ysn",
+				defaultValue: false
 			},
 			{
 				name: "certifications.syneos.commentaires",
 				label: "Commentaires",
-				placeHolder: "Souhaitez-vous obtenir une ou des clés supplémentaires ?"
+				placeHolder: "Souhaitez-vous obtenir une ou des clés supplémentaires ?",
+				required: (data) =>
+					data.certifications.syneos.a_mettre_en_place
+						? "Indiquez vos attentes"
+						: false
 			}
 		]
 	},
@@ -822,6 +830,9 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 	{
 		id: "step-demande-contact",
 		title: "Demande de contact",
+		help: {
+			backgroundImage: "call-me.svg"
+		},
 		fields: [
 			{
 				name: "demande_contact_adherent",
