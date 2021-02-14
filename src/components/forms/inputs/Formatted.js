@@ -64,6 +64,7 @@ const Formatted = ({
 
 	// Use a local state for the displayed (formatted) value
 	const [displayedValue, setDisplayedValues] = useState(format(load(getData(name))));
+	const [firstDisplay, setFirstDisplay] = useState(true);
 
 	// Re-format on every modification and send teh real value to the Validation Context
 	const onChange = (evt) => {
@@ -82,10 +83,19 @@ const Formatted = ({
 		if (autoFocus || errorMessage) {
 			console.log(`Focus on ${name} (${errorMessage})`);
 			inputRef.current.focus();
+			if (displayedValue.length) {
+				inputRef.current.setSelectionRange(0, displayedValue.length);
+			}
 		}
 	}, [name]); // Only on first load
 
 	useEffect(() => {
+		if (firstDisplay) {
+			setFirstDisplay(false);
+			return; // We want a full selected input on focus
+		}
+		// Set the cursor position between the 2 returned parts of the displayedValue
+		console.log(`Setting cursor position on edited value`);
 		if (Array.isArray(displayedValue)) {
 			inputRef.current.selectionStart = inputRef.current.selectionEnd =
 				displayedValue[0].length;
