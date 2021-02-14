@@ -142,7 +142,12 @@ Step.prototype = {
 					} = field;
 					if (readOnly) startIndex--;
 					return (
-						<Grid item sm={Number(size) * 12} style={{ padding: "0 0.5em" }}>
+						<Grid
+							key={`${this.id}-size-${i}`}
+							item
+							sm={Number(size) * 12}
+							style={{ padding: "0 0.5em" }}
+						>
 							<Input
 								key={`${this.id}-input-${i}`}
 								type={type}
@@ -156,7 +161,7 @@ Step.prototype = {
 	},
 	displayBlock: function (block, index) {
 		return (
-			<GroupLabel label={block.label}>
+			<GroupLabel key={`group-${index}`} label={block.label}>
 				{this.displayFields(block.fields, index)}
 			</GroupLabel>
 		);

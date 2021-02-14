@@ -872,8 +872,12 @@ puis cliquez sur **Valider** pour envoyer votre demande.`,
 			}
 		],
 		validate: async (formData) => {
-			console.log(formData);
-			register(formData);
+			try {
+				console.log(formData);
+				await register(loggedUser, formData);
+			} catch (err) {
+				alert(err.message);
+			}
 		}
 	}
 ];

@@ -82,7 +82,7 @@ const WizardContainer = ({ children }) => (
  * @param {WizardViewportProps} props
  */
 const WizardViewport = ({ classes, step, data, errors, onSubmit }) => (
-	<Box className={classes.viewport}>
+	<Box key="wizard-viewport" className={classes.viewport}>
 		{step.help && (
 			<Box
 				key="help-container"
@@ -99,7 +99,9 @@ const WizardViewport = ({ classes, step, data, errors, onSubmit }) => (
 						<h2>{step.title}</h2>
 					</Box>
 				)}
-				<Box className={classes.form}>{step.displayForm(data, onSubmit)}</Box>
+				<Box key="form" className={classes.form}>
+					{step.displayForm(data, onSubmit)}
+				</Box>
 			</Box>
 		)}
 	</Box>
@@ -129,9 +131,6 @@ const next = (state) => {
 };
 const previous = (state) => {
 	return gotoSlide(state, state.currentSlide - 1);
-};
-const onComplete = (data) => {
-	console.log(`Last step completed`, JSON.stringify(data, null, "\t"));
 };
 
 /**
@@ -166,14 +165,6 @@ const InitWizard = ({ id, steps = [], onComplete }) => {
 		eb.send(`${steps[currentSlide].id}:validate`);
 	};
 
-	const sendData = () => {
-		const lastStep = steps[steps.length - 1];
-		console.log("Sending last step data", data);
-		if (typeof lastStep.onSubmit === "function") {
-			lastStep.onSubmit(data);
-		}
-	};
-
 	useEffect(() => {
 		console.log(
 			`Rendering slide ${currentSlide} of wizard ${id} with ${JSON.stringify(
@@ -187,7 +178,6 @@ const InitWizard = ({ id, steps = [], onComplete }) => {
 	return (
 		<WizardContainer>
 			<WizardViewport
-				key={`viewport-${currentSlide}`}
 				classes={classes}
 				step={
 					new Step(steps[currentSlide], `${currentSlide + 1}/${steps.length}`)
@@ -197,6 +187,7 @@ const InitWizard = ({ id, steps = [], onComplete }) => {
 			/>
 			<WizardControls>
 				<Button
+					key="btn-previous"
 					variant="outlined"
 					disabled={currentSlide === 0}
 					onClick={actions.previous}
@@ -204,6 +195,7 @@ const InitWizard = ({ id, steps = [], onComplete }) => {
 					Etape précédente
 				</Button>
 				<Button
+					key="btn-next"
 					variant="outlined"
 					disabled={currentSlide >= steps.length - 1}
 					onClick={triggerValidate}
@@ -211,6 +203,7 @@ const InitWizard = ({ id, steps = [], onComplete }) => {
 					Etape suivante
 				</Button>
 				<Button
+					key="btn-validate"
 					variant="contained"
 					color="secondary"
 					disabled={steps[currentSlide].validate === undefined}
