@@ -110,11 +110,13 @@ const sendMail = async (message) => {
 
 	try {
 		const transporter = getTransporter();
-		console.log(
-			`Sending the mail ${subject}. Attachments : ${message.attachments.map(
-				({ content, filename }) => filename + " (" + content.length + "bytes)"
-			)}`
-		);
+		console.log(`Sending the mail ${subject}.`);
+		message.attachments &&
+			console.log(
+				`Attachments : ${message.attachments.map(
+					({ content, filename }) => filename + " (" + content.length + "bytes)"
+				)}`
+			);
 		const resp = await transporter.sendMail(message);
 		return resp;
 	} catch (err) {

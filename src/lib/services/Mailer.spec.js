@@ -1,8 +1,9 @@
 import { suite } from "uvu";
 import code from "@hapi/code";
 import Mailer from "./Mailer.js";
-import ApiError from "../ApiError.js";
+import { loadEnv } from "../utils/Env.js";
 
+loadEnv();
 const { expect } = code;
 const MailerTestSuite = suite("Mailer Test Suite");
 
@@ -11,7 +12,7 @@ const shouldSucceed = async () => {
 		subject: "TEST MAIL (do not respond)",
 		text: `This is the text body.
 No formatted text.`,
-		html: `This is the text body.<br><i>Fancy Looking</i>`,
+		html: `This is the text body.<br/><i>Fancy Looking</i>`,
 		to: {
 			name: "zipang",
 			address: "christophe.desguez@gmail.com"
