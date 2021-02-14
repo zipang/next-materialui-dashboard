@@ -20,6 +20,7 @@ Input.registerInput("ysn", YesNo("Oui", "Non"));
  * @param {HelpDef} [help]
  * @param {Array<FieldDef>} [fields]
  * @param {Function} [displayForm] a custom function to display the form without fields
+ * @param {Function} [validate] an optional function to activate the validate button
  */
 
 /**
@@ -44,7 +45,7 @@ Input.registerInput("ysn", YesNo("Oui", "Non"));
  * @param {StepDef} step
  */
 function Step(
-	{ id, title, help = false, fields = false, displayForm = false },
+	{ id, title, help = false, fields = false, displayForm = false, validate },
 	position = ""
 ) {
 	// Validate that all required fields are provided
@@ -65,6 +66,10 @@ function Step(
 	} else if (!fields) {
 		// Unable to display anything
 		this.displayForm = false;
+	}
+	if (typeof validate === "function") {
+		console.log(`We have a validating function on step ${id}`);
+		this.validate = validate.bind(this);
 	}
 }
 

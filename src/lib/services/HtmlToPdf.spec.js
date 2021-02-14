@@ -3,8 +3,8 @@ import code from "@hapi/code";
 import { generatePdf } from "./HtmlToPdf.js";
 import path from "path";
 import fs from "fs-extra";
-import dirname from "../../../dirname.js";
 
+const dirname = new URL(import.meta.url).pathname;
 const { expect } = code;
 const HtmlToPdfTestSuite = suite("HtmlToPdf Test Suite");
 

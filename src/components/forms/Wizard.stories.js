@@ -133,7 +133,8 @@ vos capacités exceptionnelles sont : ${abilities
 					.map((c) => _CAPACITIES[c])
 					.join(", ")}`}</p>
 			</Box>
-		)
+		),
+		validate: (data) => console.log
 	}
 ];
 
