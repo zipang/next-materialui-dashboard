@@ -831,7 +831,9 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 		id: "step-demande-contact",
 		title: "Demande de contact",
 		help: {
-			backgroundImage: "call-me.svg"
+			backgroundImage: "call-me.svg",
+			backgroundSize: "50%",
+			backgroundPosition: "center"
 		},
 		fields: [
 			{
