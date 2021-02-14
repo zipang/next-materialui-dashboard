@@ -1,4 +1,4 @@
-import { getParseInstance } from "../lib/services/ParseSDK.js";
+import { getParseInstance } from "./ParseSDK.js";
 import ApiError from "../lib/ApiError.js";
 
 class User {

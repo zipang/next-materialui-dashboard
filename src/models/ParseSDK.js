@@ -1,6 +1,9 @@
-import ApiError from "@lib/ApiError.js";
 import Parse from "parse/node.js";
-import { loadEnv } from "../utils/Env.js";
+import ApiError from "../lib/ApiError.js";
+import { loadEnv } from "../lib/utils/Env.js";
+
+// Now let's add every model to the Parse object
+// import "./Organisme.js";
 
 let parseInstance = null;
 
