@@ -80,20 +80,16 @@ const _BACKGROUND_IMAGE_STYLE = {
 };
 Step.prototype = {
 	getBackgroundImageStyle: function () {
-		const backgroundImage = this.help?.backgroundImage;
-		if (!backgroundImage) {
+		const style = { ..._BACKGROUND_IMAGE_STYLE, ...this.help };
+
+		if (!style.backgroundImage) {
 			return {};
-		} else if (backgroundImage.startsWith("http")) {
-			return {
-				..._BACKGROUND_IMAGE_STYLE,
-				backgroundImage: `url(${backgroundImage})`
-			};
+		} else if (style.backgroundImage.startsWith("http")) {
+			style.backgroundImage = `url(${style.backgroundImage})`;
 		} else {
-			return {
-				..._BACKGROUND_IMAGE_STYLE,
-				backgroundImage: `url(/img/${backgroundImage})`
-			};
+			style.backgroundImage = `url(/img/${style.backgroundImage})`;
 		}
+		return style;
 	},
 	displayHelp: function (data, errors, onSubmit) {
 		if (!this.help) return null;
