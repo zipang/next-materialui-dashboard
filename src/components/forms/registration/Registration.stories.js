@@ -9,110 +9,68 @@ export default {
 	title: "Registration steps"
 };
 
-/**
- * Step Sample
- */
-export const Intro = (args) => (
+const OnePageWizard = (stepId) => () => (
 	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-00-intro")} />
+		<Wizard id="one-page-wizard" steps={steps.filter(({ id }) => id === stepId)} />
 	</CenteredPaperSheet>
 );
 
 /**
  * Step Sample
  */
-export const SiretCreation = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-02-siret")} />
-	</CenteredPaperSheet>
-);
+export const Intro = OnePageWizard("step-00-intro");
 
 /**
  * Step Sample
  */
-export const Contacts = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-03-contacts")} />
-	</CenteredPaperSheet>
-);
+export const SiretCreation = OnePageWizard("step-02-siret");
 
 /**
  * Step Sample
  */
-export const Declarations = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-declarations")} />
-	</CenteredPaperSheet>
-);
+export const Contacts = OnePageWizard("step-03-contacts");
 
 /**
  * Step Sample
  */
-export const Beneficiaires = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-beneficiaires")} />
-	</CenteredPaperSheet>
-);
+export const Declarations = OnePageWizard("step-declarations");
 
 /**
  * Step Sample
  */
-export const Effectifs = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-effectifs")} />
-	</CenteredPaperSheet>
-);
+export const Beneficiaires = OnePageWizard("step-beneficiaires");
 
 /**
  * Step Sample
  */
-export const RatiosActivite = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-activite-ratios")} />
-	</CenteredPaperSheet>
-);
+export const Effectifs = OnePageWizard("step-effectifs");
 
 /**
  * Step Sample
  */
-export const Certifications = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-05-certifications")} />
-	</CenteredPaperSheet>
-);
+export const RatiosActivite = OnePageWizard("step-activite-ratios");
 
 /**
  * Step Sample
  */
-export const Syneos = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-06-syneos")} />
-	</CenteredPaperSheet>
-);
+export const Certifications = OnePageWizard("step-05-certifications");
 
 /**
  * Step Sample
  */
-export const SystemesGestion = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-systemes-gestion")} />
-	</CenteredPaperSheet>
-);
+export const Syneos = OnePageWizard("step-06-syneos");
 
 /**
  * Step Sample
  */
-export const DemandeContact = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-demande-contact")} />
-	</CenteredPaperSheet>
-);
+export const SystemesGestion = OnePageWizard("step-systemes-gestion");
 
 /**
  * Step Sample
  */
-export const LastStep = (args) => (
-	<CenteredPaperSheet>
-		<Wizard steps={steps.filter(({ id }) => id === "step-registration-recap")} />
-	</CenteredPaperSheet>
-);
+export const DemandeContact = OnePageWizard("step-demande-contact");
+
+/**
+ * Step Sample
+ */
+export const LastStep = OnePageWizard("step-registration-recap");
