@@ -1,4 +1,5 @@
 import { useAuthentication } from "@components/AuthenticationProvider";
+import { register } from "@lib/client/RegistrationApiClient";
 import { SiretSearchForm } from "./SiretSearch";
 import Wizard from "@forms/Wizard";
 
@@ -870,6 +871,7 @@ puis cliquez sur **Valider** pour envoyer votre demande.`,
 		],
 		validate: async (formData) => {
 			console.log(formData);
+			register(formData);
 		}
 	}
 ];
