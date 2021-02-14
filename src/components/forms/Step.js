@@ -143,13 +143,12 @@ Step.prototype = {
 					if (readOnly) startIndex--;
 					return (
 						<Grid
-							key={`${this.id}-size-${i}`}
+							key={`${field.name}-sizer`}
 							item
 							sm={Number(size) * 12}
 							style={{ padding: "0 0.5em" }}
 						>
 							<Input
-								key={`${this.id}-input-${i}`}
 								type={type}
 								autoFocus={i + startIndex === 0}
 								{...fieldProps}

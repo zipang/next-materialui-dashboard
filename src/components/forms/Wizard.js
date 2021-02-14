@@ -84,24 +84,18 @@ const WizardContainer = ({ children }) => (
 const WizardViewport = ({ classes, step, data, errors, onSubmit }) => (
 	<Box key="wizard-viewport" className={classes.viewport}>
 		{step.help && (
-			<Box
-				key="help-container"
-				className={classes.helpContainer}
-				style={step.getBackgroundImageStyle()}
-			>
+			<Box className={classes.helpContainer} style={step.getBackgroundImageStyle()}>
 				{step.displayHelp(data, errors, onSubmit)}
 			</Box>
 		)}
 		{step.displayForm && (
-			<Box key="form-container" className={classes.formContainer}>
+			<Box className={classes.formContainer}>
 				{!step.help && (
 					<Box className={classes.formTitle}>
 						<h2>{step.title}</h2>
 					</Box>
 				)}
-				<Box key="form" className={classes.form}>
-					{step.displayForm(data, onSubmit)}
-				</Box>
+				<Box className={classes.form}>{step.displayForm(data, onSubmit)}</Box>
 			</Box>
 		)}
 	</Box>
