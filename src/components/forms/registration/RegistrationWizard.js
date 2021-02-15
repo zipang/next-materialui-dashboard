@@ -299,7 +299,7 @@ Puis indiquez vos numéros d'agrémentation.`
 				type: "group",
 				fields: [
 					{
-						name: "code",
+						name: "opco.code",
 						type: "select",
 						size: 1 / 2,
 						options: {
@@ -309,8 +309,13 @@ Puis indiquez vos numéros d'agrémentation.`
 						}
 					},
 					{
-						name: "autre",
+						name: "opco.autre",
 						label: "Autre",
+						disabled: (data) => data.opco?.code !== "autre",
+						required: (data) =>
+							data.opco?.code === "autre"
+								? "Saisissez votre Opérateur de Compétences"
+								: false,
 						size: 1 / 2
 					}
 				]
