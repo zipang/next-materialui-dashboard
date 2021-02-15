@@ -13,11 +13,12 @@ const readResponseBody = async (resp) => {
 		return await resp.json();
 	} catch (err) {
 		// Error parsing JSON format
-		const textBody = await resp.text();
+		console.log(resp);
+		// const textBody = await resp.text();
 		return {
 			code: resp.status,
 			success: false,
-			error: textBody
+			error: resp.statusText
 		};
 	}
 };

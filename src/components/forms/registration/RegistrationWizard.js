@@ -874,7 +874,7 @@ puis cliquez sur **Valider** pour envoyer votre demande.`,
 		validate: async (formData) => {
 			try {
 				console.log(formData);
-				await register(loggedUser, formData);
+				await register(null, formData);
 			} catch (err) {
 				alert(err.message);
 			}

@@ -1,34 +1,35 @@
 import { suite } from "uvu";
 import { getParseInstance } from "./ParseSDK.js";
+import { logIn } from "./User.js";
 import code from "@hapi/code";
 
 const { expect } = code;
 
-const testData = {
-	siret: "1234567",
-	nom: "ACME ORG",
-	representant: {
-		prenom: "Bob",
-		nom: "Avery",
-		email: "bob.avery@acme.org"
-	},
-	contact: {
-		telephone: "01 23 45 67 89",
-		email: "contact@acme.org"
-	}
-};
+import testData from "./organisme-test.js";
+import testUser from "./test-user.js";
 
 let Parse;
 
 const OrganismeTestSuite = suite("Organismes model");
 
 OrganismeTestSuite.before(() => {
+	console.log(`getParseInstance()`);
 	Parse = getParseInstance();
 });
 
-OrganismeTestSuite("Create a new Organisme", async () => {
-	const org = new Parse.Organisme(testData);
-	await org.save();
+// OrganismeTestSuite("Create a new Organisme", async () => {
+// 	const org = await new Parse.Organisme(testData);
+// 	await org.save();
+// 	console.log(org.toJSON());
+// 	expect(org.createdAt).to.be.a.date();
+// });
+
+OrganismeTestSuite("Register an Organisme to a User", async () => {
+	const owner = await logIn(testUser);
+	const org = await Parse.Organisme.register(null, testData);
+	console.log(org.toJSON());
+	expect(org.createdAt).to.be.a.date();
+	// await org.delete();
 });
 
 OrganismeTestSuite.run();

@@ -6,6 +6,9 @@ import { SiretInput } from "@components/forms/registration/SiretSearch";
 import Text from "@components/forms/inputs/Text";
 import Email from "@components/forms/inputs/Email";
 import Submit from "@components/forms/inputs/Submit";
+import { merge } from "@lib/utils/deepMerge.js";
+import { register } from "@lib/client/RegistrationApiClient.js";
+import testOrganisme from "../../models/organisme-test.js";
 
 const TestEmailTemplatePage = () => {
 	const styles = useFormStyles({
@@ -22,8 +25,9 @@ const TestEmailTemplatePage = () => {
 	 */
 	const sendMessageTemplate = async (formData) => {
 		try {
-			formData.date_creation = new Date().toISOString().substr(0, 10);
-			const resp = await sendMailTemplate("welcome", formData);
+			const orgData = merge({}, testOrganisme, formData);
+			const resp = await register(null, orgData);
+			// const resp = await sendMailTemplate("welcome", formData);
 			alert(JSON.stringify(resp, null, "\t"));
 		} catch (err) {
 			console.error(err);

@@ -1,9 +1,10 @@
+import { merge } from "../lib/utils/deepMerge.js";
 import Parse from "parse/node.js";
 import ApiError from "../lib/ApiError.js";
 import { loadEnv } from "../lib/utils/Env.js";
 
 // Now let's add every model to the Parse object
-// import "./Organisme.js";
+import "./Organisme.js";
 
 let parseInstance = null;
 
@@ -34,7 +35,7 @@ export const getParseInstance = () => {
 		parseInstance = Parse;
 	}
 
-	return Object.assign(parseInstance, ParseExtensions);
+	return merge(parseInstance, ParseExtensions);
 };
 
 const ParseExtensions = {

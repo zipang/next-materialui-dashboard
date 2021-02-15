@@ -10,11 +10,11 @@ import { sendMailTemplate } from "./MailApiClient";
 export const register = async (user, registrationFormData) => {
 	try {
 		const registrationSuccess = await APIClient.post(
-			"/organisme/register",
+			"/api/organisme/register",
 			registrationFormData
 		);
 		// We have to be sure that the registration was a success before sending the welcome email
-		await sendMailTemplate("welcome", data);
+		await sendMailTemplate("welcome", registrationFormData);
 		return registrationSuccess;
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
