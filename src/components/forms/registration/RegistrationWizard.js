@@ -866,11 +866,13 @@ puis cliquez sur **Valider** pour envoyer votre demande.`,
 				label: "Choisissez votre formule.",
 				fields: [
 					{
-						name: "formule_paiement",
+						name: "formule_cotisation",
 						type: "radio",
+						size: 1,
 						options: {
-							60: "Abonnement 1 an. 60€",
-							200: "Abonnement 1 an (complet). 200€"
+							A: "200€ par an pour les SAP/SAAD",
+							B:
+								"60€ par an pour les partenaires du secteur social médico-social et sanitaire"
 						}
 					}
 				]
