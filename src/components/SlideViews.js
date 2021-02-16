@@ -32,6 +32,7 @@ const SlideViews = ({ children, index = 0 }) => {
 				? children.map((component, i) => (
 						<Slide
 							in={i === currentSlide}
+							key={`slide-${i}`}
 							direction={i === currentSlide ? slideIn : slideOut}
 							mountOnEnter={true}
 							unmountOnExit={true}
