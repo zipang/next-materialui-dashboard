@@ -18,11 +18,15 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const Login = () => {
+const Login = ({ useEvents = true }) => {
 	const styles = useStyles();
 	const EventBus = useEventBus();
-	const sendEvent = (eventName) => (e) => {
-		EventBus.emit(eventName);
+	const sendEvent = (eventName) => (evt) => {
+		if (useEvents) {
+			// Cancel page navigation and send event to the listeners instead
+			evt.preventDefault();
+			EventBus.emit(eventName);
+		}
 	};
 
 	return (
@@ -37,7 +41,7 @@ const Login = () => {
 			<Grid container>
 				<Grid item xs={12} sm={6}>
 					<Link
-						href="#"
+						href="/forgot-password"
 						variant="caption"
 						onClick={sendEvent("forgotPassword")}
 					>
@@ -46,7 +50,11 @@ const Login = () => {
 				</Grid>
 				<Grid item xs={6} sm={6}>
 					<Typography align="right">
-						<Link href="#" variant="caption" onClick={sendEvent("register")}>
+						<Link
+							href="/create-account"
+							variant="caption"
+							onClick={sendEvent("register")}
+						>
 							Créer mon compte
 						</Link>
 					</Typography>
