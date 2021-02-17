@@ -60,5 +60,5 @@ function UserDashboard({ user }) {
 
 export default withAuthentication(UserDashboard, {
 	profiles: ["adherent"],
-	redirectTo: "/"
+	loginPage: "/login"
 });

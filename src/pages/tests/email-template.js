@@ -9,6 +9,7 @@ import Submit from "@components/forms/inputs/Submit";
 import { merge } from "@lib/utils/deepMerge.js";
 import { register } from "@lib/client/RegistrationApiClient.js";
 import testOrganisme from "../../models/organisme-test.js";
+import { withAuthentication } from "@components/AuthenticationProvider.js";
 
 const TestEmailTemplatePage = () => {
 	const styles = useFormStyles({
@@ -63,4 +64,4 @@ const TestEmailTemplatePage = () => {
 		</CenteredPaperSheet>
 	);
 };
-export default TestEmailTemplatePage;
+export default withAuthentication(TestEmailTemplatePage);

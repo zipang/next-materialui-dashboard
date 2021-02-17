@@ -11,7 +11,7 @@ import Submit from "./inputs/Submit";
  * Displays a form to log the user
  */
 const LoginForm = () => {
-	const authProvider = useAuthentication();
+	const auth = useAuthentication();
 	const router = useRouter();
 
 	/**
@@ -19,9 +19,14 @@ const LoginForm = () => {
 	 * @param {Object} userData
 	 */
 	const onSuccess = (userData) => {
-		authProvider.setLoggedUser(new User(userData));
-		// Do a fast client-side transition to the already prefetched dashboard page
-		router.push("/user-dashboard");
+		auth.setLoggedUser(new User(userData));
+
+		if (auth.redirectAfterLogin) {
+			// We know where the disconnected user wanted to be
+			router.push(auth.redirectAfterLogin);
+		} else {
+			router.push("/user-dashboard");
+		}
 	};
 
 	return (

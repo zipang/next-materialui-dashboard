@@ -1,9 +1,7 @@
 import { useState, useGlobal } from "reactn";
 import { useRouter } from "next/router";
-import LoadingSpinner from "../../components/LoadingSpinner";
 
 import User from "../models/User";
-import PageForbidden from "../../pages/forbidden";
 
 /**
  * Verify that a page is only accessible when a user is logged

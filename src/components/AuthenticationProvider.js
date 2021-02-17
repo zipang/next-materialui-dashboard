@@ -7,8 +7,9 @@ import { NoSsr } from "@material-ui/core";
  * @property {User} loggedUser
  * @property {Function} setLoggedUser Define the logged user after a successful login
  * @property {Function} logout
+ * @property {String} redirectAfterLogin Where to go after successfull login
+ * @property {Function} setRedirectAfterLogin
  */
-
 const AuthContext = createContext();
 
 /**
@@ -17,10 +18,13 @@ const AuthContext = createContext();
  */
 const AuthenticationProvider = ({ children }) => {
 	const [loggedUser, setLoggedUser] = useState(null);
+	const [redirectAfterLogin, setRedirectAfterLogin] = useState(null);
 
 	const auth = {
 		loggedUser,
+		redirectAfterLogin,
 		setLoggedUser,
+		setRedirectAfterLogin,
 		logout: () => setLoggedUser(null)
 	};
 
@@ -43,36 +47,41 @@ export const useAuthentication = () => {
 	return auth;
 };
 
+const _DEFAULT_OPTIONS = {
+	profiles: [],
+	loginPage: "/login"
+};
 /**
  * @typedef AuthenticationOptions
  * @property {String[]} profiles check that the logged user has at least one of these profiles
- * @param {String} [redirectTo="/"] path to redirect if no logged user is found
+ * @property {String} [loginPage="/login"] Login page if no logged user is found
  */
 /**
  * Build a HOC to pass which we pass the logged user or redirect
  * @param {JSX.Element} Component
  * @param {AuthenticationOptions} options
  */
-export const withAuthentication = (Component, { profiles = [], redirectTo = "/" }) => ({
+export const withAuthentication = (Component, options = _DEFAULT_OPTIONS) => ({
 	...props
 }) => {
-	const { loggedUser } = useContext(AuthContext);
+	const { profiles, loginPage } = options;
+	const { loggedUser, setRedirectAfterLogin } = useContext(AuthContext);
 	const router = useRouter();
 
 	useEffect(() => {
 		if (!loggedUser) {
 			// not logged
-			console.log(`No logged user. Redirect to ${redirectTo}`);
-			router.replace(redirectTo);
+			setRedirectAfterLogin(router.pathname);
+			router.replace(`${loginPage}?redirect=${router.pathname}`);
 		} else if (
 			profiles.length &&
 			!profiles.find((profile) => loggedUser.profiles.includes(profile))
 		) {
 			// bad profile
 			console.log(
-				`Bad profile (we looked for ${profiles}). Redirect to ${redirectTo}`
+				`Bad profile (we looked for ${profiles}). Redirect to error page`
 			);
-			router.replace(redirectTo);
+			router.replace("/_error");
 		}
 
 		return () => {};
