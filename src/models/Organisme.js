@@ -40,6 +40,7 @@ const StaticMethods = {
 		try {
 			const org = new _Organisme(orgData);
 			org.set("owner", owner);
+			delete org.env; // Silly
 			return await org.save(null, { cascadeSave: false });
 		} catch (err) {
 			console.error(err);

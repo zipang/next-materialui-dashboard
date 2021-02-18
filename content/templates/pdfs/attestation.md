@@ -1,24 +1,21 @@
 ---
-filename: "Attestation-Adhésion-{{=data.siret}}.pdf"
+filename: "Attestation-Adhésion-{{=data.siret}}-{{=data.nom}}.pdf"
 ---
 <img src="https://invie78.fr/images/logo.jpg" alt="logo" />
 
-Paris, le {{=(new Date).toISOString().substr(0,10)}}
+<h1 style="width: 80%; text-align: center; background-color: 'orange'"> RECU D'ADHESION {{=data.adhesion.reference}}
 
+L'association INVIE atteste avoir reçu au titre de l'année {{=data.adhesion.annee}}
+l'adhésion de 
 
-# ATTESTATION D'ADHESION
+<h2 style="width: 80%; text-align: center; margin-left: auto; margin-right: auto; background-color: 'orange'"> {{=data.nom}} (N° de Siret `{{=data.siret}}`)</h2>
 
-Ce document confirme que votre société **{{=data.nom}}** (N° de Siret `{{=data.siret}}`) a bien souscrit un contrat d'adhésion auprès du service **INVIE** en date du {{=data.date_adhesion}}
+En date du : {{=data.adhesion.date}}
 
-Le contrat a été signé par votre représentant {{=data.representant.prenom}} {{=data.representant.nom}}.
+La somme de : **{{=data.adhesion.montant}}** 
 
-Les coordonnées de votre société sont les suivantes :
+Fait aux Mureaux, le {{=(new Date).toISOString().substr(0,10)}}, pour valoir ce que de droit.
 
-**{{=data.nom}}**  
-{{=data.adresse?.rue1}}  
-{{=data.adresse?.rue2}}  
-{{=data.adresse?.code_postal}} {{=data.adresse?.commune}}  
-
-Standard: {{=data.contact?.telephone}}  
-Email: {{=data.contact?.email}}
+    **COUTEAU DELORD Stéphanie**
+    **Responsable Administratif et Financier**
 
