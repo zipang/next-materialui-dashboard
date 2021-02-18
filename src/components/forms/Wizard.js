@@ -7,6 +7,7 @@ import SvgIcon from "@components/SvgIcon";
 import { useStateMachine, withStateMachine } from "@components/StateMachine";
 import { useEventBus, withEventBus } from "@components/EventBusProvider";
 import Step from "@forms/Step";
+import { useAuthentication } from "@components/AuthenticationProvider";
 
 const useWizardStyles = (customStyles = {}) =>
 	makeStyles((theme) => ({
@@ -130,10 +131,11 @@ const previous = (state) => {
 /**
  * Receives the steps and the state machine altogether
  */
-const InitWizard = ({ id, steps = [], onComplete }) => {
+const InitWizard = ({ id, steps = [] }) => {
 	const classes = useWizardStyles();
 	const eb = useEventBus();
 	const { state, actions } = useStateMachine();
+	const { loggedUser } = useAuthentication();
 
 	// flatten the state
 	const { data, currentSlide } = state;
@@ -202,7 +204,7 @@ const InitWizard = ({ id, steps = [], onComplete }) => {
 					color="secondary"
 					disabled={steps[currentSlide].validate === undefined}
 					startIcon={<SvgIcon name="Save" />}
-					onClick={() => steps[currentSlide].validate(data)}
+					onClick={() => steps[currentSlide].validate(data, loggedUser)}
 				>
 					Valider
 				</Button>
