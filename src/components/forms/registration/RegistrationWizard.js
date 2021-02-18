@@ -5,12 +5,41 @@ import Wizard from "@forms/Wizard";
 
 export const steps = [
 	{
-		id: "step-00-intro",
-		title: "Création d'un nouvel Organisme",
+		id: "step-intro",
+		title: "Adhésion en ligne",
 		help: {
-			description: `Bonjour,
-Bienvenue dans le processus de déclaration d'un nouvel organisme sur la plateforme **INVIE**.
-Ce process est un peu long mais vous pourrez l'interrompre et le reprendre à tout moment.`,
+			description: `
+Invie est une association qui œuvre pour la structuration de la filière des services à la personne 
+sur le territoire depuis plusieurs années. 
+Notre mission est d’accompagner et innover dans l’aide à la personne 
+en favorisant les échanges de pratiques professionnelles, 
+le partage des connaissances des acteurs du secteur de l’aide 
+et des services à la personne, dans un objectif de développement, 
+de structuration et de modernisation.
+
+Deux modalités de cotisation sont possibles :
+* Cotisation A : 200€ par an pour les SAP/SAAD donnant accès à toute l’offre de services
+* Cotisation B : 60€ pour les partenaires du secteur social, médicosocial et sanitaire
+  (ESMS hors SAAD/EHPAD et Résidences autonomie, fédérations de branche, OPCO, organismes de formations)
+  Contactez INVIE sur contact@invie78.fr – 01.39.29.43.48
+`,
+			backgroundImage: "https://invie78.fr/images/background-registration.jpg"
+		}
+	},
+	{
+		id: "step-documents-necessaires",
+		title: "Informations nécessaires",
+		help: {
+			description: `
+Afin de compléter ce processus d’adhésion, vous aurez besoin des éléments suivants :
+* Nombre de salariés personnes physiques et ETP
+* Nombre d’intervenants personnes physiques et ETP
+* Nombre de cadres intermédiaires personnes physiques et ETP
+* Volume d’heures APA/PCH/prestations de confort
+* Chiffre d’affaires
+* Bénéficiaires APA/PCH/garde d’enfants/confort
+* Ratios bénéficiaires APA/PCH/transport adapté/garde d’enfant/Part mandataire et prestataire/activités de confort
+`,
 			backgroundImage: "https://invie78.fr/images/background-registration.jpg"
 		}
 	},
@@ -198,7 +227,7 @@ ainsi que les sites internet liés à votre activité.`,
 		title: "Réseau, Déclarations, Agréments..",
 		help: {
 			description: `Indiquez votre convention collective, les antennes et ou réseau, enseigne..
-Puis indiquez vos numéros d'agrémentation.`
+Puis indiquez votre numéro d’agrément, de déclaration, d’autorisation.`
 		},
 		fields: [
 			{
@@ -234,6 +263,12 @@ Puis indiquez vos numéros d'agrémentation.`
 						size: 1 / 2,
 						placeHolder: "SAP123456789",
 						validation: {
+							oneNeeded: (data) =>
+								!data.declaration.date &&
+								!data.agrement.date &&
+								data.autorisation.date
+									? `Saisissez au moins l'un des 3 : (Déclaration/Agrément/Autorisation)`
+									: true,
 							formatInvalid: {
 								pattern: /^SAP(\d){9}$/,
 								message:
@@ -303,20 +338,10 @@ Puis indiquez vos numéros d'agrémentation.`
 						type: "select",
 						size: 1 / 2,
 						options: {
-							agefos_pme: "Agefos PME",
-							entreprise: "Entreprise",
-							autre: "Autre"
+							ep: "OPCO EP",
+							uniformation: "OPCO UNIFORMATION",
+							cnfpt: "CNFPT"
 						}
-					},
-					{
-						name: "opco.autre",
-						label: "Autre",
-						disabled: (data) => data.opco?.code !== "autre",
-						required: (data) =>
-							data.opco?.code === "autre"
-								? "Saisissez votre Opérateur de Compétences"
-								: false,
-						size: 1 / 2
 					}
 				]
 			}
@@ -571,9 +596,7 @@ indiquez le avec un commentaire sur vos attentes.`
 		help: {
 			description: `Indiquez vos effectifs en distinguant bien :
 l'_effectif total_ par catégorie dans la colonne de gauche
-les _équivalents temps plein_ (ETP) dans la colonne de droite.
-
-Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affaire de votre activité.`
+les _équivalents temps plein_ (ETP) dans la colonne de droite.`
 		},
 		fields: [
 			{
@@ -635,21 +658,51 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 						required: true
 					}
 				]
-			},
+			}
+		]
+	},
+	{
+		id: "step-synthese",
+		title: "Volume d’heures cumulées et chiffre d’affaires",
+		help: {
+			description: `Indiquez le volume d’heures annuelles cumulées 
+et le chiffre d'affaire de votre activité.`
+		},
+		fields: [
 			{
-				label: "Synthèse",
+				label: "Volume d'heures cumulées",
 				type: "group",
 				fields: [
 					{
-						name: "activite.heures_cumulees",
-						label: "Volume d'heures cumulées",
+						name: "activite.heures_cumulees_apa",
+						label: "APA",
 						type: "integer",
-						size: 1 / 2,
+						size: 1 / 3,
 						required: true
 					},
 					{
+						name: "activite.heures_cumulees_pch",
+						label: "PCH",
+						type: "integer",
+						size: 1 / 3,
+						required: true
+					},
+					{
+						name: "activite.heures_cumulees_confort",
+						label: "Confort",
+						type: "integer",
+						size: 1 / 3,
+						required: true
+					}
+				]
+			},
+			{
+				label: "Chiffre d'affaires",
+				type: "group",
+				fields: [
+					{
 						name: "activite.chiffre_affaires",
-						label: "Chiffre d'affaires",
+						label: "CA",
 						type: "decimal",
 						suffix: " €",
 						size: 1 / 2,
@@ -854,34 +907,33 @@ Puis indiquez la synthèse annuelle des heures effectuées et le chiffre d'affai
 		title: "Dernière étape",
 		help: {
 			description: `## Félicitation !
-Votre process de registration est presque terminé.
+Votre process d’adhésion est presque terminé.
 Vous pouvez revenir en arrière pour vérifier une dernière fois les informations saisies.
-Choisissez votre formule de paiement
-puis cliquez sur **Valider** pour envoyer votre demande.`,
+En choisissant Paiement en ligne vous pourrez directement. 
+Cliquez sur Valider pour envoyer votre demande.`,
 			backgroundImage: "registration-complete-background.svg"
 		},
 		fields: [
 			{
 				type: "group",
-				label: "Choisissez votre formule.",
+				label: "Choisissez votre mode de règlement (200€ par an).",
 				fields: [
 					{
-						name: "formule_cotisation",
+						name: "adhesion.mode_reglement",
 						type: "radio",
 						size: 1,
 						options: {
-							A: "200€ par an pour les SAP/SAAD",
-							B:
-								"60€ par an pour les partenaires du secteur social médico-social et sanitaire"
+							en_ligne: "Paiement en ligne",
+							cheque: "Par chèque à l'ordre de INVIE"
 						}
 					}
 				]
 			}
 		],
-		validate: async (formData) => {
+		validate: async (formData, loggedUser) => {
 			try {
 				console.log(formData);
-				await register(null, formData);
+				await register(loggedUser, formData);
 			} catch (err) {
 				alert(err.message);
 			}

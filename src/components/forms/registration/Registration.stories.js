@@ -15,62 +15,30 @@ const OnePageWizard = (stepId) => () => (
 	</CenteredPaperSheet>
 );
 
-/**
- * Step Sample
- */
-export const Intro = OnePageWizard("step-00-intro");
+export const Intro = OnePageWizard("step-intro");
 
-/**
- * Step Sample
- */
+export const DocumentsNeccessaires = OnePageWizard("step-documents-necessaires");
+
 export const SiretCreation = OnePageWizard("step-02-siret");
 
-/**
- * Step Sample
- */
 export const Contacts = OnePageWizard("step-03-contacts");
 
-/**
- * Step Sample
- */
 export const Declarations = OnePageWizard("step-declarations");
 
-/**
- * Step Sample
- */
 export const Beneficiaires = OnePageWizard("step-beneficiaires");
 
-/**
- * Step Sample
- */
 export const Effectifs = OnePageWizard("step-effectifs");
 
-/**
- * Step Sample
- */
+export const Synthese = OnePageWizard("step-synthese");
+
 export const RatiosActivite = OnePageWizard("step-activite-ratios");
 
-/**
- * Step Sample
- */
 export const Certifications = OnePageWizard("step-05-certifications");
 
-/**
- * Step Sample
- */
 export const Syneos = OnePageWizard("step-06-syneos");
 
-/**
- * Step Sample
- */
 export const SystemesGestion = OnePageWizard("step-systemes-gestion");
 
-/**
- * Step Sample
- */
 export const DemandeContact = OnePageWizard("step-demande-contact");
 
-/**
- * Step Sample
- */
 export const LastStep = OnePageWizard("step-registration-recap");
