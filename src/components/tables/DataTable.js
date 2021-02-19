@@ -104,7 +104,7 @@ function SortableTableHead({ columns, classes, order, orderBy, onRequestSort }) 
 					>
 						<TableSortLabel
 							active={orderBy === columnDef.id}
-							direction={orderBy === columnDef.id ? order : "asc"}
+							direction={orderBy === columnDef.id ? order : "desc"}
 							onClick={createSortHandler(columnDef.id)}
 						>
 							{columnDef.label}
@@ -148,9 +148,13 @@ const DataTable = ({ columns = [], rows = [] }) => {
 	};
 
 	const handleRequestSort = (event, property) => {
-		const isAsc = orderBy === property && order === "asc";
-		setOrder(isAsc ? "desc" : "asc");
-		setOrderBy(property);
+		if (property === orderBy) {
+			// Revert the current order
+			setOrder(order === "asc" ? "desc" : "asc");
+		} else {
+			setOrderBy(property);
+			setOrder("desc"); // Allways start with descending order on new columns
+		}
 	};
 
 	return (
