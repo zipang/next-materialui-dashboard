@@ -1,4 +1,5 @@
 import Parse from "parse/node.js";
+import { getParseInstance } from "./ParseSDK.js";
 import ParseProxy from "./ParseProxy.js";
 import ApiError from "../lib/ApiError.js";
 
@@ -57,7 +58,26 @@ const StaticMethods = {
 	 * @return {Organisme}
 	 */
 	retrieveBySiret: async (siret) => {
+		const Parse = getParseInstance(); // Because this instance has been augmented with new utility methods
 		return Parse.retrieveByUniqueKey("Organisme", "siret", siret);
+	},
+
+	/**
+	 * Retrieve a list of Organisme that match some filter by example criterias
+	 * @param {Object} params
+	 */
+	retrieve: async (params = {}) => {
+		try {
+			const Parse = getParseInstance();
+			const query = new Parse.Query("Organisme");
+			return query.findAll();
+		} catch (err) {
+			console.error(err);
+			throw new ApiError(
+				err.code || 500,
+				`Failed loading organismes : ${err.message}`
+			);
+		}
 	}
 };
 

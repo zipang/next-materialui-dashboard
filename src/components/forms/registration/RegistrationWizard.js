@@ -1,5 +1,5 @@
 import { useAuthentication } from "@components/AuthenticationProvider";
-import { register } from "@lib/client/RegistrationApiClient";
+import { register } from "@lib/client/OrganismesApiClient";
 import { SiretSearchForm } from "./SiretSearch";
 import Wizard from "@forms/Wizard";
 

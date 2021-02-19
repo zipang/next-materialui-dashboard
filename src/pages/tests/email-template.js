@@ -7,7 +7,7 @@ import Text from "@components/forms/inputs/Text";
 import Email from "@components/forms/inputs/Email";
 import Submit from "@components/forms/inputs/Submit";
 import { merge } from "@lib/utils/deepMerge.js";
-import { register } from "@lib/client/RegistrationApiClient.js";
+import { register } from "@lib/client/OrganismesApiClient.js";
 import testOrganisme from "../../models/organisme-test.js";
 import { withAuthentication } from "@components/AuthenticationProvider.js";
 
