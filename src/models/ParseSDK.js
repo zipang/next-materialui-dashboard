@@ -1,5 +1,5 @@
 import { merge } from "../lib/utils/deepMerge.js";
-import Parse from "parse/node.js";
+import ParseNode from "parse/node.js";
 import ApiError from "../lib/ApiError.js";
 import { loadEnv } from "../lib/utils/Env.js";
 
@@ -7,6 +7,49 @@ import { loadEnv } from "../lib/utils/Env.js";
 import "./Organisme.js";
 
 let parseInstance = null;
+
+/**
+ * A handfull of static utility methods added on the Parse object
+ */
+const ParseExtensions = {
+	/**
+	 * Retrieves a single object (the field should be a unique key)
+	 * @param {String} className
+	 * @param {String} fieldName
+	 * @param {Any} value
+	 * @return {ParseObject}
+	 */
+	retrieveByUniqueKey: async (className, fieldName, value) => {
+		try {
+			const query = new Parse.Query(className);
+			query.equalTo(fieldName, value);
+			return await query.first();
+		} catch (err) {
+			console.error(err);
+			throw new ApiError(
+				err.code || 500,
+				`Couldn't retrieve ${className}('${value}') : ${err.message}`
+			);
+		}
+	},
+
+	/**
+	 *
+	 * @param {Parse.Query} query
+	 * @param {Map} params
+	 */
+	addQueryParameters: (query, params) => {
+		if (typeof params === "object" && !params instanceof Map) {
+			params = new Map(Object.entries(params));
+		}
+		for ([key, value] of params) {
+			query.equalTo(key, value);
+		}
+		return query;
+	}
+};
+
+export const Parse = merge(ParseNode, ParseExtensions);
 
 /**
  * Ensure that we get a properly initialized Parse instance
@@ -35,27 +78,5 @@ export const getParseInstance = () => {
 		parseInstance = Parse;
 	}
 
-	return merge(parseInstance, ParseExtensions);
-};
-
-const ParseExtensions = {
-	/**
-	 *
-	 * @param {*} className
-	 * @param {*} fieldName
-	 * @param {*} value
-	 */
-	retrieveByUniqueKey: async (className, fieldName, value) => {
-		try {
-			const query = new Parse.Query(className);
-			query.equalTo(fieldName, value);
-			return await query.first();
-		} catch (err) {
-			console.error(err);
-			throw new ApiError(
-				err.code || 500,
-				`Couldn't retrieve ${className}('${value}') : ${err.message}`
-			);
-		}
-	}
+	return parseInstance;
 };
