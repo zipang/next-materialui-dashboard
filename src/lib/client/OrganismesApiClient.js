@@ -28,7 +28,23 @@ export const register = async (user, registrationFormData) => {
  */
 export const update = async (user, orgData) => {
 	try {
-		return await APIClient.post(`/organisme/${orgData.siret}`, orgData);
+		return await APIClient.post(`/api/organisme/${orgData.siret}`, orgData);
+	} catch (err) {
+		throw new ApiError(err.code || 500, err.message);
+	}
+};
+
+/**
+ * Retrieve a list of Organismes following some criterias
+ * (Filter by example)
+ * @example
+ *   const { rows } = await Parse.Organisme.retrieve({ nom: "*SARL" })
+ *
+ * @param {Object} params as key-value pairs
+ */
+export const retrieve = async (params = {}) => {
+	try {
+		return await APIClient.get(`/api/organisme`, params);
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
 	}
@@ -36,6 +52,7 @@ export const update = async (user, orgData) => {
 
 const OrganismesApiClient = {
 	register,
+	retrieve,
 	update
 };
 
