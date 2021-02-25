@@ -1,5 +1,5 @@
 import { useAuthentication } from "@components/AuthenticationProvider";
-import { register } from "@lib/client/OrganismesApiClient";
+import { register } from "@lib/client/AdherentsApiClient";
 import { SiretSearchForm } from "./SiretSearch";
 import Wizard from "@forms/Wizard";
 
@@ -20,7 +20,7 @@ de structuration et de modernisation.
 Deux modalités de cotisation sont possibles :
 * Cotisation A : 200€ par an pour les SAP/SAAD donnant accès à toute l’offre de services
 * Cotisation B : 60€ pour les partenaires du secteur social, médicosocial et sanitaire
-  (ESMS hors SAAD/EHPAD et Résidences autonomie, fédérations de branche, OPCO, organismes de formations)
+  (ESMS hors SAAD/EHPAD et Résidences autonomie, fédérations de branche, OPCO, adherents de formations)
   Contactez INVIE sur contact@invie78.fr – 01.39.29.43.48
 `,
 			backgroundImage: "https://invie78.fr/images/background-registration.jpg"
@@ -45,16 +45,16 @@ Afin de compléter ce processus d’adhésion, vous aurez besoin des éléments 
 	},
 	{
 		id: "step-01-siret-search",
-		title: "Recherche de l'organisme par son N° de SIRET",
+		title: "Recherche de l'adherent par son N° de SIRET",
 		description: "Entrez le n° de Siret et cliquez sur Rechercher",
 		displayForm: (data, onSubmit) => <SiretSearchForm onSubmit={onSubmit} />
 	},
 	{
 		id: "step-02-siret",
-		title: "Nouvel Organisme",
+		title: "Nouvel Adherent",
 		help: {
 			description: `Vérifiez l'adresse, le nom et la date de création de la structure à déclarer.`,
-			backgroundImage: "https://invie78.fr/images/background-nouvel-organisme.jpg"
+			backgroundImage: "https://invie78.fr/images/background-nouvel-adherent.jpg"
 		},
 		fields: [
 			{
@@ -120,7 +120,7 @@ Afin de compléter ce processus d’adhésion, vous aurez besoin des éléments 
 		id: "step-03-contacts",
 		title: "Contacts",
 		help: {
-			description: `Indiquez les coordonnées du contact privilégié de l'organisme, 
+			description: `Indiquez les coordonnées du contact privilégié de l'adherent, 
 puis les emails et numéros de téléphone du standard
 ainsi que les sites internet liés à votre activité.`,
 			backgroundImage: "https://invie78.fr/images/background-contact.jpg"

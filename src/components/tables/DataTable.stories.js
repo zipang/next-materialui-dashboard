@@ -1,6 +1,6 @@
 import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
 import DataTable from "./DataTable.js";
-import OrganismesDataTable from "./OrganismesDataTable.js";
+import AdherentsDataTable from "./AdherentsDataTable.js";
 
 const testColumnsDef = [
 	{ id: "firstName", label: "Prénom" },
@@ -60,8 +60,8 @@ export const SortableSingerList = () => (
 	</CenteredPaperSheet>
 );
 
-export const ListOfOrganismes = () => (
+export const ListOfAdherents = () => (
 	<CenteredPaperSheet>
-		<OrganismesDataTable />
+		<AdherentsDataTable />
 	</CenteredPaperSheet>
 );

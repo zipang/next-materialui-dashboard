@@ -7,8 +7,8 @@ import Text from "@components/forms/inputs/Text";
 import Email from "@components/forms/inputs/Email";
 import Submit from "@components/forms/inputs/Submit";
 import { merge } from "@lib/utils/deepMerge.js";
-import { register } from "@lib/client/OrganismesApiClient.js";
-import testOrganisme from "../../models/organisme-test.js";
+import { register } from "@lib/client/AdherentsApiClient.js";
+import testAdherent from "../../models/adherent-test.js";
 import { withAuthentication } from "@components/AuthenticationProvider.js";
 
 const TestEmailTemplatePage = () => {
@@ -26,7 +26,7 @@ const TestEmailTemplatePage = () => {
 	 */
 	const sendMessageTemplate = async (formData) => {
 		try {
-			const orgData = merge({}, testOrganisme, formData);
+			const orgData = merge({}, testAdherent, formData);
 			const resp = await register(null, orgData);
 			// const resp = await sendMailTemplate("welcome", formData);
 			alert(JSON.stringify(resp, null, "\t"));
@@ -42,7 +42,7 @@ const TestEmailTemplatePage = () => {
 				<Text
 					name="nom"
 					label="Nom structure"
-					required="Saissiez un nom d'Organisme"
+					required="Saissiez un nom d'Adherent"
 				/>
 				<Text
 					name="representant.prenom"

@@ -7,10 +7,10 @@ export default async (req, resp) => {
 	try {
 		const data = req.body;
 		const Parse = getParseInstance();
-		const organisme = await Parse.Organisme.register(null, data);
+		const adherent = await Parse.Adherent.register(null, data);
 		resp.json({
 			success: true,
-			organisme
+			adherent
 		});
 	} catch (err) {
 		resp.status(err.code).json({

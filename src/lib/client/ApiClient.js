@@ -1,5 +1,6 @@
 import "isomorphic-fetch";
 import ApiError from "../ApiError.js";
+import IncomingMessage from "http";
 
 const APIClient = {};
 
@@ -7,6 +8,13 @@ const _DEFAULT_REQUEST_HEADERS = {
 	Accept: "application/json",
 	"Content-Type": "application/json"
 };
+
+/**
+ * Extract the search params from and incoming HTTP GET request
+ * @param {IncomingMessage} req
+ */
+export const getSearchParams = (req) =>
+	new URL(req.url, `http://${req.headers.host}`).searchParams;
 
 /**
  * Complete relative API URLs with the base site URL

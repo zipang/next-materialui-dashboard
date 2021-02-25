@@ -4,17 +4,17 @@ import ParseProxy from "./ParseProxy.js";
 import ApiError from "../lib/ApiError.js";
 
 /**
- * This is the server only model to manipulate Organisme
+ * This is the server only model to manipulate Adherent
  */
-class _Organisme extends Parse.Object {
+class _Adherent extends Parse.Object {
 	constructor(data) {
 		// Just copy all the attributes
-		super("Organisme", data);
+		super("Adherent", data);
 		// return ParseProxy(this); // Will proxy to the get and set methods for all not found properties
 	}
 
 	/**
-	 * @return {Parse.User} The User that has created this organisme
+	 * @return {Parse.User} The User that has created this adherent
 	 */
 	getOwner() {
 		this.fetch();
@@ -22,14 +22,14 @@ class _Organisme extends Parse.Object {
 	}
 }
 
-Parse.Object.registerSubclass("Organisme", _Organisme);
+Parse.Object.registerSubclass("Adherent", _Adherent);
 
 const StaticMethods = {
 	/**
-	 * Register a new Organisme
+	 * Register a new Adherent
 	 * @param {Parse.User} owner
 	 * @param {Object} orgData
-	 * @return Organisme
+	 * @return Adherent
 	 */
 	register: async (owner, orgData) => {
 		if (process.env.NODE_ENV !== "production") {
@@ -39,7 +39,7 @@ const StaticMethods = {
 		// 	throw new ApiError(403, "You are not logged.");
 		// }
 		try {
-			const org = new _Organisme(orgData);
+			const org = new _Adherent(orgData);
 			org.set("owner", owner);
 			delete org.env; // Silly
 			return await org.save(null, { cascadeSave: false });
@@ -47,38 +47,38 @@ const StaticMethods = {
 			console.error(err);
 			throw new ApiError(
 				err.code || 500,
-				`Registration of organisme '${orgData.nom}' failed : ${err.message}`
+				`Registration of adherent '${orgData.nom}' failed : ${err.message}`
 			);
 		}
 	},
 
 	/**
-	 * Retrieves an existing Organisme by its siret number
+	 * Retrieves an existing Adherent by its siret number
 	 * @param {String} siret
-	 * @return {Organisme}
+	 * @return {Adherent}
 	 */
 	retrieveBySiret: async (siret) => {
 		const Parse = getParseInstance(); // Because this instance has been augmented with new utility methods
-		return Parse.retrieveByUniqueKey("Organisme", "siret", siret);
+		return Parse.retrieveByUniqueKey("Adherent", "siret", siret);
 	},
 
 	/**
-	 * Retrieve a list of Organisme that match some filter by example criterias
+	 * Retrieve a list of Adherent that match some filter by example criterias
 	 * @param {Object} params
 	 */
 	retrieve: async (params = {}) => {
 		try {
 			const Parse = getParseInstance();
-			const query = new Parse.Query("Organisme");
+			const query = new Parse.Query("Adherent");
 			return query.findAll();
 		} catch (err) {
 			console.error(err);
 			throw new ApiError(
 				err.code || 500,
-				`Failed loading organismes : ${err.message}`
+				`Failed loading adherents : ${err.message}`
 			);
 		}
 	}
 };
 
-Parse.Organisme = Object.assign(_Organisme, StaticMethods);
+Parse.Adherent = Object.assign(_Adherent, StaticMethods);

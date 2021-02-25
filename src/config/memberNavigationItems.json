@@ -3,9 +3,9 @@
 		"label": "Espace Membre",
 		"children": [
 			{
-				"label": "Mes Organismes",
+				"label": "Mes Adherents",
 				"icon": "Business",
-				"action": "/espace-membre/organismes"
+				"action": "/espace-membre/adherents"
 			},
 			{
 				"label": "Mon Profil",

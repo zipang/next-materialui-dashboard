@@ -24,9 +24,9 @@ class User {
 	}
 
 	/**
-	 * @return {Array} la liste des organismes gérés par cet adhérent
+	 * @return {Array} la liste des adherents gérés par cet adhérent
 	 */
-	getOrganismes() {}
+	getAdherents() {}
 }
 
 /**

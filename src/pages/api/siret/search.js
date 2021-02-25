@@ -1,4 +1,4 @@
-import { getOrganismeBySiret } from "@lib/client/SireneClient";
+import { getAdherentBySiret } from "@lib/client/SireneClient";
 
 /**
  * API handler for `/siret/search` (Search Sirene Open Data API)
@@ -10,7 +10,7 @@ const search = async (req, resp) => {
 		// Get the data and define the username as the login
 		console.log("/api/siret/search received query", JSON.stringify(req.body));
 		const { siret } = req.body;
-		const sireneData = await getOrganismeBySiret(siret);
+		const sireneData = await getAdherentBySiret(siret);
 		resp.json(sireneData);
 	} catch (err) {
 		console.error(`/siret/search error`, err);

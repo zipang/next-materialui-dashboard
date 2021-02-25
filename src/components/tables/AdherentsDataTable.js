@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
 import Skeleton from "@material-ui/lab/Skeleton";
-import OrganismesApiClient from "@lib/client/OrganismesApiClient";
+import AdherentsApiClient from "@lib/client/AdherentsApiClient";
 import { Box } from "@material-ui/core";
 
 export const columns = [
@@ -14,14 +14,14 @@ export const columns = [
 	{ id: "representant.mobile", label: "Contact (mobile)", minWidth: 80 }
 ];
 
-const OrganismesDataTable = ({}) => {
+const AdherentsDataTable = ({}) => {
 	const [rows, setRows] = useState();
 	const [error, setError] = useState();
 
 	// Fetch the rows
 	useEffect(async () => {
 		try {
-			setRows((await OrganismesApiClient.retrieve()).rows);
+			setRows((await AdherentsApiClient.retrieve()).rows);
 		} catch (err) {
 			setError(err.message);
 		}
@@ -36,4 +36,4 @@ const OrganismesDataTable = ({}) => {
 	);
 };
 
-export default OrganismesDataTable;
+export default AdherentsDataTable;

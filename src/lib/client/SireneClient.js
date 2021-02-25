@@ -4,7 +4,7 @@ import ApiError from "@lib/ApiError";
  * @see https://entreprise.data.gouv.fr/api_doc/sirene
  * @param {String} siret 14 chiffres
  */
-export const getOrganismeBySiret = async (siret) => {
+export const getAdherentBySiret = async (siret) => {
 	if (!siret || siret.length !== 14 || !Number.parseInt(siret)) {
 		throw new Error(
 			`Format de no Siret incorrect. Saisissez 14 chiffres. (${siret})`

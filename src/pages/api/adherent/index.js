@@ -1,6 +1,5 @@
+import { getSearchParams } from "@lib/client/ApiClient";
 import { getParseInstance } from "@models/ParseSDK";
-
-const getSearchParams = (url) => {};
 
 /**
  * @param {http.IncomingMessage} req
@@ -9,9 +8,9 @@ const getSearchParams = (url) => {};
 export default async (req, resp) => {
 	try {
 		if (req.method === "OPTION") return resp.json({ success: true }); // CORS request start with an OPTION request
-		const searchParams = new URL(req.url, `http://${req.headers.host}`).searchParams;
+		const searchParams = getSearchParams(req);
 		const Parse = getParseInstance();
-		const rows = await Parse.Organisme.retrieve(searchParams);
+		const rows = await Parse.Adherent.retrieve(searchParams);
 		resp.json({
 			success: true,
 			rows
