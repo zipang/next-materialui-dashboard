@@ -15,9 +15,11 @@ const AuthContext = createContext();
 /**
  * Global Provider for the currently logged user and the way to log it out
  * NOTE : Don't forget the {children} when writing a context provider !
+ * @param {PropsWithChildren} props
+ * @param {User} props.user Default logged User : useful for testing. Or can be retrieved from session or local storage
  */
-const AuthenticationProvider = ({ children }) => {
-	const [loggedUser, setLoggedUser] = useState(null);
+const AuthenticationProvider = ({ user, children }) => {
+	const [loggedUser, setLoggedUser] = useState(user);
 	const [redirectAfterLogin, setRedirectAfterLogin] = useState(null);
 
 	const auth = {
