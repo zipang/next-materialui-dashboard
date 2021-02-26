@@ -26,7 +26,8 @@ export const convertToHtml = (md, options) => {
 	try {
 		const html = micromark(md, { ..._DEFAULT_OPTIONS, ...options });
 		const elapsed = Date.now() - startTime;
-		console.log(`Markdown to HTML conversion took ${elapsed}ms`);
+		console.log(`Markdown to HTML conversion took ${elapsed}ms :
+${html}`);
 		return html;
 	} catch (err) {
 		console.error(err);
