@@ -3,7 +3,7 @@ filename: "Attestation-Adhésion-{{=data.siret}}-{{=data.nom}}.pdf"
 ---
 <img src="https://invie78.fr/images/logo.jpg" alt="logo" />
 
-<h1 style="width: 80%; text-align: center; background-color: 'orange'"> RECU D'ADHESION {{=data.adhesion.reference}}
+<h1 style="width: 80%; text-align: center; background-color: 'orange'"> RECU D'ADHESION {{=data.adhesion.reference}}</h1>
 
 L'association INVIE atteste avoir reçu au titre de l'année {{=data.adhesion.annee}}
 l'adhésion de 
