@@ -41,4 +41,4 @@ MailerTestSuite("Sending myself a test email", async () => {
 	expect(success).to.be.an.object();
 });
 
-MailerTestSuite.run();
+export default MailerTestSuite;

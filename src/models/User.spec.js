@@ -27,4 +27,4 @@ UserTestSuite("User.login() can retrieve an existing user", async () => {
 	console.log(testUser);
 });
 
-UserTestSuite.run(); // not ready for prime time
+export default UserTestSuite; // not ready for prime time

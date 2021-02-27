@@ -23,18 +23,26 @@ const defaultTemplateSettings = Object.assign(dot.templateSettings, {
 /**
  * dot functions are compiled as
  * @example
- *   function anonymous(it) {
+ *   function anonymous(data) {
  *     var out='';
  *     return out;
  *   }
  *
- * We transform them as arrow function : (data) => '...'
+ * We replace every property access like `data.prop[1].propX`
+ * that may fail with `getProperty(data, "prop[1].propX", "")`
+ * So that it will return an empty space if the property is missing
  * @param {Function} fn Compiled dot template
  * @param {Boolean} stripHTML Pass TRUE to remove all HTML tags (for the text template)
+ * @return {String}
  */
 const rewriteDotTemplate = (fn, stripHTML) =>
 	fn
 		.toString()
+		.replace(
+			/\(data\.[^\)]+/g,
+			(capture) =>
+				` (getProperty(data, "${capture.substr(6).replace("?", "")}", "")`
+		)
 		.replace(
 			"return out;",
 			stripHTML ? `return out.replace(/(<([^>]+)>)/gi, "");` : "return out;"
@@ -74,6 +82,26 @@ export const ${propertyName} = ${rewriteDotTemplate(
 
 	const templateSource = `
 // ${templateName}.js	
+const splitPath = (path = "") => path.split(/[,[\].]+?/).filter(Boolean);
+
+/**
+ * Extract the property value at the designed path
+ * @example getProperty({ person: { firstName: "John" }}, "person.firstName", "")
+ * @param {Object} source Object to extract the property from
+ * @param {String} path Usings dots and [] to access sub properties
+ * @param {Object} [defaultValue] what to return if the property is not found (undefined)
+ * @return {Any}
+ */
+const getProperty = (source = {}, path = "", defaultValue) => {
+	const result = splitPath(path).reduce(
+		(result, key) => (result !== null && result !== undefined ? result[key] : result),
+		source
+	);
+
+	return result === undefined || result === null || result === source
+		? defaultValue
+		: result;
+};
 
 /**
  * Apply the data to the compiled TEXT template

@@ -1,4 +1,24 @@
 // adhesion.js
+const splitPath = (path = "") => path.split(/[,[].]+?/).filter(Boolean);
+
+/**
+ * Extract the property value at the designed path
+ * @example getProperty({ person: { firstName: "John" }}, "person.firstName", "")
+ * @param {Object} source Object to extract the property from
+ * @param {String} path Usings dots and [] to access sub properties
+ * @param {Object} [defaultValue] what to return if the property is not found (undefined)
+ * @return {Any}
+ */
+const getProperty = (source = {}, path = "", defaultValue) => {
+	const result = splitPath(path).reduce(
+		(result, key) => (result !== null && result !== undefined ? result[key] : result),
+		source
+	);
+
+	return result === undefined || result === null || result === source
+		? defaultValue
+		: result;
+};
 
 /**
  * Apply the data to the compiled TEXT template
@@ -8,31 +28,31 @@
 export const text = function anonymous(data) {
 	var out =
 		"La structure " +
-		data.nom +
+		getProperty(data, "nom", "") +
 		" vient d'adhérer/renouveler son adhésion.\n\n\nLes coordonnées de la structure sont les suivantes :\n\n**" +
-		data.nom +
+		getProperty(data, "nom", "") +
 		"**  \n" +
-		data.adresse?.rue1 +
+		getProperty(data, "adresse.rue1", "") +
 		"  \n" +
-		data.adresse?.rue2 +
+		getProperty(data, "adresse.rue2", "") +
 		"  \n" +
-		data.adresse?.code_postal +
+		getProperty(data, "adresse.code_postal", "") +
 		" " +
-		data.adresse?.commune +
+		getProperty(data, "adresse.commune", "") +
 		"  \n\nStandard: " +
-		data.contact?.telephone +
+		getProperty(data, "contact.telephone", "") +
 		"  \nEmail: " +
-		data.contact?.email +
+		getProperty(data, "contact.email", "") +
 		"\n\nReprésentant " +
-		data.representant.prenom +
+		getProperty(data, "representant.prenom", "") +
 		" " +
-		data.representant.nom +
+		getProperty(data, "representant.nom", "") +
 		".\nEmail: " +
-		data.representant?.email +
+		getProperty(data, "representant.email", "") +
 		"\nN° Mobile: " +
-		data.representant?.mobile +
+		getProperty(data, "representant.mobile", "") +
 		"\n\n";
-	if (data.demande_contact_adherent) {
+	if (getProperty(data, "demande_contact_adherent", "")) {
 		out += "\n**La structure a souhaité être recontactée**\n";
 	}
 	out += "\n";
@@ -47,31 +67,31 @@ export const text = function anonymous(data) {
 export const html = function anonymous(data) {
 	var out =
 		"<p>La structure " +
-		data.nom +
+		getProperty(data, "nom", "") +
 		" vient d'adhérer/renouveler son adhésion.</p><p>Les coordonnées de la structure sont les suivantes :</p><p><strong>" +
-		data.nom +
+		getProperty(data, "nom", "") +
 		"</strong><br />" +
-		data.adresse?.rue1 +
+		getProperty(data, "adresse.rue1", "") +
 		"<br />" +
-		data.adresse?.rue2 +
+		getProperty(data, "adresse.rue2", "") +
 		"<br />" +
-		data.adresse?.code_postal +
+		getProperty(data, "adresse.code_postal", "") +
 		" " +
-		data.adresse?.commune +
+		getProperty(data, "adresse.commune", "") +
 		"</p><p>Standard: " +
-		data.contact?.telephone +
+		getProperty(data, "contact.telephone", "") +
 		"<br />Email: " +
-		data.contact?.email +
+		getProperty(data, "contact.email", "") +
 		"</p><p>Représentant " +
-		data.representant.prenom +
+		getProperty(data, "representant.prenom", "") +
 		" " +
-		data.representant.nom +
+		getProperty(data, "representant.nom", "") +
 		".Email: " +
-		data.representant?.email +
+		getProperty(data, "representant.email", "") +
 		"N° Mobile: " +
-		data.representant?.mobile +
+		getProperty(data, "representant.mobile", "") +
 		"</p><p>";
-	if (data.demande_contact_adherent) {
+	if (getProperty(data, "demande_contact_adherent", "")) {
 		out += "<strong>La structure a souhaité être recontactée</strong>";
 	}
 	out += "</p>";
@@ -84,7 +104,7 @@ export const html = function anonymous(data) {
  * @return {String}
  */
 export const subject = function anonymous(data) {
-	var out = "Nouvelle adhésion (" + data.nom + ")";
+	var out = "Nouvelle adhésion (" + getProperty(data, "nom", "") + ")";
 	return out;
 };
 

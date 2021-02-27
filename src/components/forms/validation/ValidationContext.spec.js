@@ -140,4 +140,4 @@ ValidationContextTestSuite("ValidationContext", () => {
 	expect(errors["address.cp"].message).to.equal("This code must contain seven digits");
 });
 
-ValidationContextTestSuite.run();
+export default ValidationContextTestSuite;

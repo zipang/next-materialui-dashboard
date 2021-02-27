@@ -8,13 +8,6 @@ const _DEFAULT_OPTIONS = {
 	filterDirs: () => true
 };
 
-const checkDirExists = (dir) => {
-	// Check that this directory really exists
-	if (!dir || !fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) {
-		throw new Error(`FileWalker() The directory doesn't exist. (${dir}/)`);
-	}
-};
-
 /**
  * @class FileWalker
  */
@@ -40,9 +33,7 @@ export class FileWalker extends EventEmitter {
 
 	setRootDir(dir) {
 		const absoluteDir = resolve(dir);
-		checkDirExists(absoluteDir);
 		this._rootDir = absoluteDir;
-		console.log(`FileWalker() Root dir set to ${absoluteDir}`);
 		return this;
 	}
 	/**
@@ -59,6 +50,11 @@ export class FileWalker extends EventEmitter {
 		this._filterFiles = fn;
 		return this;
 	}
+	/**
+	 * Define the directories filter
+	 * @param {Function<VFile>} fn return TRUE to explore the directory content, FALSE to skip
+	 * @return {FileWalker}
+	 */
 	filterDirs(fn = _DEFAULT_OPTIONS.filterDirs) {
 		if (typeof fn !== "function") {
 			throw new TypeError(
@@ -71,14 +67,19 @@ export class FileWalker extends EventEmitter {
 
 	/**
 	 * Explore one directory level and emits events based on what is found
-	 * @param {String} [dir=rootDir] - full path of the directory to explore
+	 * @param {String} [dir=rootDir] full path of the directory to explore (can be passed to the constructor instead)
 	 */
 	async explore(dir) {
 		if (!dir) dir = this._rootDir;
 
-		checkDirExists(dir);
-
 		try {
+			if (!dir || !fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) {
+				this.emit("error", {
+					message: `FileWalker() The directory to explore doesn't exist. (${dir}/)`
+				});
+				return this;
+			}
+
 			const entries = await fs.readdir(dir, { withFileTypes: true });
 			this._fileCount += entries.length;
 
@@ -101,11 +102,14 @@ export class FileWalker extends EventEmitter {
 		} catch (err) {
 			this.emit("error", err);
 		}
+
+		return this; // Chainable so that we can explore several directories in chain
 	}
 
 	checkDone() {
 		this._fileCount--;
 		if (this._fileCount === 0) {
+			console.warn(`${this._fileCount} files remaining.. END`);
 			this.emit("end");
 		}
 	}

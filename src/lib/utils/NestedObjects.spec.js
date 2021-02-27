@@ -74,4 +74,4 @@ NestedObjectsSpec("Set deep preoperties", () => {
 	expect(testObject.members[0].address.city).to.equal("SF");
 });
 
-NestedObjectsSpec.run();
+export default NestedObjectsSpec;

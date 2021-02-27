@@ -32,4 +32,4 @@ AdherentTestSuite("Register an Adherent to a User", async () => {
 	// await org.delete();
 });
 
-AdherentTestSuite.run();
+export default AdherentTestSuite;

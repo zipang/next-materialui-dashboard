@@ -42,7 +42,7 @@
 		"yargs": "^16.2.0"
 	},
 	"scripts": {
-		"test": "cd src && NODE_ENV=test uvu",
+		"test": "NODE_ENV=test node src/scripts/runTests.js",
 		"build-templates": "node src/scripts/generateTemplate.js",
 		"dev": "next",
 		"build": "next build",

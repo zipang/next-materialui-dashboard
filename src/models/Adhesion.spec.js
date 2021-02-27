@@ -41,4 +41,4 @@ AdhesionTestSuite("Retrieve current adhesions", async () => {
 	adhesions.forEach((adh) => expect(adh.no.length).to.equal(8));
 });
 
-AdhesionTestSuite.run();
+export default AdhesionTestSuite;

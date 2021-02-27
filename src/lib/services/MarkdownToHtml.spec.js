@@ -37,4 +37,4 @@ MarkdownToHtmlTestSuite("Conversion", async () => {
 	expect(html).to.not.contain("<h3>");
 });
 
-MarkdownToHtmlTestSuite.run();
+export default MarkdownToHtmlTestSuite;

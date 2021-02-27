@@ -1,0 +1,11 @@
+
+Changer le champ Antenne en multi-ligne
+Mettre le placeholder SAP123456789 pour les n° de déclarations
+Le controle  de saisie pour le format 2021-876 est buggé
+Enlever la Date et le No du Label Synéos
+
+Corriger les ETP pour accepter un format décimal !?
+
+Contrôle de saisie : obliger au moins 1 domaine d'intervention
+
+Contrôle de saisie : obliger au moins un ratio d'activité non égal à zéro et de même pour lees effectifs bénéficiaires.

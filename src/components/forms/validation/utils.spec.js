@@ -27,4 +27,4 @@ UtilsTestSuite("Numeric masks", () => {
 	expect(applyNumericMask("99 99 99 99")("1234")).equal(["12 34 ", "__ __"]);
 });
 
-UtilsTestSuite.run();
+export default UtilsTestSuite;

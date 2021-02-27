@@ -6,6 +6,7 @@ import { loadEnv } from "../lib/utils/Env.js";
 // Now let's add every model to the Parse object
 import "./Adherent.js";
 import "./Adhesion.js";
+import "./Parameters.js";
 
 let parseInstance = null;
 

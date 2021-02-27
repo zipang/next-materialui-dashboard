@@ -3,6 +3,8 @@ import Wizard from "./Wizard";
 import Input from "./inputs/Input";
 import StepForm from "./StepForm";
 import { Box } from "@material-ui/core";
+import AuthenticationProvider from "@components/AuthenticationProvider";
+import testUser from "@models/test-user";
 
 const _CLASSES = {
 	magician: "Magicien(ne)",
@@ -148,21 +150,30 @@ export default {
  * Display the wizard with an empty initial data object
  */
 export const EmptySteps = () => (
-	<Box width="75vw" height="60vh" minHeight="500px">
-		<Wizard id="4-steps-wizard" steps={steps} data={empty_data} currentSlide={0} />
-	</Box>
+	<AuthenticationProvider user={testUser}>
+		<Box width="75vw" height="60vh" minHeight="500px">
+			<Wizard
+				id="4-steps-wizard"
+				steps={steps}
+				data={empty_data}
+				currentSlide={0}
+			/>
+		</Box>
+	</AuthenticationProvider>
 );
 
 /**
  * Display the wizard with a non empty initial data object
  */
 export const PrefilledSteps = () => (
-	<Box width="600px" height="400px">
-		<Wizard
-			id="populated-4-steps-wizard"
-			steps={steps}
-			data={existing_data}
-			currentSlide={0}
-		/>
-	</Box>
+	<AuthenticationProvider user={testUser}>
+		<Box width="600px" height="400px">
+			<Wizard
+				id="populated-4-steps-wizard"
+				steps={steps}
+				data={existing_data}
+				currentSlide={0}
+			/>
+		</Box>
+	</AuthenticationProvider>
 );

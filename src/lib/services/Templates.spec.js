@@ -25,4 +25,4 @@ TemplatesTestSuite("Render the welcome email template", async () => {
 	expect(welcomeMail.to).to.equal("Bob Avery <bob.avery@acme.sa>");
 });
 
-TemplatesTestSuite.run();
+export default TemplatesTestSuite;

@@ -37,4 +37,4 @@ HtmlToPdfTestSuite("Write PDF to a file", async () => {
 	expect(fs.existsSync(testFilePath)).to.be.true();
 });
 
-HtmlToPdfTestSuite.run();
+export default HtmlToPdfTestSuite;

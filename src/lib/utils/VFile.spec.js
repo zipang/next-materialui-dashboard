@@ -1,4 +1,4 @@
-import test from "baretest";
+import { suite } from "uvu";
 import code from "@hapi/code";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -9,7 +9,7 @@ import VFile, { hasExtension } from "./VFile.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
-const testSuite = test("VFile");
+const testSuite = suite("VFile");
 const { expect } = code;
 
 const me = VFile(__filename);
