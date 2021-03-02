@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 
-import fs from "fs-extra";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import tk from "terminal-kit";

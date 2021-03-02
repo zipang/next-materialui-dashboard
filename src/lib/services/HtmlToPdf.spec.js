@@ -1,4 +1,4 @@
-import { suite } from "uvu";
+import suite from "baretest";
 import code from "@hapi/code";
 import { generatePdf } from "./HtmlToPdf.js";
 import path from "path";

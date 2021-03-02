@@ -1,4 +1,4 @@
-import { suite } from "uvu";
+import suite from "baretest";
 import code from "@hapi/code";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
@@ -6,7 +6,7 @@ import FileWalker from "./FileWalker.js";
 import { EventEmitter } from "events";
 
 const { expect } = code;
-const testSuite = suite("FileWalker");
+const FileWalkerTestSuite = suite("FileWalker");
 
 // REBUILD THE COMMON JS ENV VARIABLES
 const __filename = fileURLToPath(import.meta.url);
@@ -15,7 +15,7 @@ const __dirname = dirname(__filename);
 /**
  * Check the API
  */
-testSuite("FileWalker can walk is own existing dir", () => {
+FileWalkerTestSuite("FileWalker can walk is own existing dir", () => {
 	const WalkWithMe = new FileWalker();
 
 	expect(WalkWithMe, "EventEmitter").to.be.an.instanceof(EventEmitter);
@@ -43,4 +43,4 @@ testSuite("FileWalker can walk is own existing dir", () => {
 // 	} catch (err) {}
 // });
 
-export default testSuite;
+export default FileWalkerTestSuite;

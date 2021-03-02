@@ -1,4 +1,4 @@
-import { suite } from "uvu";
+import suite from "baretest";
 import code from "@hapi/code";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";

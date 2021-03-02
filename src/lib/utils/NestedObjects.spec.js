@@ -1,4 +1,4 @@
-import { suite } from "uvu";
+import suite from "baretest";
 import { splitPath, getProperty, setProperty } from "./NestedObjects.js";
 import code from "@hapi/code";
 
@@ -21,19 +21,19 @@ const testObject = {
 };
 
 // Define our test suite
-const NestedObjectsSpec = suite("NestedObjects utils");
+const NestedObjectsTestSuite = suite("NestedObjects utils");
 
 /**
  * Split a path
  */
-NestedObjectsSpec("Split a path", () => {
+NestedObjectsTestSuite("Split a path", () => {
 	expect(splitPath("")).to.be.an.empty().array();
 	expect(splitPath("persons[0].address.street"))
 		.array()
 		.equals(["persons", "0", "address", "street"]);
 });
 
-NestedObjectsSpec("Get deep properties", () => {
+NestedObjectsTestSuite("Get deep properties", () => {
 	// Try a first level property
 	expect(getProperty(testObject, "org")).to.equal("X");
 	// Try an unexisting property to test default value
@@ -49,7 +49,7 @@ NestedObjectsSpec("Get deep properties", () => {
 	);
 });
 
-NestedObjectsSpec("Set deep preoperties", () => {
+NestedObjectsTestSuite("Set deep preoperties", () => {
 	// Try a first level property
 	setProperty(testObject, "test", true);
 	expect(testObject.test).to.be.a.boolean().true();
@@ -74,4 +74,4 @@ NestedObjectsSpec("Set deep preoperties", () => {
 	expect(testObject.members[0].address.city).to.equal("SF");
 });
 
-export default NestedObjectsSpec;
+export default NestedObjectsTestSuite;

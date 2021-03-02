@@ -1,4 +1,4 @@
-import { suite } from "uvu";
+import suite from "baretest";
 import code from "@hapi/code";
 import Mailer from "./Mailer.js";
 import { loadEnv } from "../utils/Env.js";
