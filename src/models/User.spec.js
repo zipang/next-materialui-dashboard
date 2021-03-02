@@ -1,4 +1,4 @@
-import { suite } from "uvu";
+import suite from "baretest";
 import code from "@hapi/code";
 import User from "./User.js";
 import { getParseInstance } from "./ParseSDK.js";
@@ -28,3 +28,13 @@ UserTestSuite("User.login() can retrieve an existing user", async () => {
 });
 
 export default UserTestSuite; // not ready for prime time
+
+/**
+ * Check to see if we were launched from the command line to launch the test suite immediately
+ */
+(async () => {
+	if (process.argv0) {
+		// Running the test suite from the command line
+		await UserTestSuite.run();
+	}
+})();

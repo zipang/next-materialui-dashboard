@@ -1,4 +1,4 @@
-import { suite } from "uvu";
+import suite from "baretest";
 import { getParseInstance } from "./ParseSDK.js";
 import { logIn } from "./User.js";
 import code from "@hapi/code";
@@ -33,3 +33,13 @@ AdherentTestSuite("Register an Adherent to a User", async () => {
 });
 
 export default AdherentTestSuite;
+
+/**
+ * Check to see if we were launched from the command line to launch the test suite immediately
+ */
+(async () => {
+	if (process.argv0) {
+		// Running the test suite from the command line
+		await AdherentTestSuite.run();
+	}
+})();

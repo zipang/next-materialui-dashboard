@@ -1,6 +1,6 @@
 import Parse from "parse/node.js";
 import { getParseInstance } from "./ParseSDK.js";
-import ParseProxy from "./ParseProxy.js";
+import { getNextAdhesionNumber, updateAdhesionNumber } from "./Parameters.js";
 import ApiError from "../lib/ApiError.js";
 
 /**
@@ -27,53 +27,31 @@ Parse.Object.registerSubclass("Adhesion", _Adhesion);
 // StaticMethods
 
 /**
- * Return the next available Adhesion number available for creation
- * @return {String} YYYY-999
- */
-export const getNextNumber = async () => {
-	const currentYear = new Date().getFullYear().toString();
-	const Parse = getParseInstance();
-	const query = new Parse.Query("Adhesion");
-	const latest = query.first(); // Get the latest record
-	const currentCounter = latest?.get("no");
-	// Nothing found : let's start from here a now !
-	if (!currentCounter) {
-		return `${currentYear}-001`;
-	} else {
-		// Increment that counter
-		const [year, counter] = currentCounter.split("-");
-		if (year === currentYear) {
-			return `${year}-${(Number(counter) + 1001).substr(1, 3)}`;
-		} else {
-			return `${currentYear}-001`;
-		}
-	}
-};
-
-/**
  * Create a new Adhesion and generate a new number
- * @param {Parse.Adherent} adherent
- * @param {Object} adhesion
+ * @param {String} siret Unique Adherent ID
  * @return Adhesion
  */
-export const create = async (adherent, adhesion) => {
-	if (process.env.NODE_ENV !== "production") {
-		// fs.writeJSON(`./${adhesion.siret}.json`, adhesion);
-	}
-	// if (!owner && process.env.NODE_ENV === "production") {
-	// 	throw new ApiError(403, "You are not logged.");
-	// }
+export const create = async (siret) => {
 	try {
+		const Parse = getParseInstance();
+		const adherent = await Parse.Adherent.retrieveBySiret(siret);
 		// Get the next unique number
-		const no = await getNextNumber();
-		const adh = new _Adhesion(adhesion);
+		const no = await getNextAdhesionNumber();
+		const adh = new _Adhesion({
+			no,
+			statut: "en_attente"
+		});
 		adh.set("adherent", adherent);
-		return await adh.save(null, { cascadeSave: false });
+		await Promise.allSettled([
+			adh.save(null, { cascadeSave: false }),
+			updateAdhesionNumber(no)
+		]);
+		return adh.toJSON();
 	} catch (err) {
 		console.error(err);
 		throw new ApiError(
 			err.code || 500,
-			`Creation of adhesion '${adhesion.no}' failed : ${err.message}`
+			`Creation of new adhesion for '${siret}' failed : ${err.message}`
 		);
 	}
 };
@@ -96,15 +74,15 @@ export const getAll = async (params = {}) => {
 	try {
 		const Parse = getParseInstance();
 		const query = new Parse.Query("Adhesion");
-		return query.findAll();
+		const adhesions = await query.findAll();
+		return adhesions.map((adh) => adh.toJSON());
 	} catch (err) {
 		console.error(err);
-		throw new ApiError(err.code || 500, `Failed loading adherents : ${err.message}`);
+		throw new ApiError(err.code || 500, `Failed loading adhesions : ${err.message}`);
 	}
 };
 
 Parse.Adhesion = Object.assign(_Adhesion, {
-	getNextNumber,
 	create,
 	retrieveByNo,
 	getAll

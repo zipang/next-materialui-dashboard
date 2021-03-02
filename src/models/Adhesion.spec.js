@@ -1,10 +1,10 @@
-import { suite } from "uvu";
+import suite from "baretest";
 import { getParseInstance } from "./ParseSDK.js";
 import code from "@hapi/code";
 
 const { expect } = code;
 
-import { adhesion_en_attente } from "./adhesion-test.js";
+import testAdherent from "./adherent-test.js";
 
 let Parse;
 
@@ -15,22 +15,11 @@ AdhesionTestSuite.before(() => {
 	Parse = getParseInstance();
 });
 
-AdhesionTestSuite("Get the next adhesion number", async () => {
-	const currentYear = new Date().getFullYear().toString();
-	const no = await Parse.Adhesion.getNextNumber();
-
-	expect(no).to.be.a.string();
-
-	// Split adhesion number
-	const [year, counter] = no.split("-");
-	expect(year).to.equal(currentYear);
-});
-
 AdhesionTestSuite("Create a new Adhesion", async () => {
-	const adh = await Parse.Adhesion.create(adhesion_en_attente);
+	const adh = await Parse.Adhesion.create(testAdherent.siret);
 
-	console.log(adh.toJSON());
-	expect(adh.createdAt).to.be.a.date();
+	console.log(adh);
+	expect(adh.no).to.be.a.string();
 });
 
 AdhesionTestSuite("Retrieve current adhesions", async () => {
@@ -42,3 +31,13 @@ AdhesionTestSuite("Retrieve current adhesions", async () => {
 });
 
 export default AdhesionTestSuite;
+
+/**
+ * Check to see if we were launched from the command line to launch the test suite immediately
+ */
+(async () => {
+	if (process.argv0) {
+		// Running the test suite from the command line
+		await AdhesionTestSuite.run();
+	}
+})();

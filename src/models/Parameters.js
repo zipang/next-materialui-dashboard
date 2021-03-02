@@ -42,19 +42,31 @@ export const getNextAdhesionNumber = async () => {
 	const currentYear = new Date().getFullYear().toString();
 	const envParameters = await retrieve();
 	console.log(envParameters);
-	const currentCounter = envParameters.get("no_adhesion");
+	const currentCounter = envParameters.no_adhesion;
 	// Nothing found : let's start from here a now !
 	if (!currentCounter) {
 		return `${currentYear}-001`;
 	} else {
 		// Increment that counter
 		const [year, counter] = currentCounter.split("-");
-		if (year === currentYear) {
+		if (year === currentYear && process.env.NODE_ENV !== "test") {
 			return `${year}-${(Number(counter) + 1001).substr(1, 3)}`;
 		} else {
 			return `${currentYear}-001`;
 		}
 	}
+};
+
+/**
+ * Update Parameters to the new provided adhesion number
+ * @param {String} no
+ */
+export const updateAdhesionNumber = async (no) => {
+	const params = await retrieve();
+	params.set("no_adhesion", no);
+	await params.save();
+
+	return params.toJSON();
 };
 
 Parse.Parameters = Object.assign(_Parameters, {

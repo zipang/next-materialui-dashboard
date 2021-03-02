@@ -1,4 +1,4 @@
-import { suite } from "uvu";
+import suite from "baretest";
 import { getParseInstance } from "./ParseSDK.js";
 import code from "@hapi/code";
 
@@ -32,3 +32,13 @@ ParametersTestSuite("Retrieve current parameters", async () => {
 });
 
 export default ParametersTestSuite;
+
+/**
+ * Check to see if we were launched from the command line to launch the test suite immediately
+ */
+(async () => {
+	if (process.argv0) {
+		// Running the test suite from the command line
+		await ParametersTestSuite.run();
+	}
+})();
