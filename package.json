@@ -33,6 +33,7 @@
 		"@storybook/addon-links": "^6.1.20",
 		"@storybook/react": "^6.1.20",
 		"babel-loader": "^8.2.2",
+		"baretest": "^2.0.0",
 		"gray-matter-loader": "^0.0.10",
 		"puppeteer": "^7.1.0",
 		"quicktype": "^15.0.260",
@@ -43,6 +44,7 @@
 	},
 	"scripts": {
 		"test": "NODE_ENV=test node src/scripts/runTests.js",
+		"mocha": "NODE_ENV=test mochapack \"src/models/**/*.spec.js\"",
 		"build-templates": "node src/scripts/generateTemplate.js",
 		"dev": "next",
 		"build": "next build",
