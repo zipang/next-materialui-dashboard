@@ -20,6 +20,7 @@ AdhesionTestSuite("Create a new Adhesion", async () => {
 
 	console.log(adh);
 	expect(adh.no).to.be.a.string();
+	expect(adh.status).to.equal("en_attente");
 });
 
 AdhesionTestSuite("Retrieve current adhesions", async () => {

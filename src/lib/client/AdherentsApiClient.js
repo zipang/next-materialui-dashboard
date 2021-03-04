@@ -13,8 +13,9 @@ export const register = async (user, registrationFormData) => {
 			"/api/adherent/register",
 			registrationFormData
 		);
+		console.log(registrationSuccess);
 		// We have to be sure that the registration was a success before sending the welcome email
-		await sendMailTemplate("welcome", registrationFormData);
+		// await sendMailTemplate("welcome", registrationFormData);
 		return registrationSuccess;
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
@@ -32,6 +33,20 @@ export const update = async (user, orgData) => {
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
 	}
+};
+
+/**
+ * Create a new pending adhesion request for this adherent
+ */
+export const createAdhesion = async (siret, data = {}) => {
+	return await APIClient.post(`/api/adherent/${siret}/adhesion`, data);
+};
+
+/**
+ * Confirm the payment of a pending adhesion for this adherent
+ */
+export const confirmAdhesion = async (no, data = {}) => {
+	return await APIClient.post(`/api/adhesion/${no}/payment`, data);
 };
 
 /**
@@ -53,7 +68,8 @@ export const retrieve = async (params = {}) => {
 const AdherentsApiClient = {
 	register,
 	retrieve,
-	update
+	update,
+	createAdhesion
 };
 
 export default AdherentsApiClient;

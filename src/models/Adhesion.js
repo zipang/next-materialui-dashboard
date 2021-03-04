@@ -29,24 +29,27 @@ Parse.Object.registerSubclass("Adhesion", _Adhesion);
 /**
  * Create a new Adhesion and generate a new number
  * @param {String} siret Unique Adherent ID
+ * @param {Object} data Additional adhesion fields
  * @return Adhesion
  */
-export const create = async (siret) => {
+export const create = async (siret, data = {}) => {
 	try {
 		const Parse = getParseInstance();
 		const adherent = await Parse.Adherent.retrieveBySiret(siret);
+		console.log(`Retrieved adherent`, adherent);
 		// Get the next unique number
 		const no = await getNextAdhesionNumber();
 		const adh = new _Adhesion({
 			no,
-			statut: "en_attente"
+			statut: "en_attente",
+			...data
 		});
 		adh.set("adherent", adherent);
 		await Promise.allSettled([
 			adh.save(null, { cascadeSave: false }),
 			updateAdhesionNumber(no)
 		]);
-		return adh.toJSON();
+		return adh;
 	} catch (err) {
 		console.error(err);
 		throw new ApiError(
@@ -58,7 +61,7 @@ export const create = async (siret) => {
 
 /**
  * Retrieves an existing Adhesion by its unique number
- * @param {String} siret
+ * @param {String} no
  * @return {Adhesion}
  */
 export const retrieveByNo = async (no) => {

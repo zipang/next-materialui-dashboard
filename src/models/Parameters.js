@@ -23,7 +23,7 @@ export const retrieve = async () => {
 	const query = new Parse.Query("Parameters");
 	query.equalTo("env", process.env.NODE_ENV);
 	let envParameters = await query.first(); // Get the latest record
-	if (envParameters === null) {
+	if (!envParameters) {
 		envParameters = new _Parameters({
 			env: process.env.NODE_ENV,
 			no_adhesion: new Date().getFullYear() + "-000"
@@ -31,7 +31,7 @@ export const retrieve = async () => {
 		envParameters = await envParameters.save();
 	}
 
-	return envParameters.toJSON();
+	return envParameters;
 };
 
 /**
@@ -41,19 +41,15 @@ export const retrieve = async () => {
 export const getNextAdhesionNumber = async () => {
 	const currentYear = new Date().getFullYear().toString();
 	const envParameters = await retrieve();
-	console.log(envParameters);
-	const currentCounter = envParameters.no_adhesion;
-	// Nothing found : let's start from here a now !
-	if (!currentCounter) {
-		return `${currentYear}-001`;
-	} else {
+	const currentCounter = envParameters.get("no_adhesion");
+	const [year, counter] = currentCounter.split("-");
+	if (year === currentYear && process.env.NODE_ENV !== "test") {
 		// Increment that counter
-		const [year, counter] = currentCounter.split("-");
-		if (year === currentYear && process.env.NODE_ENV !== "test") {
-			return `${year}-${(Number(counter) + 1001).substr(1, 3)}`;
-		} else {
-			return `${currentYear}-001`;
-		}
+		console.log(`Incrementing adhesion counter`);
+		return `${year}-${(Number(counter) + 1001).toString().substr(1, 3)}`;
+	} else {
+		// It's a new year counter
+		return `${currentYear}-001`;
 	}
 };
 
@@ -62,11 +58,19 @@ export const getNextAdhesionNumber = async () => {
  * @param {String} no
  */
 export const updateAdhesionNumber = async (no) => {
-	const params = await retrieve();
-	params.set("no_adhesion", no);
-	await params.save();
-
-	return params.toJSON();
+	console.log(`Saving next adhesion no to parameters ${no}`);
+	try {
+		const params = await retrieve();
+		params.set("no_adhesion", no);
+		await params.save();
+		return params;
+	} catch (err) {
+		console.error(err);
+		throw new ApiError(
+			err.code || 500,
+			`Parameters no_adhesion update failed : ${err.message}`
+		);
+	}
 };
 
 Parse.Parameters = Object.assign(_Parameters, {

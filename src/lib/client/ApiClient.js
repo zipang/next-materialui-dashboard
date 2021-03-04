@@ -82,7 +82,7 @@ const readResponseBody = async (resp) => {
 		return {
 			code: resp.status,
 			success: false,
-			error: retry.statusText // statusText is usually enough to understand what's going on (404)
+			error: resp.statusText // statusText is usually enough to understand what's going on (404)
 		};
 	}
 };

@@ -32,23 +32,24 @@ const StaticMethods = {
 	 * @return Adherent
 	 */
 	register: async (owner, orgData) => {
-		if (process.env.NODE_ENV !== "production") {
-			// fs.writeJSON(`./${orgData.siret}.json`, orgData);
-		}
-		// if (!owner && process.env.NODE_ENV === "production") {
-		// 	throw new ApiError(403, "You are not logged.");
-		// }
 		try {
 			const org = new _Adherent(orgData);
 			org.set("owner", owner);
 			delete org.env; // Silly
 			return await org.save(null, { cascadeSave: false });
 		} catch (err) {
-			console.error(err);
-			throw new ApiError(
-				err.code || 500,
-				`Registration of adherent '${orgData.nom}' failed : ${err.message}`
-			);
+			console.error("Adherent.register()", err);
+			if (err.code === 137) {
+				throw new ApiError(
+					409,
+					`Adherent with siret '${orgData.siret}' already exist`
+				);
+			} else {
+				throw new ApiError(
+					err.code || 500,
+					`Registration of adherent '${orgData.nom}' failed : ${err.message}`
+				);
+			}
 		}
 	},
 
