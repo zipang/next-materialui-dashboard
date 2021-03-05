@@ -1,6 +1,8 @@
 import { useState, useContext, createContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { NoSsr } from "@material-ui/core";
+import devUser from "@config/devUser.json";
+import User from "@models/User";
 
 /**
  * @typedef AuthContext
@@ -67,14 +69,18 @@ export const withAuthentication = (Component, options = _DEFAULT_OPTIONS) => ({
 	...props
 }) => {
 	const { profiles, loginPage } = options;
-	const { loggedUser, setRedirectAfterLogin } = useContext(AuthContext);
+	const { loggedUser, setLoggedUser, setRedirectAfterLogin } = useContext(AuthContext);
 	const router = useRouter();
 
-	useEffect(() => {
+	useEffect(async () => {
 		if (!loggedUser) {
-			// not logged
-			setRedirectAfterLogin(router.pathname);
-			router.replace(`${loginPage}?redirect=${router.pathname}`);
+			if (process.env.NODE_ENV === "development") {
+				setLoggedUser(new User(devUser));
+			} else {
+				// not logged
+				setRedirectAfterLogin(router.pathname);
+				router.replace(`${loginPage}?redirect=${router.pathname}`);
+			}
 		} else if (
 			profiles.length &&
 			!profiles.find((profile) => loggedUser.profiles.includes(profile))
@@ -89,9 +95,5 @@ export const withAuthentication = (Component, options = _DEFAULT_OPTIONS) => ({
 		return () => {};
 	}, [loggedUser]);
 
-	return (
-		<NoSsr>
-			<Component user={loggedUser} {...props} />
-		</NoSsr>
-	);
+	return <NoSsr>{loggedUser && <Component user={loggedUser} {...props} />}</NoSsr>;
 };

@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const Login = ({ useEvents = true }) => {
+const Login = ({ admin = false, useEvents = true }) => {
 	const styles = useStyles();
 	const EventBus = useEventBus();
 	const sendEvent = (eventName) => (evt) => {
@@ -37,7 +37,7 @@ const Login = ({ useEvents = true }) => {
 			<Typography component="h1" variant="h5">
 				Connexion
 			</Typography>
-			<LoginForm />
+			<LoginForm admin={admin} />
 			<Grid container>
 				<Grid item xs={12} sm={6}>
 					<Link
@@ -49,15 +49,17 @@ const Login = ({ useEvents = true }) => {
 					</Link>
 				</Grid>
 				<Grid item xs={6} sm={6}>
-					<Typography align="right">
-						<Link
-							href="/create-account"
-							variant="caption"
-							onClick={sendEvent("register")}
-						>
-							Créer mon compte
-						</Link>
-					</Typography>
+					{!admin && (
+						<Typography align="right">
+							<Link
+								href="/create-account"
+								variant="caption"
+								onClick={sendEvent("register")}
+							>
+								Créer mon compte
+							</Link>
+						</Typography>
+					)}
 				</Grid>
 				<Grid item xs={12}>
 					<Copyright />

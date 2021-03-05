@@ -19,13 +19,15 @@ const LoginForm = () => {
 	 * @param {Object} userData
 	 */
 	const onSuccess = (userData) => {
-		auth.setLoggedUser(new User(userData));
+		const loggedUser = new User(userData);
+		auth.setLoggedUser(loggedUser);
 
 		if (auth.redirectAfterLogin) {
 			// We know where the disconnected user wanted to be
 			router.push(auth.redirectAfterLogin);
 		} else {
-			router.push("/user-dashboard");
+			// Redirection depends of the user's profile
+			router.push(loggedUser.isAdmin() ? "/admin" : "/member");
 		}
 	};
 
