@@ -135,8 +135,6 @@ export const withStateMachine = (
 ) => ({ ...props }) => {
 	// we can override the initial state and middlewares this way
 	const mergedDefinitions = { ...Component.StateMachine, ...overrideMachineDef };
-	// Is it too much like this  ??
-	// const mergedDefinitions = deepMerge({}, Component.StateMachine, overrideMachineDef);
 
 	const {
 		id,
@@ -149,19 +147,6 @@ export const withStateMachine = (
 
 	if (useLocalStorage && window && window.localStorage) {
 		middlewares.push(_MIDDLEWARES.localStorage);
-		// const savedState = window.localStorage.getItem(id);
-		// if (savedState) {
-		// 	try {
-		// 		initialState = JSON.parse(savedState);
-		// 	} catch (err) {
-		// 		window.localStorage.removeItem(id);
-		// 	}
-		// 	console.log(
-		// 		`Restoring saved state from localStorage: ${JSON.stringify(
-		// 			initialState
-		// 		)} `
-		// 	);
-		// }
 	}
 
 	const [state, setState] = useState(initialState);
