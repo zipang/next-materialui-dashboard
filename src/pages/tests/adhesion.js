@@ -35,6 +35,7 @@ const TestEmailTemplatePage = () => {
 	const sendMessageTemplate = async (formData) => {
 		try {
 			const data = merge({}, testAdherent, formData);
+			data.effectifs.total = Math.round(Math.random() * 15);
 			setAdherent(data);
 			const resp = await register(null, data);
 			if (resp.success) {
@@ -98,6 +99,11 @@ ${JSON.stringify(resp.adhesion, null, "\t")}`);
 					name="representant.nom"
 					label="Nom"
 					required="Saisissez le nom du représentant"
+				/>
+				<Text
+					name="adresse.commune"
+					label="Ville"
+					required="Saisissez la commune"
 				/>
 				<Email
 					name="representant.email"
