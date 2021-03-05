@@ -1,4 +1,5 @@
 import Business from "@material-ui/icons/Business";
+import CardMembership from "@material-ui/icons/CardMembership";
 import Home from "@material-ui/icons/Home";
 import People from "@material-ui/icons/People";
 import User from "@material-ui/icons/VerifiedUser";
@@ -11,6 +12,7 @@ import Save from "@material-ui/icons/Save";
 
 const iconMap = {
 	Business,
+	CardMembership,
 	Home,
 	Help,
 	People,
