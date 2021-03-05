@@ -76,8 +76,8 @@ Afin de compléter ce processus d’adhésion, vous aurez besoin des éléments 
 				required: "Saisissez la date de création de l'entreprise"
 			},
 			{
-				name: "statut",
-				label: "Statut",
+				name: "forme_juridique",
+				label: "Forme juridique",
 				type: "select",
 				options: [
 					{ code: "association", label: "Association" },
@@ -907,10 +907,12 @@ et le chiffre d'affaire de votre activité.`
 		title: "Dernière étape",
 		help: {
 			description: `## Félicitation !
-Votre process d’adhésion est presque terminé.
+Votre processus d’adhésion est presque terminé.
 Vous pouvez revenir en arrière pour vérifier une dernière fois les informations saisies.
-En choisissant Paiement en ligne vous pourrez directement. 
-Cliquez sur Valider pour envoyer votre demande.`,
+En choisissant Paiement en ligne vous activerez immédiatement votre adhésion à notre service. 
+Pour le paiement par chèque imprimer votre appel de fond et glissez le dans l'enveloppe avec la référence de votre adhésion.
+Cliquez sur Valider pour envoyer votre demande.
+[Télécharger votre appel de fond](/)`,
 			backgroundImage: "registration-complete-background.svg"
 		},
 		fields: [
@@ -945,7 +947,19 @@ Cliquez sur Valider pour envoyer votre demande.`,
  * Look if we have an incomplete registration process in the local storage
  * Or create
  */
-const initRegistration = (loggedUser) => {};
+const initRegistration = (loggedUser) => {
+	const savedState = window.localStorage.getItem("registration-wizard");
+	if (savedState) {
+		try {
+			initialState = JSON.parse(savedState);
+		} catch (err) {
+			window.localStorage.removeItem(id);
+		}
+		console.log(
+			`Restoring saved state from localStorage: ${JSON.stringify(initialState)} `
+		);
+	}
+};
 
 const RegistrationWizard = () => {
 	const loggedUser = useAuthentication();
