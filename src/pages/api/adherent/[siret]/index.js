@@ -20,7 +20,14 @@ export default async (req, resp) => {
 				});
 
 			case POST:
-			// POST : /api/adherent/7889798
+				// POST : /api/adherent/7889798
+				const data = req.body;
+				const adherent = await Parse.Adherent.retrieveBySiret(siret);
+				// Update every property
+				Object.keys(data).forEach((key) => {
+					adherent.set(key, data[key]);
+				});
+				await adherent.save();
 		}
 	} catch (err) {
 		resp.status(err.code).json({

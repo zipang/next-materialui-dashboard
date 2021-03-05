@@ -16,7 +16,7 @@ const testData = {
 		email: "john.doe@x.org",
 		mobile: "06 65 65 65 65"
 	},
-	statut: "entreprise",
+	forme_juridique: "entreprise",
 	contact: {
 		telephone: "01 77 66 76 76",
 		email: "contact@x.org",

@@ -42,6 +42,7 @@ export const create = async (siret, data = {}) => {
 		const adh = new _Adhesion({
 			no,
 			statut: "en_attente",
+			nom: adherent.get("nom"),
 			...data
 		});
 		adh.set("adherent", adherent);
@@ -69,15 +70,41 @@ export const retrieveByNo = async (no) => {
 	return Parse.retrieveByUniqueKey("Adhesion", "no", no);
 };
 
+export const confirmPayment = async (no, data = {}) => {
+	try {
+		const adhesion = await retrieveByNo(no);
+		// Check the date to which this adhesion should be active
+		const currentDate = new Date().toISOString().substr(0, 10);
+		const date_debut = adhesion.get("date_debut");
+		if (!date_debut || currentDate > date_debut) {
+			adhesion.set("date_debut", currentDate);
+		}
+		adhesion.set("statut", "active");
+		adhesion.set("paiement", data);
+
+		const adherent = adhesion.get("adherent");
+		adherent.set("statut", "actif");
+		await Promise.allSettled([adherent.save(), adhesion.save()]);
+		return adhesion;
+	} catch (err) {
+		console.error(err);
+		throw new ApiError(
+			err.code || 500,
+			`Payment confirmation for adhesion ${no} has failed : ${err.message}`
+		);
+	}
+};
+
 /**
  * Retrieve a list of Adhesion that match some filter by example criterias
  * @param {Object} params
  */
-export const getAll = async (params = {}) => {
+export const retrieve = async (params = {}) => {
 	try {
 		const Parse = getParseInstance();
 		const query = new Parse.Query("Adhesion");
 		const adhesions = await query.findAll();
+		console.log(`Retrieving ${adhesions.length} adhesions`);
 		return adhesions.map((adh) => adh.toJSON());
 	} catch (err) {
 		console.error(err);
@@ -87,6 +114,7 @@ export const getAll = async (params = {}) => {
 
 Parse.Adhesion = Object.assign(_Adhesion, {
 	create,
+	confirmPayment,
 	retrieveByNo,
-	getAll
+	retrieve
 });

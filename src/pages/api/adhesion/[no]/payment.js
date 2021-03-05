@@ -10,20 +10,7 @@ export default async (req, resp) => {
 	const { no } = req.query;
 	try {
 		const Parse = getParseInstance();
-
-		const data = req.body;
-		const adhesion = await Parse.Adhesion.retrieveByNo(no);
-
-		// Check the date to which this adhesion should be active
-		const currentDate = new Date().toISOString().substr(0, 10);
-		const date_debut = adhesion.get("date_debut");
-		if (!date_debut || currentDate > date_debut) {
-			adhesion.set("date_debut", currentDate);
-		}
-		adhesion.set("statut", "active");
-		adhesion.set("payment", data);
-
-		await adhesion.save();
+		const adhesion = await Parse.Adhesion.confirmPayment(no, req.body);
 
 		return resp.status(200).json({
 			success: true,
