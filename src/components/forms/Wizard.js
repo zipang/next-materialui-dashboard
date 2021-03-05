@@ -235,7 +235,7 @@ const Wizard = ({ id, steps = [], data = {}, currentSlide = 0 }) =>
 	withEventBus(
 		withStateMachine(
 			InitWizard,
-			{ id, initialState: { data, currentSlide } },
+			{ id, initialState: { data, currentSlide, steps } },
 			{ id, steps }
 		)
 	)();
