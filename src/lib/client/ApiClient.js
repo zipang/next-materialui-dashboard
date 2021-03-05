@@ -97,6 +97,8 @@ const readResponseBody = async (resp) => {
 export const get = (APIClient.get = async (apiEntryPoint, apiParams) => {
 	let resp;
 	try {
+		console.log(`API CALL : GET ${apiEntryPoint}`);
+
 		resp = await fetch(buildURL(apiEntryPoint, apiParams), {
 			method: "GET",
 			headers: _DEFAULT_REQUEST_HEADERS
@@ -129,6 +131,8 @@ export const get = (APIClient.get = async (apiEntryPoint, apiParams) => {
  */
 export const post = (APIClient.post = async (apiEntryPoint, postBody = {}) => {
 	try {
+		console.log(`API CALL : POST ${apiEntryPoint}`);
+
 		const resp = await fetch(buildURL(apiEntryPoint), {
 			method: "POST",
 			headers: _DEFAULT_REQUEST_HEADERS,
@@ -136,7 +140,6 @@ export const post = (APIClient.post = async (apiEntryPoint, postBody = {}) => {
 		});
 
 		const respBody = await readResponseBody(resp);
-		console.dir(`API POST to ${apiEntryPoint} returned`, respBody);
 
 		if (respBody.error) {
 			throw new ApiError(respBody.code, respBody.error);

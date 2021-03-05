@@ -1,6 +1,5 @@
 import APIClient from "./ApiClient";
 import ApiError from "@lib/ApiError";
-import { sendMailTemplate } from "./MailApiClient";
 
 /**
  * Let user register a new adherent
@@ -65,11 +64,31 @@ export const retrieve = async (params = {}) => {
 	}
 };
 
+/**
+ * Retrieve a list of adhesions following some criterias
+ * (Filter by example)
+ * @example
+ *   const { rows } = await Parse.Adherent.retrieveAdhesions({ nom: "*SARL" })
+ *
+ * @param {Object} params as key-value pairs
+ */
+export const retrieveAdhesions = async (params = {}) => {
+	try {
+		const resp = await APIClient.get(`/api/adhesion`, params);
+		console.log("retrieveAdhesions()", resp);
+		return resp;
+	} catch (err) {
+		throw new ApiError(err.code || 500, err.message);
+	}
+};
+
 const AdherentsApiClient = {
 	register,
 	retrieve,
 	update,
-	createAdhesion
+	createAdhesion,
+	confirmAdhesion,
+	retrieveAdhesions
 };
 
 export default AdherentsApiClient;
