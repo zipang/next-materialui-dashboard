@@ -1,16 +1,16 @@
 [
 	{
-		"label": "Espace Membre",
+		"label": "Espace Adhérent",
 		"children": [
 			{
-				"label": "Mes Adherents",
+				"label": "Mes Organismes",
 				"icon": "Business",
-				"action": "/espace-membre/adherents"
+				"action": "/member"
 			},
 			{
 				"label": "Mon Profil",
 				"icon": "People",
-				"action": "/espace-membre/profile"
+				"action": "/member/profile"
 			}
 		]
 	}

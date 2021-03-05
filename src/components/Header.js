@@ -54,7 +54,12 @@ const MenuButton = () => {
 	</Hidden>;
 };
 
-function Header() {
+/**
+ * Display the dashboard header with the logged user
+ * And a serie of actions tabs
+ * @param {HeaderProps} props
+ */
+function Header({ tabs = [] }) {
 	const { loggedUser: user } = useAuthentication();
 	const styles = useStyles();
 
@@ -98,11 +103,15 @@ function Header() {
 				position="static"
 				elevation={0}
 			>
-				<Tabs value={0} textColor="inherit">
-					<Tab label="Recherche" />
-					<Tab label="Membres actifs" />
-					<Tab label="Paiements en attente" />
-					<Tab label="Membres inactifs" />
+				<Tabs value={tabs.value} textColor="inherit">
+					{tabs.map(({ label, action, value }, i) => (
+						<Tab
+							key={`dashboard-tab-${i}`}
+							label={label}
+							onClick={action}
+							value={value}
+						/>
+					))}
 				</Tabs>
 			</AppBar>
 		</>

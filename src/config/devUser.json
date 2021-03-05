@@ -1,0 +1,7 @@
+{
+	"username": "johndoe",
+	"firstName": "John",
+	"lastName": "DOE",
+	"email": "john.doe@x.test",
+	"profiles": ["admin", "adherent"]
+}

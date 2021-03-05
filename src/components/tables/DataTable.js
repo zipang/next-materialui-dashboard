@@ -16,11 +16,11 @@ const useStyles = makeStyles({
 		width: "100%"
 	},
 	container: {
-		maxHeight: 440
+		maxHeight: 480
 	},
 
 	table: {
-		minWidth: 750
+		minWidth: 780
 	},
 	visuallyHidden: {
 		border: 0,
@@ -186,8 +186,7 @@ const DataTable = ({ columns = [], rows = [] }) => {
 													key={column.id}
 													align={column.align}
 												>
-													{column.format &&
-													typeof value === "number"
+													{column.format
 														? column.format(value)
 														: value}
 												</TableCell>
@@ -199,15 +198,6 @@ const DataTable = ({ columns = [], rows = [] }) => {
 					</TableBody>
 				</Table>
 			</TableContainer>
-			<TablePagination
-				rowsPerPageOptions={[50, 100]}
-				component="div"
-				count={rows.length}
-				rowsPerPage={rowsPerPage}
-				page={page}
-				onChangePage={changePage}
-				onChangeRowsPerPage={changeRowsPerPage}
-			/>
 		</Paper>
 	);
 };

@@ -1,16 +1,16 @@
 [
 	{
-		"label": "Membres",
-		"icon": "People",
+		"label": "Gestion des adhérents",
 		"children": [
 			{
-				"label": "Rechercher",
-				"icon": "Search",
-				"action": "admin/adherents"
+				"label": "Adhérents",
+				"icon": "Business",
+				"action": "/admin/adherents"
 			},
 			{
-				"label": "Messages",
-				"icon": "Textsms"
+				"label": "Adhésions",
+				"icon": "CardMembership",
+				"action": "/admin/adhesions"
 			}
 		]
 	}

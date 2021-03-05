@@ -12,7 +12,6 @@ import adminNavigationItems from "@config/adminNavigationItems.json";
 import memberNavigationItems from "@config/memberNavigationItems.json";
 
 import Link from "next/link";
-import { useRouter } from "next/router";
 import User from "@models/User";
 import SvgIcon from "@components/SvgIcon";
 
@@ -75,11 +74,11 @@ const NavLinkHeader = ({ styles, label }) => (
 /**
  * Lien de navigation dans le menu de gauche
  */
-const NavLink = ({ label, icon, action, currentPath, styles }) => (
+const NavLink = ({ label, icon, action, selectedNav, styles }) => (
 	<Link key={label} href={action}>
 		<ListItem
 			button
-			className={clsx(styles.item, action === currentPath && styles.itemActiveItem)}
+			className={clsx(styles.item, action === selectedNav && styles.itemActiveItem)}
 		>
 			<ListItemIcon className={styles.itemIcon}>
 				<SvgIcon name={icon} />
@@ -99,34 +98,38 @@ const NavLink = ({ label, icon, action, currentPath, styles }) => (
  * Le menu de navigation vertical
  * @param {Object} props
  */
-export const NavigationBar = ({ navigationEntries }) => {
+export const NavigationBar = ({ navigationEntries, selectedNav }) => {
 	const styles = useStyles();
-	const router = useRouter();
 
 	return (
 		<Drawer variant="permanent" PaperProps={{ style: { width: 256 } }}>
 			<List disablePadding>
 				<ListItem
+					key="first"
 					className={clsx(styles.firebase, styles.item, styles.itemCategory)}
 				>
-					Invie78
+					INVIE
 				</ListItem>
 
-				<Divider className={styles.divider} />
+				<Divider key="second" className={styles.divider} />
 
 				{navigationEntries.map(({ label, children }, i) => (
 					<>
-						<NavLinkHeader styles={styles} label={label} />
+						<NavLinkHeader
+							key={`nav-link-header-${i}`}
+							styles={styles}
+							label={label}
+						/>
 
 						{children.map(({ ...linkProps }, i) => (
 							<NavLink
 								styles={styles}
-								currentPath={router.pathname}
+								selectedNav={selectedNav}
 								key={`nav-link-${i}`}
 								{...linkProps}
 							/>
 						))}
-						<Divider className={styles.divider} />
+						<Divider className={styles.divider} key={`divider-${i}`} />
 					</>
 				))}
 			</List>
@@ -140,8 +143,9 @@ export const NavigationBar = ({ navigationEntries }) => {
  * @param {Props} props
  * @param {User} user logged User
  */
-const UserNavBar = ({ user }) => (
+const UserNavBar = ({ user, selectedNav }) => (
 	<NavigationBar
+		selectedNav={selectedNav}
 		navigationEntries={user.isAdmin() ? adminNavigationItems : memberNavigationItems}
 	/>
 );

@@ -1,17 +1,21 @@
 import { useEffect, useState } from "react";
 import DataTable from "./DataTable";
 import Skeleton from "@material-ui/lab/Skeleton";
-import AdherentsApiClient from "@lib/client/AdherentsApiClient";
 import { Box } from "@material-ui/core";
+import AdherentsApiClient from "@lib/client/AdherentsApiClient";
+
+const displayDate = (isoDate) => {
+	if (!isoDate) return "";
+	const [year, month, day] = isoDate.split("-");
+	return [day, month, year].join("/");
+};
 
 export const columns = [
-	{ id: "nom", label: "Nom", minWidth: 200 },
-	{ id: "adresse.code_postal", label: "CP", minWidth: 50 },
-	{ id: "adresse.commune", label: "Commune", minWidth: 220 },
-	{ id: "effectifs.total", label: "Effectif", minWidth: 40, align: "right" },
-	{ id: "representant.nom", label: "Contact (nom)", minWidth: 80 },
-	{ id: "representant.prenom", label: "Contact (prénom)", minWidth: 80 },
-	{ id: "representant.mobile", label: "Contact (mobile)", minWidth: 80 }
+	{ id: "no", label: "N°", minWidth: 80 },
+	{ id: "nom", label: "Adhérent", minWidth: 200 },
+	{ id: "mode_paiement", label: "Mode Paiement", minWidth: 80 },
+	{ id: "date_debut", label: "Date début", minWidth: 100, format: displayDate },
+	{ id: "date_fin", label: "Date fin", minWidth: 100, format: displayDate }
 ];
 
 const applyFilter = (filter, rows) =>
@@ -23,15 +27,15 @@ const applyFilter = (filter, rows) =>
 		return displayRow;
 	});
 
-const AdherentsDataTable = ({ filter = {} }) => {
+const AdhesionsDataTable = ({ filter = {} }) => {
 	const [rows, setRows] = useState();
 	const [error, setError] = useState();
 
 	// Fetch the rows
 	useEffect(async () => {
 		try {
-			console.log(`Fetching adherents...`);
-			setRows((await AdherentsApiClient.retrieve()).rows);
+			console.log(`Fetching adhesions...`);
+			setRows((await AdherentsApiClient.retrieveAdhesions()).rows);
 		} catch (err) {
 			setError(err.message);
 		}
@@ -46,4 +50,4 @@ const AdherentsDataTable = ({ filter = {} }) => {
 	);
 };
 
-export default AdherentsDataTable;
+export default AdhesionsDataTable;
