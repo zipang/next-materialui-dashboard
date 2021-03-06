@@ -12,7 +12,12 @@ const displayDate = (isoDate) => {
 
 export const columns = [
 	{ id: "no", label: "N°", minWidth: 80 },
-	{ id: "nom", label: "Adhérent", minWidth: 200 },
+	{
+		id: "nom",
+		label: "Adhérent",
+		minWidth: 200,
+		link: ({ siret }) => `/admin/adherents/${siret}`
+	},
 	{ id: "mode_paiement", label: "Mode Paiement", minWidth: 80 },
 	{ id: "date_debut", label: "Date début", minWidth: 100, format: displayDate },
 	{ id: "date_fin", label: "Date fin", minWidth: 100, format: displayDate }

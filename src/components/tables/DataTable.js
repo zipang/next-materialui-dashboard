@@ -10,6 +10,7 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import { getProperty } from "@lib/utils/NestedObjects";
 import { TableSortLabel } from "@material-ui/core";
+import Link from "@components/Link";
 
 const useStyles = makeStyles({
 	root: {
@@ -42,9 +43,9 @@ const sortDirection = {
 
 /**
  *
- * @param {*} a
- * @param {*} b
- * @param {*} orderBy
+ * @param {Object} a
+ * @param {Object} b
+ * @param {String} orderBy Path to the property to compare
  * @param {String} order
  */
 const compare = (a, b, orderBy, order) => {
@@ -54,16 +55,13 @@ const compare = (a, b, orderBy, order) => {
 };
 
 /**
- *
  * @param {Array<Object>} rows
- * @param {String} orderBy
+ * @param {String} orderBy Name of the field used for comparison (can be a path)
  * @param {String[asc|desc]} order
+ * @return {Array<Object>} A new sorted array
  */
 const sortRows = (rows, orderBy, order) => {
-	console.log(`Sort rows by ${orderBy} ${order}`, rows);
-	const sorted = [...rows].sort((a, b) => compare(a, b, orderBy, order));
-	console.log("Sorted", sorted);
-	return sorted;
+	return [...rows].sort((a, b) => compare(a, b, orderBy, order));
 };
 
 /**
@@ -122,6 +120,41 @@ function SortableTableHead({ columns, classes, order, orderBy, onRequestSort }) 
 		</TableHead>
 	);
 }
+
+/**
+ * Display a pagination component
+ * @param {PaginationProps} props
+ */
+const Pagination = ({ rows, rowsPerPage, page, changePage, changeRowsPerPage }) => (
+	<TablePagination
+		page={page}
+		count={rows.length}
+		rowsPerPage={rowsPerPage}
+		rowsPerPageOptions={[50, 100]}
+		onChangePage={changePage}
+		onChangeRowsPerPage={changeRowsPerPage}
+	/>
+);
+
+/**
+ * Display a single cell with formatted data,
+ * hyperlinks, or action button..
+ * @param {DataCellProps} props
+ */
+const DataCell = ({ column, row }) => {
+	const value = getProperty(row, column.id, "");
+	const formattedValue = column.format ? column.format(value) : value;
+	return (
+		<TableCell key={column.id} align={column.align}>
+			{column.link ? (
+				<Link href={column.link(row)}>{formattedValue}</Link>
+			) : (
+				formattedValue
+			)}
+		</TableCell>
+	);
+};
+
 /**
  * @typedef DataTableProps
  * @field {Array<ColumnDef>} columns
@@ -173,25 +206,14 @@ const DataTable = ({ columns = [], rows = [] }) => {
 							.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
 							.map((row, i) => {
 								return (
-									<TableRow
-										hover
-										role="checkbox"
-										tabIndex={-1}
-										key={`row-${i}`}
-									>
-										{columns.map((column) => {
-											const value = getProperty(row, column.id, "");
-											return (
-												<TableCell
-													key={column.id}
-													align={column.align}
-												>
-													{column.format
-														? column.format(value)
-														: value}
-												</TableCell>
-											);
-										})}
+									<TableRow hover tabIndex={-1} key={`row-${i}`}>
+										{columns.map((column, j) => (
+											<DataCell
+												key={`cell-${i}-${j}`}
+												column={column}
+												row={row}
+											/>
+										))}
 									</TableRow>
 								);
 							})}

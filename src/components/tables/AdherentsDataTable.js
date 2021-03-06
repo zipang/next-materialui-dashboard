@@ -5,7 +5,12 @@ import AdherentsApiClient from "@lib/client/AdherentsApiClient";
 import { Box } from "@material-ui/core";
 
 export const columns = [
-	{ id: "nom", label: "Nom", minWidth: 200 },
+	{
+		id: "nom",
+		label: "Nom",
+		minWidth: 200,
+		link: ({ siret }) => `/admin/adherents/${siret}`
+	},
 	{ id: "adresse.code_postal", label: "CP", minWidth: 50 },
 	{ id: "adresse.commune", label: "Commune", minWidth: 220 },
 	{ id: "effectifs.total", label: "Effectif", minWidth: 40, align: "right" },
