@@ -36,13 +36,13 @@ export const create = async (siret, data = {}) => {
 	try {
 		const Parse = getParseInstance();
 		const adherent = await Parse.Adherent.retrieveBySiret(siret);
-		console.log(`Retrieved adherent`, adherent);
 		// Get the next unique number
 		const no = await getNextAdhesionNumber();
 		const adh = new _Adhesion({
 			no,
+			siret,
 			statut: "en_attente",
-			nom: adherent.get("nom"),
+			nom: adherent.get("nom"), // We need that duplicate information to avoid fetching the whole adherent
 			...data
 		});
 		adh.set("adherent", adherent);
@@ -61,6 +61,23 @@ export const create = async (siret, data = {}) => {
 };
 
 /**
+ * Retrieve a list of Adhesion that match some filter by example criterias
+ * @param {Object} params
+ */
+export const retrieve = async (params = {}) => {
+	try {
+		const Parse = getParseInstance();
+		const query = new Parse.Query("Adhesion");
+		const adhesions = await query.findAll();
+		console.log(`Retrieving ${adhesions.length} adhesions`);
+		return adhesions.map((adh) => adh.toJSON());
+	} catch (err) {
+		console.error(err);
+		throw new ApiError(err.code || 500, `Failed loading adhesions : ${err.message}`);
+	}
+};
+
+/**
  * Retrieves an existing Adhesion by its unique number
  * @param {String} no
  * @return {Adhesion}
@@ -70,6 +87,12 @@ export const retrieveByNo = async (no) => {
 	return Parse.retrieveByUniqueKey("Adhesion", "no", no);
 };
 
+/**
+ * Notify that the payment for this adhesion has been received.
+ * Set the status of the adhesion and adherent to active
+ * @param {String} no
+ * @param {Object} data
+ */
 export const confirmPayment = async (no, data = {}) => {
 	try {
 		const adhesion = await retrieveByNo(no);
@@ -92,23 +115,6 @@ export const confirmPayment = async (no, data = {}) => {
 			err.code || 500,
 			`Payment confirmation for adhesion ${no} has failed : ${err.message}`
 		);
-	}
-};
-
-/**
- * Retrieve a list of Adhesion that match some filter by example criterias
- * @param {Object} params
- */
-export const retrieve = async (params = {}) => {
-	try {
-		const Parse = getParseInstance();
-		const query = new Parse.Query("Adhesion");
-		const adhesions = await query.findAll();
-		console.log(`Retrieving ${adhesions.length} adhesions`);
-		return adhesions.map((adh) => adh.toJSON());
-	} catch (err) {
-		console.error(err);
-		throw new ApiError(err.code || 500, `Failed loading adhesions : ${err.message}`);
 	}
 };
 
