@@ -67,29 +67,28 @@ function Header({ tabs = [] }) {
 		<>
 			<AppBar color="primary" position="sticky" elevation={0}>
 				<Toolbar>
-					<Grid container spacing={1} alignItems="center">
+					<Grid
+						container
+						spacing={2}
+						direction="column"
+						justify="center"
+						alignItems="center"
+						alignContent="flex-end"
+					>
 						{user && (
 							<>
-								<Grid item>
-									{user.firstName} {user.lastName}
-								</Grid>
-								<Grid item>
-									<Tooltip title="Alerts • No alerts">
-										<IconButton color="inherit">
-											<NotificationsIcon />
+								<Grid item xs={2}>
+									<Tooltip title={`${user.firstName} ${user.lastName}`}>
+										<IconButton
+											color="inherit"
+											className={styles.iconButtonAvatar}
+										>
+											<Avatar
+												src="/static/images/avatar/1.jpg"
+												alt={`${user.firstName} ${user.lastName}`}
+											/>
 										</IconButton>
 									</Tooltip>
-								</Grid>
-								<Grid item>
-									<IconButton
-										color="inherit"
-										className={styles.iconButtonAvatar}
-									>
-										<Avatar
-											src="/static/images/avatar/1.jpg"
-											alt={`${user.firstName} ${user.lastName}`}
-										/>
-									</IconButton>
 								</Grid>
 							</>
 						)}
