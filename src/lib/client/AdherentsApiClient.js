@@ -58,7 +58,24 @@ export const confirmAdhesion = async (no, data = {}) => {
  */
 export const retrieve = async (params = {}) => {
 	try {
+		console.log(`Retrieve adherents...`);
 		return await APIClient.get(`/api/adherent`, params);
+	} catch (err) {
+		throw new ApiError(err.code || 500, err.message);
+	}
+};
+
+/**
+ * Retrieve a single adherent by its Siret number
+ * @example
+ *   const adh = await Parse.Adherent.retrieveBySiret("1234567891234")
+ *
+ * @param {String} siret
+ * @param {Object} [params] Optional params like the fields to extract
+ */
+export const retrieveBySiret = async (siret, params = {}) => {
+	return await APIClient.get(`/api/adherent/${siret}`, params);
+	try {
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
 	}
@@ -85,6 +102,7 @@ export const retrieveAdhesions = async (params = {}) => {
 const AdherentsApiClient = {
 	register,
 	retrieve,
+	retrieveBySiret,
 	update,
 	createAdhesion,
 	confirmAdhesion,
