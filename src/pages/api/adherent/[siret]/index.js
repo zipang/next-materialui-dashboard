@@ -12,7 +12,7 @@ export default async (req, resp) => {
 	try {
 		const Parse = getParseInstance();
 		switch (method) {
-			case GET:
+			case "GET":
 				// GET by siret : /api/adherent/7889798
 				adherent = await Parse.Adherent.retrieveBySiret(siret);
 				return resp.json({
@@ -20,7 +20,7 @@ export default async (req, resp) => {
 					adherent: adherent.toJSON()
 				});
 
-			case POST:
+			case "POST":
 				// POST : /api/adherent/7889798
 				const data = req.body;
 				adherent = await Parse.Adherent.retrieveBySiret(siret);
@@ -31,7 +31,7 @@ export default async (req, resp) => {
 				await adherent.save();
 		}
 	} catch (err) {
-		resp.status(err.code).json({
+		resp.status(err.code || 500).json({
 			success: false,
 			error: err.message
 		});
