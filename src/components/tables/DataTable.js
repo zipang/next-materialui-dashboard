@@ -9,7 +9,7 @@ import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import { getProperty } from "@lib/utils/NestedObjects";
-import { TableSortLabel } from "@material-ui/core";
+import { Button, TableSortLabel } from "@material-ui/core";
 import Link from "@components/Link";
 
 const useStyles = makeStyles({
@@ -150,6 +150,9 @@ const DataCell = ({ column, row }) => {
 				<Link href={column.link(row)}>{formattedValue}</Link>
 			) : (
 				formattedValue
+			)}
+			{column.button && (
+				<Button className="inline-button">{column.button.label}</Button>
 			)}
 		</TableCell>
 	);
