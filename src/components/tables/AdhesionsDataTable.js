@@ -9,6 +9,13 @@ const displayDate = (isoDate) => {
 	const [year, month, day] = isoDate.split("-");
 	return [day, month, year].join("/");
 };
+/**
+ * Labels for payment modes
+ */
+const MODE_PAIEMENTS = {
+	cheque: "Par Chèque",
+	en_ligne: "En Ligne"
+};
 
 export const columns = [
 	{ id: "no", label: "N°", minWidth: 80 },
@@ -18,7 +25,29 @@ export const columns = [
 		minWidth: 200,
 		link: ({ siret }) => `/admin/adherents/${siret}`
 	},
-	{ id: "mode_paiement", label: "Mode Paiement", minWidth: 80 },
+	{
+		id: "mode_paiement",
+		label: "Mode Paiement",
+		minWidth: 80,
+		format: (code) => MODE_PAIEMENTS[code],
+		button: (adhesion) => {
+			if (adhesion.mode_paiement === "cheque") {
+				return {
+					label: "Confirmer Paiement",
+					action: async () => {
+						const paymentData = {
+							date: "",
+							montant: 200
+						};
+						await AdherentsApiClient.confirmAdhesion(
+							adhesion.no,
+							paymentData
+						);
+					}
+				};
+			}
+		}
+	},
 	{ id: "date_debut", label: "Date début", minWidth: 100, format: displayDate },
 	{ id: "date_fin", label: "Date fin", minWidth: 100, format: displayDate }
 ];
