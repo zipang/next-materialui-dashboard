@@ -79,17 +79,42 @@ export const logIn = (User.logIn = async ({ username, password }) => {
  */
 export const getByUsername = (User.getByUsername = async (username) => {
 	try {
-		const getUser = new Parse.Query(Parse.user);
-		return await getUser(username);
+		Parse = getParseInstance();
+		return await Parse.retrieveByUniqueKey("User", "username", username);
 	} catch (err) {
 		if (err.code === Parse.Error.OBJECT_NOT_FOUND) {
-			throw new ApiError(404, `Login ou mot de passe inconnu`);
+			throw new ApiError(404, `Login inconnu`);
 		} else {
 			throw new ApiError(
 				err.code || 500,
 				`Echec de l'authentification : ${err.message}`
 			);
 		}
+	}
+});
+
+/**
+ * Ask for a password re-generation link sent by email
+ * @param {String} email
+ */
+export const forgotPassword = (User.forgotPassword = async (email) => {
+	try {
+		Parse = getParseInstance();
+
+		// Re-verify the email
+		const user = await getByUsername(email);
+
+		if (user) {
+			Parse.User.requestPasswordReset(email);
+
+			user.set("emailVerified", true);
+			user.save(); // don't wait
+			return user;
+		} else {
+			throw new ApiError(404, "Email inconnu");
+		}
+	} catch (err) {
+		throw new ApiError(err.code || 500, err.message);
 	}
 });
 
