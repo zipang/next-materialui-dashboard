@@ -68,7 +68,7 @@ export const retrieve = async (params = {}) => {
 	try {
 		const Parse = getParseInstance();
 		const query = new Parse.Query("Adhesion");
-		const adhesions = await query.findAll();
+		const adhesions = await query.find();
 		console.log(`Retrieving ${adhesions.length} adhesions`);
 		return adhesions.map((adh) => adh.toJSON());
 	} catch (err) {

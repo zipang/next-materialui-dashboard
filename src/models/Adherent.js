@@ -70,7 +70,7 @@ const StaticMethods = {
 		try {
 			const Parse = getParseInstance();
 			const query = new Parse.Query("Adherent");
-			return query.findAll();
+			return query.find();
 		} catch (err) {
 			console.error(err);
 			throw new ApiError(

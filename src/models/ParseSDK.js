@@ -1,5 +1,5 @@
-import { merge } from "../lib/utils/deepMerge.js";
-import ParseNode from "parse/node.js";
+// import ParseNode from "parse/node.js";
+import ParseNode from "parse/node";
 import ApiError from "../lib/ApiError.js";
 import { loadEnv } from "../lib/utils/Env.js";
 
@@ -48,7 +48,7 @@ const ParseExtensions = {
 	}
 };
 
-export const Parse = merge(ParseNode, ParseExtensions);
+export const Parse = Object.assign(ParseNode, ParseExtensions);
 
 /**
  * Ensure that we get a properly initialized Parse instance
