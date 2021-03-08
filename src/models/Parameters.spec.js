@@ -1,5 +1,6 @@
 import suite from "baretest";
 import { getParseInstance } from "./ParseSDK.js";
+import { Parameters } from "@models/Parameters.js";
 import code from "@hapi/code";
 
 const { expect } = code;
@@ -14,7 +15,7 @@ ParametersTestSuite.before(() => {
 
 ParametersTestSuite("Get the next adhesion number", async () => {
 	const currentYear = new Date().getFullYear().toString();
-	const params = await Parse.Parameters.retrieve();
+	const params = await Parameters.retrieve();
 
 	const no = params.no_adhesion;
 	expect(no).to.be.a.string();
@@ -26,7 +27,7 @@ ParametersTestSuite("Get the next adhesion number", async () => {
 });
 
 ParametersTestSuite("Retrieve current parameters", async () => {
-	const params = await Parse.Parameters.retrieve();
+	const params = await Parameters.retrieve();
 
 	expect(params.env).to.equal(process.env.NODE_ENV);
 });

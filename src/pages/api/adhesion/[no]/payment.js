@@ -1,4 +1,4 @@
-import { getParseInstance } from "@models/ParseSDK";
+import { Adhesion } from "@models/Adhesion.js";
 
 /**
  * // POST : /api/adhesion/2020-012/payment
@@ -9,8 +9,7 @@ import { getParseInstance } from "@models/ParseSDK";
 export default async (req, resp) => {
 	const { no } = req.query;
 	try {
-		const Parse = getParseInstance();
-		const adhesion = await Parse.Adhesion.confirmPayment(no, req.body);
+		const adhesion = await Adhesion.confirmPayment(no, req.body);
 
 		return resp.status(200).json({
 			success: true,

@@ -118,7 +118,7 @@ export const confirmPayment = async (no, data = {}) => {
 	}
 };
 
-Parse.Adhesion = Object.assign(_Adhesion, {
+export const Adhesion = Object.assign(_Adhesion, {
 	create,
 	confirmPayment,
 	retrieveByNo,

@@ -73,7 +73,7 @@ export const updateAdhesionNumber = async (no) => {
 	}
 };
 
-Parse.Parameters = Object.assign(_Parameters, {
+export const Parameters = Object.assign(_Parameters, {
 	retrieve,
 	getNextAdhesionNumber
 });

@@ -1,4 +1,4 @@
-import { getParseInstance } from "@models/ParseSDK";
+import { Adhesion } from "@models/Adhesion.js";
 
 /**
  * Create a new pending Adhesion record for the adherent [siret]
@@ -11,9 +11,8 @@ export default async (req, resp) => {
 	try {
 		const data = req.body;
 		console.log(`${method} ${req.url}. Siret : ${siret}`, data);
-		const Parse = getParseInstance();
 		// POST : /api/adherent/7889798/adhesion
-		const adhesion = await Parse.Adhesion.create(siret, data);
+		const adhesion = await Adhesion.create(siret, data);
 		console.log(`New adhesion request created for adherent ${siret}`, adhesion);
 		return resp.status(200).json({
 			success: true,

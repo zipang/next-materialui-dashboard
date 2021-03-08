@@ -1,5 +1,5 @@
 import { getSearchParams } from "@lib/client/ApiClient";
-import { getParseInstance } from "@models/ParseSDK";
+import { Adherent } from "@models/Adherent.js";
 
 /**
  * @param {http.IncomingMessage} req
@@ -9,8 +9,7 @@ export default async (req, resp) => {
 	try {
 		if (req.method === "OPTION") return resp.json({ success: true }); // CORS request start with an OPTION request
 		const searchParams = getSearchParams(req);
-		const Parse = getParseInstance();
-		const rows = await Parse.Adherent.retrieve(searchParams);
+		const rows = await Adherent.retrieve(searchParams);
 		resp.json({
 			success: true,
 			rows

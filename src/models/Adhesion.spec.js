@@ -1,5 +1,6 @@
 import suite from "baretest";
 import { getParseInstance } from "./ParseSDK.js";
+import { Adhesion } from "@models/Adhesion.js";
 import code from "@hapi/code";
 
 const { expect } = code;
@@ -16,7 +17,7 @@ AdhesionTestSuite.before(() => {
 });
 
 AdhesionTestSuite("Create a new Adhesion", async () => {
-	const adh = await Parse.Adhesion.create(testAdherent.siret);
+	const adh = await Adhesion.create(testAdherent.siret);
 
 	console.log(adh);
 	expect(adh.no).to.be.a.string();
@@ -24,7 +25,7 @@ AdhesionTestSuite("Create a new Adhesion", async () => {
 });
 
 AdhesionTestSuite("Retrieve current adhesions", async () => {
-	const adhesions = await Parse.Adhesion.getAll();
+	const adhesions = await Adhesion.getAll();
 
 	expect(adhesions).to.be.an.array();
 

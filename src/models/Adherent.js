@@ -1,6 +1,5 @@
 import Parse from "parse/node.js";
 import { getParseInstance } from "./ParseSDK.js";
-import ParseProxy from "./ParseProxy.js";
 import ApiError from "../lib/ApiError.js";
 
 /**
@@ -82,4 +81,4 @@ const StaticMethods = {
 	}
 };
 
-Parse.Adherent = Object.assign(_Adherent, StaticMethods);
+export const Adherent = Object.assign(_Adherent, StaticMethods);
