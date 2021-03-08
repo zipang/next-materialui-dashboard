@@ -8,15 +8,15 @@ export const columns = [
 	{
 		id: "nom",
 		label: "Nom",
-		minWidth: 200,
+		minWidth: 220,
 		link: ({ siret }) => `/admin/adherents/${siret}`
 	},
-	{ id: "adresse.code_postal", label: "CP", minWidth: 50 },
+	{ id: "adresse.code_postal", label: "CP", minWidth: 20 },
 	{ id: "adresse.commune", label: "Commune", minWidth: 220 },
-	{ id: "effectifs.total", label: "Effectif", minWidth: 40, align: "right" },
-	{ id: "representant.nom", label: "Contact (nom)", minWidth: 80 },
-	{ id: "representant.prenom", label: "Contact (prénom)", minWidth: 80 },
-	{ id: "representant.mobile", label: "Contact (mobile)", minWidth: 80 }
+	{ id: "effectifs.total", label: "Effectif", minWidth: 10, align: "right" },
+	{ id: "representant.nom", label: "Contact (nom)", minWidth: 50 },
+	{ id: "representant.prenom", label: "Contact (prénom)", minWidth: 50 },
+	{ id: "representant.mobile", label: "Contact (mobile)", minWidth: 25 }
 ];
 
 const applyFilter = (filter, rows) =>

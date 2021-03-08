@@ -27,7 +27,7 @@ const buildTabs = (statut, setFilter) => {
 const PageAdhesions = () => {
 	const [statut, setFilter] = useState("active");
 	return (
-		<AdminDashboard tabs={buildTabs(statut, setFilter)}>
+		<AdminDashboard title="Adhésions" tabs={buildTabs(statut, setFilter)}>
 			<AdhesionsDataTable filter={{ statut }} />
 		</AdminDashboard>
 	);

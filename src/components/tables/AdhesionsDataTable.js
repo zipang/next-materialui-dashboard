@@ -31,18 +31,25 @@ export const columns = [
 		minWidth: 80,
 		format: (code) => MODE_PAIEMENTS[code],
 		button: (adhesion) => {
-			if (adhesion.mode_paiement === "cheque") {
+			if (adhesion.mode_paiement === "cheque" && adhesion.statut === "en_attente") {
 				return {
 					label: "Confirmer Paiement",
 					action: async () => {
-						const paymentData = {
-							date: "",
-							montant: 200
-						};
-						await AdherentsApiClient.confirmAdhesion(
-							adhesion.no,
-							paymentData
-						);
+						if (
+							confirm(
+								`Confirmez-vous la réception du chèque pour l'adhésion ${adhesion.no} (${adhesion.nom})`
+							)
+						) {
+							const paymentData = {
+								date: new Date().toISOString().substr(0, 10),
+								montant: 200
+							};
+							await AdherentsApiClient.confirmAdhesion(
+								adhesion.no,
+								paymentData
+							);
+							alert("Le paiement a été enregistré");
+						}
 					}
 				};
 			}
@@ -64,6 +71,7 @@ const applyFilter = (filter, rows) =>
 const AdhesionsDataTable = ({ filter = {} }) => {
 	const [rows, setRows] = useState();
 	const [error, setError] = useState();
+	const [needsRefresh, setRefresh] = useState(Date.now());
 
 	// Fetch the rows
 	useEffect(async () => {
@@ -73,10 +81,14 @@ const AdhesionsDataTable = ({ filter = {} }) => {
 		} catch (err) {
 			setError(err.message);
 		}
-	}, [false]);
+	}, [needsRefresh]);
 
 	return rows ? (
-		<DataTable rows={applyFilter(filter, rows)} columns={columns} />
+		<DataTable
+			rows={applyFilter(filter, rows)}
+			columns={columns}
+			onAction={() => setRefresh(Date.now())}
+		/>
 	) : error ? (
 		<Box className="error">{error}</Box>
 	) : (

@@ -1,11 +1,8 @@
-import { useEffect, useState } from "react";
 import { withAuthentication } from "@components/AuthenticationProvider";
 import { makeStyles } from "@material-ui/core/styles";
 import Header from "@components/Header";
 import UserNavBar from "@components/navigation/NavigationBar";
-import SearchBox from "@components/SearchBox";
 import Copyright from "@components/Copyright";
-import { useEventBus } from "@components/EventBusProvider";
 import { useRouter } from "next/router";
 
 const drawerWidth = 256;
@@ -24,7 +21,8 @@ const useStyles = makeStyles((theme) => ({
 	app: {
 		flex: 1,
 		display: "flex",
-		flexDirection: "column"
+		flexDirection: "column",
+		overflow: "hidden"
 	},
 	main: {
 		flex: 1,
@@ -37,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-export const AdminDashboard = ({ user, tabs = [], children }) => {
+export const AdminDashboard = ({ user, title, tabs = [], currentTab, children }) => {
 	const classes = useStyles();
 	const router = useRouter();
 
@@ -47,7 +45,7 @@ export const AdminDashboard = ({ user, tabs = [], children }) => {
 				<UserNavBar user={user} selectedNav={router.pathname} />
 			</nav>
 			<div className={classes.app}>
-				<Header tabs={tabs} />
+				<Header title={title} tabs={tabs} currentTab={currentTab} />
 				<main className={classes.main}>{children}</main>
 				<footer className={classes.footer}>
 					<Copyright />

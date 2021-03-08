@@ -33,6 +33,10 @@ const useStyles = makeStyles({
 		position: "absolute",
 		top: 20,
 		width: 1
+	},
+	inlineButton: {
+		display: "inline-block",
+		marginLeft: "2em"
 	}
 });
 
@@ -136,14 +140,26 @@ const Pagination = ({ rows, rowsPerPage, page, changePage, changeRowsPerPage }) 
 	/>
 );
 
+const noop = () => {};
+
 /**
  * Display a single cell with formatted data,
  * hyperlinks, or action button..
  * @param {DataCellProps} props
  */
-const DataCell = ({ column, row }) => {
+const DataCell = ({ column, row, styles, onAction = noop }) => {
+	let button,
+		action = false;
 	const value = getProperty(row, column.id, "");
 	const formattedValue = column.format ? column.format(value) : value;
+
+	if (column.button) {
+		button = column.button(row);
+		if (button) {
+			action = button.action;
+		}
+	}
+	// let { label, action } = column.button ?  : { action: false };
 	return (
 		<TableCell key={column.id} align={column.align}>
 			{column.link ? (
@@ -151,8 +167,18 @@ const DataCell = ({ column, row }) => {
 			) : (
 				formattedValue
 			)}
-			{column.button && (
-				<Button className="inline-button">{column.button.label}</Button>
+			{action && (
+				<Button
+					color="primary"
+					size="small"
+					className={styles.inlineButton}
+					onClick={async () => {
+						await action(row);
+						onAction();
+					}}
+				>
+					{button.label}
+				</Button>
 			)}
 		</TableCell>
 	);
@@ -167,8 +193,8 @@ const DataCell = ({ column, row }) => {
  * Display a sortable, searchable data tables
  * @param {DataTableProps} props
  */
-const DataTable = ({ columns = [], rows = [] }) => {
-	const classes = useStyles();
+const DataTable = ({ columns = [], rows = [], onAction }) => {
+	const styles = useStyles();
 	const [order, setOrder] = useState("desc");
 	const [orderBy, setOrderBy] = useState(columns[0]?.id);
 	const [page, setPage] = React.useState(0);
@@ -194,11 +220,11 @@ const DataTable = ({ columns = [], rows = [] }) => {
 	};
 
 	return (
-		<Paper className={classes.root}>
-			<TableContainer className={classes.container}>
+		<Paper className={styles.root}>
+			<TableContainer className={styles.container}>
 				<Table stickyHeader aria-label="sticky table">
 					<SortableTableHead
-						classes={classes}
+						classes={styles}
 						columns={columns}
 						orderBy={orderBy}
 						order={order}
@@ -213,8 +239,10 @@ const DataTable = ({ columns = [], rows = [] }) => {
 										{columns.map((column, j) => (
 											<DataCell
 												key={`cell-${i}-${j}`}
+												styles={styles}
 												column={column}
 												row={row}
+												onAction={onAction}
 											/>
 										))}
 									</TableRow>

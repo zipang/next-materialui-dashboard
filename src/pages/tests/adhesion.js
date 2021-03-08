@@ -36,6 +36,7 @@ const TestEmailTemplatePage = () => {
 		try {
 			const data = merge({}, testAdherent, formData);
 			data.effectifs.total = Math.round(Math.random() * 15);
+			data.statut = "en _attente";
 			setAdherent(data);
 			const resp = await register(null, data);
 			if (resp.success) {
@@ -56,7 +57,9 @@ const TestEmailTemplatePage = () => {
 				alert(`Start by creating a new adherent`);
 				return;
 			}
-			const { adhesion } = await createAdhesion(adherent.siret);
+			const { adhesion } = await createAdhesion(adherent.siret, {
+				mode_paiement: "cheque"
+			});
 			setAdhesion(adhesion);
 			alert(`Received new adhesion number : ${adhesion.no}`);
 		} catch (err) {

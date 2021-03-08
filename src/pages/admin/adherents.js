@@ -11,7 +11,7 @@ const buildTabs = (statut, setFilter) => {
 		},
 		{
 			value: "en_attente",
-			label: "En attente renouvellement",
+			label: "En attente",
 			action: () => setFilter("en_attente")
 		},
 		{
@@ -24,10 +24,13 @@ const buildTabs = (statut, setFilter) => {
 	return tabs;
 };
 
+/**
+ * Display the list of all adherents, with a filter on their status
+ */
 const PageAdherents = () => {
 	const [statut, setFilter] = useState("actif");
 	return (
-		<AdminDashboard tabs={buildTabs(statut, setFilter)}>
+		<AdminDashboard title="Adhérents" tabs={buildTabs(statut, setFilter)}>
 			<AdherentsDataTable filter={{ statut }} />
 		</AdminDashboard>
 	);

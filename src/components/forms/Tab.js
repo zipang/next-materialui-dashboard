@@ -1,7 +1,6 @@
 import { Grid } from "@material-ui/core";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
-import StepForm from "./StepForm";
 import GroupLabel from "./GroupLabel";
 import Link from "@components/Link";
 import { getProperty } from "@lib/utils/NestedObjects";
@@ -16,7 +15,7 @@ import { getProperty } from "@lib/utils/NestedObjects";
  * @typedef FieldDef
  * @param {String} name
  * @param {String} label
- * @param {String} type=text|date|integer|percent|mail|url
+ * @param {String} type=text|date|integer|percent|mail|ysn|select|checkboxes
  */
 
 /**
@@ -25,19 +24,20 @@ import { getProperty } from "@lib/utils/NestedObjects";
  * fields together inside a grid layout
  * @param {TabDef} step
  */
-function Tab({ id, title, help = false, fields = false }) {
+function Tab({ id, title, fields }) {
 	// Validate that all required fields are provided
-	if (!id || !title) {
+	if (!id || !title || !fields) {
 		throw new TypeError(
 			`The 'id', 'title' and 'fields' are all required to create a Tab`
 		);
 	}
 	// It's ok : assign all
-	Object.assign(this, { id, title, help, fields });
+	Object.assign(this, { id, title, fields });
 }
 
 Tab.prototype = {
 	formatFieldValue: function (field, value) {
+		if (!value && value !== 0) return "";
 		switch (field.type) {
 			case "text":
 			case "mail":
@@ -51,11 +51,17 @@ Tab.prototype = {
 				return value;
 			case "percent":
 				return value + "%";
+			case "select":
+				return field.options[value];
+			case "checkboxes":
+				return value.map((code) => field.options[code]).join(", ");
 			case "ysn":
 				return value ? "Oui" : "Non";
+			case "radio":
+				return field.label ? (value === "Y" ? "Oui" : "Non") : "";
 
 			default:
-				return "";
+				return value;
 		}
 	},
 	display: function (data) {
@@ -75,7 +81,7 @@ Tab.prototype = {
 							sm={Number(field.size || 1) * 12}
 							style={{ padding: "0 0.5em" }}
 						>
-							<em>{field.label} : </em>
+							<strong>{field.label}&nbsp;:&nbsp;</strong>&nbsp;
 							{this.formatFieldValue(
 								field,
 								getProperty(data, field.name, "")
@@ -87,7 +93,11 @@ Tab.prototype = {
 	},
 	displayBlock: function (block, data) {
 		return (
-			<GroupLabel key={`group-${block.label}`} label={block.label}>
+			<GroupLabel
+				labelInside={false}
+				key={`group-${block.label}`}
+				label={block.label}
+			>
 				{this.displayFields(block.fields, data)}
 			</GroupLabel>
 		);

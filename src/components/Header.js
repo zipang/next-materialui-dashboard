@@ -1,21 +1,15 @@
 import {
 	AppBar,
 	Avatar,
+	Box,
 	Grid,
-	Hidden,
 	IconButton,
 	Tab,
 	Tabs,
-	Toolbar,
-	Tooltip
+	Toolbar
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
-import NotificationsIcon from "@material-ui/icons/Notifications";
-
 import { makeStyles } from "@material-ui/core/styles";
-
 import { useAuthentication } from "./AuthenticationProvider";
-import EventBusProvider, { useEventBus } from "./EventBusProvider";
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
@@ -38,28 +32,12 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const MenuButton = () => {
-	const EventBus = useEventBus();
-	<Hidden smUp>
-		<Grid item>
-			<IconButton
-				color="inherit"
-				aria-label="open drawer"
-				onClick={() => EventBus.emit("toggleMenu")}
-				edge="start"
-			>
-				<MenuIcon />
-			</IconButton>
-		</Grid>
-	</Hidden>;
-};
-
 /**
  * Display the dashboard header with the logged user
  * And a serie of actions tabs
  * @param {HeaderProps} props
  */
-function Header({ tabs = [] }) {
+function Header({ title, tabs = [], currentTab = 0 }) {
 	const { loggedUser: user } = useAuthentication();
 	const styles = useStyles();
 
@@ -67,30 +45,21 @@ function Header({ tabs = [] }) {
 		<>
 			<AppBar color="primary" position="sticky" elevation={0}>
 				<Toolbar>
-					<Grid
-						container
-						spacing={2}
-						direction="column"
-						justify="center"
-						alignItems="center"
-						alignContent="flex-end"
-					>
+					<Grid container spacing={1} direction="row" justify="flex-end">
+						<Box flexGrow={1}>{title && <h2>{title}</h2>}</Box>
 						{user && (
-							<>
-								<Grid item xs={2}>
-									<Tooltip title={`${user.firstName} ${user.lastName}`}>
-										<IconButton
-											color="inherit"
-											className={styles.iconButtonAvatar}
-										>
-											<Avatar
-												src="/static/images/avatar/1.jpg"
-												alt={`${user.firstName} ${user.lastName}`}
-											/>
-										</IconButton>
-									</Tooltip>
-								</Grid>
-							</>
+							<Box alignSelf="flex-end">
+								{user.firstName}&nbsp;{user.lastName}&nbsp;
+								<IconButton
+									color="inherit"
+									className={styles.iconButtonAvatar}
+								>
+									<Avatar
+										src="/static/images/avatar/1.jpg"
+										alt={`${user.firstName} ${user.lastName}`}
+									/>
+								</IconButton>
+							</Box>
 						)}
 					</Grid>
 				</Toolbar>
@@ -102,7 +71,12 @@ function Header({ tabs = [] }) {
 				position="static"
 				elevation={0}
 			>
-				<Tabs value={tabs.value} textColor="inherit">
+				<Tabs
+					value={tabs.value || currentTab}
+					textColor="inherit"
+					variant="scrollable"
+					scrollButtons="auto"
+				>
 					{tabs.map(({ label, action, value }, i) => (
 						<Tab
 							key={`dashboard-tab-${i}`}

@@ -33,7 +33,7 @@ export const Synthese = OnePageWizard("step-synthese");
 
 export const RatiosActivite = OnePageWizard("step-activite-ratios");
 
-export const Certifications = OnePageWizard("step-05-certifications");
+export const Certifications = OnePageWizard("step-certifications");
 
 export const Syneos = OnePageWizard("step-06-syneos");
 

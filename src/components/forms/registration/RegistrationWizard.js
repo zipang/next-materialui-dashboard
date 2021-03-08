@@ -51,7 +51,7 @@ Afin de compléter ce processus d’adhésion, vous aurez besoin des éléments 
 	},
 	{
 		id: "step-02-siret",
-		title: "Nouvel Adherent",
+		title: "Organisme",
 		help: {
 			description: `Vérifiez l'adresse, le nom et la date de création de la structure à déclarer.`,
 			backgroundImage: "https://invie78.fr/images/background-nouvel-adherent.jpg"
@@ -224,7 +224,7 @@ ainsi que les sites internet liés à votre activité.`,
 	},
 	{
 		id: "step-declarations",
-		title: "Réseau, Déclarations, Agréments..",
+		title: "Réseau et Déclarations",
 		help: {
 			description: `Indiquez votre convention collective, les antennes et ou réseau, enseigne..
 Puis indiquez votre numéro d’agrément, de déclaration, d’autorisation.`
@@ -335,6 +335,7 @@ Puis indiquez votre numéro d’agrément, de déclaration, d’autorisation.`
 				fields: [
 					{
 						name: "opco.code",
+						label: "OPCO",
 						type: "select",
 						size: 1 / 2,
 						options: {
@@ -349,7 +350,7 @@ Puis indiquez votre numéro d’agrément, de déclaration, d’autorisation.`
 	},
 	{
 		id: "step-systemes-gestion",
-		title: "Systèmes de Télégestion",
+		title: "Télégestion",
 		help: {
 			description: `Indiquez vos systèmes de télégestion.`,
 			backgroundImage: ""
@@ -384,10 +385,9 @@ Puis indiquez votre numéro d’agrément, de déclaration, d’autorisation.`
 			}
 		]
 	},
-
 	{
-		id: "step-05-certifications",
-		title: "Vos certifications",
+		id: "step-certifications",
+		title: "Certifications",
 		help: {
 			description: `Indiquez les certifications obtenues
 (choisissez 'En cours' si le process n'est pas terminé,
@@ -534,7 +534,7 @@ sinon indiquez la date de certification et le n° de certification)`
 	},
 	{
 		id: "step-06-syneos",
-		title: "Le Label Syneos",
+		title: "Syneos",
 		help: {
 			description: `Indiquez les clés déjà obtenues et celles que vous souhaiteriez obtenir en commentaires.
 Si vous n'avez pas le Label Syneos et souhaitez le mettre en oeuvre avec nous,
@@ -592,7 +592,7 @@ indiquez le avec un commentaire sur vos attentes.`
 	},
 	{
 		id: "step-effectifs",
-		title: "Vos Effectifs",
+		title: "Effectifs",
 		help: {
 			description: `Indiquez vos effectifs en distinguant bien :
 l'_effectif total_ par catégorie dans la colonne de gauche
@@ -663,7 +663,7 @@ les _équivalents temps plein_ (ETP) dans la colonne de droite.`
 	},
 	{
 		id: "step-synthese",
-		title: "Volume d’heures cumulées et chiffre d’affaires",
+		title: "CA et volume d’heures",
 		help: {
 			description: `Indiquez le volume d’heures annuelles cumulées 
 et le chiffre d'affaire de votre activité.`
@@ -714,7 +714,7 @@ et le chiffre d'affaire de votre activité.`
 	},
 	{
 		id: "step-beneficiaires",
-		title: "Vos bénéficiaires",
+		title: "Bénéficiaires",
 		help: {
 			description: `Indiquez le décompte de bénéficiaires de prestations à la personne par catégorie.`
 		},
@@ -788,7 +788,7 @@ et le chiffre d'affaire de votre activité.`
 	},
 	{
 		id: "step-activite-ratios",
-		title: "Votre activité (ratios)",
+		title: "Activité (%)",
 		help: {
 			description: `Indiquez votre _ratio_ d'activité (%) dans chaque catégorie de prestation.`
 		},
@@ -859,6 +859,7 @@ et le chiffre d'affaire de votre activité.`
 		fields: [
 			{
 				name: "domaines.codes",
+				label: "Domaines d'intervention",
 				type: "checkboxes",
 				options: {
 					aide_a_la_toilette: "Aide à la Toilette",
