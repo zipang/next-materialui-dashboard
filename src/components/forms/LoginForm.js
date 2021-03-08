@@ -27,7 +27,7 @@ const LoginForm = () => {
 			router.push(auth.redirectAfterLogin);
 		} else {
 			// Redirection depends of the user's profile
-			router.push(loggedUser.isAdmin() ? "/admin" : "/member");
+			router.push(loggedUser.isAdmin() ? "/admin/adherents" : "/member");
 		}
 	};
 
