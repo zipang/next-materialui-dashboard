@@ -39,28 +39,43 @@ const Login = ({ admin = false, useEvents = true }) => {
 			</Typography>
 			<LoginForm admin={admin} />
 			<Grid container>
-				<Grid item xs={12} sm={6}>
-					<Link
-						href="/forgot-password"
-						variant="caption"
-						onClick={sendEvent("forgotPassword")}
-					>
-						Mot de passe oublié ?
-					</Link>
-				</Grid>
-				<Grid item xs={6} sm={6}>
-					{!admin && (
-						<Typography align="right">
+				{admin && (
+					<Grid item xs={12}>
+						<Typography align="center">
 							<Link
-								href="/create-account"
+								href="/admin/forgot-password"
 								variant="caption"
-								onClick={sendEvent("register")}
+								onClick={sendEvent("forgotPassword")}
 							>
-								Créer mon compte
+								Mot de passe oublié ?
 							</Link>
 						</Typography>
-					)}
-				</Grid>
+					</Grid>
+				)}
+				{!admin && (
+					<>
+						<Grid item xs={12} sm={6}>
+							<Link
+								href="/forgot-password"
+								variant="caption"
+								onClick={sendEvent("forgotPassword")}
+							>
+								Mot de passe oublié ?
+							</Link>
+						</Grid>
+						<Grid item xs={6} sm={6}>
+							<Typography align="right">
+								<Link
+									href="/create-account"
+									variant="caption"
+									onClick={sendEvent("register")}
+								>
+									Créer mon compte
+								</Link>
+							</Typography>
+						</Grid>
+					</>
+				)}
 				<Grid item xs={12}>
 					<Copyright />
 				</Grid>

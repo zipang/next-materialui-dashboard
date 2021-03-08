@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-const ForgotPassword = ({ useEvents = true }) => {
+const ForgotPassword = ({ admin = false, useEvents = true }) => {
 	const styles = useStyles();
 	const EventBus = useEventBus();
 	const sendEvent = (eventName) => (evt) => {
@@ -44,22 +44,43 @@ const ForgotPassword = ({ useEvents = true }) => {
 
 			<ForgotPasswordForm />
 			<Grid container>
-				<Grid item xs={12} sm={6}>
-					<Link href="/login" variant="caption" onClick={sendEvent("login")}>
-						Se connecter
-					</Link>
-				</Grid>
-				<Grid item xs={6} sm={6}>
-					<Typography align="right">
-						<Link
-							href="/create-account"
-							variant="caption"
-							onClick={sendEvent("register")}
-						>
-							Créer un compte
-						</Link>
-					</Typography>
-				</Grid>
+				{admin && (
+					<Grid item xs={12}>
+						<Typography align="center">
+							<Link
+								href="/admin/login"
+								variant="caption"
+								onClick={sendEvent("login")}
+							>
+								Se connecter
+							</Link>
+						</Typography>
+					</Grid>
+				)}
+				{!admin && (
+					<>
+						<Grid item xs={12} sm={6}>
+							<Link
+								href="/login"
+								variant="caption"
+								onClick={sendEvent("login")}
+							>
+								Se connecter
+							</Link>
+						</Grid>
+						<Grid item xs={6} sm={6}>
+							<Typography align="right">
+								<Link
+									href="/create-account"
+									variant="caption"
+									onClick={sendEvent("register")}
+								>
+									Créer un compte
+								</Link>
+							</Typography>
+						</Grid>
+					</>
+				)}
 				<Grid item xs={12} alignItems="center">
 					<Copyright />
 				</Grid>
