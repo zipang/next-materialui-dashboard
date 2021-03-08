@@ -58,7 +58,7 @@ Tab.prototype = {
 			case "ysn":
 				return value ? "Oui" : "Non";
 			case "radio":
-				return field.label ? (value === "Y" ? "Oui" : "Non") : "";
+				return !field.label ? null : field.options[value];
 
 			default:
 				return value;
@@ -81,7 +81,7 @@ Tab.prototype = {
 							sm={Number(field.size || 1) * 12}
 							style={{ padding: "0 0.5em" }}
 						>
-							<strong>{field.label}&nbsp;:&nbsp;</strong>&nbsp;
+							{this.displayFieldLabel(field)}
 							{this.formatFieldValue(
 								field,
 								getProperty(data, field.name, "")
@@ -101,6 +101,13 @@ Tab.prototype = {
 				{this.displayFields(block.fields, data)}
 			</GroupLabel>
 		);
+	},
+	displayFieldLabel: function (field) {
+		if (field.label) {
+			return <strong>{field.label}&nbsp;:&nbsp;</strong>;
+		} else {
+			return null;
+		}
 	}
 };
 

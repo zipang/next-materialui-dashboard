@@ -547,6 +547,7 @@ indiquez le avec un commentaire sur vos attentes.`
 				fields: [
 					{
 						name: "certifications.syneos.statut",
+						label: "Statut",
 						options: { Y: "Oui", N: "Non", en_cours: "En Cours" },
 						type: "radio",
 						size: 6 / 12,
