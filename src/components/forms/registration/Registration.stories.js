@@ -19,9 +19,9 @@ export const Intro = OnePageWizard("step-intro");
 
 export const DocumentsNeccessaires = OnePageWizard("step-documents-necessaires");
 
-export const SiretCreation = OnePageWizard("step-02-siret");
+export const SiretCreation = OnePageWizard("step-organisme-essentials");
 
-export const Contacts = OnePageWizard("step-03-contacts");
+export const Contacts = OnePageWizard("step-contacts");
 
 export const Declarations = OnePageWizard("step-declarations");
 
@@ -35,10 +35,10 @@ export const RatiosActivite = OnePageWizard("step-activite-ratios");
 
 export const Certifications = OnePageWizard("step-certifications");
 
-export const Syneos = OnePageWizard("step-06-syneos");
+export const Syneos = OnePageWizard("step-syneos");
 
 export const SystemesGestion = OnePageWizard("step-systemes-gestion");
 
 export const DemandeContact = OnePageWizard("step-demande-contact");
 
-export const LastStep = OnePageWizard("step-registration-recap");
+export const LastStep = OnePageWizard("step-registration-choice");

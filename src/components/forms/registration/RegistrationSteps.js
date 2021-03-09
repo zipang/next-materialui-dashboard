@@ -1,9 +1,9 @@
-import { useAuthentication } from "@components/AuthenticationProvider";
-import { register } from "@lib/client/AdherentsApiClient";
 import { SiretSearchForm } from "./SiretSearch";
-import Wizard from "@forms/Wizard";
 
-export const steps = [
+/**
+ * These steps are the introduction text for a new adhesion
+ */
+export const welcomeStepsNewAccount = [
 	{
 		id: "step-intro",
 		title: "Adhésion en ligne",
@@ -42,13 +42,69 @@ Afin de compléter ce processus d’adhésion, vous aurez besoin des éléments 
 `,
 			backgroundImage: "https://invie78.fr/images/background-registration.jpg"
 		}
+	}
+];
+
+/**
+ * These steps are the introduction text for a re-adhesion
+ */
+export const welcomeStepsReAdhesion = [
+	{
+		id: "step-intro",
+		title: "Ré-adhésion en ligne",
+		help: {
+			description: `
+Invie est une association qui œuvre pour la structuration de la filière des services à la personne 
+sur le territoire depuis plusieurs années. 
+Notre mission est d’accompagner et innover dans l’aide à la personne 
+en favorisant les échanges de pratiques professionnelles, 
+le partage des connaissances des acteurs du secteur de l’aide 
+et des services à la personne, dans un objectif de développement, 
+de structuration et de modernisation.
+
+La cotisation annuelle est fixée à :
+* 200€ par an pour les SAP/SAAD donnant accès à toute l’offre de services
+`,
+			backgroundImage: "https://invie78.fr/images/background-registration.jpg"
+		}
 	},
 	{
+		id: "step-documents-necessaires",
+		title: "Informations nécessaires",
+		help: {
+			description: `
+Le processus de ré-adhésion est rapide car toutes les données connues sur votre structure sont déjà pré-remplies, 
+vous aurez simplement besoin de vérifier/mettre à jour les informations suivants :
+* Nombre de salariés personnes physiques et ETP
+* Nombre d’intervenants personnes physiques et ETP
+* Nombre de cadres intermédiaires personnes physiques et ETP
+* Volume d’heures APA/PCH/prestations de confort
+* Chiffre d’affaires
+* Bénéficiaires APA/PCH/garde d’enfants/confort
+* Ratios bénéficiaires APA/PCH/transport adapté/garde d’enfant/Part mandataire et prestataire/activités de confort
+`,
+			backgroundImage: "https://invie78.fr/images/background-registration.jpg"
+		}
+	}
+];
+
+/**
+ * This single step is the SIRET search form
+ */
+export const siretSearch = [
+	{
 		id: "step-siret-search",
-		title: "Recherche de l'adherent par son N° de SIRET",
-		description: "Entrez le n° de Siret et cliquez sur Rechercher",
+		title: "Recherche par N° de SIRET",
+		description: "Entrez le n° de Siret de votre structure et cliquez sur Rechercher",
 		displayForm: (data, onSubmit) => <SiretSearchForm onSubmit={onSubmit} />
-	},
+	}
+];
+
+/**
+ * These central steps really contain all the necessary inputs
+ * to gather information about an organisme
+ */
+export const formSteps = [
 	{
 		id: "step-organisme-essentials",
 		title: "Organisme",
@@ -887,7 +943,13 @@ et le chiffre d'affaire de votre activité.`
 				label: "Autres activités"
 			}
 		]
-	},
+	}
+];
+
+/**
+ * Useful step for the first adhesion
+ */
+export const stepDemandeContact = [
 	{
 		id: "step-demande-contact",
 		title: "Demande de contact",
@@ -903,7 +965,13 @@ et le chiffre d'affaire de votre activité.`
 				type: "ysn"
 			}
 		]
-	},
+	}
+];
+
+/**
+ * This is usually the last step where we ask for the payment method
+ */
+export const stepAdhesionPaymentChoice = [
 	{
 		id: "step-registration-choice",
 		title: "Dernière étape",
@@ -944,29 +1012,3 @@ Cliquez sur Valider pour envoyer votre demande.
 		}
 	}
 ];
-
-/**
- * Look if we have an incomplete registration process in the local storage
- * Or create
- */
-const initRegistration = (loggedUser) => {
-	const savedState = window.localStorage.getItem("registration-wizard");
-	if (savedState) {
-		try {
-			initialState = JSON.parse(savedState);
-		} catch (err) {
-			window.localStorage.removeItem(id);
-		}
-		console.log(
-			`Restoring saved state from localStorage: ${JSON.stringify(initialState)} `
-		);
-	}
-};
-
-const RegistrationWizard = () => {
-	const loggedUser = useAuthentication();
-	const data = initRegistration(loggedUser);
-	return <Wizard id="registration-wizard" data={data} steps={steps} />;
-};
-
-export default RegistrationWizard;
