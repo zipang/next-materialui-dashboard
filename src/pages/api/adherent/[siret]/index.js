@@ -23,10 +23,16 @@ export default async (req, resp) => {
 				// POST : /api/adherent/7889798
 				const data = req.body;
 				adherent = await Adherent.retrieveBySiret(siret);
-				// Update every property
-				Object.keys(data).forEach((key) => {
-					adherent.set(key, data[key]);
-				});
+
+				if (!adherent) {
+					// Start with a creation
+					adherent = new Adherent(data);
+				} else {
+					// Update every property
+					Object.keys(data).forEach((key) => {
+						adherent.set(key, data[key]);
+					});
+				}
 				await adherent.save();
 		}
 	} catch (err) {

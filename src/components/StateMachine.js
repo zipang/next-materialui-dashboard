@@ -125,25 +125,18 @@ export const enhanceActions = (id, actions, state, setState, middlewares) => {
 /**
  * HOC to inject {state, actions} and a State Machine Provider around the original Component
  * @param {JSX.Element} Component
- * @param {StateMachineDef} [overrideMachineDef] Can override all or nothing of the Component.StateMachine
- * @param {Object} [props] Optional initial props to pass down to the wrapped component
+ * @param {StateMachineDef} [smDef] Can fully define or override partially the Component.StateMachine (if it exists)
+ * @param {Object} [props] Pass some props to the wrapped component
  */
-export const withStateMachine = (
-	Component,
-	overrideMachineDef = {},
-	initialProps = {}
-) => ({ ...props }) => {
+export const withStateMachine = (Component, smDef = {}, initialProps = {}) => ({
+	...props
+}) => {
 	// we can override the initial state and middlewares this way
-	const mergedDefinitions = { ...Component.StateMachine, ...overrideMachineDef };
+	const mergedDefs = { ...Component.StateMachine, ...smDef };
 
-	const {
-		id,
-		actions = {},
-		middlewares = [],
-		useLocalStorage = false
-	} = mergedDefinitions;
+	const { id, actions = {}, middlewares = [], useLocalStorage = false } = mergedDefs;
 
-	let initialState = mergedDefinitions.initialState || {};
+	let initialState = mergedDefs.initialState || {};
 
 	if (useLocalStorage && window && window.localStorage) {
 		middlewares.push(_MIDDLEWARES.localStorage);

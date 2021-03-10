@@ -1,7 +1,7 @@
 import { useAuthentication } from "@components/AuthenticationProvider";
 import { register } from "@lib/client/AdherentsApiClient";
 import { SiretSearchForm } from "./SiretSearch";
-import Wizard from "@forms/Wizard";
+import Wizard from "@forms/wizard/Wizard";
 
 export const steps = [
 	{

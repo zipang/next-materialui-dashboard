@@ -1,11 +1,11 @@
 import { useEffect } from "react";
 import { useEventBus } from "@components/EventBusProvider";
-import useFormStyles from "./useFormStyles";
+import useFormStyles from "@forms/useFormStyles";
 import {
 	FormValidationProvider,
 	useFormValidationContext
-} from "./validation/FormValidationProvider";
-import VForm from "./validation/VForm";
+} from "@forms/validation/FormValidationProvider";
+import VForm from "@forms/validation/VForm";
 
 /**
  * @typedef StepFormProps

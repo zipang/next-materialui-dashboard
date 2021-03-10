@@ -1,4 +1,5 @@
 import { SiretSearchForm } from "./SiretSearch";
+import { update } from "@lib/client/AdherentsApiClient";
 
 /**
  * These steps are the introduction text for a new adhesion
@@ -946,6 +947,19 @@ et le chiffre d'affaire de votre activité.`
 	}
 ];
 
+// Add the update action to each of these steps
+formSteps.forEach((step) => {
+	step.actions = [
+		{
+			label: "Enregistrer",
+			action: async ({ data }, loggedUser) => {
+				await update(loggedUser, data);
+				alert("Votre progression a été sauvegardée");
+			}
+		}
+	];
+});
+
 /**
  * Useful step for the first adhesion
  */
@@ -1002,13 +1016,22 @@ Cliquez sur Valider pour envoyer votre demande.
 				]
 			}
 		],
-		validate: async (formData, loggedUser) => {
-			try {
-				console.log(formData);
-				await register(loggedUser, formData);
-			} catch (err) {
-				alert(err.message);
+		actions: [
+			{
+				label: "Valider l'adhésion",
+				action: async ({ data }, loggedUser) => {
+					try {
+						// Extract adhesion data
+						const { siret, adhesion } = data;
+						// Create the adhesion request
+						const resp = await createAdhesion(siret, adhesion);
+						// Now if the payment option is online, redirect to the payment site
+						alert(resp);
+					} catch (err) {
+						alert(err.message);
+					}
+				}
 			}
-		}
+		]
 	}
 ];

@@ -24,11 +24,14 @@ export const register = async (user, registrationFormData) => {
 /**
  * Let a user update some informations about an existing adherent
  * @param {Object} user
- * @param {Object} orgData
+ * @param {Object} data
  */
-export const update = async (user, orgData) => {
+export const update = async (user, data) => {
 	try {
-		return await APIClient.post(`/api/adherent/${orgData.siret}`, orgData);
+		if (user) {
+			data.updatedBy = user.username;
+		}
+		return await APIClient.post(`/api/adherent/${data.siret}`, data);
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
 	}

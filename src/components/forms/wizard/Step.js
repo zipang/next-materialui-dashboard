@@ -1,12 +1,12 @@
+import { useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import ReactMarkdown from "react-markdown";
 import breaks from "remark-breaks";
 import Input from "@forms/inputs/Input";
 import YesNo from "@forms/inputs/YesNo";
 import StepForm from "./StepForm";
-import GroupLabel from "./GroupLabel";
+import GroupLabel from "../GroupLabel";
 import { useEventBus } from "@components/EventBusProvider";
-import { useEffect } from "react";
 
 /**
  * Register a custom ysn type to render as 2 radio buttons labelled Oui and Non
@@ -20,7 +20,7 @@ Input.registerInput("ysn", YesNo("Oui", "Non"));
  * @param {HelpDef} [help]
  * @param {Array<FieldDef>} [fields]
  * @param {Function} [displayForm] a custom function to display the form without fields
- * @param {Function} [validate] an optional function to activate the validate button
+ * @param {Array} [actions] an optional array of custom actions available to this step
  */
 
 /**
