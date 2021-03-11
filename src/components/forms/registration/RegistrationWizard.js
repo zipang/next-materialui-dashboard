@@ -955,7 +955,7 @@ const initRegistration = (loggedUser) => {
 		try {
 			initialState = JSON.parse(savedState);
 		} catch (err) {
-			window.localStorage.removeItem(id);
+			window.localStorage.removeItem("registration-wizard");
 		}
 		console.log(
 			`Restoring saved state from localStorage: ${JSON.stringify(initialState)} `
