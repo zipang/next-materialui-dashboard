@@ -142,16 +142,6 @@ const _Wizard = () => {
 		eb.send(`${currentStep.id}:validate`);
 	};
 
-	useEffect(() => {
-		console.log(
-			`Rendering slide ${currentIndex} of wizard ${id} with ${JSON.stringify(
-				data,
-				null,
-				"\t"
-			)}`
-		);
-	}, [currentIndex]);
-
 	return (
 		<WizardContainer>
 			<WizardViewport
@@ -200,6 +190,6 @@ const _Wizard = () => {
  * @param {WizardProps} props
  */
 const Wizard = (props) =>
-	withEventBus(withStateMachine(_Wizard, WizardStateMachine({ ...props })))(props);
+	withEventBus(withStateMachine(_Wizard, WizardStateMachine({ ...props })))();
 
 export default Wizard;
