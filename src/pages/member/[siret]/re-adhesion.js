@@ -1,9 +1,8 @@
 import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
 import { Box } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import AdminDashboard from "../index.js";
+import UserDashboard from "../index.js";
 import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
-import ReadOnlyForm from "@components/forms/ReadOnlyForm.js";
 import ReadhesionWizard from "@components/forms/registration/ReadhesionWizard.js";
 
 /**
@@ -17,9 +16,9 @@ export const getServerSideProps = async (context) => {
 	};
 };
 
-const LoadReAdhesion = ({ adherent, error }) => {
+const LoadReAdhesion = ({ data, error }) => {
 	if (error) return <Box>{error}</Box>;
-	if (adherent) return <ReadOnlyForm tabs={tabsDef} data={adherent} />;
+	if (adherent) return <ReadhesionWizard data={data} />;
 	return null;
 };
 
@@ -43,13 +42,9 @@ const PageReAdhesion = ({ siret }) => {
 	}, [false]);
 
 	return (
-		<AdminDashboard
-			title={adherent && adherent.nom}
-			tabs={tabHeaders(eb, setCurrentTab)}
-			currentTab={currentTab}
-		>
+		<UserDashboard title={adherent && adherent.nom}>
 			<LoadReAdhesion data={adherent} error={error} />
-		</AdminDashboard>
+		</UserDashboard>
 	);
 };
 
