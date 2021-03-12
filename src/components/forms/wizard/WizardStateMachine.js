@@ -66,7 +66,7 @@ const transitionTo = (state, where) => {
  * @param {Number} [initialStep=0]
  * @return {StateMachineDef}
  */
-const WizardStateMachine = (id, steps = [], data = {}, initialStep = 0) => ({
+const WizardStateMachine = ({ id, steps = [], data = {}, initialStep = 0 }) => ({
 	id,
 
 	initialState: {
