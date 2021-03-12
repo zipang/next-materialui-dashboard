@@ -97,8 +97,12 @@ export const mergeSiretData = (callback) => (siretData, errors) => {
 export const SiretSearchForm = ({ onSubmit }) => {
 	const [apiErrorMessage, setApiErrorMessage] = useState(false);
 
+	const onError = (error) => {
+		console.log(`Siret search returned error`, error);
+		setApiErrorMessage(error.message);
+	};
+
 	const displayApiErrorMessage = () => {
-		console.log(`SiretSearch displayApiErrorMessage()`);
 		if (apiErrorMessage) {
 			const forgetMe = apiErrorMessage;
 			setApiErrorMessage(false);
@@ -106,11 +110,6 @@ export const SiretSearchForm = ({ onSubmit }) => {
 		} else {
 			return true;
 		}
-	};
-
-	const onError = (error) => {
-		console.log(`Siret search returned error`, error);
-		setApiErrorMessage(error.message);
 	};
 
 	return (
