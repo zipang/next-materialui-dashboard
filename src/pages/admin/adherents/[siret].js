@@ -2,7 +2,7 @@ import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
 import { Box } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import AdminDashboard from "../index.js";
-import { steps } from "@forms/registration/RegistrationWizard.js";
+import { formSteps } from "@forms/registration/RegistrationSteps.js";
 import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
 import ReadOnlyForm from "@components/forms/ReadOnlyForm.js";
 
@@ -18,12 +18,8 @@ const emptyCertification = (stepId) => (field) => {
 	return true; // ok
 };
 
-const tabsDef = steps
-	.filter(
-		(step) =>
-			Array.isArray(step.fields) &&
-			!["step-demande-contact", "step-registration-recap"].includes(step.id)
-	)
+const tabsDef = formSteps
+	.filter((step) => Array.isArray(step.fields))
 	.map(({ id, title, fields }) => ({
 		id,
 		title,
@@ -73,7 +69,7 @@ const TabbedView = ({ adherent, error }) => {
  */
 const PageDetailAdherent = ({ siret }) => {
 	const eb = useEventBus();
-	const [currentTab, setCurrentTab] = useState(0);
+	const [currentTab, setCurrentTab] = useState(formSteps[0].id);
 	const [adherent, setAdherent] = useState();
 	const [error, setError] = useState(false);
 
