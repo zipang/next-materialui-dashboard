@@ -8,7 +8,7 @@ import { useEventBus, withEventBus } from "@components/EventBusProvider";
 import Step from "@components/forms/wizard/Step";
 import { useAuthentication } from "@components/AuthenticationProvider";
 import { isEmpty } from "@lib/utils/NestedObjects";
-import { withStateMachine } from "@components/StateMachine";
+import { useStateMachine, withStateMachine } from "@components/StateMachine";
 import WizardStateMachine from "./WizardStateMachine";
 
 const useWizardStyles = (customStyles = {}) =>
@@ -120,19 +120,19 @@ const _Wizard = () => {
 
 	// flatten the state
 	const { data, steps, currentStep, currentIndex } = state;
+	console.log(
+		`Loaded wizard ${id} with ${steps.length} steps. Current step : ${currentIndex}`,
+		state
+	);
 
 	// Validate the next step : merge new step data and transition to the next step
 	// if there is no validation error
 	const validateNextStep = async (payload, errors = {}) => {
-		let newState = state;
-
 		if (isEmpty(errors)) {
 			// The data validation is ok : We can merge the data and pass to the next slide
 			actions.merge(state, { data: payload });
-			newState = await actions.next(state);
+			await actions.next(state);
 		}
-
-		actions.transition("Wizard", "validateStep", state, newState);
 	};
 
 	/**
@@ -177,17 +177,18 @@ const _Wizard = () => {
 				>
 					Etape suivante
 				</Button>
-				{currentStep.actions.map(({ label, action, icon }) => (
-					<Button
-						key={`btn-${label}`}
-						variant="contained"
-						color="secondary"
-						startIcon={icon && <SvgIcon name={icon} />}
-						onClick={() => action(state, loggedUser)}
-					>
-						{label}
-					</Button>
-				))}
+				{Array.isArray(currentStep.actions) &&
+					currentStep.actions.map(({ label, action, icon }) => (
+						<Button
+							key={`btn-${label}`}
+							variant="contained"
+							color="secondary"
+							startIcon={icon && <SvgIcon name={icon} />}
+							onClick={() => action(state, loggedUser)}
+						>
+							{label}
+						</Button>
+					))}
 			</WizardControls>
 		</WizardContainer>
 	);
@@ -199,6 +200,6 @@ const _Wizard = () => {
  * @param {WizardProps} props
  */
 const Wizard = (props) =>
-	withEventBus(withStateMachine(_Wizard, WizardStateMachine({ ...props })));
+	withEventBus(withStateMachine(_Wizard, WizardStateMachine({ ...props })))(props);
 
 export default Wizard;
