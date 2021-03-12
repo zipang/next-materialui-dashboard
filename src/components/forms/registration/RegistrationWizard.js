@@ -4,6 +4,7 @@ import {
 	welcomeStepsNewAccount,
 	siretSearch,
 	formSteps,
+	stepDemandeContact,
 	stepAdhesionPaymentChoice
 } from "./RegistrationSteps";
 
@@ -11,6 +12,7 @@ const steps = [
 	...welcomeStepsNewAccount,
 	...siretSearch,
 	...formSteps,
+	...stepDemandeContact,
 	...stepAdhesionPaymentChoice
 ];
 
@@ -22,6 +24,10 @@ const initRegistration = (loggedUser) => {
 	const savedState = window.localStorage.getItem("registration-wizard");
 	if (savedState) {
 		try {
+			console.log(
+				`Retrieved previously saved state of the regsitration wizard`,
+				savedState
+			);
 			return JSON.parse(savedState);
 		} catch (err) {
 			window.localStorage.removeItem("registration-wizard");
