@@ -31,9 +31,16 @@ export class ValidationError extends TypeError {
  */
 
 /**
- * Register a property
- * @param {String} name (path) to the property
- * @param {FieldDef} fieldDef
+ * @typedef {FieldRegistrationFunction}
+ * @property {String} name (path) to the property
+ * @property {FieldDef} fieldDef
+ */
+
+/**
+ * Build the field registration function
+ * @param {Object} fields Map of the fields indexed by their property path (eg : "user.name")
+ * @param {Object} data
+ * @returns {FieldRegistrationFunction}
  */
 const registerField = (fields, data) => (
 	name,
