@@ -1,5 +1,5 @@
 import { SiretSearchForm } from "./SiretSearch";
-import { update } from "@lib/client/AdherentsApiClient";
+import { update, createAdhesion } from "@lib/client/AdherentsApiClient";
 
 /**
  * These steps are the introduction text for a new adhesion
@@ -1005,7 +1005,7 @@ Cliquez sur Valider pour envoyer votre demande.
 				label: "Choisissez votre mode de règlement (200€ par an).",
 				fields: [
 					{
-						name: "adhesion.mode_reglement",
+						name: "adhesion.mode_paiement",
 						type: "radio",
 						size: 1,
 						options: {
@@ -1022,9 +1022,12 @@ Cliquez sur Valider pour envoyer votre demande.
 				action: async ({ data }, loggedUser) => {
 					try {
 						// Extract adhesion data
-						const { siret, adhesion } = data;
+						const { adhesion, ...adherent } = data;
+						const { siret } = adherent;
+						// Update the final state of the organisme
+						await update(loggedUser, adherent);
 						// Create the adhesion request
-						const resp = await createAdhesion(siret, adhesion);
+						const resp = await createAdhesion(loggedUser, siret, adhesion);
 						// Now if the payment option is online, redirect to the payment site
 						alert(resp);
 					} catch (err) {
