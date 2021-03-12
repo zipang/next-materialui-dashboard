@@ -1,4 +1,4 @@
-import { Adhesion } from "@models/Adhesion.js";
+import { confirmPayment } from "@models/Adhesion.js";
 
 /**
  * // POST : /api/adhesion/2020-012/payment
@@ -9,7 +9,7 @@ import { Adhesion } from "@models/Adhesion.js";
 export default async (req, resp) => {
 	const { no } = req.query;
 	try {
-		const adhesion = await Adhesion.confirmPayment(no, req.body);
+		const adhesion = await confirmPayment(no, req.body);
 
 		return resp.status(200).json({
 			success: true,

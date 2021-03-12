@@ -1,4 +1,4 @@
-import { Adherent } from "@models/Adherent.js";
+import { retrieveBySiret, update } from "@models/Adherent.js";
 
 /**
  * Create a new pending Adhesion record for the adherent [siret]
@@ -13,7 +13,7 @@ export default async (req, resp) => {
 		switch (method) {
 			case "GET":
 				// GET by siret : /api/adherent/7889798
-				adherent = await Adherent.retrieveBySiret(siret);
+				adherent = await retrieveBySiret(siret);
 				return resp.json({
 					success: true,
 					adherent: adherent.toJSON()
@@ -22,18 +22,11 @@ export default async (req, resp) => {
 			case "POST":
 				// POST : /api/adherent/7889798
 				const data = req.body;
-				adherent = await Adherent.retrieveBySiret(siret);
-
-				if (!adherent) {
-					// Start with a creation
-					adherent = new Adherent(data);
-				} else {
-					// Update every property
-					Object.keys(data).forEach((key) => {
-						adherent.set(key, data[key]);
-					});
-				}
-				await adherent.save();
+				adherent = await update(data);
+				return resp.json({
+					success: true,
+					adherent: adherent.toJSON()
+				});
 		}
 	} catch (err) {
 		resp.status(err.code || 500).json({
