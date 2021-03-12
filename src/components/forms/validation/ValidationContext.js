@@ -182,7 +182,7 @@ const buildValidate = (validationContext) => (name, options) => {
 	}
 
 	if (validateASingleField || validationContext.errors !== errors) {
-		console.log(`Validation errors have been raised. Return a new ValidationContext`);
+		console.log(`Validation errors have been raised.`, errors);
 		// Return a new validationContext instance with the updated errors object
 		// => WILL re-render all the registered fields
 		return { ...validationContext, errors };
