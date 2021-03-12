@@ -44,7 +44,7 @@ const CenteredPaperSheet = ({ fullPage = true, fullHeight = false, children }) =
 				fullHeight && styles.fullHeight
 			)}
 		>
-			<Grid item flexGrow={1}>
+			<Grid item>
 				<Paper square elevation={5} className={styles.paper}>
 					{children}
 				</Paper>
