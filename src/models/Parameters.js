@@ -43,7 +43,7 @@ export const getNextAdhesionNumber = async () => {
 	const envParameters = await retrieve();
 	const currentCounter = envParameters.get("no_adhesion");
 	const [year, counter] = currentCounter.split("-");
-	if (year === currentYear && process.env.NODE_ENV !== "test") {
+	if (year === currentYear) {
 		// Increment that counter
 		console.log(`Incrementing adhesion counter`);
 		return `${year}-${(Number(counter) + 1001).toString().substr(1, 3)}`;

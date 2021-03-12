@@ -1,4 +1,11 @@
 /**
+ * Test if there is some entries in an object
+ * @param {Object} obj
+ * @return {Boolean} TRUE if this object has no entries
+ */
+export const isEmpty = (obj) => Object.keys(obj).length === 0;
+
+/**
  * Split a path to a property into its keys
  * (property names or array indexes)
  * @example

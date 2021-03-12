@@ -1,5 +1,4 @@
-// import ParseNode from "parse/node.js";
-import ParseNode from "parse/node";
+import ParseNode from "parse/node.js";
 import ApiError from "../lib/ApiError.js";
 import { loadEnv } from "../lib/utils/Env.js";
 
@@ -35,13 +34,11 @@ const ParseExtensions = {
 	/**
 	 *
 	 * @param {Parse.Query} query
-	 * @param {Map} params
+	 * @param {Object} params
 	 */
 	addQueryParameters: (query, params) => {
-		if (typeof params === "object" && !params instanceof Map) {
-			params = new Map(Object.entries(params));
-		}
-		for ([key, value] of params) {
+		if (!params) return query;
+		for (let [key, value] of Object.entries(params)) {
 			query.equalTo(key, value);
 		}
 		return query;
@@ -49,6 +46,28 @@ const ParseExtensions = {
 };
 
 export const Parse = Object.assign(ParseNode, ParseExtensions);
+
+/**
+ * Retrieves a complete list of ParseObjects that satisfy this query.
+ * Using `eachBatch` under the hood to fetch all the valid objects.
+ *
+ * @param {object} options Valid options are:<ul>
+ *   <li>batchSize: How many objects to yield in each batch (default: 100)
+ *   <li>useMasterKey: In Cloud Code and Node only, causes the Master Key to
+ *     be used for this request.
+ *   <li>sessionToken: A valid session token, used for making a request on
+ *       behalf of a specific user.
+ * </ul>
+ * @returns {Promise} A promise that is resolved with the results when
+ * the query completes.
+ */
+Parse.Query.prototype.findAll = async function (options) {
+	let result = [];
+	await this.eachBatch((objects) => {
+		result = [...result, ...objects];
+	}, options);
+	return result;
+};
 
 /**
  * Ensure that we get a properly initialized Parse instance

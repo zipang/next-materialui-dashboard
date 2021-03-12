@@ -1,4 +1,5 @@
 import { SiretSearchForm } from "./SiretSearch";
+import { update, createAdhesion } from "@lib/client/AdherentsApiClient";
 
 /**
  * These steps are the introduction text for a new adhesion
@@ -946,6 +947,19 @@ et le chiffre d'affaire de votre activité.`
 	}
 ];
 
+// Add the update action to each of these steps
+formSteps.forEach((step) => {
+	step.actions = [
+		{
+			label: "Enregistrer",
+			action: async ({ data }, loggedUser) => {
+				await update(loggedUser, data);
+				alert("Votre progression a été sauvegardée");
+			}
+		}
+	];
+});
+
 /**
  * Useful step for the first adhesion
  */
@@ -991,7 +1005,7 @@ Cliquez sur Valider pour envoyer votre demande.
 				label: "Choisissez votre mode de règlement (200€ par an).",
 				fields: [
 					{
-						name: "adhesion.mode_reglement",
+						name: "adhesion.mode_paiement",
 						type: "radio",
 						size: 1,
 						options: {
@@ -1002,13 +1016,25 @@ Cliquez sur Valider pour envoyer votre demande.
 				]
 			}
 		],
-		validate: async (formData, loggedUser) => {
-			try {
-				console.log(formData);
-				await register(loggedUser, formData);
-			} catch (err) {
-				alert(err.message);
+		actions: [
+			{
+				label: "Valider l'adhésion",
+				action: async ({ data }, loggedUser) => {
+					try {
+						// Extract adhesion data
+						const { adhesion, ...adherent } = data;
+						const { siret } = adherent;
+						// Update the final state of the organisme
+						await update(loggedUser, adherent);
+						// Create the adhesion request
+						const resp = await createAdhesion(loggedUser, siret, adhesion);
+						// Now if the payment option is online, redirect to the payment site
+						alert(resp);
+					} catch (err) {
+						alert(err.message);
+					}
+				}
 			}
-		}
+		]
 	}
 ];

@@ -1,7 +1,7 @@
 // Wizard.stories.js
 import Wizard from "./Wizard";
-import Input from "./inputs/Input";
 import StepForm from "./StepForm";
+import Input from "../inputs/Input";
 import { Box } from "@material-ui/core";
 import AuthenticationProvider from "@components/AuthenticationProvider";
 import testUser from "@models/test-user";

@@ -1,10 +1,10 @@
 const testData = {
-	siret: "53421553654326",
+	siret: "77777777777777",
 	nom: "X",
-	federation_reseau_enseigne: "LA Punk",
+	federation_reseau_enseigne: "ASSR",
 	date_creation: "2001-01-01",
 	adresse: {
-		rue1: "666 BLUEBERRY STREET",
+		rue1: "1 BD JULES FERRI",
 		rue2: "",
 		code_postal: "98765",
 		commune: "DOWNTOWN LA"
@@ -41,8 +41,6 @@ const testData = {
 		date: null,
 		no: ""
 	},
-	code: "agefos_pme",
-	autre: "",
 	systemes_gestion: {
 		dispositif_domycile: true,
 		telegestion: true,
@@ -58,7 +56,7 @@ const testData = {
 		qualicert: {
 			statut: "Y",
 			date: "2021-12-10",
-			no: "IMAPRETTYDAWNGENIUS"
+			no: "CERT7865756"
 		},
 		qualisap: {
 			statut: "N",

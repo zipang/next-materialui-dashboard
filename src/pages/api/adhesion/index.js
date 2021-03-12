@@ -1,5 +1,5 @@
 import { getSearchParams } from "@lib/client/ApiClient";
-import { Adhesion } from "@models/Adhesion.js";
+import { retrieve } from "@models/Adhesion.js";
 
 /**
  * @param {http.IncomingMessage} req
@@ -9,7 +9,7 @@ export default async (req, resp) => {
 	try {
 		if (req.method === "OPTION") return resp.json({ success: true }); // CORS request start with an OPTION request
 		const searchParams = getSearchParams(req);
-		const rows = await Adhesion.retrieve(searchParams);
+		const rows = await retrieve(searchParams);
 		resp.json({
 			success: true,
 			rows

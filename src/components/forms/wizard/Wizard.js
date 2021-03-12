@@ -4,10 +4,12 @@ import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 
 import SvgIcon from "@components/SvgIcon";
-import { useStateMachine, withStateMachine } from "@components/StateMachine";
 import { useEventBus, withEventBus } from "@components/EventBusProvider";
-import Step from "@forms/Step";
+import Step from "@components/forms/wizard/Step";
 import { useAuthentication } from "@components/AuthenticationProvider";
+import { isEmpty } from "@lib/utils/NestedObjects";
+import { useStateMachine, withStateMachine } from "@components/StateMachine";
+import WizardStateMachine from "./WizardStateMachine";
 
 const useWizardStyles = (customStyles = {}) =>
 	makeStyles((theme) => ({
@@ -55,11 +57,10 @@ const useWizardStyles = (customStyles = {}) =>
 
 /**
  * @typedef WizardProps
- * @property {String} id required a unique id for this wizard
+ * @property {String} id! required a unique id to identify this wizard (and allow sending messages)
  * @property {Step[]} steps the array of steps that will be executed in sequence
- * @property {Object} initialData the initial data to render
- * @property {Number} [currentSlide=0] the current slide to render
- * @property {Function} onComplete The function to call with the complete data payload (last step)
+ * @property {Object} data the initial data to render
+ * @property {Number} [initialSteps=0] the current slide to render
  */
 
 const WizardContainer = ({ children }) => (
@@ -109,83 +110,51 @@ const WizardControls = memo(({ children }) => (
 ));
 
 /**
- * Define the actions that are available on our Wizard
- * Finite State Machine associates a given state
- * and a defined set of actions to transition from one state to another
- * @param {Object} state Initial state available to any actions
- */
-
-const gotoSlide = (state, to) => {
-	return {
-		...state,
-		currentSlide: to
-	};
-};
-const next = (state) => {
-	return gotoSlide(state, state.currentSlide + 1);
-};
-const previous = (state) => {
-	return gotoSlide(state, state.currentSlide - 1);
-};
-
-/**
  * Receives the steps and the state machine altogether
  */
-const InitWizard = ({ id, steps = [] }) => {
+const _Wizard = () => {
 	const classes = useWizardStyles();
 	const eb = useEventBus();
-	const { state, actions } = useStateMachine();
+	const { id, state, actions } = useStateMachine();
 	const { loggedUser } = useAuthentication();
 
 	// flatten the state
-	const { data, currentSlide } = state;
+	const { data, steps, currentStep, currentIndex } = state;
+	console.log(
+		`Loaded wizard ${id} with ${steps.length} steps. Current step : ${currentIndex}`,
+		state
+	);
 
-	// Define a validate combo action that merge current step data and transition to the next step
-	const validateStep = (payload, errors = {}) => {
-		const newData = [{ data: payload }];
-
-		if (Object.keys(errors).length === 0 && currentSlide < steps.length - 1) {
-			// We can pass to next slide
-			console.log("Goto to next step.");
-			newData.push({ currentSlide: state.currentSlide + 1 });
+	// Validate the next step : merge new step data and transition to the next step
+	// if there is no validation error
+	const validateNextStep = async (payload, errors = {}) => {
+		if (isEmpty(errors)) {
+			// The data validation is ok : We can merge the data and pass to the next slide
+			actions.merge(state, { data: payload });
+			await actions.next(state);
 		}
-
-		const newState = actions.merge({}, { ...state }, ...newData); // << It's very important here to recreate a new state object
-		actions.transition("Wizard", "validateStep", state, newState);
 	};
 
 	/**
-	 * This event may trigger the onSubmit or onError
+	 * This event may trigger the onSubmit or onError inside the StepForm
 	 */
 	const triggerValidate = () => {
-		eb.send(`${steps[currentSlide].id}:validate`);
+		eb.send(`${currentStep.id}:validate`);
 	};
-
-	useEffect(() => {
-		console.log(
-			`Rendering slide ${currentSlide} of wizard ${id} with ${JSON.stringify(
-				data,
-				null,
-				"\t"
-			)}`
-		);
-	}, [currentSlide]);
 
 	return (
 		<WizardContainer>
 			<WizardViewport
 				classes={classes}
-				step={
-					new Step(steps[currentSlide], `${currentSlide + 1}/${steps.length}`)
-				}
+				step={new Step(currentStep, `${currentIndex + 1}/${steps.length}`)}
 				data={data}
-				onSubmit={validateStep}
+				onSubmit={validateNextStep}
 			/>
 			<WizardControls>
 				<Button
 					key="btn-previous"
 					variant="outlined"
-					disabled={currentSlide === 0}
+					disabled={currentIndex === 0}
 					onClick={actions.previous}
 				>
 					Etape précédente
@@ -193,37 +162,26 @@ const InitWizard = ({ id, steps = [] }) => {
 				<Button
 					key="btn-next"
 					variant="outlined"
-					disabled={currentSlide >= steps.length - 1}
+					disabled={currentIndex >= steps.length - 1}
 					onClick={triggerValidate}
 				>
 					Etape suivante
 				</Button>
-				<Button
-					key="btn-validate"
-					variant="contained"
-					color="secondary"
-					disabled={steps[currentSlide].validate === undefined}
-					startIcon={<SvgIcon name="Save" />}
-					onClick={() => steps[currentSlide].validate(data, loggedUser)}
-				>
-					Valider
-				</Button>
+				{Array.isArray(currentStep.actions) &&
+					currentStep.actions.map(({ label, action, icon }) => (
+						<Button
+							key={`btn-${label}`}
+							variant="contained"
+							color="secondary"
+							startIcon={icon && <SvgIcon name={icon} />}
+							onClick={() => action(state, loggedUser)}
+						>
+							{label}
+						</Button>
+					))}
 			</WizardControls>
 		</WizardContainer>
 	);
-};
-
-InitWizard.StateMachine = {
-	useLocalStorage: true,
-	initialState: {
-		data: {},
-		currentSlide: 0
-	},
-	actions: {
-		gotoSlide,
-		next,
-		previous
-	}
 };
 
 /**
@@ -231,13 +189,7 @@ InitWizard.StateMachine = {
  * a complex task, like a form registration with a lots of pages of inputs
  * @param {WizardProps} props
  */
-const Wizard = ({ id, steps = [], data = {}, currentSlide = 0 }) =>
-	withEventBus(
-		withStateMachine(
-			InitWizard,
-			{ id, initialState: { data, currentSlide, steps } },
-			{ id, steps }
-		)
-	)();
+const Wizard = (props) =>
+	withEventBus(withStateMachine(_Wizard, WizardStateMachine({ ...props })))();
 
 export default Wizard;

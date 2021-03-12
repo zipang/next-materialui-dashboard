@@ -57,8 +57,14 @@ export const enhanceActions = (id, actions, state, setState, middlewares) => {
 		);
 	}
 
-	console.log(`Enhancing state machine actions : ${Object.keys(actions)}`);
+	console.log(`Enhancing state machine ${id} actions : ${Object.keys(actions)}`);
 
+	/**
+	 * This `transition` action is responsible for applying the state change
+	 * using the React hook useState() setter, thus triggering a re-render
+	 * of the state machine component
+	 * @param  {...any} args
+	 */
 	const transition = (...args) => {
 		if (args.length !== 4) {
 			throw new TypeError(
@@ -77,15 +83,18 @@ export const enhanceActions = (id, actions, state, setState, middlewares) => {
 		}
 	};
 
+	/**
+	 * Enhance the actions so that they call the transition automatically
+	 */
 	const enhancedActions = Object.keys(actions).reduce(
 		(wrapped, name) => {
 			// Create an inactive version that just return the state
 			wrapped[`get_${name}`] = (...args) => actions[name](state, ...args);
 
 			// Create the active version that applies the state transition
-			wrapped[name] = (...args) => {
+			wrapped[name] = async (...args) => {
 				try {
-					let newState = actions[name](state, ...args);
+					let newState = await actions[name](state, ...args);
 
 					if (newState !== undefined && newState !== state) {
 						// Apply the middlewares
@@ -96,8 +105,10 @@ export const enhanceActions = (id, actions, state, setState, middlewares) => {
 							}
 						});
 						transition(id, name, state, newState);
+						return newState;
 					} else {
 						console.log(`Action ${name} didn't change ${id} machine state`);
+						return state;
 					}
 				} catch (err) {
 					console.error(
@@ -125,31 +136,25 @@ export const enhanceActions = (id, actions, state, setState, middlewares) => {
 /**
  * HOC to inject {state, actions} and a State Machine Provider around the original Component
  * @param {JSX.Element} Component
- * @param {StateMachineDef} [overrideMachineDef] Can override all or nothing of the Component.StateMachine
- * @param {Object} [props] Optional initial props to pass down to the wrapped component
+ * @param {StateMachineDef} [smDef] Can fully define or override partially the Component.StateMachine (if it exists)
+ * @param {Object} [props] Pass some props to the wrapped component
  */
-export const withStateMachine = (
-	Component,
-	overrideMachineDef = {},
-	initialProps = {}
-) => ({ ...props }) => {
+export const withStateMachine = (Component, smDef = {}, initialProps = {}) => ({
+	...props
+}) => {
 	// we can override the initial state and middlewares this way
-	const mergedDefinitions = { ...Component.StateMachine, ...overrideMachineDef };
+	const mergedDefs = { ...Component.StateMachine, ...smDef };
 
-	const {
-		id,
-		actions = {},
-		middlewares = [],
-		useLocalStorage = false
-	} = mergedDefinitions;
+	const { id, actions = {}, middlewares = [], useLocalStorage = false } = mergedDefs;
 
-	let initialState = mergedDefinitions.initialState || {};
+	let initialState = mergedDefs.initialState || {};
 
 	if (useLocalStorage && window && window.localStorage) {
 		middlewares.push(_MIDDLEWARES.localStorage);
 	}
 
 	const [state, setState] = useState(initialState);
+	console.log(`withStateMachine("${id}")`, state);
 
 	/**
 	 * Wrap the actions, apply the middlewares and the final setState() to automatically transition
@@ -157,7 +162,7 @@ export const withStateMachine = (
 	const enhancedActions = enhanceActions(id, actions, state, setState, middlewares);
 
 	return (
-		<StateMachinesContext.Provider value={{ state, actions: enhancedActions }}>
+		<StateMachinesContext.Provider value={{ id, state, actions: enhancedActions }}>
 			<Component
 				state={state}
 				actions={enhancedActions}

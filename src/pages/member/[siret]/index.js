@@ -1,7 +1,7 @@
 import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
 import { Box } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import AdminDashboard from "../index.js";
+import { UserDashboard } from "../index.js";
 import { formSteps } from "@forms/registration/RegistrationSteps.js";
 import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
 import ReadOnlyForm from "@components/forms/ReadOnlyForm.js";
@@ -36,7 +36,7 @@ const tabsDef = formSteps
 			.filter(emptyCertification(id))
 	}));
 
-const tabHeaders = (eb, setCurrentTab) =>
+const defineTabs = (eb, setCurrentTab) =>
 	tabsDef.map((t) => ({
 		value: t.id,
 		label: t.title,
@@ -83,13 +83,13 @@ const PageDetailAdherent = ({ siret }) => {
 	}, [false]);
 
 	return (
-		<AdminDashboard
+		<UserDashboard
 			title={adherent && adherent.nom}
-			tabs={tabHeaders(eb, setCurrentTab)}
+			tabs={defineTabs(eb, setCurrentTab)}
 			currentTab={currentTab}
 		>
 			<TabbedView adherent={adherent} error={error} />
-		</AdminDashboard>
+		</UserDashboard>
 	);
 };
 

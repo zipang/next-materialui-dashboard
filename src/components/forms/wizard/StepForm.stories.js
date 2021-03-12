@@ -4,9 +4,9 @@ import JSON from "@lib/utils/JSON";
 import { Box, Paper, Grid } from "@material-ui/core";
 import { withEventBus, useEventBus } from "@components/EventBusProvider";
 import { useState } from "react";
-import Text from "./inputs/Text";
-import Integer from "./inputs/Integer";
-import Date from "./inputs/Date";
+import Text from "../inputs/Text";
+import Integer from "../inputs/Integer";
+import Date from "../inputs/Date";
 
 // This default export determines where your story goes in the story list
 export default {

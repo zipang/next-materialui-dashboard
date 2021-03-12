@@ -2,33 +2,16 @@ import APIClient from "./ApiClient";
 import ApiError from "@lib/ApiError";
 
 /**
- * Let user register a new adherent
- * @param {Object} user
- * @param {Object} registrationFormData
- */
-export const register = async (user, registrationFormData) => {
-	try {
-		const registrationSuccess = await APIClient.post(
-			"/api/adherent/register",
-			registrationFormData
-		);
-		console.log(registrationSuccess);
-		// We have to be sure that the registration was a success before sending the welcome email
-		// await sendMailTemplate("welcome", registrationFormData);
-		return registrationSuccess;
-	} catch (err) {
-		throw new ApiError(err.code || 500, err.message);
-	}
-};
-
-/**
  * Let a user update some informations about an existing adherent
  * @param {Object} user
- * @param {Object} orgData
+ * @param {Object} data
  */
-export const update = async (user, orgData) => {
+export const update = async (user, data) => {
 	try {
-		return await APIClient.post(`/api/adherent/${orgData.siret}`, orgData);
+		if (user) {
+			data.owner = user.username;
+		}
+		return await APIClient.post(`/api/adherent/${data.siret}`, data);
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
 	}
@@ -37,8 +20,15 @@ export const update = async (user, orgData) => {
 /**
  * Create a new pending adhesion request for this adherent
  */
-export const createAdhesion = async (siret, data = {}) => {
-	return await APIClient.post(`/api/adherent/${siret}/adhesion`, data);
+export const createAdhesion = async (user, siret, data = {}) => {
+	try {
+		if (user) {
+			data.owner = user.username;
+		}
+		return await APIClient.post(`/api/adherent/${siret}/adhesion`, data);
+	} catch (err) {
+		throw new ApiError(err.code || 500, err.message);
+	}
 };
 
 /**
@@ -55,8 +45,9 @@ export const confirmAdhesion = async (no, data = {}) => {
  *   const { rows } = await Parse.Adherent.retrieve({ nom: "*SARL" })
  *
  * @param {Object} params as key-value pairs
+ * @param {Array<String>} fields List of fields
  */
-export const retrieve = async (params = {}) => {
+export const retrieve = async (params = {}, fields) => {
 	try {
 		console.log(`Retrieve adherents...`);
 		return await APIClient.get(`/api/adherent`, params);
@@ -100,7 +91,6 @@ export const retrieveAdhesions = async (params = {}) => {
 };
 
 const AdherentsApiClient = {
-	register,
 	retrieve,
 	retrieveBySiret,
 	update,

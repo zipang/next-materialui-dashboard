@@ -31,9 +31,16 @@ export class ValidationError extends TypeError {
  */
 
 /**
- * Register a property
- * @param {String} name (path) to the property
- * @param {FieldDef} fieldDef
+ * @typedef {FieldRegistrationFunction}
+ * @property {String} name (path) to the property
+ * @property {FieldDef} fieldDef
+ */
+
+/**
+ * Build the field registration function
+ * @param {Object} fields Map of the fields indexed by their property path (eg : "user.name")
+ * @param {Object} data
+ * @returns {FieldRegistrationFunction}
  */
 const registerField = (fields, data) => (
 	name,
@@ -182,7 +189,7 @@ const buildValidate = (validationContext) => (name, options) => {
 	}
 
 	if (validateASingleField || validationContext.errors !== errors) {
-		console.log(`Validation errors have been raised. Return a new ValidationContext`);
+		console.log(`Validation errors have been raised.`, errors);
 		// Return a new validationContext instance with the updated errors object
 		// => WILL re-render all the registered fields
 		return { ...validationContext, errors };

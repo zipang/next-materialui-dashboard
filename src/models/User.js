@@ -1,5 +1,7 @@
 import { getParseInstance } from "./ParseSDK.js";
 import ApiError from "../lib/ApiError.js";
+import { retrieve as retrieveOrganismes } from "./Adherent.js";
+import { retrieve as retrieveAdhesions } from "./Adhesion.js";
 
 let Parse;
 
@@ -22,11 +24,6 @@ class User {
 	isAdmin() {
 		return Array.isArray(this.profiles) && this.profiles.indexOf("admin") > -1;
 	}
-
-	/**
-	 * @return {Array} la liste des adherents gérés par cet adhérent
-	 */
-	getAdherents() {}
 }
 
 /**
@@ -76,6 +73,7 @@ export const logIn = (User.logIn = async ({ username, password }) => {
 
 /**
  * Récupère un adhérent par son email (username)
+ * @return {User}
  */
 export const getByUsername = (User.getByUsername = async (username) => {
 	try {
@@ -116,6 +114,22 @@ export const forgotPassword = (User.forgotPassword = async (email) => {
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
 	}
+});
+
+/**
+ * @param {String} username
+ * @return {Array} la liste des organismes gérés par cet adhérent
+ */
+export const getOrganismes = (User.getOrganismes = async (username) => {
+	return await retrieveOrganismes({ owner: username });
+});
+
+/**
+ * @param {String} username
+ * @return {Array} la liste des adhésions gérées par cet adhérent
+ */
+export const getAdhesions = (User.getAdhesions = async (username) => {
+	return await retrieveAdhesions({ owner: username });
 });
 
 export default User;

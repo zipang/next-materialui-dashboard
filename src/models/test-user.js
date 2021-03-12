@@ -4,6 +4,6 @@ const testUser = {
 	email: "john.doe@x.test",
 	firstName: "John",
 	lastName: "DOE",
-	profiles: ["adherent"]
+	profiles: ["member"]
 };
 export default testUser;

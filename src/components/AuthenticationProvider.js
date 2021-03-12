@@ -68,7 +68,7 @@ const _DEFAULT_OPTIONS = {
 export const withAuthentication = (Component, options = _DEFAULT_OPTIONS) => ({
 	...props
 }) => {
-	const { profiles, loginPage } = options;
+	const { profiles, loginPage, redirectTo } = options;
 	const { loggedUser, setLoggedUser, setRedirectAfterLogin } = useContext(AuthContext);
 	const router = useRouter();
 
@@ -77,9 +77,9 @@ export const withAuthentication = (Component, options = _DEFAULT_OPTIONS) => ({
 			if (process.env.NODE_ENV === "development") {
 				setLoggedUser(new User(devUser));
 			} else {
-				// not logged
-				setRedirectAfterLogin(router.pathname);
-				router.replace(`${loginPage}?redirect=${router.pathname}`);
+				// really not logged
+				setRedirectAfterLogin(redirectTo || router.pathname);
+				router.replace(`${loginPage}?redirect=${redirectTo || router.pathname}`);
 			}
 		} else if (
 			profiles.length &&
@@ -89,7 +89,7 @@ export const withAuthentication = (Component, options = _DEFAULT_OPTIONS) => ({
 			console.log(
 				`Bad profile (we looked for ${profiles}). Redirect to error page`
 			);
-			router.replace("/_error");
+			// router.replace("/_error");
 		}
 
 		return () => {};

@@ -81,10 +81,12 @@ const Formatted = ({
 
 	useLayoutEffect(() => {
 		if (autoFocus || errorMessage) {
-			console.log(`Focus on ${name} (${errorMessage})`);
+			console.log(`Focus on ${name} (${displayedValue})`);
 			inputRef.current.focus();
-			if (displayedValue.length) {
+			if (typeof displayedValue === "string" && displayedValue.length) {
 				inputRef.current.setSelectionRange(0, displayedValue.length);
+			} else if (Array.isArray(displayedValue)) {
+				inputRef.current.setSelectionRange(0, displayedValue[0].length);
 			}
 		}
 	}, [name]); // Only on first load

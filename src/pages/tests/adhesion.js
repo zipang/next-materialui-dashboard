@@ -8,13 +8,14 @@ import Email from "@components/forms/inputs/Email";
 import Submit from "@components/forms/inputs/Submit";
 import { merge } from "@lib/utils/deepMerge.js";
 import {
-	register,
+	update,
 	createAdhesion,
 	confirmAdhesion
 } from "@lib/client/AdherentsApiClient.js";
 import testAdherent from "../../models/adherent-test.js";
 import { Button } from "@material-ui/core";
 import { useState } from "react";
+import testUser from "@models/test-user.js";
 
 const TestEmailTemplatePage = () => {
 	const [adherent, setAdherent] = useState(null);
@@ -38,7 +39,7 @@ const TestEmailTemplatePage = () => {
 			data.effectifs.total = Math.round(Math.random() * 15);
 			data.statut = "en _attente";
 			setAdherent(data);
-			const resp = await register(null, data);
+			const resp = await update(testUser, data);
 			if (resp.success) {
 				await sendMailTemplate("welcome", formData);
 			}
@@ -57,7 +58,7 @@ const TestEmailTemplatePage = () => {
 				alert(`Start by creating a new adherent`);
 				return;
 			}
-			const { adhesion } = await createAdhesion(adherent.siret, {
+			const { adhesion } = await createAdhesion(testUser, adherent.siret, {
 				mode_paiement: "cheque"
 			});
 			setAdhesion(adhesion);

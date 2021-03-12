@@ -3,7 +3,7 @@
 		"label": "Espace Adhérent",
 		"children": [
 			{
-				"label": "Mes Organismes",
+				"label": "Adhésions",
 				"icon": "Business",
 				"action": "/member"
 			},

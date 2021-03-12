@@ -1,4 +1,4 @@
-import { Adhesion } from "@models/Adhesion.js";
+import { create } from "@models/Adhesion.js";
 
 /**
  * Create a new pending Adhesion record for the adherent [siret]
@@ -12,7 +12,7 @@ export default async (req, resp) => {
 		const data = req.body;
 		console.log(`${method} ${req.url}. Siret : ${siret}`, data);
 		// POST : /api/adherent/7889798/adhesion
-		const adhesion = await Adhesion.create(siret, data);
+		const adhesion = await create(siret, data);
 		console.log(`New adhesion request created for adherent ${siret}`, adhesion);
 		return resp.status(200).json({
 			success: true,

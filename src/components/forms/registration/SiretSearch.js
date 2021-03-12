@@ -27,6 +27,7 @@ export const SiretInput = ({ validation, label = "N° de Siret", ...props }) => 
 export const mergeSiretData = (callback) => (siretData, errors) => {
 	if (typeof siretData?.etablissement === "object") {
 		const { etablissement } = siretData;
+
 		const merged = {
 			siret: getProperty(etablissement, "siret"),
 			nom: getProperty(
@@ -35,7 +36,7 @@ export const mergeSiretData = (callback) => (siretData, errors) => {
 				getProperty(etablissement, "unite_legale.denomination")
 			),
 			federation_reseau_enseigne: getProperty(etablissement, "enseigne_1"),
-			date_creation: getProperty(etablissement, "date_creation"),
+			date_creation: getProperty(etablissement, "date_debut"),
 			adresse: {
 				rue1: getProperty(etablissement, "geo_l4"),
 				rue2: getProperty(etablissement, "complement_adresse"),
@@ -45,7 +46,11 @@ export const mergeSiretData = (callback) => (siretData, errors) => {
 			representant: {
 				nom: getProperty(etablissement, "unite_legale.nom"),
 				prenom: getProperty(etablissement, "unite_legale.prenom_1")
-			}
+			},
+			effectifs: {
+				total: Number(getProperty(etablissement, "tranche_effectifs", 0))
+			},
+			statut: "en_attente"
 		};
 		const sex = getProperty(etablissement, "unite_legale.sexe");
 		if (sex) {
@@ -61,14 +66,14 @@ export const mergeSiretData = (callback) => (siretData, errors) => {
 		);
 
 		if (merged.federation_reseau_enseigne === "CCAS") {
-			merged.statut = "ccas-cias";
-		} else if (numeroAssociation) {
-			merged.statut = "association";
+			merged.forme_juridique = "ccas-cias";
+		} else if (numeroAssociation || etatAdministratif === "A") {
+			merged.forme_juridique = "association";
 		} else {
-			merged.statut = "entreprise";
+			merged.forme_juridique = "entreprise";
 		}
 
-		console.log(`We extracted some data`, merged);
+		console.log(`Siret data extracted :`, merged);
 		callback(merged);
 	} else {
 		// Create an error message in the same format that react-hook-form uses
@@ -92,8 +97,12 @@ export const mergeSiretData = (callback) => (siretData, errors) => {
 export const SiretSearchForm = ({ onSubmit }) => {
 	const [apiErrorMessage, setApiErrorMessage] = useState(false);
 
+	const onError = (error) => {
+		console.log(`Siret search returned error`, error);
+		setApiErrorMessage(error.message);
+	};
+
 	const displayApiErrorMessage = () => {
-		console.log(`SiretSearch displayApiErrorMessage()`);
 		if (apiErrorMessage) {
 			const forgetMe = apiErrorMessage;
 			setApiErrorMessage(false);
@@ -101,11 +110,6 @@ export const SiretSearchForm = ({ onSubmit }) => {
 		} else {
 			return true;
 		}
-	};
-
-	const onError = (error) => {
-		console.log(`Siret search returned error`, error);
-		setApiErrorMessage(error.message);
 	};
 
 	return (
