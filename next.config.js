@@ -1,8 +1,11 @@
 // @ts-nocheck
 // next.config.js
 const { resolve } = require("path");
+const withBundleAnalyzer = require("@next/bundle-analyzer")({
+	enabled: process.env.ANALYZE === "true"
+});
 
-module.exports = {
+module.exports = withBundleAnalyzer({
 	reactStrictMode: true,
 	redirects: async () => [
 		{
@@ -63,4 +66,4 @@ module.exports = {
 
 		return config;
 	}
-};
+});

@@ -1,4 +1,4 @@
-import { getSearchParams } from "@lib/client/ApiClient";
+import { getSearchParams } from "@lib/utils/Api";
 import { retrieve } from "@models/Adhesion.js";
 
 /**
