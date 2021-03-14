@@ -4,6 +4,13 @@ const { resolve } = require("path");
 
 module.exports = {
 	reactStrictMode: true,
+	redirects: async () => [
+		{
+			source: "/",
+			destination: "/login",
+			permanent: true
+		}
+	],
 	// Enable CORS
 	headers: async () => {
 		return [
