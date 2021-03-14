@@ -24,7 +24,11 @@ export const SiretInput = ({ validation, label = "N° de Siret", ...props }) => 
  * And convert it to our needs
  * @param {Function} callback
  */
-export const mergeSiretData = (callback) => (siretData, errors) => {
+export const mergeSiretData = (callback) => ({ siretData, savedData }, errors) => {
+	if (savedData) {
+		alert("Nous avons retrouvé votre déclaration en cours.");
+		return callback(savedData);
+	}
 	if (typeof siretData?.etablissement === "object") {
 		const { etablissement } = siretData;
 

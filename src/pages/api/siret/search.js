@@ -1,4 +1,5 @@
 import { getAdherentBySiret } from "@lib/client/SireneClient";
+import { retrieveBySiret } from "@models/Adherent";
 
 /**
  * API handler for `/siret/search` (Search Sirene Open Data API)
@@ -10,8 +11,11 @@ const search = async (req, resp) => {
 		// Get the data and define the username as the login
 		console.log("/api/siret/search received query", JSON.stringify(req.body));
 		const { siret } = req.body;
-		const sireneData = await getAdherentBySiret(siret);
-		resp.json(sireneData);
+		const [siretData, savedData] = await Promise.all([
+			getAdherentBySiret(siret),
+			retrieveBySiret(siret)
+		]);
+		resp.json({ siretData, savedData });
 	} catch (err) {
 		console.error(`/siret/search error`, err);
 		resp.status(err.code || 500).json({
