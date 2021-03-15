@@ -58,7 +58,7 @@ const transitionTo = (state, where) => {
 };
 
 /**
- * A dedicated state machine to move from wizard steps to wizard steps
+ * A dedicated state machine to move the wizard from steps to steps
  *
  * @param {String} id
  * @param {Array<Step>} [steps=[]]

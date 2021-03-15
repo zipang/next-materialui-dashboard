@@ -1,4 +1,4 @@
-import { useEffect, memo } from "react";
+import { memo } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -19,7 +19,9 @@ const useWizardStyles = (customStyles = {}) =>
 			width: "100%",
 			display: "flex",
 			flexGrow: "1",
-			borderBottom: "1px solid #aaa"
+			borderBottom: "1px solid #aaa",
+			minWidth: "66vw",
+			minHeight: "66vh"
 		},
 		formContainer: {
 			display: "flex",
@@ -33,6 +35,7 @@ const useWizardStyles = (customStyles = {}) =>
 			backgroundColor: theme.palette.background.light
 		},
 		formTitle: {
+			display: "flex",
 			alignSelf: "flex-start",
 			flex: "1 1 100%"
 		},
@@ -112,16 +115,28 @@ const WizardControls = memo(({ children }) => (
 
 /**
  * Receives the steps and the state machine altogether
+ * Props passed to the Wizard can override the initial state
  */
-const _Wizard = () => {
+const _Wizard = (override) => {
 	const classes = useWizardStyles();
 	const eb = useEventBus();
 	const router = useRouter();
-	const { id, state, actions } = useStateMachine();
+	const { id, state: initialState, actions } = useStateMachine();
 	const { loggedUser } = useAuthentication();
 
-	// flatten the state
+	// Merge the initial state and the props to get the final result
+	if (override) {
+		console.log(`Overriding Wizard stae with `, override);
+	}
+	let state = actions.merge(initialState, override);
+
+	if (state.steps[state.data.statut]) {
+		state = actions.goto(state, state.data.statut);
+	}
+
+	// Now we have a merged state
 	const { data, steps, currentStep, currentIndex } = state;
+
 	console.log(
 		`Loaded wizard ${id} with ${steps.length} steps. Current step : ${currentIndex}`,
 		state
