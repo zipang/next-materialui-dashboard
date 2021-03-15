@@ -16,16 +16,19 @@ const Center = ({
 	centerVertically = true,
 	centerHorizontally = true,
 	autoExpand = true,
+	children,
 	...props
 }) => (
 	<Box
 		display="flex"
 		flexDirection="columns"
 		flexGrow={autoExpand ? 1 : 0}
-		alignItems={centerVertically}
-		justifyContent={centerHorizontally}
+		justifyItems={centerHorizontally ? "center" : "flex-start"}
+		justifyContent={centerHorizontally ? "center" : "flex-start"}
 		{...props}
-	/>
+	>
+		{children}
+	</Box>
 );
 
 export default Center;
