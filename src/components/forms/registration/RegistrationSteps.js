@@ -320,10 +320,10 @@ Puis indiquez votre numéro d’agrément, de déclaration, d’autorisation.`
 						size: 1 / 2,
 						placeHolder: "SAP123456789",
 						validation: {
-							oneNeeded: (data) =>
+							oneNeeded: (no, data) =>
 								!data.declaration.date &&
 								!data.agrement.date &&
-								data.autorisation.date
+								!data.autorisation.date
 									? `Saisissez au moins l'un des 3 : (Déclaration/Agrément/Autorisation)`
 									: true,
 							formatInvalid: {
@@ -954,7 +954,8 @@ formSteps.forEach((step) => {
 			label: "Enregistrer",
 			action: async ({ data }, loggedUser) => {
 				await update(loggedUser, data);
-				alert("Votre progression a été sauvegardée");
+				alert(`Votre progression actuelle a été sauvegardée.
+Vous pourrez la recharger en saissant le même n° de Siret.`);
 			}
 		}
 	];
