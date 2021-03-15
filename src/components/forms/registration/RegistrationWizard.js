@@ -1,5 +1,6 @@
 import { useAuthentication } from "@components/AuthenticationProvider";
 import Wizard from "@forms/wizard/Wizard";
+import AdherentsApiClient from "@lib/client/AdherentsApiClient";
 import {
 	welcomeStepsNewAccount,
 	siretSearch,
@@ -20,27 +21,24 @@ const steps = [
  * Look if we have an incomplete registration process in the local storage
  * Or create
  */
-const initRegistration = (loggedUser) => {
-	const savedState = window.localStorage.getItem("registration-wizard");
-	if (savedState) {
-		try {
+const restoreState = (loggedUser) => {
+	try {
+		const siret = window.localStorage.getItem("siret-search");
+		const { adherent } = AdherentsApiClient.retrieveBySiret(siret);
+		if (adherent && adherent.owner === loggedUser.username) {
 			console.log(
-				`Retrieved previously saved state of the regsitration wizard`,
-				savedState
+				`Restoring previous registration state from localStorage: ${adherent.nom} (${adherent.statut})`
 			);
-			return JSON.parse(savedState);
-		} catch (err) {
-			window.localStorage.removeItem("registration-wizard");
+			return { data: adherent };
 		}
-		console.log(
-			`Restoring saved state from localStorage: ${JSON.stringify(initialState)} `
-		);
+	} catch (err) {
+		window.localStorage.removeItem("siret-search");
 	}
 };
 
 const RegistrationWizard = () => {
 	const loggedUser = useAuthentication();
-	const data = initRegistration(loggedUser);
+	const data = restoreState(loggedUser);
 	return <Wizard id="registration-wizard" data={data} steps={steps} />;
 };
 
