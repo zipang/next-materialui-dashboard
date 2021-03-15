@@ -26,8 +26,12 @@ export const SiretInput = ({ validation, label = "N° de Siret", ...props }) => 
  */
 export const mergeSiretData = (callback) => ({ siretData, savedData }, errors) => {
 	if (savedData) {
+		const updatedAt = new Date(savedData.updatedAt);
 		alert(
-			`Nous avons retrouvé votre déclaration en cours du ${savedData.updatedAt}.`
+			`Nous avons retrouvé votre déclaration en cours 
+du ${updatedAt.toLocaleDateString("fr")} (${updatedAt
+				.toLocaleTimeString("fr")
+				.substr(0, 5)}).`
 		);
 		return callback(savedData);
 	}
