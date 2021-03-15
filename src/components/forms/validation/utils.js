@@ -179,7 +179,7 @@ export const applyDateMask = (format) => (str = "") =>
  * @return {Function} ISO date serializer usable inside <Date serialize />
  */
 export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => {
-	if (formattedDate.length !== format.length) return null; // uncomplete date input is not serializable
+	if (getDigitsOnly(formattedDate) !== 8) return null; // uncomplete date input is not serializable
 	const formatLetters = format.split("");
 	const dateDigits = formattedDate.split("");
 	const { year, month, day } = dateDigits.reduce(
