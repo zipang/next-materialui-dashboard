@@ -27,6 +27,7 @@ export default async (req, resp) => {
 			redirectTo: payment._links.checkout.href
 		});
 	} catch (err) {
+		console.error(err);
 		const message = `Payment creation for adhesion ${no} has failed. (${err.message})`;
 		resp.status(err.code || 500).json({
 			success: false,
