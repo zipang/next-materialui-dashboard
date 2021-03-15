@@ -36,7 +36,7 @@ export const sendMessage = async (message) => {
  */
 export const renderTemplate = async (name, data) => {
 	try {
-		return await APIClient.post(`/api/template/${name}`, data);
+		return await APIClient.post(`/api/templates/${name}`, data);
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
 	}
