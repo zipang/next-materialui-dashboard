@@ -9,7 +9,8 @@ const apiEntryPoint = `https://api.mollie.com/v2/payments`;
  * @param {String} data.description
  */
 export const createPayment = async (data) => {
-	if (!data.montant || !Number.parseInt(data.montant)) {
+	const { amount } = data;
+	if (!amount || !amount.value || !Number.parseInt(amount.value)) {
 		throw new ApiError(400, `Indiquez le montant du paiement.`);
 	}
 	if (!data.description) {
@@ -30,10 +31,11 @@ export const createPayment = async (data) => {
 	});
 
 	const respBody = await resp.json();
+	console.log(`Mollie payment response`, respBody);
 
 	if (resp.status !== 200) {
 		// Error format contains a single message field
-		throw new ApiError(resp.status, respBody.message);
+		throw new ApiError(resp.status, respBody.detail);
 	} else {
 		return respBody;
 	}
