@@ -1,5 +1,7 @@
 import { SiretSearchForm } from "./SiretSearch";
 import { update, createAdhesion } from "@lib/client/AdherentsApiClient";
+import { sendMailTemplate } from "@lib/client/MailApiClient";
+import APIClient from "@lib/client/ApiClient";
 
 /**
  * These steps are the introduction text for a new adhesion
@@ -952,7 +954,8 @@ formSteps.forEach((step) => {
 	step.actions = [
 		{
 			label: "Enregistrer",
-			action: async ({ data }, loggedUser) => {
+			action: async ({ data, currentStep }, loggedUser) => {
+				data.statut = currentStep.id; // Mark the progression through the wizard
 				await update(loggedUser, data);
 				alert(`Votre progression actuelle a été sauvegardée.
 Vous pourrez la recharger en saissant le même n° de Siret.`);
@@ -1030,24 +1033,28 @@ Cliquez maintenant sur Valider pour envoyer votre demande.`,
 						const { adhesion, ...adherent } = data;
 						const { siret } = adherent;
 						// Update the final state of the organisme
-						await update(loggedUser, adherent);
+						update(loggedUser, adherent);
 						// Create the adhesion request
 						const resp = await createAdhesion(loggedUser, siret, adhesion);
+						// Send the mail to admins
+						sendMailTemplate("adhesion", adherent);
+
 						// Now if the payment option is online, redirect to the payment site
 						const updatedAdhestion = resp.adhesion;
 
 						if (updatedAdhestion.mode_paiement === "cheque") {
 							alert(
-								`Votre demande d'adhésion n° ${updatedAdhestion.no} a bien été enregistrée. Elle sera active dès que votre chèque aura été encaissé.`
+								`Votre demande d'adhésion n° ${updatedAdhestion.no} a bien été enregistrée. 
+Elle sera active dès que votre chèque aura été encaissé.`
 							);
 							router.push("/member");
 						} else if (updatedAdhestion.mode_paiement === "en_ligne") {
 							// Obtenir l'URL du paiement Mollie
-							const payment = await ApiClient.post(
-								`/api/adhesion/${adhesion.no}/create-payment`,
+							const payment = await APIClient.post(
+								`/api/adhesion/${updatedAdhestion.no}/create-payment`,
 								{
 									montant: 200,
-									description: `Adhésion INVIE #${adhesion.no} - ${adherent.nom}`
+									description: `Adhésion INVIE #${updatedAdhestion.no} - ${adherent.nom}`
 								}
 							);
 							alert(
