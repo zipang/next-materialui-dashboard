@@ -15,7 +15,7 @@ const search = async (req, resp) => {
 			getAdherentBySiret(siret),
 			retrieveBySiret(siret)
 		]);
-		resp.json({ siretData, savedData });
+		resp.json({ siret, siretData, savedData });
 	} catch (err) {
 		console.error(`/siret/search error`, err);
 		resp.status(err.code || 500).json({
