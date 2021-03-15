@@ -1,6 +1,6 @@
 
 // attestation.js	
-const splitPath = (path = "") => path.split(/[,[].]+?/).filter(Boolean);
+const splitPath = (path = "") => path.split(/[,\[\]\.]+?/).filter(Boolean);
 
 /**
  * Extract the property value at the designed path
@@ -28,7 +28,7 @@ const getProperty = (source = {}, path = "", defaultValue) => {
  */
 export const text = function anonymous(data
 ) {
-var out='<img src="https://invie78.fr/images/logo.jpg" alt="logo" />\n\n<h1 style="width: 80%; text-align: center; background-color: \'orange\'"> RECU D\'ADHESION '+ (getProperty(data, "adhesion.reference", ""))+'</h1>\n\nL\'association INVIE atteste avoir reçu au titre de l\'année '+ (getProperty(data, "adhesion.annee", ""))+'\nl\'adhésion de \n\n<h2 style="width: 80%; text-align: center; margin-left: auto; margin-right: auto; background-color: \'orange\'"> '+ (getProperty(data, "nom", ""))+' (N° de Siret `'+ (getProperty(data, "siret", ""))+'`)</h2>\n\nEn date du : '+ (getProperty(data, "adhesion.date", ""))+'\n\nLa somme de : **'+ (getProperty(data, "adhesion.montant", ""))+'** \n\nFait aux Mureaux, le '+((new Date).toISOString().substr(0,10))+', pour valoir ce que de droit.\n\n    **COUTEAU DELORD Stéphanie**\n    **Responsable Administratif et Financier**\n\n';return out.replace(/(<([^>]+)>)/gi, "");
+var out='<img src="https://invie78.fr/images/logo.jpg" alt="logo" />\n\n<h1 style="width: 80%; text-align: center; background-color: \'orange\'"> RECU D\'ADHESION '+ (getProperty(data, "adhesion.no", ""))+'</h1>\n\nL\'association INVIE atteste avoir reçu au titre de l\'année '+((new Date).toISOString().substr(0,10))+'\nl\'adhésion de \n\n<h2 style="width: 80%; text-align: center; margin-left: auto; margin-right: auto; background-color: \'orange\'"> '+ (getProperty(data, "nom", ""))+' (N° de Siret `'+ (getProperty(data, "siret", ""))+'`)</h2>\n\nEn date du : '+ (getProperty(data, "adhesion.date_debut", ""))+'\n\nLa somme de : **'+ (getProperty(data, "adhesion.montant", ""))+'**  \n\nFait aux Mureaux, le '+((new Date).toISOString().substr(0,10))+', pour valoir ce que de droit.\n\n    **COUTEAU DELORD Stéphanie**  \n    **Responsable Administratif et Financier**\n\n';return out.replace(/(<([^>]+)>)/gi, "");
 };
 
 /**
@@ -38,7 +38,7 @@ var out='<img src="https://invie78.fr/images/logo.jpg" alt="logo" />\n\n<h1 styl
  */
 export const html = function anonymous(data
 ) {
-var out='<img src="https://invie78.fr/images/logo.jpg" alt="logo" /><h1 style="width: 80%; text-align: center; background-color: \'orange\'"> RECU D\'ADHESION '+ (getProperty(data, "adhesion.reference", ""))+'</h1><p>L\'association INVIE atteste avoir reçu au titre de l\'année '+ (getProperty(data, "adhesion.annee", ""))+'l\'adhésion de</p><h2 style="width: 80%; text-align: center; margin-left: auto; margin-right: auto; background-color: \'orange\'"> '+ (getProperty(data, "nom", ""))+' (N° de Siret `'+ (getProperty(data, "siret", ""))+'`)</h2><p>En date du : '+ (getProperty(data, "adhesion.date", ""))+'</p><p>La somme de : <strong>'+ (getProperty(data, "adhesion.montant", ""))+'</strong></p><p>Fait aux Mureaux, le '+((new Date).toISOString().substr(0,10))+', pour valoir ce que de droit.</p><pre><code>**COUTEAU DELORD Stéphanie****Responsable Administratif et Financier**</code></pre>';return out;
+var out='<img src="https://invie78.fr/images/logo.jpg" alt="logo" /><h1 style="width: 80%; text-align: center; background-color: \'orange\'"> RECU D\'ADHESION '+ (getProperty(data, "adhesion.no", ""))+'</h1><p>L\'association INVIE atteste avoir reçu au titre de l\'année '+((new Date).toISOString().substr(0,10))+'l\'adhésion de</p><h2 style="width: 80%; text-align: center; margin-left: auto; margin-right: auto; background-color: \'orange\'"> '+ (getProperty(data, "nom", ""))+' (N° de Siret `'+ (getProperty(data, "siret", ""))+'`)</h2><p>En date du : '+ (getProperty(data, "adhesion.date_debut", ""))+'</p><p>La somme de : <strong>'+ (getProperty(data, "adhesion.montant", ""))+'</strong></p><p>Fait aux Mureaux, le '+((new Date).toISOString().substr(0,10))+', pour valoir ce que de droit.</p><pre><code>**COUTEAU DELORD Stéphanie** **Responsable Administratif et Financier**</code></pre>';return out;
 };
 
 
@@ -49,7 +49,7 @@ var out='<img src="https://invie78.fr/images/logo.jpg" alt="logo" /><h1 style="w
  */
 export const filename = function anonymous(data
 ) {
-var out='Attestation-Adhésion-'+ (getProperty(data, "siret", ""))+'-'+ (getProperty(data, "nom", ""))+'.pdf';return out;
+var out='Adhésion-INVIE-'+((new Date).toISOString().substr(0,10))+'-'+ (getProperty(data, "nom", ""))+'.pdf';return out;
 }
 
 

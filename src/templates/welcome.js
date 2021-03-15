@@ -1,6 +1,6 @@
 
 // welcome.js	
-const splitPath = (path = "") => path.split(/[,[].]+?/).filter(Boolean);
+const splitPath = (path = "") => path.split(/[,\[\]\.]+?/).filter(Boolean);
 
 /**
  * Extract the property value at the designed path

@@ -39,7 +39,7 @@ const rewriteDotTemplate = (fn, stripHTML) =>
 	fn
 		.toString()
 		.replace(
-			/\(data\.[^\)]+/g,
+			/\(data\.[^\(\)]+/g,
 			(capture) =>
 				` (getProperty(data, "${capture.substr(6).replace("?", "")}", "")`
 		)
@@ -82,7 +82,7 @@ export const ${propertyName} = ${rewriteDotTemplate(
 
 	const templateSource = `
 // ${templateName}.js	
-const splitPath = (path = "") => path.split(/[,[\].]+?/).filter(Boolean);
+const splitPath = (path = "") => path.split(/[,\\[\\]\\.]+?/).filter(Boolean);
 
 /**
  * Extract the property value at the designed path
@@ -148,8 +148,8 @@ const generation = async (templateDir, markdownFile, destinationDir) => {
 	console.log(`JS Template re-generation :
 ${markdownFile}`);
 	// Extract its name
-	const templateName = path.basename(markdownFile, ".md");
-	// Load its content and front-ammer with gray-matter
+	const templateName = path.basename(markdownFile, ".md").replace(/[^a-zA-Z0-9]/g, "_");
+	// Load its content and front-matter with gray-matter
 	const { data, content } = gm.read(path.join(templateDir, markdownFile));
 
 	// Report
