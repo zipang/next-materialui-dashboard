@@ -12,10 +12,10 @@ class User {
 	}
 
 	/**
-	 * @return {Boolean} TRUE si l'utilisateur a le profil adhérent
+	 * @return {Boolean} TRUE si l'utilisateur a le profil adhérent (membre)
 	 */
 	isAdherent() {
-		return Array.isArray(this.profiles) && this.profiles.indexOf("adherent") > -1;
+		return Array.isArray(this.profiles) && this.profiles.indexOf("member") > -1;
 	}
 
 	/**
@@ -39,7 +39,7 @@ export const register = (User.register = async (userData) => {
 			userData.username = userData.email;
 		}
 		// This registration process is only for adherents
-		userData.profiles = ["adherent"];
+		userData.profiles = ["member"];
 
 		// Create a new Parse User instance
 		const user = new Parse.User(userData);
