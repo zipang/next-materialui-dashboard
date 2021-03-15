@@ -6,6 +6,7 @@ import {
 	FormValidationProvider,
 	useFormValidationContext
 } from "./validation/FormValidationProvider";
+import Center from "@components/Center";
 
 /**
  * @typedef APIFormProps
@@ -76,8 +77,9 @@ const VAPIForm = ({
 			)}
 			{submitting && (
 				<div className={styles.form}>
-					<CircularProgress />
-					<p>Submitting...</p>
+					<Center>
+						<CircularProgress />
+					</Center>
 				</div>
 			)}
 		</>
