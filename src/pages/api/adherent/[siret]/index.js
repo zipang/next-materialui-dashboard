@@ -22,6 +22,10 @@ export default async (req, resp) => {
 			case "POST":
 				// POST : /api/adherent/7889798
 				const data = req.body;
+				// Delete some junk
+				delete data.adhesion;
+				delete data.data;
+				delete data.currentSlide;
 				adherent = await update(data);
 				return resp.json({
 					success: true,
