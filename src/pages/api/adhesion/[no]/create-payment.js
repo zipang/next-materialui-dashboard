@@ -20,9 +20,11 @@ export default async (req, resp) => {
 			webhookUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/api/adhesion/${no}/confirm-payment`
 		});
 
+		console.log(`Payment request created`, payment);
+
 		return resp.status(200).json({
 			success: true,
-			redirectTo: payment.checkoutUrl
+			redirectTo: payment._links.checkout.href
 		});
 	} catch (err) {
 		const message = `Payment creation for adhesion ${no} has failed. (${err.message})`;

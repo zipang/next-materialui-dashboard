@@ -993,10 +993,14 @@ export const stepAdhesionPaymentChoice = [
 			description: `## Félicitation !
 Votre processus d’adhésion est presque terminé.
 Vous pouvez revenir en arrière pour vérifier une dernière fois les informations saisies.
+
 En choisissant Paiement en ligne vous activerez immédiatement votre adhésion à notre service. 
-Pour le paiement par chèque imprimer votre appel de fond et glissez le dans l'enveloppe avec la référence de votre adhésion.
-Cliquez sur Valider pour envoyer votre demande.
-[Télécharger votre appel de fond](/)`,
+
+Pour le paiement par chèque veuillez imprimer votre appel de fond ci-dessous et glissez le dans l'enveloppe avec la référence de votre adhésion.
+[Télécharger votre appel de fond](/api/pdf/appel-de-fond/{{=it.adhesion.no}}.pdf)
+
+Cliquez maintenant sur Valider pour envoyer votre demande.`,
+
 			backgroundImage: "registration-complete-background.svg"
 		},
 		fields: [
@@ -1019,7 +1023,7 @@ Cliquez sur Valider pour envoyer votre demande.
 		actions: [
 			{
 				label: "Valider l'adhésion",
-				action: async ({ data }, loggedUser) => {
+				action: async ({ data }, loggedUser, router) => {
 					try {
 						// Extract adhesion data
 						const { adhesion, ...adherent } = data;
@@ -1029,7 +1033,26 @@ Cliquez sur Valider pour envoyer votre demande.
 						// Create the adhesion request
 						const resp = await createAdhesion(loggedUser, siret, adhesion);
 						// Now if the payment option is online, redirect to the payment site
-						alert(resp);
+						const updatedAdhestion = resp.adhesion;
+
+						if (updatedAdhestion.mode_paiement === "cheque") {
+							alert(
+								`Votre demande d'adhésion n° ${updatedAdhestion.no} a bien été enregistrée. Elle sera active dès que votre chèque aura été encaissé.`
+							);
+						} else if (updatedAdhestion.mode_paiement === "en_ligne") {
+							// Obtenir l'URL du paiement Mollie
+							const payment = await ApiClient.post(
+								`/api/adhesion/${adhesion.no}/create-payment`,
+								{
+									montant: 200,
+									description: `Adhésion INVIE #${adhesion.no} - ${adherent.nom}`
+								}
+							);
+							alert(
+								`Vous allez être redirigé vers la page de paiment en ligne.`
+							);
+							router.push(payment.redirectTo);
+						}
 					} catch (err) {
 						alert(err.message);
 					}

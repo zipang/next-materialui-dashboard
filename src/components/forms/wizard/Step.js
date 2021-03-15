@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { Grid } from "@material-ui/core";
 import ReactMarkdown from "react-markdown";
+import dot from "dot";
 import breaks from "remark-breaks";
 import Input from "@forms/inputs/Input";
 import YesNo from "@forms/inputs/YesNo";
@@ -95,6 +96,9 @@ Step.prototype = {
 		if (!this.help) return null;
 		const eb = useEventBus();
 		const { description } = this.help;
+		// Look if we have someting to interpolate
+		const descriptionTemplate = dot(description);
+
 		useEffect(() => {
 			if (!this.displayForm) {
 				const validate = () => onSubmit({});
@@ -105,7 +109,9 @@ Step.prototype = {
 		return (
 			<div>
 				<h2>{this.title}</h2>
-				<ReactMarkdown plugins={[breaks]}>{description}</ReactMarkdown>
+				<ReactMarkdown plugins={[breaks]}>
+					{descriptionTemplate(data)}
+				</ReactMarkdown>
 			</div>
 		);
 	},
