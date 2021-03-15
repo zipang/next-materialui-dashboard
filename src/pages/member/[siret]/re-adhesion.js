@@ -4,6 +4,10 @@ import { useEffect, useState } from "react";
 import UserDashboard from "../index.js";
 import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
 import ReadhesionWizard from "@components/forms/registration/ReadhesionWizard.js";
+import {
+	useAuthentication,
+	withAuthentication
+} from "@components/AuthenticationProvider.js";
 
 /**
  * @see https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
@@ -41,11 +45,11 @@ const PageReAdhesion = ({ siret }) => {
 		}
 	}, [false]);
 
-	return (
-		<UserDashboard title={adherent && adherent.nom}>
-			<LoadReAdhesion data={adherent} error={error} />
-		</UserDashboard>
-	);
+	return <LoadReAdhesion data={adherent} error={error} />;
 };
 
-export default withEventBus(PageReAdhesion);
+export default withAuthentication(withEventBus(PageReAdhesion), {
+	profiles: ["member"],
+	loginPage: "/login",
+	redirectTo: "/member"
+});

@@ -997,7 +997,7 @@ Vous pouvez revenir en arrière pour vérifier une dernière fois les informatio
 En choisissant Paiement en ligne vous activerez immédiatement votre adhésion à notre service. 
 
 Pour le paiement par chèque veuillez imprimer votre appel de fond ci-dessous et glissez le dans l'enveloppe avec la référence de votre adhésion.
-[Télécharger votre appel de fond](/api/pdf/appel-de-fond/{{=it.adhesion.no}}.pdf)
+[Télécharger votre appel de fond](/api/pdf/appel-de-fond/{{=siret}}.pdf)
 
 Cliquez maintenant sur Valider pour envoyer votre demande.`,
 

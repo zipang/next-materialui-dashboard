@@ -5,6 +5,10 @@ import { UserDashboard } from "../index.js";
 import { formSteps } from "@forms/registration/RegistrationSteps.js";
 import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
 import ReadOnlyForm from "@components/forms/ReadOnlyForm.js";
+import {
+	useAuthentication,
+	withAuthentication
+} from "@components/AuthenticationProvider.js";
 
 const emptyCertification = (stepId) => (field) => {
 	if (
@@ -69,6 +73,7 @@ const TabbedView = ({ adherent, error }) => {
  */
 const PageDetailAdherent = ({ siret }) => {
 	const eb = useEventBus();
+	const { loggedUser } = useAuthentication();
 	const [currentTab, setCurrentTab] = useState(formSteps[0].id);
 	const [adherent, setAdherent] = useState();
 	const [error, setError] = useState(false);
@@ -84,6 +89,7 @@ const PageDetailAdherent = ({ siret }) => {
 
 	return (
 		<UserDashboard
+			user={loggedUser}
 			title={adherent && adherent.nom}
 			tabs={defineTabs(eb, setCurrentTab)}
 			currentTab={currentTab}
@@ -93,4 +99,8 @@ const PageDetailAdherent = ({ siret }) => {
 	);
 };
 
-export default withEventBus(PageDetailAdherent);
+export default withAuthentication(withEventBus(PageDetailAdherent), {
+	profiles: ["member"],
+	loginPage: "/login",
+	redirectTo: "/member"
+});
