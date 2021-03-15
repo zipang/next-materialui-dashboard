@@ -65,6 +65,7 @@ export const retrieve = async (params = {}, fields) => {
  * @param {Object} [params] Optional params like the fields to extract
  */
 export const retrieveBySiret = async (siret, params = {}) => {
+	if (!siret) return;
 	return await APIClient.get(`/api/adherent/${siret}`, params);
 	try {
 	} catch (err) {
