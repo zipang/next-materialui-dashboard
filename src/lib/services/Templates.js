@@ -14,7 +14,8 @@ const loadEnv = (data) => {
  */
 export const render = async (templateName, data) => {
 	try {
-		const template = getTemplate(templateName);
+		const template = await getTemplate(templateName);
+		console.log(`Loaded template ${templateName}`, template);
 
 		// Add the environment variables
 		loadEnv(data);
