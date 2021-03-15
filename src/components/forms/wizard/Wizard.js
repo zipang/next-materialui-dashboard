@@ -10,6 +10,7 @@ import { useAuthentication } from "@components/AuthenticationProvider";
 import { isEmpty } from "@lib/utils/NestedObjects";
 import { useStateMachine, withStateMachine } from "@components/StateMachine";
 import WizardStateMachine from "./WizardStateMachine";
+import { useRouter } from "next/router";
 
 const useWizardStyles = (customStyles = {}) =>
 	makeStyles((theme) => ({
@@ -115,6 +116,7 @@ const WizardControls = memo(({ children }) => (
 const _Wizard = () => {
 	const classes = useWizardStyles();
 	const eb = useEventBus();
+	const router = useRouter();
 	const { id, state, actions } = useStateMachine();
 	const { loggedUser } = useAuthentication();
 
@@ -174,7 +176,7 @@ const _Wizard = () => {
 							variant="contained"
 							color="secondary"
 							startIcon={icon && <SvgIcon name={icon} />}
-							onClick={() => action(state, loggedUser)}
+							onClick={() => action(state, loggedUser, router)}
 						>
 							{label}
 						</Button>
