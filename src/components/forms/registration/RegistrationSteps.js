@@ -1040,6 +1040,7 @@ Cliquez maintenant sur Valider pour envoyer votre demande.`,
 							alert(
 								`Votre demande d'adhésion n° ${updatedAdhestion.no} a bien été enregistrée. Elle sera active dès que votre chèque aura été encaissé.`
 							);
+							router.push("/member");
 						} else if (updatedAdhestion.mode_paiement === "en_ligne") {
 							// Obtenir l'URL du paiement Mollie
 							const payment = await ApiClient.post(
