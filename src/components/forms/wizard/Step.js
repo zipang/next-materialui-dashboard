@@ -96,7 +96,6 @@ Step.prototype = {
 		if (!this.help) return null;
 		const eb = useEventBus();
 		const { description } = this.help;
-		// Look if we have someting to interpolate
 
 		useEffect(() => {
 			if (!this.displayForm) {
