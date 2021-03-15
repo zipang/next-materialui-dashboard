@@ -20,11 +20,15 @@ export const SiretInput = ({ validation, label = "N° de Siret", ...props }) => 
 );
 
 /**
+ * Siret Search API call was a success
  * Take the format returned by /siret/search API
  * And convert it to our needs
  * @param {Function} callback
  */
-export const mergeSiretData = (callback) => ({ siretData, savedData }, errors) => {
+export const mergeSiretData = (callback) => ({ siret, siretData, savedData }, errors) => {
+	// Remember this one
+	window.localStorage.setItem("siret-search", siret);
+
 	if (savedData) {
 		const updatedAt = new Date(savedData.updatedAt);
 		alert(
@@ -35,6 +39,7 @@ du ${updatedAt.toLocaleDateString("fr")} (${updatedAt
 		);
 		return callback(savedData);
 	}
+
 	if (typeof siretData?.etablissement === "object") {
 		const { etablissement } = siretData;
 
@@ -84,6 +89,7 @@ du ${updatedAt.toLocaleDateString("fr")} (${updatedAt
 		}
 
 		console.log(`Siret data extracted :`, merged);
+
 		callback(merged);
 	} else {
 		// Create an error message in the same format that react-hook-form uses
