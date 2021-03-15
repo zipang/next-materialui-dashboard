@@ -1,4 +1,4 @@
-import createMollieClient from "@mollie/api-client";
+import { createPayment } from "@lib/client/MollieClient.js";
 
 /**
  * // POST : /api/adhesion/2020-012/create-payment
@@ -10,8 +10,7 @@ export default async (req, resp) => {
 	const { no } = req.query;
 	try {
 		const { montant, description } = req.body;
-		const mollieClient = createMollieClient({ apiKey: process.env.MOLLIE_API_KEY });
-		const payment = await mollieClient.payments.create({
+		const payment = await createPayment({
 			amount: {
 				value: montant,
 				currency: "EUR"
@@ -23,7 +22,7 @@ export default async (req, resp) => {
 
 		return resp.status(200).json({
 			success: true,
-			redirectTo: payment.getCheckoutUrl()
+			redirectTo: payment.checkoutUrl
 		});
 	} catch (err) {
 		const message = `Payment creation for adhesion ${no} has failed. (${err.message})`;
