@@ -11,7 +11,7 @@ const login = async (req, resp) => {
 		const loggedUser = await User.logIn(userLogin);
 		resp.json(loggedUser);
 	} catch (err) {
-		resp.status(err.status || 500).json({
+		resp.status(err.code || 500).json({
 			success: false,
 			error: err.message
 		});

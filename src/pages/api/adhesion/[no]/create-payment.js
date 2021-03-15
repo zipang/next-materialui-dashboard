@@ -1,6 +1,13 @@
 import { createPayment } from "@lib/client/MollieClient.js";
 
 /**
+ * That's the odd part. Currency values must be strings
+ * formatted with a decimal part
+ * @see https://docs.mollie.com/reference/v2/payments-api/create-payment
+ */
+const formatCurrency = (n) => n + ".00";
+
+/**
  * // POST : /api/adhesion/2020-012/create-payment
  * Receive the payment confirmation for a pending adhesion
  * @param {http.IncomingMessage} req
@@ -12,7 +19,7 @@ export default async (req, resp) => {
 		const { montant, description } = req.body;
 		const payment = await createPayment({
 			amount: {
-				value: montant,
+				value: formatCurrency(montant),
 				currency: "EUR"
 			},
 			description,

@@ -26,7 +26,7 @@ export default async (req, resp) => {
 			...mailerResponse
 		});
 	} catch (err) {
-		resp.status(err.code).json({
+		resp.status(err.code || 500).json({
 			success: false,
 			error: err.message
 		});

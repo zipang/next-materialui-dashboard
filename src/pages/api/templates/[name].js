@@ -8,7 +8,7 @@ export default async (req, resp) => {
 	try {
 		const { name } = req.query; // Name of the template file to use
 		const data = req.body;
-		console.log(`Received ${data} to render with ${name} template`);
+		console.log(`Received ${JSON.stringify(data)} to render with ${name} template`);
 		loadEnv(data);
 
 		const content = await render(name, data);
@@ -18,7 +18,7 @@ export default async (req, resp) => {
 			content
 		});
 	} catch (err) {
-		resp.status(err.code).json({
+		resp.status(err.code || 500).json({
 			success: false,
 			error: err.message
 		});
