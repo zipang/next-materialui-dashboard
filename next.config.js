@@ -50,12 +50,13 @@ module.exports = withBundleAnalyzer({
 		// Define some nice aliases (the same as in jsconfig.json)
 		config.resolve.alias = {
 			...config.resolve.alias,
+			"@api": resolve(__dirname, "src/pages/api"),
 			"@lib": resolve(__dirname, "src/lib/"),
 			"@models": resolve(__dirname, "src/models/"),
 			"@components": resolve(__dirname, "src/components/"),
 			"@config": resolve(__dirname, "src/config/"),
 			"@forms": resolve(__dirname, "src/components/forms/"),
-			"@api": resolve(__dirname, "src/pages/api")
+			"@templates": resolve(__dirname, "src/templates/")
 		};
 
 		// Fixes npm packages that depend on `fs` module
