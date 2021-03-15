@@ -17,9 +17,9 @@ export default async (req, resp) => {
 		const data = { adherent, adhesion, year, date };
 		const pdfBuffer = await generatePdf(html(data));
 
-		// Render the PDF inline
+		// Render the PDF as an attachment (force download)
 		resp.status(200);
-		resp.setHeader("Content-Disposition", `inline; filename="${filename(data)}"`);
+		resp.setHeader("Content-Disposition", `attachment; filename="${filename(data)}"`);
 		resp.setHeader("Content-Length", pdfBuffer.length);
 		resp.setHeader("Content-Type", "application/pdf");
 		resp.end(pdfBuffer, "binary");
