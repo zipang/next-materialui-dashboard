@@ -17,6 +17,10 @@ const MODE_PAIEMENTS = {
 	cheque: "Par Chèque",
 	en_ligne: "En Ligne"
 };
+const STATUTS = {
+	active: "Active",
+	en_attente: "En Attente"
+};
 
 export const defineColumns = (eb) => [
 	{ id: "no", label: "N°", minWidth: 80 },
@@ -25,6 +29,12 @@ export const defineColumns = (eb) => [
 		label: "Adhérent",
 		minWidth: 200,
 		link: ({ siret }) => `/member/${siret}`
+	},
+	{
+		id: "statut",
+		label: "Statut",
+		minWidth: 200,
+		format: (code) => STATUTS[code]
 	},
 	{
 		id: "mode_paiement",
