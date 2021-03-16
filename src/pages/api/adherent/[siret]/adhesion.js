@@ -12,11 +12,11 @@ export default async (req, resp) => {
 		const data = req.body;
 		console.log(`${method} ${req.url}. Siret : ${siret}`, data);
 		// POST : /api/adherent/7889798/adhesion
-		const adhesion = await create(siret, data);
-		console.log(`New adhesion request created for adherent ${siret}`, adhesion);
+		const adhesion = (await create(siret, data)).toJSON();
+		console.log(`New adhesion created for adherent ${siret}`, adhesion);
 		return resp.status(200).json({
 			success: true,
-			adhesion: adhesion.toJSON()
+			adhesion
 		});
 	} catch (err) {
 		resp.status(err.code || 500).json({
