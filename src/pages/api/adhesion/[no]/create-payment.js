@@ -23,6 +23,7 @@ export default async (req, resp) => {
 				currency: "EUR"
 			},
 			locale: "fr_FR",
+			method: ["creditcard", "banktransfer"],
 			description,
 			redirectUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/member/adhesions`,
 			webhookUrl: `${process.env.NEXT_PUBLIC_SITE_URL}/api/adhesion/${no}/confirm-payment`
