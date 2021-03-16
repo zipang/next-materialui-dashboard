@@ -3,10 +3,9 @@ subject: Nouvelle adhésion ({{=data.nom}})
 to: {{=data.env.MAIL_CONTACT}}
 bcc: zipang <christophe.desguez@gmail.com>
 ---
-La structure {{=data.nom}} vient d'adhérer/renouveler son adhésion.
+{{=data.nom}} vient d'adhérer/renouveler son adhésion.
 
-
-Les coordonnées de la structure sont les suivantes :
+Les coordonnées :
 
 **{{=data.nom}}**  
 {{=data.adresse?.rue1}}  
