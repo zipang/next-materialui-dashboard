@@ -10,7 +10,8 @@ export const getTemplate = async (name) => {
 
 	if (!template) {
 		try {
-			template = await import(`./${name}.js`);
+			const templateModule = await import(`./${name}.js`);
+			template = cache[name] = templateModule.default; // the default export which is the render function
 		} catch (err) {
 			console.error(err);
 			throw new ApiError(404, `Unknown mail template ${name}. ${err.message}`);
