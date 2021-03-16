@@ -64,7 +64,7 @@ export const updateAdhesionNumber = async (no) => {
 		await params.save();
 		console.log(
 			`Updated parameters for env ${process.env.NODE_ENV}`,
-			envParameters.toJSON()
+			params.toJSON()
 		);
 		return params;
 	} catch (err) {
