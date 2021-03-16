@@ -21,9 +21,12 @@ export const createPayment = async (data) => {
 		throw new Error(`Le Token pour l'API Mollie n'a pas été trouvé`);
 	}
 
+	const body = JSON.stringify(data);
+	console.log(`Sending Mollie request for mayment creation`, body);
+
 	const resp = await fetch(apiEntryPoint, {
 		method: "POST",
-		body: JSON.stringify(data),
+		body,
 		headers: {
 			"Content-Type": "application/json",
 			Authorization: `Bearer ${process.env.MOLLIE_API_KEY}`
