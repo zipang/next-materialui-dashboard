@@ -36,7 +36,8 @@ export const createPayment = async (data) => {
 	const respBody = await resp.json();
 	console.log(`Mollie payment response. Status ${resp.status}`, respBody);
 
-	if (resp.status !== 200) {
+	if (resp.status !== 201) {
+		// CREATED
 		// Error format contains a single message field
 		throw new ApiError(resp.status, respBody.detail);
 	} else {
