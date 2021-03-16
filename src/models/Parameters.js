@@ -30,7 +30,6 @@ export const retrieve = async () => {
 		});
 		envParameters = await envParameters.save();
 	}
-	console.log(`Retrieved parameters for env ${process.env.NODE_ENV}`, envParameters);
 	return envParameters;
 };
 
@@ -63,6 +62,10 @@ export const updateAdhesionNumber = async (no) => {
 		const params = await retrieve();
 		params.set("no_adhesion", no);
 		await params.save();
+		console.log(
+			`Updated parameters for env ${process.env.NODE_ENV}`,
+			envParameters.toJSON()
+		);
 		return params;
 	} catch (err) {
 		console.error(err);

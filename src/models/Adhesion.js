@@ -52,7 +52,7 @@ export const create = async (siret, data = {}) => {
 		adhesion.set("adherent", adherent);
 		await adhesion.save(null, { cascadeSave: false });
 		// Ok we can update the next adhesion no
-		updateAdhesionNumber(no);
+		await updateAdhesionNumber(no);
 		return adhesion;
 	} catch (err) {
 		console.error(err);
