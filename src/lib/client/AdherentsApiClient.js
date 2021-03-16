@@ -35,7 +35,7 @@ export const createAdhesion = async (user, siret, data = {}) => {
  * Confirm the payment of a pending adhesion for this adherent
  */
 export const confirmAdhesion = async (no, data = {}) => {
-	return await APIClient.post(`/api/adhesion/${no}/payment`, data);
+	return await APIClient.post(`/api/adhesion/${no}/confirm-payment`, data);
 };
 
 /**

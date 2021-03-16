@@ -22,7 +22,7 @@ export const createPayment = async (data) => {
 	}
 
 	const body = JSON.stringify(data);
-	console.log(`Sending Mollie request for mayment creation`, body);
+	console.log(`Sending Mollie request for mayment creation`, data);
 
 	const resp = await fetch(apiEntryPoint, {
 		method: "POST",
