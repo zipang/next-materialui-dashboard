@@ -30,7 +30,7 @@ export const retrieve = async () => {
 		});
 		envParameters = await envParameters.save();
 	}
-
+	console.log(`Retrieved parameters for env ${process.env.NODE_ENV}`, envParameters);
 	return envParameters;
 };
 
