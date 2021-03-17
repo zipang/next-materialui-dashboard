@@ -107,17 +107,11 @@ export const enhanceActions = (id, actions, state, setState, middlewares) => {
 						transition(id, name, state, newState);
 						return newState;
 					} else {
-						console.log(`Action ${name} didn't change ${id} machine state`);
+						console.log(`Action ${name}() didn't change ${id} machine state`);
 						return state;
 					}
 				} catch (err) {
-					console.error(
-						`Action ${name}(${JSON.stringify(
-							state,
-							null,
-							"\t"
-						)}) failed on ${id} machine`
-					);
+					console.error(`Action ${name}() failed on ${id} machine`, err, state);
 				}
 			};
 
