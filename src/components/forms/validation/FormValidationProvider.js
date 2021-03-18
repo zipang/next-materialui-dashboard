@@ -1,7 +1,7 @@
 import { useState, useContext, createContext } from "react";
-import ValidationContext from "./ValidationContext";
+import { createValidationContext } from "./ValidationContext";
 
-const FormValidatorContext = createContext();
+const FormValidationContext = createContext();
 
 /**
  * Provide the form validation context to children
@@ -12,7 +12,7 @@ const FormValidatorContext = createContext();
 export const FormValidationProvider = ({ children, ...options }) => {
 	// Store the initial validationContext state
 	const [validationContext, setValidationContext] = useState(
-		ValidationContext(options)
+		createValidationContext(options)
 	);
 
 	// Validation context can globally change after a call to the `validate` or `setData` methods
@@ -33,9 +33,9 @@ export const FormValidationProvider = ({ children, ...options }) => {
 	});
 
 	return (
-		<FormValidatorContext.Provider value={validationContext}>
+		<FormValidationContext.Provider value={validationContext}>
 			{children}
-		</FormValidatorContext.Provider>
+		</FormValidationContext.Provider>
 	);
 };
 
@@ -44,7 +44,7 @@ export const FormValidationProvider = ({ children, ...options }) => {
  * @return {ValidationContext}
  */
 export const useFormValidationContext = () => {
-	const validationContext = useContext(FormValidatorContext);
+	const validationContext = useContext(FormValidationContext);
 	if (!validationContext) {
 		throw new Error(
 			`useFormValidationContext() hook can only be used from inside a <FormValidationProvider> parent`
