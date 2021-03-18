@@ -8,7 +8,6 @@ const _DEFAULT_REQUEST_HEADERS = {
 	"Content-Type": "application/json"
 };
 
-
 /**
  * Complete relative API URLs with the base site URL
  * that must exist as an environment variable
@@ -45,7 +44,7 @@ export const buildURL = (apiEndpoint, params) => {
  * @param {ReadableStream} stream
  * @return {Promise<String>}
  */
-const readStreamAsText = async (stream) => {
+export const readStreamAsText = async (stream) => {
 	const chunks = [];
 	return new Promise((resolve, reject) => {
 		stream.on("data", (chunk) => chunks.push(chunk));
@@ -61,7 +60,7 @@ const readStreamAsText = async (stream) => {
  * @param {HttpResponse} resp
  * @return {Object}
  */
-const readResponseBody = async (resp) => {
+export const readResponseBody = async (resp) => {
 	let retry;
 	try {
 		// retry = resp.clone(); // Don't bother
