@@ -1,4 +1,4 @@
-import { getAdherentBySiret } from "@lib/client/SireneClient";
+import { searchOrganismeBySiret } from "@lib/client/SireneClient";
 import { retrieveBySiret } from "@models/Adherent";
 
 /**
@@ -9,18 +9,16 @@ import { retrieveBySiret } from "@models/Adherent";
 const search = async (req, resp) => {
 	try {
 		// Get the data and define the username as the login
-		console.log("/api/siret/search received query", JSON.stringify(req.body));
+		console.log("/api/siret/search", JSON.stringify(req.body));
 		const { siret } = req.body;
-		const [siretData, savedData] = await Promise.all([
-			getAdherentBySiret(siret),
-			retrieveBySiret(siret)
-		]);
+		const savedData = await retrieveBySiret(siret); // Was already stored in the database
+		const siretData = savedData ? null : await searchOrganismeBySiret(siret);
 		resp.json({ siret, siretData, savedData });
 	} catch (err) {
-		console.error(`/siret/search error`, err);
+		console.error(`/api/siret/search error`, err);
 		resp.status(err.code || 500).json({
 			success: false,
-			error: err.message
+			error: err.code && err.code === 404 ? "N° de Siret Inconnu" : err.message
 		});
 	}
 };
