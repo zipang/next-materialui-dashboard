@@ -16,6 +16,7 @@ import Step from "./Step";
  * @return {Number} step index or -1 if not found
  */
 const findIndex = (steps = [], stepId) => {
+	if (stepId in steps) return steps[stepId];
 	let i = 0;
 	while (i < steps.length) {
 		if (steps[i].id === stepId) {
@@ -41,9 +42,13 @@ const transitionTo = (state, where) => {
 		currentIndex = where;
 	} else if (where === "next") {
 		currentIndex = state.currentIndex + 1;
+	} else if (where === "previous") {
+		currentIndex = state.currentIndex - 1;
 	} else if (typeof where === "string") {
 		currentIndex = findIndex(steps, where);
 	}
+
+	console.log(`transitionTo('${where}') => steps[${currentIndex}]`);
 
 	const currentStep = steps[currentIndex];
 
@@ -58,6 +63,24 @@ const transitionTo = (state, where) => {
 };
 
 /**
+ * Go back to previous step in the state's history
+ **/
+const back = (state) => {
+	const { steps, history } = state;
+	if (history.length) {
+		const currentStep = history.pop();
+		return {
+			...state,
+			history,
+			currentStep,
+			currentIndex: findIndex(steps, currentStep.id)
+		};
+	} else {
+		return state; // unchanged
+	}
+};
+
+/**
  * A dedicated state machine to move the wizard from steps to steps
  *
  * @param {String} id
@@ -66,60 +89,67 @@ const transitionTo = (state, where) => {
  * @param {Number} [initialStep=0]
  * @return {StateMachineDef}
  */
-const WizardStateMachine = ({ id, steps = [], data = {}, initialStep = 0 }) => ({
-	id,
-
-	initialState: {
-		data,
-		steps,
-		history: [],
-		currentIndex: initialStep,
-		currentStep: steps[initialStep]
-	},
-
-	actions: {
-		/**
-		 * Transition to the next step in the wizard
-		 * @param {Object} state
-		 */
-		next: async (state) => {
-			const { history, currentStep } = state;
-			const stepActions = currentStep.actions || [];
-
-			// The transition will give us a new state instance unless it is impossible to find the next step
-			let updatedState;
-			if (typeof stepActions.next === "function") {
-				// Let's apply the step's redefined next action
-				updatedState = await stepActions.next(state);
-			} else {
-				updatedState = transitionTo(state, "next");
-			}
-
-			if (updatedState !== state) {
-				history.push(currentStep);
-			}
-
-			return updatedState;
-		},
-		/**
-		 * Go back to previous step in history
-		 **/
-		previous: (state) => {
-			const { steps, history } = state;
-			if (history.length) {
-				const currentStep = history.pop();
-				return {
-					...state,
-					history,
-					currentStep,
-					currentIndex: findIndex(steps, currentStep.id)
-				};
-			} else {
-				return state; // unchanged
-			}
-		},
-		goto: transitionTo
+const WizardStateMachine = ({ id, steps = [], data = {}, initialStep = 0 }) => {
+	if (typeof initialStep === "string") {
+		console.log(`Look for initial step ${initialStep}`);
+		initialStep = findIndex(steps, initialStep);
+		if (initialStep === -1) initialStep = 0;
 	}
-});
+	return {
+		id,
+
+		initialState: {
+			data,
+			steps,
+			history: [],
+			currentIndex: initialStep,
+			currentStep: steps[initialStep]
+		},
+
+		actions: {
+			/**
+			 * Transition to the next step in the wizard
+			 * @param {Object} state
+			 */
+			next: async (state) => {
+				const { history, currentStep } = state;
+				const stepActions = currentStep.actions || [];
+
+				// The transition will give us a new state instance unless it is impossible to find the next step
+				let updatedState;
+				if (typeof stepActions.next === "function") {
+					// Let's apply the step's redefined next action
+					updatedState = await stepActions.next(state);
+				} else {
+					updatedState = transitionTo(state, "next");
+				}
+
+				if (updatedState !== state) {
+					history.push(currentStep);
+				}
+
+				return updatedState;
+			},
+			/**
+			 * Transition to the previous step in the wizard
+			 * @param {Object} state
+			 */
+			previous: async (state) => {
+				console.log(`previous()`, state);
+				const { history, currentStep } = state;
+
+				// The transition will give us a new state instance unless it is impossible to find the previous step
+				if (history.length === 0) {
+					return transitionTo(state, "previous");
+				} else {
+					// Let's depile the history
+					return back(state);
+				}
+			},
+			back,
+			goto: transitionTo
+		}
+	};
+};
 
 export default WizardStateMachine;
