@@ -2,6 +2,7 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
+			"@templates/*": ["templates/*"],
 			"@components/*": ["components/*"],
 			"@config/*": ["config/*"],
 			"@forms/*": ["components/forms/*"],

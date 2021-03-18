@@ -218,19 +218,19 @@ ainsi que les sites internet liés à votre activité.`,
 				]
 			},
 			{
-				label: "Accueil",
+				label: "Accueil structure",
 				type: "group",
 				fields: [
 					{
 						name: "contact.telephone",
-						label: "Téléphone",
+						label: "Téléphone structure",
 						type: "tel",
 						required: "Quel est le n° de téléphone du standard ?",
 						size: 1 / 2
 					},
 					{
 						name: "contact.email",
-						label: "Email",
+						label: "Email structure",
 						type: "email",
 						required: "Indiquez le mail de contact officiel",
 						size: 1 / 2
@@ -951,6 +951,11 @@ et le chiffre d'affaire de votre activité.`
 
 // Add the update action to each of these steps
 formSteps.forEach((step) => {
+	if (step.help) {
+		step.help.description += `
+
+Pensez à Enregistrer votre formulaire si vous voulez vous absenter ou le reprendre plus tard.`;
+	}
 	step.actions = [
 		{
 			label: "Enregistrer",
