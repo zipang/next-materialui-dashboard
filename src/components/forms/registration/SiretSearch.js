@@ -40,6 +40,13 @@ du ${updatedAt.toLocaleDateString("fr")} (${updatedAt
 		return callback(savedData);
 	}
 
+	if (siretData === "timeout") {
+		// Sometimes the Government API is down..
+		alert(`Timeout sur la recherche par Siret. 
+Vous allez devoir saisir vos informations manuellement.`);
+		return callback({});
+	}
+
 	if (typeof siretData?.etablissement === "object") {
 		const { etablissement } = siretData;
 
