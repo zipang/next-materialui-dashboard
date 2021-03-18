@@ -210,8 +210,9 @@ const buildValidate = (validationContext) => (name, options) => {
  * @param {ValidationContextOptions} options
  * @return {ValidationContext}
  */
-export const ValidationContext = (options = {}) => {
+export const createValidationContext = (options = {}) => {
 	console.log(`Building a new validation context`, options);
+
 	const fields = {};
 	const errors = _EMPTY_ERRORS; // Empty errors state will allways point to the same object instance
 	const data = options.data || {};
@@ -221,8 +222,9 @@ export const ValidationContext = (options = {}) => {
 
 	const validationContext = { fields, data, errors, register, getData };
 
-	// Now for the method that can have side-effects on the ValidationContext instance
+	// And now.. for the methods that can have side-effects on the ValidationContext instance
 	validationContext.validate = buildValidate(validationContext);
+
 	validationContext.setData = (name, value) => {
 		setProperty(data, name, value);
 		if (fields._needsRefreshAfterDataChange) {
@@ -236,35 +238,55 @@ export const ValidationContext = (options = {}) => {
 };
 
 /**
- * ValidationContext methods with their final signature and proper doc
+ * Represent the current state of validation of a set of properties
+ * with their type and validation rules
+ * And the current data and errors
  */
-ValidationContext.prototype = {
+class ValidationContext {
+	/**
+	 * The current Map of property names, value
+	 */
+	data = {};
+
+	/**
+	 *
+	 */
+	errors = {};
+
+	/**
+	 *
+	 */
+	fields = {};
+
 	/**
 	 * Register a property
 	 * @param {String} name (path) to the property
 	 * @param {FieldDef} fieldDef
 	 */
-	register: function (name, fieldDef) {},
+	register(name, fieldDef) {}
+
 	/**
 	 * Get the value of a property
 	 * @param {String} name Path to the property
 	 * @param {Any} [defaultValue]
 	 * @return {Any}
 	 */
-	getData: function (name, defaultValue) {},
+	getData(name, defaultValue) {}
+
 	/**
 	 * Set the new value of a property
 	 * @param {String} name Path to the property
 	 * @param {Any} value
 	 */
-	setData: function (name, value) {},
+	setData(name, value) {}
+
 	/**
 	 * Validate all or just one registered fields againts their stored values
 	 * @param {String} [name] Optional
 	 * @param {Object} [options] expected keys for the options : `onSuccess` and `onError`
 	 * @return {ValidationContext}
 	 */
-	validate: function (name, options) {}
-};
+	validate(name, options) {}
+}
 
 export default ValidationContext;
