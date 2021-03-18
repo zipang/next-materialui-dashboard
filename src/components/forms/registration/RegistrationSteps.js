@@ -954,7 +954,7 @@ formSteps.forEach((step) => {
 	if (step.help) {
 		step.help.description += `
 
-Pensez à Enregistrer votre formulaire si vous voulez vous absenter ou le reprendre plus tard.`;
+**Pensez à Enregistrer votre formulaire si vous voulez vous absenter ou le reprendre plus tard.**`;
 	}
 	step.actions = [
 		{
