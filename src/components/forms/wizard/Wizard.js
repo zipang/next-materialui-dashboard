@@ -1,16 +1,16 @@
 import { memo } from "react";
 import Box from "@material-ui/core/Box";
 import Button from "@material-ui/core/Button";
+import SvgIcon from "@components/SvgIcon";
 import { makeStyles } from "@material-ui/core/styles";
 
-import SvgIcon from "@components/SvgIcon";
+import { useRouter } from "next/router";
 import { useEventBus, withEventBus } from "@components/EventBusProvider";
-import Step from "@components/forms/wizard/Step";
 import { useAuthentication } from "@components/AuthenticationProvider";
 import { isEmpty } from "@lib/utils/NestedObjects";
 import { useStateMachine, withStateMachine } from "@components/StateMachine";
 import WizardStateMachine from "./WizardStateMachine";
-import { useRouter } from "next/router";
+import Step from "@components/forms/wizard/Step";
 
 const useWizardStyles = (customStyles = {}) =>
 	makeStyles((theme) => ({
@@ -117,22 +117,12 @@ const WizardControls = memo(({ children }) => (
  * Receives the steps and the state machine altogether
  * Props passed to the Wizard can override the initial state
  */
-const _Wizard = (override) => {
-	const classes = useWizardStyles();
+const _Wizard = () => {
 	const eb = useEventBus();
 	const router = useRouter();
-	const { id, state: initialState, actions } = useStateMachine();
+	const classes = useWizardStyles();
 	const { loggedUser } = useAuthentication();
-
-	// Merge the initial state and the props to get the final result
-	if (override) {
-		console.log(`Overriding Wizard stae with `, override);
-	}
-	let state = actions.merge(initialState, override);
-
-	if (state.steps[state.data.statut]) {
-		state = actions.goto(state, state.data.statut);
-	}
+	const { id, state, actions } = useStateMachine();
 
 	// Now we have a merged state
 	const { data, steps, currentStep, currentIndex } = state;
@@ -142,9 +132,17 @@ const _Wizard = (override) => {
 		state
 	);
 
-	// Validate the next step : merge new step data and transition to the next step
-	// if there is no validation error
-	const validateNextStep = async (payload, errors = {}) => {
+	// Return to previous step if there is no validation error
+	const previousStep = async ({ errors }) => {
+		if (!errors || isEmpty(errors)) {
+			// The data validation is ok : We can merge the data and pass to the next slide
+			await actions.previous();
+		}
+	};
+
+	// Validate the step : if there is no validation error
+	// Merge new step data and transition to the next step
+	const validateStep = async (payload, errors = {}) => {
 		if (isEmpty(errors)) {
 			// The data validation is ok : We can merge the data and pass to the next slide
 			actions.merge(state, { data: payload });
@@ -165,14 +163,14 @@ const _Wizard = (override) => {
 				classes={classes}
 				step={new Step(currentStep, `${currentIndex + 1}/${steps.length}`)}
 				data={data}
-				onSubmit={validateNextStep}
+				onSubmit={validateStep}
 			/>
 			<WizardControls>
 				<Button
 					key="btn-previous"
 					variant="outlined"
 					disabled={currentIndex === 0}
-					onClick={actions.previous}
+					onClick={() => previousStep(state)}
 				>
 					Etape précédente
 				</Button>
