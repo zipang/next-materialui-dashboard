@@ -69,9 +69,6 @@ Vous allez devoir saisir vos informations manuellement.`);
 				nom: getProperty(etablissement, "unite_legale.nom"),
 				prenom: getProperty(etablissement, "unite_legale.prenom_1")
 			},
-			effectifs: {
-				total: Number(getProperty(etablissement, "tranche_effectifs", 0))
-			},
 			statut: "en_attente"
 		};
 		const sex = getProperty(etablissement, "unite_legale.sexe");
