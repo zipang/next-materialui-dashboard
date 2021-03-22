@@ -74,7 +74,10 @@ export const withAuthentication = (Component, options = _DEFAULT_OPTIONS) => ({
 
 	useEffect(async () => {
 		if (!loggedUser) {
-			if (process.env.NODE_ENV === "development") {
+			if (
+				process.env.NODE_ENV === "development" ||
+				process.env.NODE_ENV === "test"
+			) {
 				setLoggedUser(new User(devUser));
 			} else {
 				// really not logged

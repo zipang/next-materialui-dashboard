@@ -1,18 +1,24 @@
 // Registration.stories.js
+import AuthenticationProvider from "@components/AuthenticationProvider";
 import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import Wizard from "../Wizard";
-
-import { steps } from "./RegistrationWizard";
+import testUser from "@models/test-user";
+import Wizard from "../wizard/Wizard";
+import { formSteps } from "./RegistrationSteps";
 
 // This default export determines where your story goes in the story list
 export default {
 	title: "Registration steps"
 };
 
-const OnePageWizard = (stepId) => () => (
-	<CenteredPaperSheet>
-		<Wizard id="one-page-wizard" steps={steps.filter(({ id }) => id === stepId)} />
-	</CenteredPaperSheet>
+const OnePageWizard = (stepId) => (
+	<AuthenticationProvider user={testUser}>
+		<CenteredPaperSheet>
+			<Wizard
+				id="one-page-wizard"
+				steps={formSteps.filter(({ id }) => id === stepId)}
+			/>
+		</CenteredPaperSheet>
+	</AuthenticationProvider>
 );
 
 export const Intro = OnePageWizard("step-intro");
