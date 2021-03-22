@@ -7,11 +7,15 @@ import {
 } from "@forms/validation/FormValidationProvider";
 import VForm from "@forms/validation/VForm";
 
+const hasErrors = (errors) => Boolean(Object.keys(errors).length);
+
 /**
  * @typedef StepFormProps
  * @property {String!} formId Unique id : required to communicate with the form through events
  * @property {Object} data Object to populate the form with their initial values
  * @property {Function} onSubmit method to call on form submission.
+ * @property {Function} [onError] method to call on validation error.
+ * @property {Function} [validateStep] additional method to validate the whole data gathered by the form fields
  * @property {JSX.Element} children the real form content (fields and submit button)
  */
 
@@ -27,6 +31,7 @@ const VStepForm = ({
 	formId = "form",
 	onSubmit,
 	onError,
+	validateStep,
 	validateOnEnter = true,
 	customStyles = {},
 	children
@@ -51,20 +56,21 @@ const VStepForm = ({
 		}
 	};
 
-	// Call onSuccess if the validation is a success
-	const validateStep = () => validate({ onSuccess, onError });
+	// Combine the fields validation with an optional global step validation
+	const globalValidation = () =>
+		validate({ extraValidation: validateStep, onSuccess, onError });
 
 	useEffect(() => {
 		// Listen to the event `form:validate`
 		if (eb) {
-			eb.on(`${formId}:validate`, validateStep);
+			eb.on(`${formId}:validate`, globalValidation);
 		}
 		return () => {
 			console.log(`Unmounting form ${formId}`);
 			// onKeyPress = noop;
 			if (eb) {
 				// Clean up event handlers
-				eb.off(`${formId}:validate`, validateStep);
+				eb.off(`${formId}:validate`, globalValidation);
 			}
 		};
 	}, [formId]);

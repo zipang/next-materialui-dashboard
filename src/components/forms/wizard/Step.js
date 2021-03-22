@@ -36,7 +36,7 @@ Input.registerInput("ysn", YesNo("Oui", "Non"));
  * @param {String} label
  * @param {String} type=text|date|integer|percent|mail|url
  * @param {Boolean|String|Function} required
- * @param {Object} [validation] custom validation rules
+ * @param {Object} [validation] extra validation rules (will oper on the whole data object)
  * @param {Function} [displayForm] custom implementation (optional)
  */
 
@@ -46,7 +46,7 @@ Input.registerInput("ysn", YesNo("Oui", "Non"));
  * @param {StepDef} step
  */
 function Step(
-	{ id, title, help = false, fields = false, displayForm = false, validate },
+	{ id, title, help = false, fields = false, displayForm = false, validation },
 	position = ""
 ) {
 	// Validate that all required fields are provided
@@ -60,17 +60,22 @@ function Step(
 			`You must provide a help section or an array of fields definitions or a custom displayForm method to create the Step ${title}`
 		);
 	}
+	// Extra validation
+	if (typeof validation === "function") {
+		throw new TypeError(
+			`The 'validation' object on a step must be an object containing names validation rules`
+		);
+	}
+
 	// It's ok : assign all
-	Object.assign(this, { id, title, help, fields }, { position });
+	Object.assign(this, { id, title, help, fields, validation }, { position });
+
+	// Bind the other methods
 	if (typeof displayForm === "function") {
 		this.displayForm = displayForm.bind(this);
 	} else if (!fields) {
 		// Unable to display anything
 		this.displayForm = false;
-	}
-	if (typeof validate === "function") {
-		console.log(`We have a validating function on step ${id}`);
-		this.validate = validate.bind(this);
 	}
 }
 
@@ -120,6 +125,7 @@ Step.prototype = {
 			<StepForm
 				formId={`${this.id}`}
 				data={data}
+				validateStep={this.validation}
 				onSubmit={onSubmit}
 				customStyles={{ minWidth: "40em" }}
 				rerender={new Date()}

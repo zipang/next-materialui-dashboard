@@ -131,11 +131,42 @@ export const validateField = (name, value, required = false, validation = {}, da
 };
 
 /**
+ * Validate the whole data against more validation rules who acts globally
+ * @param {Object} [validation] Additional validation rules with their own keys
+ * @param {Object} data The whole data object in the validation context
+ */
+export const doExtraValidation = (validation = {}, data) => {
+	// Then the other validation rules
+	Object.keys(validation).forEach((ruleId) => {
+		const validationRule = validation[ruleId];
+
+		if (typeof validationRule === "function") {
+			const test = validationRule(data);
+			if (test !== true && Array.isArray(test)) {
+				throw new ValidationError(
+					test[0], // Here is in fact the name of the field where to put the message or 'global'
+					ruleId,
+					test[1] || `Extra validation failed (${ruleId})`
+				);
+			}
+		} else if (typeof validationRule?.validate === "function") {
+			const test = validationRule.validate(data);
+			if (test !== true) {
+				const { name, message } = test; // these test return must return a field name or 'global'
+				throw new ValidationError(name, ruleId, test || message);
+			}
+		}
+	});
+
+	return true; // It's validated !
+};
+
+/**
  * Build the validate function
  * @param {ValidationContext} validationContext
  * @return {Function} Validate a single property or the whole registered fields in the context
  */
-const buildValidate = (validationContext) => (name, options) => {
+const buildValidate = (validationContext) => (name, options = {}) => {
 	// Extract what we need
 	const { fields, data } = validationContext;
 
@@ -159,7 +190,9 @@ const buildValidate = (validationContext) => (name, options) => {
 	const validateASingleField = typeof name === "string";
 	const filterFields = validateASingleField ? filterByValue(name) : allways(true);
 
-	const errors = Object.keys(fields)
+	// Here is the real validation happening :
+	// We loop over all the field names that have been registered
+	let errors = Object.keys(fields)
 		.filter(filterFields)
 		.reduce((foundAnError, name) => {
 			if (foundAnError !== _EMPTY_ERRORS) {
@@ -180,12 +213,28 @@ const buildValidate = (validationContext) => (name, options) => {
 			}
 		}, _EMPTY_ERRORS);
 
-	if (options?.onSuccess && errors === _EMPTY_ERRORS) {
-		options.onSuccess(data);
+	// And now for the last (optional) validation step that comes after each
+	// field has successfully passed their own validation rules
+	const { extraValidation, onSuccess, onError } = options;
+
+	if (errors === _EMPTY_ERRORS && extraValidation) {
+		try {
+			doExtraValidation(extraValidation, data);
+		} catch (err) {
+			const { value, code, message } = err; // Extract the error parts
+			errors = {}; // IMPORTANT : create a new instance
+			errors[value] = { code, message };
+			if (value in fields) fields[value].inputRef?.current?.focus();
+		}
 	}
 
-	if (options?.onError && errors !== _EMPTY_ERRORS) {
-		options.onError(errors);
+	// Do we have some callback to call ?
+	if (onSuccess && errors === _EMPTY_ERRORS) {
+		onSuccess(data);
+	}
+
+	if (onError && errors !== _EMPTY_ERRORS) {
+		onError(errors);
 	}
 
 	if (validateASingleField || validationContext.errors !== errors) {
@@ -232,6 +281,12 @@ export const createValidationContext = (options = {}) => {
 		} else {
 			return validationContext;
 		}
+	};
+
+	validationContext.setError = (name, error) => {
+		const errors = {}; // Create a new instance
+		errors[name] = error;
+		return { ...validationContext, errors }; // return a new instance
 	};
 
 	return validationContext;

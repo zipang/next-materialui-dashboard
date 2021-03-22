@@ -322,12 +322,6 @@ Puis indiquez votre numéro d’agrément, de déclaration, d’autorisation.`
 						size: 1 / 2,
 						placeHolder: "SAP123456789",
 						validation: {
-							oneNeeded: (no, data) =>
-								!data.declaration.date &&
-								!data.agrement.date &&
-								!data.autorisation.date
-									? `Saisissez au moins l'un des 3 : (Déclaration/Agrément/Autorisation)`
-									: true,
 							formatInvalid: {
 								pattern: /^SAP(\d){9}$/,
 								message:
@@ -405,7 +399,16 @@ Puis indiquez votre numéro d’agrément, de déclaration, d’autorisation.`
 					}
 				]
 			}
-		]
+		],
+		validation: {
+			needAtLeastOne: (data) =>
+				!data.declaration.date && !data.agrement.date && !data.autorisation.date
+					? [
+							"declaration.date", //
+							`Indiquez au moins l'un ou l'une des 3 : (Déclaration/Agrément/Autorisation)`
+					  ]
+					: true
+		}
 	},
 	{
 		id: "step-systemes-gestion",
@@ -668,14 +671,18 @@ les _équivalents temps plein_ (ETP) dans la colonne de droite.`
 						label: "Total",
 						type: "integer",
 						size: 1 / 2,
-						required: "Quel est le nombre total de salarié ?"
+						required: "Quel est le nombre total de salarié ?",
+						validation: (total) =>
+							total === 0 ? "Indiquez votre nombre total de salariés" : true
 					},
 					{
 						name: "effectifs.etp",
 						label: "ETP",
 						type: "decimal",
 						size: 1 / 2,
-						required: true
+						required: true,
+						validation: (etp) =>
+							etp === 0 ? "Indiquez l'équivalent templs plein" : true
 					}
 				]
 			},
