@@ -6,6 +6,7 @@ import User from "@models/User";
 import Email from "./inputs/Email";
 import Password from "./inputs/Password";
 import Submit from "./inputs/Submit";
+import { useState } from "react";
 
 /**
  * Displays a form to log the user
@@ -13,12 +14,14 @@ import Submit from "./inputs/Submit";
 const LoginForm = () => {
 	const auth = useAuthentication();
 	const router = useRouter();
+	const [redirecting, setRedirecting] = useState(false);
 
 	/**
 	 * After a successful login, the full User is returned by the API
 	 * @param {Object} userData
 	 */
 	const onSuccess = (userData) => {
+		setRedirecting(true);
 		const loggedUser = new User(userData);
 		auth.setLoggedUser(loggedUser);
 
@@ -31,7 +34,7 @@ const LoginForm = () => {
 		}
 	};
 
-	return (
+	return redirecting ? null : (
 		<APIForm action="/api/user/login" onSuccess={onSuccess}>
 			<Email
 				label="Email"
