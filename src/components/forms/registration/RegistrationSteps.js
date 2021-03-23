@@ -774,11 +774,33 @@ et le chiffre d'affaire de votre activité.`
 						type: "decimal",
 						suffix: " €",
 						size: 1 / 2,
-						required: true
+						required: true,
+						validation: { positiveNumber }
 					}
 				]
 			}
-		]
+		],
+		validation: {
+			atLeastOne: (data) => {
+				const {
+					heures_cumulees_apa,
+					heures_cumulees_pch,
+					heures_cumulees_confort
+				} = data.activite;
+				if (
+					heures_cumulees_apa +
+						heures_cumulees_pch +
+						heures_cumulees_confort ===
+					0
+				) {
+					return [
+						"activite.heures_cumulees_apa",
+						"Votre volume d'heures total doit être positif."
+					];
+				}
+				return true; // ok
+			}
+		}
 	},
 	{
 		id: "step-beneficiaires",
@@ -852,7 +874,38 @@ et le chiffre d'affaire de votre activité.`
 					}
 				]
 			}
-		]
+		],
+		validation: {
+			atLeastOne: (data) => {
+				const {
+					pa,
+					ph,
+					transport,
+					petite_enfance,
+					mandataire,
+					prestataire,
+					confort,
+					autres
+				} = data.activite.beneficiaires;
+				if (
+					pa +
+						ph +
+						transport +
+						petite_enfance +
+						mandataire +
+						prestataire +
+						confort +
+						autres ===
+					0
+				) {
+					return [
+						"activite.beneficiaires.pa",
+						"Indiquez au moins 1 bénéficiaire parmis cette liste."
+					];
+				}
+				return true; // ok
+			}
+		}
 	},
 	{
 		id: "step-activite-ratios",
@@ -916,7 +969,36 @@ et le chiffre d'affaire de votre activité.`
 					}
 				]
 			}
-		]
+		],
+		validation: {
+			atLeastOne: (data) => {
+				const {
+					pa,
+					ph,
+					transport,
+					petite_enfance,
+					mandataire,
+					prestataire,
+					confort
+				} = data.activite.ratios;
+				if (
+					pa +
+						ph +
+						transport +
+						petite_enfance +
+						mandataire +
+						prestataire +
+						confort ===
+					0
+				) {
+					return [
+						"activite.ratios.pa",
+						"Votre ratio d'activité doit être positif dans l'une au moins des activités."
+					];
+				}
+				return true; // ok
+			}
+		}
 	},
 	{
 		id: "step-domaines-intervention",
@@ -953,7 +1035,16 @@ et le chiffre d'affaire de votre activité.`
 				name: "domaines.autres",
 				label: "Autres activités"
 			}
-		]
+		],
+		validation: {
+			atLeastOne: (data) => {
+				const codes_activite = data.domaines.codes;
+				if (codes_activite.length === 0) {
+					return ["domaines.codes", "Cochez au moins l'une de ces activités."];
+				}
+				return true; // ok
+			}
+		}
 	}
 ];
 

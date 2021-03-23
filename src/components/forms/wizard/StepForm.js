@@ -40,6 +40,10 @@ const VStepForm = ({
 	const styles = useFormStyles(customStyles);
 	const { validate } = useFormValidationContext();
 
+	if (validateStep !== undefined) {
+		console.log(`We have an extra validation step on ${formId}`, validateStep);
+	}
+
 	/**
 	 * Called when the form validation is a success
 	 * @param {Object} formData
