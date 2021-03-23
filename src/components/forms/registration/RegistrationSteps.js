@@ -866,6 +866,7 @@ et le chiffre d'affaire de votre activité.`
 						name: "activite.beneficiaires.autres",
 						label: "Autres",
 						type: "integer",
+						required: true,
 						size: 1 / 2
 					},
 					{
@@ -880,20 +881,20 @@ et le chiffre d'affaire de votre activité.`
 				const {
 					pa,
 					ph,
-					transport,
+					pa_apa,
+					ph_pch,
 					petite_enfance,
-					mandataire,
-					prestataire,
+					enfance,
 					confort,
 					autres
 				} = data.activite.beneficiaires;
 				if (
 					pa +
 						ph +
-						transport +
+						pa_apa +
+						ph_pch +
 						petite_enfance +
-						mandataire +
-						prestataire +
+						enfance +
 						confort +
 						autres ===
 					0
