@@ -17,6 +17,7 @@ const VForm = ({
 	onSuccess = console.log,
 	onError = console.error,
 	validateOnEnter = false,
+	extraValidation,
 	children,
 	...props
 }) => {
@@ -32,6 +33,7 @@ const VForm = ({
 	const onSubmit = (evt) => {
 		evt.preventDefault();
 		validate({
+			extraValidation,
 			onSuccess,
 			onError
 		});

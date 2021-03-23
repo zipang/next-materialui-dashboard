@@ -86,6 +86,7 @@ const VStepForm = ({
 			onError={onError}
 			className={styles.form}
 			validateOnEnter={validateOnEnter}
+			extraValidation={validateStep}
 		>
 			{children}
 		</VForm>
