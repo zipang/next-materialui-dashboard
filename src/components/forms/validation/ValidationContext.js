@@ -7,6 +7,8 @@ export const filterByValue = (good) => (testVal) => testVal === good; // A filte
 export const isUndefined = (val) =>
 	val === undefined || val === null || Number.isNaN(val);
 export const isUndefinedOrEmpty = (val) => val === "" || isUndefined(val);
+export const positiveNumber = (total) =>
+	total === 0 ? "Ce nombre doit être positif (>0)" : true;
 
 /**
  * Dedicated error

@@ -2,6 +2,7 @@ import { SiretSearchForm } from "./SiretSearch";
 import { update, createAdhesion } from "@lib/client/AdherentsApiClient";
 import { sendMailTemplate } from "@lib/client/MailApiClient";
 import APIClient from "@lib/client/ApiClient";
+import { positiveNumber } from "@forms/validation/ValidationContext";
 
 /**
  * These steps are the introduction text for a new adhesion
@@ -671,18 +672,16 @@ les _équivalents temps plein_ (ETP) dans la colonne de droite.`
 						label: "Total",
 						type: "integer",
 						size: 1 / 2,
-						required: "Quel est le nombre total de salarié ?",
-						validation: (total) =>
-							total === 0 ? "Indiquez votre nombre total de salariés" : true
+						required: "Indiquez votre nombre total de salarié",
+						validation: { positiveNumber }
 					},
 					{
 						name: "effectifs.etp",
 						label: "ETP",
 						type: "decimal",
 						size: 1 / 2,
-						required: true,
-						validation: (etp) =>
-							etp === 0 ? "Indiquez l'équivalent templs plein" : true
+						required: "Indiquez l'équivalent temps plein",
+						validation: { positiveNumber }
 					}
 				]
 			},
@@ -695,14 +694,16 @@ les _équivalents temps plein_ (ETP) dans la colonne de droite.`
 						label: "Total",
 						type: "integer",
 						size: 1 / 2,
-						required: true
+						required: "Indiquez votre nombre d'intervenants",
+						validation: { positiveNumber }
 					},
 					{
 						name: "effectifs.intervenants_etp",
 						label: "ETP",
 						type: "decimal",
 						size: 1 / 2,
-						required: true
+						required: "Indiquez l'équivalent temps plein",
+						validation: { positiveNumber }
 					}
 				]
 			},
@@ -715,14 +716,14 @@ les _équivalents temps plein_ (ETP) dans la colonne de droite.`
 						label: "Total",
 						type: "integer",
 						size: 1 / 2,
-						required: true
+						required: "Indiquez votre effectif de cadres intermédiaires"
 					},
 					{
 						name: "effectifs.cadres_intermediaires_etp",
 						label: "ETP",
 						type: "decimal",
 						size: 1 / 2,
-						required: true
+						required: "Indiquez l'équivalent temps plein"
 					}
 				]
 			}
