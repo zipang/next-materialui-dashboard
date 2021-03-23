@@ -1,5 +1,10 @@
 import { createRef, useState, useEffect, useLayoutEffect } from "react";
-import { Checkbox as MaterialCheckbox, FormControlLabel, Grid } from "@material-ui/core";
+import {
+	Checkbox as MaterialCheckbox,
+	FormControlLabel,
+	FormHelperText,
+	Grid
+} from "@material-ui/core";
 import GroupLabel from "@forms/GroupLabel";
 import { useFormValidationContext } from "@forms/validation/FormValidationProvider";
 import { convertOptions } from "@forms/validation/utils";
@@ -23,8 +28,7 @@ const CheckBoxes = ({
 	autoFocus = false,
 	defaultValue = [],
 	validation = {},
-	width = 1 / 3, // checkboxes are arranged in 3 columns
-	...moreProps
+	width = 1 / 3 // checkboxes are arranged in 3 columns
 }) => {
 	const inputRef = createRef(); // This ref will reference the first checkbox in the serie
 
@@ -37,8 +41,8 @@ const CheckBoxes = ({
 	// Get the current checked values from the ValidationContext
 	const [values, setValues] = useState(getData(name));
 
-	// This field value is in fact an array of values corresponding to checked elements
-	const mergedProps = { ..._BASE_INPUT_STYLES, ...moreProps };
+	// Do we  have an error ?
+	const errorMessage = errors[name]?.message || "";
 
 	// Accept a hashmap (key : value) as different format
 	if (!Array.isArray(options)) options = convertOptions(options);
@@ -111,6 +115,9 @@ const CheckBoxes = ({
 						);
 					}
 				})}
+				{errorMessage && (
+					<FormHelperText error={true}>{errorMessage}</FormHelperText>
+				)}
 			</Grid>
 		</GroupLabel>
 	);
