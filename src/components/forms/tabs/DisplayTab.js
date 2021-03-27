@@ -1,9 +1,8 @@
 import { Grid } from "@material-ui/core";
-import ReactMarkdown from "react-markdown";
-import breaks from "remark-breaks";
-import GroupLabel from "./GroupLabel";
+import GroupLabel from "../GroupLabel";
 import Link from "@components/Link";
 import { getProperty } from "@lib/utils/NestedObjects";
+import { displaySelectedOption } from "../inputs/utils";
 
 /**
  * @typedef TabDef
@@ -52,7 +51,7 @@ Tab.prototype = {
 			case "percent":
 				return value + "%";
 			case "select":
-				return field.options[value];
+				return displaySelectedOption(value, field.options);
 			case "checkboxes":
 				return value.map((code) => field.options[code]).join(", ");
 			case "ysn":
@@ -111,4 +110,61 @@ Tab.prototype = {
 	}
 };
 
-export default Tab;
+/**
+ * Find a tab by its index or id
+ * @param {Array} tabs
+ * @param {Number|String} indexOrID
+ * @return {Tab}
+ */
+const getTab = (tabs = [], indexOrID = 0) => {
+	const tabDef =
+		indexOrID in tabs ? tabs[indexOrID] : tabs.find((t) => t.id === indexOrID);
+	console.log(`getTab(${indexOrID}) => `, tabDef);
+	return new Tab(tabDef);
+};
+
+const emptyCertification = (stepId) => (field) => {
+	if (
+		stepId === "step-certifications" &&
+		field.type === "group" &&
+		field.fields[0].value === "N"
+	) {
+		// Does this group have a NO
+		return false;
+	}
+	return true; // ok
+};
+
+const buildTabsDef = (steps) =>
+	steps.map(({ id, title, fields }) => ({
+		id,
+		title,
+		fields: fields
+			.map(({ name, label, type = "text", options, size = 1, fields }) => ({
+				name,
+				label,
+				type,
+				options,
+				size: type === "group" ? 1 : size,
+				fields
+			}))
+			.filter((field) => field.type != "radio")
+			.filter(emptyCertification(id))
+	}));
+
+/**
+ * @typedef ReadOnlyFormProps
+ * @field {Array<TabDef>} tabs
+ * @field {Object} data
+ */
+/**
+ * Display (in read-only mode) one tab of structured data
+ * Similar to StepForm that displays fields in a step but READ-ONLY !
+ * @param {ReadOnlyFormProps} props
+ */
+const DisplayTab = ({ steps = [], data = {}, currentTab = 0 }) => {
+	const tabsDef = buildTabsDef(steps);
+	return getTab(tabsDef, currentTab).display(data);
+};
+
+export default DisplayTab;
