@@ -84,6 +84,7 @@ const _BACKGROUND_IMAGE_STYLE = {
 	backgroundPosition: "bottom",
 	backgroundSize: "cover"
 };
+
 Step.prototype = {
 	getBackgroundImageStyle: function () {
 		const style = { ..._BACKGROUND_IMAGE_STYLE, ...this.help };
