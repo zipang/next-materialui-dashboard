@@ -2,7 +2,7 @@ import { SiretSearchForm } from "./SiretSearch";
 import { update, createAdhesion } from "@lib/client/AdherentsApiClient";
 import { sendMailTemplate } from "@lib/client/MailApiClient";
 import APIClient from "@lib/client/ApiClient";
-import { positiveNumber } from "@forms/validation/ValidationContext";
+import { positiveNumber } from "@forms/validation/utils";
 
 /**
  * These steps are the introduction text for a new adhesion
@@ -113,7 +113,7 @@ export const formSteps = [
 		id: "step-organisme-essentials",
 		title: "Organisme",
 		help: {
-			description: `Vérifiez l'adresse, le nom et la date de création de la structure à déclarer.`,
+			description: `Vérifiez l'adresse, le nom, la forme juridique et la date de création de la structure à déclarer.`,
 			backgroundImage: "https://invie78.fr/images/background-nouvel-adherent.jpg"
 		},
 		fields: [
@@ -632,7 +632,7 @@ indiquez le avec un commentaire sur vos attentes.`
 							cle3: "Clé 3",
 							cle4: "Clé 4",
 							cle5: "Clé 5",
-							cle6: "Clé 6"
+							cle6: "Clé 6 (Optionnelle)"
 						}
 					}
 				]
@@ -733,7 +733,7 @@ les _équivalents temps plein_ (ETP) dans la colonne de droite.`
 		id: "step-synthese",
 		title: "CA et volume d’heures",
 		help: {
-			description: `Indiquez le volume d’heures annuelles cumulées 
+			description: `Indiquez le volume d’heures annuelles cumulées à la fin de l'année
 et le chiffre d'affaire de votre activité.`
 		},
 		fields: [
@@ -948,20 +948,6 @@ et le chiffre d'affaire de votre activité.`
 						size: 1 / 2
 					},
 					{
-						name: "activite.ratios.mandataire",
-						label: "Part Mandataires",
-						type: "percent",
-						required: true,
-						size: 1 / 2
-					},
-					{
-						name: "activite.ratios.prestataire",
-						label: "Part Prestataires",
-						type: "percent",
-						required: true,
-						size: 1 / 2
-					},
-					{
 						name: "activite.ratios.confort",
 						label: "Activité de confort",
 						type: "percent",
@@ -978,20 +964,9 @@ et le chiffre d'affaire de votre activité.`
 					ph,
 					transport,
 					petite_enfance,
-					mandataire,
-					prestataire,
 					confort
 				} = data.activite.ratios;
-				if (
-					pa +
-						ph +
-						transport +
-						petite_enfance +
-						mandataire +
-						prestataire +
-						confort ===
-					0
-				) {
+				if (pa + ph + transport + petite_enfance + confort === 0) {
 					return [
 						"activite.ratios.pa",
 						"Votre ratio d'activité doit être positif dans l'une au moins des activités."
@@ -1008,6 +983,16 @@ et le chiffre d'affaire de votre activité.`
 			description: `Cochez chacun des domaines d'intervention qui s'applique à votre activité.`
 		},
 		fields: [
+			{
+				name: "domaines.modes",
+				label: "Modes d'intervention",
+				type: "checkboxes",
+				options: {
+					mandataire: "Mandataire",
+					prestataire: "Prestataire",
+					mandataire_prestataire: "Les deux"
+				}
+			},
 			{
 				name: "domaines.codes",
 				label: "Domaines d'intervention",
@@ -1099,7 +1084,7 @@ export const stepAdhesionPaymentChoice = [
 		id: "step-registration-choice",
 		title: "Dernière étape",
 		help: {
-			description: `## Félicitation !
+			description: `## Félicitations !
 Votre processus d’adhésion est presque terminé.
 Vous pouvez revenir en arrière pour vérifier une dernière fois les informations saisies.
 
@@ -1108,9 +1093,7 @@ En choisissant Paiement en ligne vous activerez immédiatement votre adhésion �
 Pour le paiement par chèque veuillez imprimer votre appel de fond ci-dessous et glissez le dans l'enveloppe avec la référence de votre adhésion.
 [Télécharger votre appel de fond](/api/pdf/appel-de-fond/{{=siret}}.pdf)
 
-Cliquez maintenant sur Valider pour envoyer votre demande.`,
-
-			backgroundImage: "registration-complete-background.svg"
+Cliquez maintenant sur Valider pour envoyer votre demande.`
 		},
 		fields: [
 			{
@@ -1150,7 +1133,7 @@ Cliquez maintenant sur Valider pour envoyer votre demande.`,
 						if (updatedAdhestion.mode_paiement === "cheque") {
 							alert(
 								`Votre demande d'adhésion n° ${updatedAdhestion.no} a bien été enregistrée. 
-Elle sera active dès que votre chèque aura été encaissé.`
+Elle sera active dès que votre chèque aura été réceptionné.`
 							);
 							router.push("/member");
 						} else if (updatedAdhestion.mode_paiement === "en_ligne") {
