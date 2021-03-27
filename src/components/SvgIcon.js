@@ -9,6 +9,8 @@ import ShowChart from "@material-ui/icons/ShowChart";
 import Search from "@material-ui/icons/Search";
 import Help from "@material-ui/icons/Help";
 import Save from "@material-ui/icons/Save";
+import Edit from "@material-ui/icons/Edit";
+import Add from "@material-ui/icons/Add";
 
 const iconMap = {
 	Business,
@@ -17,6 +19,8 @@ const iconMap = {
 	Help,
 	People,
 	Save,
+	Edit,
+	Add,
 	Settings,
 	Search,
 	ShowChart,
@@ -30,6 +34,8 @@ export const names = [
 	"Help",
 	"People",
 	"Save",
+	"Edit",
+	"Add",
 	"Settings",
 	"Search",
 	"ShowChart",
