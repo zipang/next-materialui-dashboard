@@ -33,7 +33,7 @@ export const TabbedView = ({ steps, data, editMode, error }) => {
 		eb && eb.on("tab:change", setCurrentTab);
 	}, [false]);
 
-	if (error) return <Box>{error}</Box>;
+	if (error) return <strong>{error}</strong>;
 	if (data) {
 		return editMode ? (
 			<EditableTab steps={steps} data={data} currentTab={currentTab} />
