@@ -7,7 +7,7 @@ import {
 	FormHelperText
 } from "@material-ui/core";
 import { useFormValidationContext } from "@forms/validation/FormValidationProvider";
-import { convertOptions } from "@forms/validation/utils";
+import { convertOptions } from "./utils";
 import _BASE_INPUT_STYLES from "./styles";
 
 /**
@@ -45,7 +45,6 @@ const SelectBox = ({
 
 	const onChange = (evt) => {
 		setData(name, evt.target.value || null);
-		console.log(`Changing ${name} selected value to ${evt.target.value}`);
 		if (errorMessage) {
 			validate(name); // Show when the input becomes valid again
 		}

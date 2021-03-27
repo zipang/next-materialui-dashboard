@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import GroupLabel from "@forms/GroupLabel";
 import { useFormValidationContext } from "@forms/validation/FormValidationProvider";
-import { convertOptions } from "@forms/validation/utils";
+import { convertOptions } from "@forms/inputs/utils";
 import _BASE_INPUT_STYLES from "./styles";
 
 /**

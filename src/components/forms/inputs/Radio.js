@@ -8,9 +8,9 @@ import {
 	FormControlLabel
 } from "@material-ui/core";
 import { useFormValidationContext } from "../validation/FormValidationProvider";
-import { convertOptions } from "@forms/validation/utils";
+import { convertOptions } from "./utils";
 import _BASE_INPUT_STYLES from "./styles";
-import { isUndefined, noop } from "../validation/ValidationContext";
+import { isUndefined, noop } from "../validation/utils";
 
 /**
  * @typedef RadioProps

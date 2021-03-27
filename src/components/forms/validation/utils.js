@@ -6,6 +6,16 @@ export const _DEFAULT_MESSAGES = {
 	isDate: "Invalid Date"
 };
 
+export const noop = (val) => val;
+
+export const isUndefined = (val) =>
+	val === undefined || val === null || Number.isNaN(val);
+
+export const isUndefinedOrEmpty = (val) => val === "" || isUndefined(val);
+
+export const positiveNumber = (total) =>
+	total === 0 ? "Ce nombre doit être positif (>0)" : true;
+
 /**
  * Extracts only the digits from a given input string
  * Usable as the `format` property of a Formatted input
@@ -229,13 +239,3 @@ export const isPercentage = {
 	validate: isBetween(0, 100),
 	message: "This percentage must be between 0 and 100"
 };
-
-/**
- * Takes a key:value map and return an array with {code, label} entries
- * @param {Object} map
- */
-export const convertOptions = (map) =>
-	Object.keys(map).reduce((options, key) => {
-		options.push({ code: key, label: map[key] });
-		return options;
-	}, []);
