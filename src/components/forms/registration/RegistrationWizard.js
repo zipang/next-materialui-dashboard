@@ -25,7 +25,7 @@ const restorePreviousState = async (loggedUser) => {
 	try {
 		const siret = window.localStorage.getItem("siret-search");
 		if (siret) {
-			const { adherent } = await AdherentsApiClient.retrieveBySiret(siret);
+			const adherent = await AdherentsApiClient.retrieveBySiret(siret);
 			if (adherent && adherent.owner === loggedUser.username) {
 				console.log(
 					`Restoring previous registration state from localStorage: ${adherent.nom} (${adherent.statut})`

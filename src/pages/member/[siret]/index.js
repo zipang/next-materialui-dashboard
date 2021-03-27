@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { UserDashboard } from "../index.js";
 import { formSteps } from "@forms/registration/RegistrationSteps.js";
 import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
-import ReadOnlyForm from "@components/forms/ReadOnlyForm.js";
+import DisplayTab from "@components/forms/tabs/DisplayTab.js";
 import {
 	useAuthentication,
 	withAuthentication
@@ -63,7 +63,7 @@ export const getServerSideProps = async (context) => {
 
 const TabbedView = ({ adherent, error }) => {
 	if (error) return <Box>{error}</Box>;
-	if (adherent) return <ReadOnlyForm tabs={tabsDef} data={adherent} />;
+	if (adherent) return <DisplayTab tabs={tabsDef} data={adherent} />;
 	return null;
 };
 
@@ -80,7 +80,7 @@ const PageDetailAdherent = ({ siret }) => {
 
 	useEffect(async () => {
 		try {
-			const { adherent } = await AdherentsApiClient.retrieveBySiret(siret);
+			const adherent = await AdherentsApiClient.retrieveBySiret(siret);
 			setAdherent(adherent);
 		} catch (err) {
 			setError(err.message);

@@ -1,50 +1,14 @@
-import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
-import { Box } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import AdminDashboard from "../index.js";
-import { formSteps } from "@forms/registration/RegistrationSteps.js";
 import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
-import ReadOnlyForm from "@components/forms/ReadOnlyForm.js";
+import AdminDashboard from "../index.js";
+import ActionButton from "@components/forms/ActionButton.js";
+import TabbedView, { buildTabHeaders } from "@components/forms/tabs/TabbedView.js";
+import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
+import { formSteps } from "@forms/registration/RegistrationSteps.js";
+import { withAuthentication } from "@components/AuthenticationProvider.js";
 
-const emptyCertification = (stepId) => (field) => {
-	if (
-		stepId === "step-certifications" &&
-		field.type === "group" &&
-		field.fields[0].value === "N"
-	) {
-		// Does this group have a NO
-		return false;
-	}
-	return true; // ok
-};
-
-const tabsDef = formSteps
-	.filter((step) => Array.isArray(step.fields))
-	.map(({ id, title, fields }) => ({
-		id,
-		title,
-		fields: fields
-			.map(({ name, label, type = "text", options, size = 1, fields }) => ({
-				name,
-				label,
-				type,
-				options,
-				size: type === "group" ? 1 : size,
-				fields
-			}))
-			.filter((field) => field.type != "radio")
-			.filter(emptyCertification(id))
-	}));
-
-const tabHeaders = (eb, setCurrentTab) =>
-	tabsDef.map((t) => ({
-		value: t.id,
-		label: t.title,
-		action: () => {
-			eb.emit("tab:change", t.id);
-			setCurrentTab(t.id);
-		}
-	}));
+// Some steps may not contain fields
+const steps = formSteps.filter((step) => Array.isArray(step.fields));
 
 /**
  * @see https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
@@ -57,40 +21,61 @@ export const getServerSideProps = async (context) => {
 	};
 };
 
-const TabbedView = ({ adherent, error }) => {
-	if (error) return <Box>{error}</Box>;
-	if (adherent) return <ReadOnlyForm tabs={tabsDef} data={adherent} />;
-	return null;
-};
-
 /**
  * Display the detail of an adherent using multiple tabs
  * to organize the data
  */
-const PageDetailAdherent = ({ siret }) => {
+const PageDetailAdherent = ({ user, siret }) => {
 	const eb = useEventBus();
 	const [currentTab, setCurrentTab] = useState(formSteps[0].id);
+	const [editMode, setEditMode] = useState(false);
 	const [adherent, setAdherent] = useState();
 	const [error, setError] = useState(false);
 
+	const updateAdherent = async (data) => {
+		setAdherent(await AdherentsApiClient.update(user, data));
+		setEditMode(false);
+	};
+
 	useEffect(async () => {
 		try {
-			const { adherent } = await AdherentsApiClient.retrieveBySiret(siret);
+			const adherent = await AdherentsApiClient.retrieveBySiret(siret);
 			setAdherent(adherent);
 		} catch (err) {
 			setError(err.message);
 		}
 	}, [false]);
 
+	useEffect(() => {
+		const tabSubmit = `${currentTab}:submit`;
+		eb.on(tabSubmit, updateAdherent);
+		return () => {
+			eb.off(tabSubmit, updateAdherent);
+		};
+	}, [currentTab]);
+
 	return (
 		<AdminDashboard
 			title={adherent && adherent.nom}
-			tabs={tabHeaders(eb, setCurrentTab)}
+			tabs={buildTabHeaders(steps, eb, setCurrentTab)}
 			currentTab={currentTab}
 		>
-			<TabbedView adherent={adherent} error={error} />
+			<TabbedView steps={steps} data={adherent} error={error} editMode={editMode} />
+			{editMode ? (
+				<ActionButton
+					label="Enregistrer"
+					name="Save"
+					onClick={() => eb.emit(`${currentTab}:validate`)}
+				/>
+			) : (
+				<ActionButton
+					label="Editer"
+					name="Edit"
+					onClick={() => setEditMode(true)}
+				/>
+			)}
 		</AdminDashboard>
 	);
 };
 
-export default withEventBus(PageDetailAdherent);
+export default withEventBus(withAuthentication(PageDetailAdherent));

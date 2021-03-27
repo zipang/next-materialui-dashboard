@@ -38,7 +38,7 @@ const PageReAdhesion = ({ siret }) => {
 
 	useEffect(async () => {
 		try {
-			const { adherent } = await AdherentsApiClient.retrieveBySiret(siret);
+			const adherent = await AdherentsApiClient.retrieveBySiret(siret);
 			setAdherent(adherent);
 		} catch (err) {
 			setError(err.message);

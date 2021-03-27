@@ -3,15 +3,19 @@ import ApiError from "@lib/ApiError";
 
 /**
  * Let a user update some informations about an existing adherent
- * @param {Object} user
- * @param {Object} data
+ * @param {Object} user The logged user
+ * @param {Object} data Data to update on the adherent
  */
 export const update = async (user, data) => {
 	try {
 		if (user) {
 			data.owner = user.username;
 		}
-		return await APIClient.post(`/api/adherent/${data.siret}`, data);
+		const { success, adherent } = await APIClient.post(
+			`/api/adherent/${data.siret}`,
+			data
+		);
+		return adherent;
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
 	}
@@ -66,11 +70,8 @@ export const retrieve = async (params = {}, fields) => {
  */
 export const retrieveBySiret = async (siret, params = {}) => {
 	if (!siret) return;
-	return await APIClient.get(`/api/adherent/${siret}`, params);
-	try {
-	} catch (err) {
-		throw new ApiError(err.code || 500, err.message);
-	}
+	const { success, adherent } = await APIClient.get(`/api/adherent/${siret}`, params);
+	return adherent;
 };
 
 /**
