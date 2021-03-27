@@ -1,14 +1,9 @@
 import { setProperty, getProperty } from "../../../lib/utils/NestedObjects.js";
+import { isUndefined, isUndefinedOrEmpty } from "./utils.js";
 
 const _EMPTY_ERRORS = {};
-export const noop = (val) => val;
 export const allways = (val) => () => val; // Allways return the same value
 export const filterByValue = (good) => (testVal) => testVal === good; // A filter that let only the 'good' values pass
-export const isUndefined = (val) =>
-	val === undefined || val === null || Number.isNaN(val);
-export const isUndefinedOrEmpty = (val) => val === "" || isUndefined(val);
-export const positiveNumber = (total) =>
-	total === 0 ? "Ce nombre doit être positif (>0)" : true;
 
 /**
  * Dedicated error
