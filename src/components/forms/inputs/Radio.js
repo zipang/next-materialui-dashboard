@@ -14,9 +14,9 @@ import { isUndefined, noop } from "../validation/utils";
 
 /**
  * @typedef RadioProps
- * @param {String} name
- * @param {String} label
- * @field {Array|Object} options Available options to choose from (code + label) or map
+ * @property {String} name
+ * @property {String} label
+ * @property {Array|Object} options Available options to choose from (code + label) or map
  */
 /**
  * The Radio has several options to choose from.

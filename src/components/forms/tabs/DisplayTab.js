@@ -6,15 +6,15 @@ import { displaySelectedOption } from "../inputs/utils";
 
 /**
  * @typedef TabDef
- * @param {String} id
- * @param {Array<FieldDef>} fields
+ * @property {String} id
+ * @property {Array<FieldDef>} fields
  */
 
 /**
  * @typedef FieldDef
- * @param {String} name
- * @param {String} label
- * @param {String} type=text|date|integer|percent|mail|ysn|select|checkboxes
+ * @property {String} name
+ * @property {String} label
+ * @property {String} type=text|date|integer|percent|mail|ysn|select|checkboxes
  */
 
 /**
@@ -154,8 +154,8 @@ const buildTabsDef = (steps) =>
 
 /**
  * @typedef ReadOnlyFormProps
- * @field {Array<TabDef>} tabs
- * @field {Object} data
+ * @property {Array<TabDef>} tabs
+ * @property {Object} data
  */
 /**
  * Display (in read-only mode) one tab of structured data

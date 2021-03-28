@@ -2,7 +2,7 @@ import { Button } from "@material-ui/core";
 
 /**
  * @typedef SubmitProps
- * @field {String} [label="OK"]
+ * @property {String} [label="OK"]
  */
 
 /**

@@ -75,11 +75,11 @@ const WizardContainer = ({ children }) => (
 
 /**
  * @typedef WizardViewportProps
- * @param {Object} classes Styling for the viewport
- * @param {Step} step The current step to display
- * @param {Object} data The current data payload
- * @param {Object} errors Contains the key of the first input whose validation ruiles failed
- * @param {Function} onSubmit Callback to be called with the forma data when validation has passed
+ * @property {Object} classes Styling for the viewport
+ * @property {Step} step The current step to display
+ * @property {Object} data The current data payload
+ * @property {Object} errors Contains the key of the first input whose validation ruiles failed
+ * @property {Function} onSubmit Callback to be called with the forma data when validation has passed
  */
 /**
  * The wizard view port may contain one or two children :

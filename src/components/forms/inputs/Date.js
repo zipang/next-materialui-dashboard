@@ -3,13 +3,13 @@ import { isDate, applyDateMask, serializeDate, formatISODate } from "../validati
 
 /**
  * @typedef DateInputProps extends FormattedInputProps
- * @field {String} name
- * @field {String} label
- * @field {String} format The date format. Use `d` for days, `m` for months, `y` for years
- * @field {String} [defaultValue] Default date value if there is none in the context
- * @field {Boolean|String} [required=false]
- * @field {Object} [validation] Additional custom validation rules
- * @field {String} [errorMessage] A custom error message when the validation fails
+ * @property {String} name
+ * @property {String} label
+ * @property {String} format The date format. Use `d` for days, `m` for months, `y` for years
+ * @property {String} [defaultValue] Default date value if there is none in the context
+ * @property {Boolean|String} [required=false]
+ * @property {Object} [validation] Additional custom validation rules
+ * @property {String} [errorMessage] A custom error message when the validation fails
  */
 /**
  * Display a text input uniquely dedicated to dates

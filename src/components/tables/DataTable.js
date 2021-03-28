@@ -70,18 +70,18 @@ const sortRows = (rows, orderBy, order) => {
 
 /**
  * @typedef ColumnDef
- * @field {String} id
- * @field {String} label
- * @field {String} align left|right|center
+ * @property {String} id
+ * @property {String} label
+ * @property {String} align left|right|center
  */
 
 /**
  * @typedef SortableTableHeadProps
- * @field {Array<ColumnDef>} columns
- * @field {String[asc|desc]} order Current sort order
- * @field {String} orderBy id of the current sorted column
- * @field {Function<event,string>} onRequestSort Handle the sort request
- * @field {Object} classes CSS style
+ * @property {Array<ColumnDef>} columns
+ * @property {String[asc|desc]} order Current sort order
+ * @property {String} orderBy id of the current sorted column
+ * @property {Function<event,string>} onRequestSort Handle the sort request
+ * @property {Object} classes CSS style
  */
 
 /**

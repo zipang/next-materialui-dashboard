@@ -2,9 +2,9 @@ import { Box } from "@material-ui/core";
 
 /**
  * @typedef CenterProps
- * @param {Boolean} [centerVertically=true]
- * @param {Boolean} [centerHorizontally=true]
- * @param {Boolean} [autoExpand=true]
+ * @property {Boolean} [centerVertically=true]
+ * @property {Boolean} [centerHorizontally=true]
+ * @property {Boolean} [autoExpand=true]
  */
 
 /**

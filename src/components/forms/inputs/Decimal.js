@@ -17,15 +17,15 @@ export const serializeDecimal = (decimalsSeparator) => (str = "") => {
 
 /**
  * @typedef DecimalInputProps
- * @field {Number} [defaultValue]
- * @field {Boolean|String} [required=false]
- * @field {Object} validation Custom  validation rules
- * @field {String} [thousandsSeparator=" "] How to separate thousands groups of digits
- * @field {String} [decimalsSeparator=","] Decimal point symbol
- * @field {String} [unit] Optional unit (suffix)
- * @field {Array<Decimal,Decimal>} [plage] Optional plage of values to restrict the input
- * @field {Object} [validation] Custom validation rules
- * @fiels {String} [errorMessage] A custom error message when teh validation fails
+ * @property {Number} [defaultValue]
+ * @property {Boolean|String} [required=false]
+ * @property {Object} validation Custom  validation rules
+ * @property {String} [thousandsSeparator=" "] How to separate thousands groups of digits
+ * @property {String} [decimalsSeparator=","] Decimal point symbol
+ * @property {String} [unit] Optional unit (suffix)
+ * @property {Array<Decimal,Decimal>} [plage] Optional plage of values to restrict the input
+ * @property {Object} [validation] Custom validation rules
+ * @property {String} [errorMessage] A custom error message when teh validation fails
  */
 /**
  * Display a text input uniquely dedicated to integer numbers

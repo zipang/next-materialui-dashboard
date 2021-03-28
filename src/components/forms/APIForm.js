@@ -10,10 +10,10 @@ import Center from "@components/Center";
 
 /**
  * @typedef APIFormProps
- * @field {String} action local URL of an API page
- * @field {Function<FormData>} [onSubmit] optional function to handle the form data submission
- * @field {onSuccess} [onSuccess] optional function to handle the successfull API response
- * @field {onError} [onError] optional function to handle the failed API response
+ * @property {String} action local URL of an API page
+ * @property {Function<FormData>} [onSubmit] optional function to handle the form data submission
+ * @property {onSuccess} [onSuccess] optional function to handle the successfull API response
+ * @property {onError} [onError] optional function to handle the failed API response
  */
 /**
  * @param {APIFormProps} props

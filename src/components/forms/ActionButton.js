@@ -3,9 +3,9 @@ import SvgIcon from "@components/SvgIcon";
 
 /**
  * @typedef ActionButtonProps
- * @field {String} name
- * @field {String} label Texte of the button
- * @field {String} name
+ * @property {String} name
+ * @property {String} label Texte of the button
+ * @property {String} name
  */
 
 /**

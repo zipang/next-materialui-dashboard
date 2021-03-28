@@ -12,9 +12,9 @@ import _BASE_INPUT_STYLES from "./styles";
 
 /**
  * @typedef CheckBoxesProps
- * @field {String} name
- * @field {String} label
- * @field {Array|Object} options Available options to choose from (code + label) or map
+ * @property {String} name
+ * @property {String} label
+ * @property {Array|Object} options Available options to choose from (code + label) or map
  */
 /**
  * A group of checkboxes used to display an array of possible values

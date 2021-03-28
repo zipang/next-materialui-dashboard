@@ -13,14 +13,14 @@ export const serializeInteger = (str) => {
 
 /**
  * @typedef IntegerInputProps
- * @field {Number} [defaultValue]
- * @field {Boolean|String} [required=false]
- * @field {Object} validation Custom  validation rules
- * @field {String} [thousandsSeparator=" "] How to separate thousands groups of digits
- * @field {String} [prefix] Optional unit symbol (prefix)
- * @field {String} [sufix]  Optional unit symbol (sufix)
- * @field {Array<Integer,Integer>} [plage] Optional plage of values to restrict the input
- * @fiels {String} [errorMessage] A custom error message when teh validation fails
+ * @property {Number} [defaultValue]
+ * @property {Boolean|String} [required=false]
+ * @property {Object} validation Custom  validation rules
+ * @property {String} [thousandsSeparator=" "] How to separate thousands groups of digits
+ * @property {String} [prefix] Optional unit symbol (prefix)
+ * @property {String} [sufix]  Optional unit symbol (sufix)
+ * @property {Array<Integer,Integer>} [plage] Optional plage of values to restrict the input
+ * @property {String} [errorMessage] A custom error message when teh validation fails
  */
 /**
  * Display a text input uniquely dedicated to integer numbers

@@ -4,9 +4,9 @@ import { useFormValidationContext } from "./FormValidationProvider";
 
 /**
  * @typedef VFormProps
- * @param {Function<data>} onSuccess Callback called when the form validation is a success. The validated data is provided.
- * @param {Function<errors>} onError Callback called when the form validation is a failure. The errors object is provided.
- * @param {Boolean} validateOnEnter Add a hidden submit to catch the ENTER keypressed and trigger a form validation
+ * @property {Function<data>} onSuccess Callback called when the form validation is a success. The validated data is provided.
+ * @property {Function<errors>} onError Callback called when the form validation is a failure. The errors object is provided.
+ * @property {Boolean} validateOnEnter Add a hidden submit to catch the ENTER keypressed and trigger a form validation
  */
 
 /**

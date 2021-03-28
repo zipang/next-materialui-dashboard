@@ -3,11 +3,11 @@ import { isInteger, isBetween } from "../validation/utils";
 
 /**
  * @typedef PercentInputProps
- * @field {Number} [defaultValue]
- * @field {Boolean|String} [required=false]
- * @field {String} [thousandsSeparator=" "] How to separate thousands groups of digits
- * @field {String} [strict=false] Allow only values between 0 and 100
- * @fiels {String} [errorMessage] A custom error message when the validation fails
+ * @property {Number} [defaultValue]
+ * @property {Boolean|String} [required=false]
+ * @property {String} [thousandsSeparator=" "] How to separate thousands groups of digits
+ * @property {String} [strict=false] Allow only values between 0 and 100
+ * @property {String} [errorMessage] A custom error message when the validation fails
  */
 /**
  * Display a text input uniquely dedicated to percentage

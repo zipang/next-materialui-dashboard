@@ -5,9 +5,9 @@ import _BASE_INPUT_STYLES from "./styles";
 
 /**
  * @typedef SwitchProps
- * @param {String} name
- * @param {String} label
- * @param {Array<checked,unchecked>} values The values to apply when the switch is activated/disactivated
+ * @property {String} name
+ * @property {String} label
+ * @property {Array<checked,unchecked>} values The values to apply when the switch is activated/disactivated
  */
 /**
  * This Switch has only two possible values (on/off) and no undefined state

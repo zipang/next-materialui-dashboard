@@ -16,28 +16,28 @@ Input.registerInput("ysn", YesNo("Oui", "Non"));
 
 /**
  * @typedef StepDef
- * @param {String} id
- * @param {String} title
- * @param {HelpDef} [help]
- * @param {Array<FieldDef>} [fields]
- * @param {Function} [displayForm] a custom function to display the form without fields
- * @param {Array} [actions] an optional array of custom actions available to this step
+ * @property {String} id
+ * @property {String} title
+ * @property {HelpDef} [help]
+ * @property {Array<FieldDef>} [fields]
+ * @property {Function} [displayForm] a custom function to display the form without fields
+ * @property {Array} [actions] an optional array of custom actions available to this step
  */
 
 /**
  * @typedef HelpDef
- * @param {String} description
- * @param {String} [backgroundImage]
+ * @property {String} description
+ * @property {String} [backgroundImage]
  */
 
 /**
  * @typedef FieldDef
- * @param {String} name
- * @param {String} label
- * @param {String} type=text|date|integer|percent|mail|url
- * @param {Boolean|String|Function} required
- * @param {Object} [validation] extra validation rules (will oper on the whole data object)
- * @param {Function} [displayForm] custom implementation (optional)
+ * @property {String} name
+ * @property {String} label
+ * @property {String} type=text|date|integer|percent|mail|url
+ * @property {Boolean|String|Function} required
+ * @property {Object} [validation] extra validation rules (will oper on the whole data object)
+ * @property {Function} [displayForm] custom implementation (optional)
  */
 
 /**

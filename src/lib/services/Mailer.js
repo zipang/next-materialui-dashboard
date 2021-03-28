@@ -6,7 +6,7 @@ let transporter = null;
 
 /**
  * @typedef Mail
- * @field {Function} sendMail
+ * @property {Function} sendMail
  */
 
 /**
@@ -60,12 +60,12 @@ const getTransporter = () => {
 
 /**
  * @typedef MailMessage
- * @field {String!} subject
- * @field {String} text
- * @field {String} html
- * @field {String|Array} to Main recipient
- * @field {String|Array} cc
- * @field {String|Array} bcc
+ * @property {String!} subject
+ * @property {String} text
+ * @property {String} html
+ * @property {String|Array} to Main recipient
+ * @property {String|Array} cc
+ * @property {String|Array} bcc
  */
 
 /**

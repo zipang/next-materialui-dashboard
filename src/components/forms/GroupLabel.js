@@ -2,8 +2,8 @@ import { Box } from "@material-ui/core";
 
 /**
  * @typedef GroupLabelProps
- * @field {String} label
- * @field {Boolean} [labelInside=true] Put the label inside the box
+ * @property {String} label
+ * @property {Boolean} [labelInside=true] Put the label inside the box
  */
 
 /**
