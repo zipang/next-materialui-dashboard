@@ -1,15 +1,7 @@
-import {
-	AppBar,
-	Avatar,
-	Box,
-	Grid,
-	IconButton,
-	Tab,
-	Tabs,
-	Toolbar
-} from "@material-ui/core";
+import { AppBar, Avatar, Box, Grid, IconButton, Toolbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuthentication } from "./AuthenticationProvider";
+import { Tabs } from "./forms/tabs/TabbedView";
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
@@ -37,7 +29,7 @@ const useStyles = makeStyles((theme) => ({
  * And a serie of actions tabs
  * @param {HeaderProps} props
  */
-function Header({ title, tabs = [], currentTab = 0 }) {
+function Header({ title, tabsDefs = [], currentTab = 0 }) {
 	const { loggedUser: user } = useAuthentication();
 	const styles = useStyles();
 
@@ -71,21 +63,7 @@ function Header({ title, tabs = [], currentTab = 0 }) {
 				position="static"
 				elevation={0}
 			>
-				<Tabs
-					value={tabs.value || currentTab}
-					textColor="inherit"
-					variant="scrollable"
-					scrollButtons="auto"
-				>
-					{tabs.map(({ label, action, value }, i) => (
-						<Tab
-							key={`dashboard-tab-${i}`}
-							label={label}
-							onClick={action}
-							value={value}
-						/>
-					))}
-				</Tabs>
+				<Tabs tabsDefs={tabsDefs} currentTab={currentTab} />
 			</AppBar>
 		</>
 	);

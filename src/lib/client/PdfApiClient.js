@@ -3,8 +3,8 @@ import ApiError from "../ApiError.js";
 
 /**
  * @typedef PdfAttachment
- * @param {String} filename
- * @param {Buffer} content Binary PDF content
+ * @property {String} filename
+ * @property {Buffer} content Binary PDF content
  */
 
 /**

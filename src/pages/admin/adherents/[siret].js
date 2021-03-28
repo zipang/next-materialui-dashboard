@@ -57,7 +57,7 @@ const PageDetailAdherent = ({ user, siret }) => {
 	return (
 		<AdminDashboard
 			title={adherent && adherent.nom}
-			tabs={buildTabHeaders(steps, eb, setCurrentTab)}
+			tabsDefs={buildTabHeaders(steps, eb, setCurrentTab)}
 			currentTab={currentTab}
 		>
 			<TabbedView steps={steps} data={adherent} error={error} editMode={editMode} />

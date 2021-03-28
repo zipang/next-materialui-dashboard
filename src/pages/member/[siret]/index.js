@@ -1,54 +1,13 @@
 import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
-import { Box } from "@material-ui/core";
 import { useEffect, useState } from "react";
 import { UserDashboard } from "../index.js";
 import { formSteps } from "@forms/registration/RegistrationSteps.js";
 import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
-import DisplayTab from "@components/forms/tabs/DisplayTab.js";
+import TabbedView, { buildTabHeaders } from "@components/forms/tabs/TabbedView.js";
 import {
 	useAuthentication,
 	withAuthentication
 } from "@components/AuthenticationProvider.js";
-
-const emptyCertification = (stepId) => (field) => {
-	if (
-		stepId === "step-certifications" &&
-		field.type === "group" &&
-		field.fields[0].value === "N"
-	) {
-		// Does this group have a NO
-		return false;
-	}
-	return true; // ok
-};
-
-const tabsDef = formSteps
-	.filter((step) => Array.isArray(step.fields))
-	.map(({ id, title, fields }) => ({
-		id,
-		title,
-		fields: fields
-			.map(({ name, label, type = "text", options, size = 1, fields }) => ({
-				name,
-				label,
-				type,
-				options,
-				size: type === "group" ? 1 : size,
-				fields
-			}))
-			.filter((field) => field.type != "radio")
-			.filter(emptyCertification(id))
-	}));
-
-const defineTabs = (eb, setCurrentTab) =>
-	tabsDef.map((t) => ({
-		value: t.id,
-		label: t.title,
-		action: () => {
-			eb.emit("tab:change", t.id);
-			setCurrentTab(t.id);
-		}
-	}));
 
 /**
  * @see https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
@@ -59,12 +18,6 @@ export const getServerSideProps = async (context) => {
 	return {
 		props: { siret } // will be passed to the page component as props
 	};
-};
-
-const TabbedView = ({ adherent, error }) => {
-	if (error) return <Box>{error}</Box>;
-	if (adherent) return <DisplayTab tabs={tabsDef} data={adherent} />;
-	return null;
 };
 
 /**
@@ -91,10 +44,10 @@ const PageDetailAdherent = ({ siret }) => {
 		<UserDashboard
 			user={loggedUser}
 			title={adherent && adherent.nom}
-			tabs={defineTabs(eb, setCurrentTab)}
+			tabsDefs={buildTabHeaders(formSteps, eb, setCurrentTab)}
 			currentTab={currentTab}
 		>
-			<TabbedView adherent={adherent} error={error} />
+			<TabbedView steps={formSteps} data={adherent} error={error} />
 		</UserDashboard>
 	);
 };

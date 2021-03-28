@@ -2,7 +2,7 @@ import { useState } from "react";
 import AdhesionsDataTable from "@components/tables/AdhesionsDataTable.js";
 import AdminDashboard from "./index.js";
 
-const buildTabs = (statut, setFilter) => {
+const buildTabsDefs = (statut, setFilter) => {
 	const tabs = [
 		{
 			value: "active",
@@ -27,7 +27,7 @@ const buildTabs = (statut, setFilter) => {
 const PageAdhesions = () => {
 	const [statut, setFilter] = useState("active");
 	return (
-		<AdminDashboard title="Adhésions" tabs={buildTabs(statut, setFilter)}>
+		<AdminDashboard title="Adhésions" tabsDefs={buildTabsDefs(statut, setFilter)}>
 			<AdhesionsDataTable filter={{ statut }} />
 		</AdminDashboard>
 	);

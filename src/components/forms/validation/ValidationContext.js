@@ -248,7 +248,7 @@ const buildValidate = (validationContext) => (name, options = {}) => {
 
 /**
  * @typedef ValidationContextOptions
- * @param {Object} [data={}] load pre-existing data
+ * @property {Object} [data={}] load pre-existing data
  */
 
 /**

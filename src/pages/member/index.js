@@ -39,7 +39,7 @@ const useStyles = makeStyles((theme) => ({
 	}
 }));
 
-export const UserDashboard = ({ user, title, tabs = [], currentTab, children }) => {
+export const UserDashboard = ({ user, title, tabsDefs = [], currentTab, children }) => {
 	const classes = useStyles();
 	const router = useRouter();
 
@@ -49,7 +49,7 @@ export const UserDashboard = ({ user, title, tabs = [], currentTab, children }) 
 				<UserNavBar user={user} selectedNav={router.pathname} />
 			</nav>
 			<div className={classes.app}>
-				<Header title={title} tabs={tabs} currentTab={currentTab} />
+				<Header title={title} tabsDefs={tabsDefs} currentTab={currentTab} />
 				<main className={classes.main}>{children}</main>
 				<footer className={classes.footer}>
 					<Copyright />
