@@ -55,6 +55,7 @@ const _DEFAULT_OPTIONS = {
 	profiles: [],
 	loginPage: "/login"
 };
+
 /**
  * @typedef AuthenticationOptions
  * @property {String[]} profiles check that the logged user has at least one of these profiles
@@ -75,7 +76,7 @@ export const withAuthentication = (Component, options = _DEFAULT_OPTIONS) => ({
 	useEffect(async () => {
 		if (!loggedUser) {
 			if (
-				process.env.NODE_ENV === "development" ||
+				// process.env.NODE_ENV === "development" ||
 				process.env.NODE_ENV === "test"
 			) {
 				setLoggedUser(new User(devUser));
