@@ -8,7 +8,8 @@ import ApiError from "@lib/ApiError";
  */
 export const update = async (user, data) => {
 	try {
-		if (user) {
+		if (user && !user.isAdmin()) {
+			// Because admins can edit but not take ownership
 			data.owner = user.username;
 		}
 		const { success, adherent } = await APIClient.post(
@@ -26,7 +27,8 @@ export const update = async (user, data) => {
  */
 export const createAdhesion = async (user, siret, data = {}) => {
 	try {
-		if (user) {
+		if (user && !user.isAdmin()) {
+			// Because admins can edit(?) but not take ownership
 			data.owner = user.username;
 		}
 		return await APIClient.post(`/api/adherent/${siret}/adhesion`, data);
