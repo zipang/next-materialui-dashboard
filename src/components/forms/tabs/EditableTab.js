@@ -21,7 +21,7 @@ const EditableTab = ({ steps, data, currentTab }) => {
 
 	return (
 		<StepForm
-			formId={`${currentTab}`}
+			formId={`${currentStep.id}`}
 			data={data}
 			validateStep={validation}
 			customStyles={{ minWidth: "40em" }}
