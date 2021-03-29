@@ -989,8 +989,7 @@ et le chiffre d'affaire de votre activité.`
 				type: "checkboxes",
 				options: {
 					mandataire: "Mandataire",
-					prestataire: "Prestataire",
-					mandataire_prestataire: "Les deux"
+					prestataire: "Prestataire"
 				}
 			},
 			{
