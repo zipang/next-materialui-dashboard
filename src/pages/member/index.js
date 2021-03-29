@@ -1,63 +1,10 @@
 import { useEffect, useState } from "react";
 import { withAuthentication } from "@components/AuthenticationProvider";
-import { makeStyles } from "@material-ui/core/styles";
-import Header from "@components/Header";
-import UserNavBar from "@components/navigation/NavigationBar";
-import Copyright from "@components/Copyright";
+import Dashboard from "@components/Dashboard";
 import { useRouter } from "next/router";
 import MemberAdhesionsDataTable from "@components/tables/MemberAdhesionsDataTable";
 import UsersApiClient from "@lib/client/UsersApiClient";
 import { withEventBus } from "@components/EventBusProvider";
-
-const drawerWidth = 256;
-
-const useStyles = makeStyles((theme) => ({
-	root: {
-		display: "flex",
-		minHeight: "100vh"
-	},
-	drawer: {
-		[theme.breakpoints.up("sm")]: {
-			width: drawerWidth,
-			flexShrink: 0
-		}
-	},
-	app: {
-		flex: 1,
-		display: "flex",
-		flexDirection: "column",
-		overflow: "hidden"
-	},
-	main: {
-		flex: 1,
-		padding: theme.spacing(6, 4),
-		background: "#eaeff1"
-	},
-	footer: {
-		padding: theme.spacing(2),
-		background: "#eaeff1"
-	}
-}));
-
-export const UserDashboard = ({ user, title, tabsDefs = [], currentTab, children }) => {
-	const classes = useStyles();
-	const router = useRouter();
-
-	return (
-		<div className={classes.root}>
-			<nav className={classes.drawer}>
-				<UserNavBar user={user} selectedNav={router.pathname} />
-			</nav>
-			<div className={classes.app}>
-				<Header title={title} tabsDefs={tabsDefs} currentTab={currentTab} />
-				<main className={classes.main}>{children}</main>
-				<footer className={classes.footer}>
-					<Copyright />
-				</footer>
-			</div>
-		</div>
-	);
-};
 
 const MemberPage = ({ user }) => {
 	const router = useRouter();
@@ -83,9 +30,9 @@ const MemberPage = ({ user }) => {
 	}, [false]);
 
 	return adhesions ? (
-		<UserDashboard title="ESPACE MEMBRE INVIE" user={user}>
+		<Dashboard title="ESPACE MEMBRE INVIE" user={user}>
 			<MemberAdhesionsDataTable user={user} adhesions={adhesions} />
-		</UserDashboard>
+		</Dashboard>
 	) : error ? (
 		<div className="error">{error}</div>
 	) : null;

@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AdhesionsDataTable from "@components/tables/AdhesionsDataTable.js";
-import AdminDashboard from "./index.js";
+import Dashboard from "@components/Dashboard.js";
 
 const buildTabsDefs = (statut, setFilter) => {
 	const tabs = [
@@ -27,10 +27,14 @@ const buildTabsDefs = (statut, setFilter) => {
 const PageAdhesions = () => {
 	const [statut, setFilter] = useState("active");
 	return (
-		<AdminDashboard title="Adhésions" tabsDefs={buildTabsDefs(statut, setFilter)}>
+		<Dashboard title="Adhésions" tabsDefs={buildTabsDefs(statut, setFilter)}>
 			<AdhesionsDataTable filter={{ statut }} />
-		</AdminDashboard>
+		</Dashboard>
 	);
 };
 
-export default PageAdhesions;
+export default withAuthentication(PageAdhesions, {
+	profiles: ["admin"],
+	loginPage: "/admin/login",
+	redirectTo: "/admin/adhesions"
+});

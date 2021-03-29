@@ -1,6 +1,6 @@
 import { useState } from "react";
 import AdherentsDataTable from "@components/tables/AdherentsDataTable.js";
-import AdminDashboard from "./index.js";
+import Dashboard from "@components/Dashboard.js";
 
 const buildTabs = (statut, setFilter) => {
 	const tabs = [
@@ -30,10 +30,14 @@ const buildTabs = (statut, setFilter) => {
 const PageAdherents = () => {
 	const [statut, setFilter] = useState("actif");
 	return (
-		<AdminDashboard title="Adhérents" tabs={buildTabs(statut, setFilter)}>
+		<Dashboard title="Adhérents" tabs={buildTabs(statut, setFilter)}>
 			<AdherentsDataTable filter={{ statut }} />
-		</AdminDashboard>
+		</Dashboard>
 	);
 };
 
-export default PageAdherents;
+export default withAuthentication(PageAdherents, {
+	profiles: ["admin"],
+	loginPage: "/admin/login",
+	redirectTo: "/admin/adherents" // There is a quirck here to retrieve the [siret] param
+});
