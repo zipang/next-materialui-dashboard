@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
  * @param {HeaderProps} props
  */
 function Header({ title, tabsDefs = [], currentTab = 0 }) {
-	const { loggedUser: user } = useAuthentication();
+	const { loggedUser: user, logout } = useAuthentication();
 	const styles = useStyles();
 
 	return (
@@ -44,7 +44,9 @@ function Header({ title, tabsDefs = [], currentTab = 0 }) {
 								{user.firstName}&nbsp;{user.lastName}&nbsp;
 								<IconButton
 									color="inherit"
+									edge="end"
 									className={styles.iconButtonAvatar}
+									onClick={logout}
 								>
 									<Avatar
 										src="/static/images/avatar/1.jpg"
