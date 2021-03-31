@@ -2,6 +2,7 @@ import { AppBar, Avatar, Box, Grid, IconButton, Toolbar } from "@material-ui/cor
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuthentication } from "./AuthenticationProvider";
 import { Tabs } from "./forms/tabs/TabbedView";
+import SvgIcon from "./SvgIcon";
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 
@@ -9,15 +10,18 @@ const useStyles = makeStyles((theme) => ({
 	secondaryBar: {
 		zIndex: 0
 	},
+	userInfo: {
+		marginRight: "1rem"
+	},
 	iconButtonAvatar: {
-		padding: 4
+		"&:hover": {
+			color: theme.palette.common.black
+		}
 	},
 	link: {
 		textDecoration: "none",
 		color: lightColor,
-		"&:hover": {
-			color: theme.palette.common.white
-		}
+		"&:hover": {}
 	},
 	button: {
 		borderColor: lightColor
@@ -40,18 +44,17 @@ function Header({ title, tabsDefs = [], currentTab = 0 }) {
 					<Grid container spacing={1} direction="row" justify="flex-end">
 						<Box flexGrow={1}>{title && <h2>{title}</h2>}</Box>
 						{user && (
-							<Box alignSelf="flex-end">
+							<Box alignSelf="flex-end" className={styles.userInfo}>
 								{user.firstName}&nbsp;{user.lastName}&nbsp;
 								<IconButton
-									color="inherit"
+									color="primary"
 									edge="end"
 									className={styles.iconButtonAvatar}
 									onClick={logout}
 								>
-									<Avatar
-										src="/static/images/avatar/1.jpg"
-										alt={`${user.firstName} ${user.lastName}`}
-									/>
+									<Avatar alt={`${user.firstName} ${user.lastName}`}>
+										<SvgIcon name="LogOut" />
+									</Avatar>
 								</IconButton>
 							</Box>
 						)}

@@ -1,4 +1,5 @@
 import Business from "@material-ui/icons/Business";
+import PowerSettingsNewIcon from "@material-ui/icons/PowerSettingsNew";
 import CardMembership from "@material-ui/icons/CardMembership";
 import Home from "@material-ui/icons/Home";
 import People from "@material-ui/icons/People";
@@ -17,6 +18,7 @@ const iconMap = {
 	CardMembership,
 	Home,
 	Help,
+	LogOut: PowerSettingsNewIcon,
 	People,
 	Save,
 	Edit,
@@ -32,6 +34,7 @@ export const names = [
 	"Business",
 	"Home",
 	"Help",
+	"LogOut",
 	"People",
 	"Save",
 	"Edit",
