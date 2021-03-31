@@ -1,6 +1,7 @@
 import { useState } from "react";
 import AdhesionsDataTable from "@components/tables/AdhesionsDataTable.js";
 import Dashboard from "@components/Dashboard.js";
+import { withAuthentication } from "@components/AuthenticationProvider";
 
 const buildTabsDefs = (statut, setFilter) => {
 	const tabs = [
