@@ -6,11 +6,6 @@
 				"label": "Adhésions",
 				"icon": "Business",
 				"action": "/member"
-			},
-			{
-				"label": "Mon Profil",
-				"icon": "People",
-				"action": "/member/profile"
 			}
 		]
 	}
