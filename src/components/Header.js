@@ -47,12 +47,11 @@ function Header({ title, tabsDefs = [], currentTab = 0 }) {
 							<Box alignSelf="flex-end" className={styles.userInfo}>
 								{user.firstName}&nbsp;{user.lastName}&nbsp;
 								<IconButton
-									color="primary"
 									edge="end"
 									className={styles.iconButtonAvatar}
 									onClick={logout}
 								>
-									<Avatar alt={`${user.firstName} ${user.lastName}`}>
+									<Avatar title="Déconnexion">
 										<SvgIcon name="LogOut" />
 									</Avatar>
 								</IconButton>
