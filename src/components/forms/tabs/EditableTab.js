@@ -1,6 +1,6 @@
 import { Grid } from "@material-ui/core";
-import Step from "../wizard/Step";
-import StepForm from "../wizard/StepForm";
+import Step from "../wizard/Step.js";
+import StepForm from "../wizard/StepForm.js";
 
 /**
  * Find a step by its index or id

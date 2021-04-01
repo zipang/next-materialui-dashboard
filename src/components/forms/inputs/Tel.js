@@ -1,5 +1,5 @@
-import { applyNumericMask } from "../validation/utils";
-import Formatted from "./Formatted";
+import { applyNumericMask } from "../validation/utils.js";
+import Formatted from "./Formatted.js";
 
 /**
  * Formatted Input for telephone numbers

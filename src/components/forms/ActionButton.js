@@ -1,5 +1,5 @@
 import { Fab } from "@material-ui/core";
-import SvgIcon from "@components/SvgIcon";
+import SvgIcon from "@components/SvgIcon.js";
 
 /**
  * @typedef ActionButtonProps

@@ -1,5 +1,5 @@
-import APIClient from "./ApiClient";
-import ApiError from "@lib/ApiError";
+import APIClient from "./ApiClient.js";
+import ApiError from "@lib/ApiError.js";
 
 /**
  * Get the list of organismes linked to a User

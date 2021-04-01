@@ -1,6 +1,6 @@
-import { withEventBus } from "@components/EventBusProvider";
-import { withAuthentication } from "@components/AuthenticationProvider";
-import DetailAdherentDashboard from "@components/DetailAdherentDashboard";
+import { withEventBus } from "@components/EventBusProvider.js";
+import { withAuthentication } from "@components/AuthenticationProvider.js";
+import DetailAdherentDashboard from "@components/DetailAdherentDashboard.js";
 
 /**
  * @see https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering

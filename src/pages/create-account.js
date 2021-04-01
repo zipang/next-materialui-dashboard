@@ -1,5 +1,5 @@
-import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import Register from "@components/Register";
+import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
+import Register from "@components/Register.js";
 
 const CreateAccountPage = () => {
 	return (

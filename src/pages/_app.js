@@ -1,8 +1,7 @@
-import { useEffect } from "react";
-import AuthenticationProvider from "@components/AuthenticationProvider";
+import AuthenticationProvider from "@components/AuthenticationProvider.js";
 import { ThemeProvider } from "@material-ui/core/styles";
 import CssBaseline from "@material-ui/core/CssBaseline";
-import theme from "../theme";
+import theme from "../theme.js";
 import { NoSsr } from "@material-ui/core";
 
 const MyApp = ({ Component, pageProps }) => {

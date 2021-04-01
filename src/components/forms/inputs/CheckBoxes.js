@@ -5,10 +5,10 @@ import {
 	FormHelperText,
 	Grid
 } from "@material-ui/core";
-import GroupLabel from "@forms/GroupLabel";
-import { useFormValidationContext } from "@forms/validation/FormValidationProvider";
-import { convertOptions } from "@forms/inputs/utils";
-import _BASE_INPUT_STYLES from "./styles";
+import GroupLabel from "@forms/GroupLabel.js";
+import { useFormValidationContext } from "@forms/validation/FormValidationProvider.js";
+import { convertOptions } from "@forms/inputs/utils.js";
+import _BASE_INPUT_STYLES from "./styles.js";
 
 /**
  * @typedef CheckBoxesProps

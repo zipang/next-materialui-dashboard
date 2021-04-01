@@ -1,5 +1,5 @@
-import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import Login from "@components/Login";
+import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
+import Login from "@components/Login.js";
 
 const LoginPage = () => {
 	return (

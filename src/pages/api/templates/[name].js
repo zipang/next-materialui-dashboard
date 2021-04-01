@@ -1,4 +1,4 @@
-import { render } from "@lib/services/Templates";
+import { render } from "@lib/services/Templates.js";
 
 /**
  * The API entry point (POST) to render a given template

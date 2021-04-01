@@ -1,10 +1,10 @@
-import APIForm from "@forms/APIForm";
+import APIForm from "@forms/APIForm.js";
 import { useState } from "react";
 import { Typography } from "@material-ui/core";
-import Text from "./inputs/Text";
-import Email from "./inputs/Email";
-import Password from "./inputs/Password";
-import Submit from "./inputs/Submit";
+import Text from "./inputs/Text.js";
+import Email from "./inputs/Email.js";
+import Password from "./inputs/Password.js";
+import Submit from "./inputs/Submit.js";
 
 /**
  * Displays the first form to create a new user

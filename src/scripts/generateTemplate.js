@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-import fs from "fs-extra";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
-import gm from "gray-matter";
-import tk from "terminal-kit";
-import dot from "dot";
+import fs from "fs-extra.js";
+import path, { dirname } from "path.js";
+import { fileURLToPath } from "url.js";
+import gm from "gray-matter.js";
+import tk from "terminal-kit.js";
+import dot from "dot.js";
 import { convertToHtml } from "../lib/services/MarkdownToHtml.js";
 import FileWalker from "../lib/utils/FileWalker.js";
 import { isMarkdown } from "../lib/utils/VFile.js";

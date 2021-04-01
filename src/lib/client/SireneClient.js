@@ -1,6 +1,6 @@
-import { delay } from "@lib/utils/Promises";
-import ApiError from "@lib/ApiError";
-import APIClient from "./ApiClient";
+import { delay } from "@lib/utils/Promises.js";
+import ApiError from "@lib/ApiError.js";
+import APIClient from "./ApiClient.js";
 
 /**
  * Call the French Governemnt API about declared business

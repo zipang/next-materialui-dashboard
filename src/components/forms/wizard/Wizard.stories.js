@@ -1,10 +1,10 @@
 // Wizard.stories.js
-import Wizard from "./Wizard";
-import StepForm from "./StepForm";
-import Input from "../inputs/Input";
+import Wizard from "./Wizard.js";
+import StepForm from "./StepForm.js";
+import Input from "../inputs/Input.js";
 import { Box } from "@material-ui/core";
-import AuthenticationProvider from "@components/AuthenticationProvider";
-import testUser from "@models/test-user";
+import AuthenticationProvider from "@components/AuthenticationProvider.js";
+import testUser from "@models/test-user.js";
 
 const _CLASSES = {
 	magician: "Magicien(ne)",

@@ -1,5 +1,5 @@
 // SvgIcon.stories.js
-import SvgIcon, { names } from "./SvgIcon";
+import SvgIcon, { names } from "./SvgIcon.js";
 
 // This default export determines where your story goes in the story list
 export default {

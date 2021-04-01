@@ -1,10 +1,10 @@
 // Formatted.stories.js
-import Formatted from "./Formatted";
+import Formatted from "./Formatted.js";
 import {
 	useFormValidationContext,
 	FormValidationProvider
-} from "@forms/validation/FormValidationProvider";
-import useFormStyles from "../useFormStyles";
+} from "@forms/validation/FormValidationProvider.js";
+import useFormStyles from "../useFormStyles.js";
 
 /**
  * Allow only A-Z letters and 0-9 digits

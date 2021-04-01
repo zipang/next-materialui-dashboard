@@ -1,4 +1,4 @@
-import { getSearchParams } from "@lib/utils/Api";
+import { getSearchParams } from "@lib/utils/Api.js";
 import { retrieve } from "@models/Adherent.js";
 
 /**

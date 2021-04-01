@@ -1,4 +1,4 @@
-import User from "@models/User";
+import User from "@models/User.js";
 
 /**
  * API handler for `/api/register` (User Registration)

@@ -1,7 +1,7 @@
 // Date.stories.js
-import Date from "./Date";
-import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import VForm from "@forms/validation/VForm";
+import Date from "./Date.js";
+import { FormValidationProvider } from "@forms/validation/FormValidationProvider.js";
+import VForm from "@forms/validation/VForm.js";
 
 const today = "2021-02-01"; //new Date().toISOString().substr(0, 10);
 

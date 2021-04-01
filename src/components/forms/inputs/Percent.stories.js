@@ -1,10 +1,10 @@
 // Percent.stories.js
-import Percent from "./Percent";
+import Percent from "./Percent.js";
 import {
 	useFormValidationContext,
 	FormValidationProvider
-} from "@forms/validation/FormValidationProvider";
-import useFormStyles from "../useFormStyles";
+} from "@forms/validation/FormValidationProvider.js";
+import useFormStyles from "../useFormStyles.js";
 
 const onlyDigits = (length) => (input = "") =>
 	input.replace(/[^\d]+/gi, "").substr(0, length);

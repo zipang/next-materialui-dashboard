@@ -1,10 +1,10 @@
 // Text.stories.js
-import Text from "./Text";
+import Text from "./Text.js";
 import {
 	useFormValidationContext,
 	FormValidationProvider
-} from "@forms/validation/FormValidationProvider";
-import useFormStyles from "../useFormStyles";
+} from "@forms/validation/FormValidationProvider.js";
+import useFormStyles from "../useFormStyles.js";
 
 const VForm = ({ children, ...props }) => {
 	const styles = useFormStyles();

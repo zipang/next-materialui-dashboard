@@ -1,7 +1,7 @@
 // Switch.stories.js
-import Switch from "./Switch";
-import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import VForm from "@forms/validation/VForm";
+import Switch from "./Switch.js";
+import { FormValidationProvider } from "@forms/validation/FormValidationProvider.js";
+import VForm from "@forms/validation/VForm.js";
 import { Button } from "@material-ui/core";
 
 // This default export determines where your story goes in the story list

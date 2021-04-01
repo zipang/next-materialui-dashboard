@@ -1,7 +1,7 @@
-import suite from "baretest";
-import code from "@hapi/code";
-import path, { dirname } from "path";
-import { fileURLToPath } from "url";
+import suite from "baretest.js";
+import code from "@hapi/code.js";
+import path, { dirname } from "path.js";
+import { fileURLToPath } from "url.js";
 import { getTemplate } from "./index.js";
 import testAdherent from "../models/adherent-test.js";
 import testAdhesion from "../models/adhesion-test.js";

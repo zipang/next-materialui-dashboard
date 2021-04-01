@@ -1,4 +1,4 @@
-import { generatePdf } from "@lib/services/HtmlToPdf";
+import { generatePdf } from "@lib/services/HtmlToPdf.js";
 
 /**
  * The API entry point (POST) to transform an HTML into PDF

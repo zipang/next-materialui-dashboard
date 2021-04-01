@@ -1,12 +1,12 @@
 // StepForm.stories.js
-import StepForm from "./StepForm";
-import JSON from "@lib/utils/JSON";
+import StepForm from "./StepForm.js";
+import JSON from "@lib/utils/JSON.js";
 import { Box, Paper, Grid } from "@material-ui/core";
-import { withEventBus, useEventBus } from "@components/EventBusProvider";
+import { withEventBus, useEventBus } from "@components/EventBusProvider.js";
 import { useState } from "react";
-import Text from "../inputs/Text";
-import Integer from "../inputs/Integer";
-import Date from "../inputs/Date";
+import Text from "../inputs/Text.js";
+import Integer from "../inputs/Integer.js";
+import Date from "../inputs/Date.js";
 
 // This default export determines where your story goes in the story list
 export default {

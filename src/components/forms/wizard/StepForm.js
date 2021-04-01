@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { useEventBus } from "@components/EventBusProvider";
-import useFormStyles from "@forms/useFormStyles";
+import { useEventBus } from "@components/EventBusProvider.js";
+import useFormStyles from "@forms/useFormStyles.js";
 import {
 	FormValidationProvider,
 	useFormValidationContext
-} from "@forms/validation/FormValidationProvider";
-import VForm from "@forms/validation/VForm";
+} from "@forms/validation/FormValidationProvider.js";
+import VForm from "@forms/validation/VForm.js";
 
 const hasErrors = (errors) => Boolean(Object.keys(errors).length);
 

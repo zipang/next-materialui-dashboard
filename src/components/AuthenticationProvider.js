@@ -2,7 +2,7 @@ import { useState, useContext, createContext, useEffect } from "react";
 import { useRouter } from "next/router";
 import { NoSsr } from "@material-ui/core";
 import devUser from "@config/devUser.json";
-import User from "@models/User";
+import User from "@models/User.js";
 
 /**
  * @typedef AuthContext

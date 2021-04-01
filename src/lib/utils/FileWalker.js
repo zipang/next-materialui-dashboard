@@ -1,6 +1,6 @@
-import fs from "fs-extra";
-import { join, relative, resolve } from "path";
-import EventEmitter from "events";
+import fs from "fs-extra.js";
+import { join, relative, resolve } from "path.js";
+import EventEmitter from "events.js";
 import VFile, { hasExtension } from "./VFile.js";
 
 const _DEFAULT_OPTIONS = {

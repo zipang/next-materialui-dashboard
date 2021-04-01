@@ -1,6 +1,6 @@
 import { createContext, useContext, useState } from "react";
-import { merge } from "@lib/utils/deepMerge";
-import JSON from "@lib/utils/JSON";
+import { merge } from "@lib/utils/deepMerge.js";
+import JSON from "@lib/utils/JSON.js";
 
 const StateMachinesContext = createContext();
 

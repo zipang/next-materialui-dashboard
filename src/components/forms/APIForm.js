@@ -1,12 +1,12 @@
 import { useState } from "react";
-import useFormStyles from "./useFormStyles";
-import APIClient from "@lib/client/ApiClient";
+import useFormStyles from "./useFormStyles.js";
+import APIClient from "@lib/client/ApiClient.js";
 import { CircularProgress } from "@material-ui/core";
 import {
 	FormValidationProvider,
 	useFormValidationContext
-} from "./validation/FormValidationProvider";
-import Center from "@components/Center";
+} from "./validation/FormValidationProvider.js";
+import Center from "@components/Center.js";
 
 /**
  * @typedef APIFormProps

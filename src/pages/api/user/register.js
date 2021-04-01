@@ -1,5 +1,5 @@
-import { getParseInstance } from "@models/ParseSDK";
-import User from "@models/User";
+import { getParseInstance } from "@models/ParseSDK.js";
+import User from "@models/User.js";
 
 /**
  * API handler for `/api/register` (User Registration)

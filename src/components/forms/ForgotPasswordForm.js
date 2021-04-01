@@ -1,8 +1,8 @@
-import APIForm from "@forms/APIForm";
+import APIForm from "@forms/APIForm.js";
 import { useState } from "react";
 import { Typography } from "@material-ui/core";
-import Email from "./inputs/Email";
-import Submit from "./inputs/Submit";
+import Email from "./inputs/Email.js";
+import Submit from "./inputs/Submit.js";
 
 /**
  * Displays the form to help the user recover his password

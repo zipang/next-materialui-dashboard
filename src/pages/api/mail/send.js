@@ -1,4 +1,4 @@
-import Mailer from "@lib/services/Mailer";
+import Mailer from "@lib/services/Mailer.js";
 
 /**
  * The API entry point (POST) to send an email

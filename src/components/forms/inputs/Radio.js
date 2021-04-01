@@ -7,10 +7,10 @@ import {
 	FormHelperText,
 	FormControlLabel
 } from "@material-ui/core";
-import { useFormValidationContext } from "../validation/FormValidationProvider";
-import { convertOptions } from "./utils";
-import _BASE_INPUT_STYLES from "./styles";
-import { isUndefined, noop } from "../validation/utils";
+import { useFormValidationContext } from "../validation/FormValidationProvider.js";
+import { convertOptions } from "./utils.js";
+import _BASE_INPUT_STYLES from "./styles.js";
+import { isUndefined, noop } from "../validation/utils.js";
 
 /**
  * @typedef RadioProps

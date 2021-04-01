@@ -1,4 +1,4 @@
-import Text from "./Text";
+import Text from "./Text.js";
 
 /**
  * Text Input with specific url validation

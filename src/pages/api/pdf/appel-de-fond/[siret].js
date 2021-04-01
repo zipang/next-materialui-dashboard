@@ -1,6 +1,6 @@
-import { generatePdf } from "@lib/services/HtmlToPdf";
-import { retrieveBySiret } from "@models/Adherent";
-import { html, filename } from "@templates/appel-de-fond";
+import { generatePdf } from "@lib/services/HtmlToPdf.js";
+import { retrieveBySiret } from "@models/Adherent.js";
+import { html, filename } from "@templates/appel-de-fond.js";
 
 /**
  * Generate a PDF

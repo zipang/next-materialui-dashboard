@@ -1,4 +1,4 @@
-import Text from "./Text";
+import Text from "./Text.js";
 
 /**
  * Take every exposed properties from Text but change type to password

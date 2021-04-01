@@ -1,4 +1,4 @@
-import Radio from "./Radio";
+import Radio from "./Radio.js";
 
 /**
  * HOC to display a boolean choice using 2 radio buttons

@@ -1,11 +1,11 @@
 import { useRouter } from "next/router";
-import { useAuthentication } from "../AuthenticationProvider";
+import { useAuthentication } from "../AuthenticationProvider.js";
 
-import APIForm from "@forms/APIForm";
-import User from "@models/User";
-import Email from "./inputs/Email";
-import Password from "./inputs/Password";
-import Submit from "./inputs/Submit";
+import APIForm from "@forms/APIForm.js";
+import User from "@models/User.js";
+import Email from "./inputs/Email.js";
+import Password from "./inputs/Password.js";
+import Submit from "./inputs/Submit.js";
 import { useState } from "react";
 
 /**

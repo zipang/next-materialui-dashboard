@@ -1,9 +1,9 @@
 import { makeStyles } from "@material-ui/core/styles";
-import Header from "@components/Header";
-import UserNavBar from "@components/navigation/NavigationBar";
-import Copyright from "@components/Copyright";
+import Header from "@components/Header.js";
+import UserNavBar from "@components/navigation/NavigationBar.js";
+import Copyright from "@components/Copyright.js";
 import { useRouter } from "next/router";
-import { useAuthentication } from "./AuthenticationProvider";
+import { useAuthentication } from "./AuthenticationProvider.js";
 
 const drawerWidth = 256;
 

@@ -1,7 +1,7 @@
 // Decimal.stories.js
-import Decimal from "./Decimal";
-import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import VForm from "../validation/VForm";
+import Decimal from "./Decimal.js";
+import { FormValidationProvider } from "@forms/validation/FormValidationProvider.js";
+import VForm from "../validation/VForm.js";
 
 // This default export determines where your story goes in the story list
 export default {

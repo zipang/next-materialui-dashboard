@@ -1,4 +1,4 @@
-import ApiError from "@lib/ApiError";
+import ApiError from "@lib/ApiError.js";
 
 const apiEntryPoint = `https://api.mollie.com/v2/payments`;
 

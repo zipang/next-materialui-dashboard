@@ -2,12 +2,12 @@ import { Avatar, Grid, Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import ContactMailIcon from "@material-ui/icons/ContactMail";
 
-import Link from "./Link";
-import Copyright from "./Copyright";
-import TwoColumnsFormContainer from "./TwoColumnsFormContainer";
+import Link from "./Link.js";
+import Copyright from "./Copyright.js";
+import TwoColumnsFormContainer from "./TwoColumnsFormContainer.js";
 
-import ForgotPasswordForm from "@forms/ForgotPasswordForm";
-import { useEventBus } from "./EventBusProvider";
+import ForgotPasswordForm from "@forms/ForgotPasswordForm.js";
+import { useEventBus } from "./EventBusProvider.js";
 
 const useStyles = makeStyles((theme) => ({
 	avatar: {

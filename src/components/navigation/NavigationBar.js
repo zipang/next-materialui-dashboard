@@ -12,8 +12,8 @@ import adminNavigationItems from "@config/adminNavigationItems.json";
 import memberNavigationItems from "@config/memberNavigationItems.json";
 
 import Link from "next/link";
-import User from "@models/User";
-import SvgIcon from "@components/SvgIcon";
+import User from "@models/User.js";
+import SvgIcon from "@components/SvgIcon.js";
 
 const useStyles = makeStyles((theme) => ({
 	categoryHeader: {

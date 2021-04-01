@@ -1,7 +1,7 @@
 // StateMachine.stories.js
 import { useEffect } from "react";
 import { FormControlLabel, Box, Checkbox, Button } from "@material-ui/core";
-import { withStateMachine, useStateMachine } from "./StateMachine";
+import { withStateMachine, useStateMachine } from "./StateMachine.js";
 
 export default {
 	title: "State Machine"

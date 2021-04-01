@@ -1,6 +1,6 @@
-import HiddenSubmit from "../inputs/HiddenSubmit";
-import useFormStyles from "../useFormStyles";
-import { useFormValidationContext } from "./FormValidationProvider";
+import HiddenSubmit from "../inputs/HiddenSubmit.js";
+import useFormStyles from "../useFormStyles.js";
+import { useFormValidationContext } from "./FormValidationProvider.js";
 
 /**
  * @typedef VFormProps

@@ -1,10 +1,10 @@
-import Formatted from "./Formatted";
+import Formatted from "./Formatted.js";
 import {
 	getDigitsOnly,
 	formatDecimalWithUnit,
 	isDecimal,
 	isBetween
-} from "../validation/utils";
+} from "../validation/utils.js";
 
 export const serializeDecimal = (decimalsSeparator) => (str = "") => {
 	const decimalParts = str

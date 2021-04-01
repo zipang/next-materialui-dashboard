@@ -1,9 +1,9 @@
 // YesNo.stories.js
-import YesNo from "./YesNo";
-import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import VForm from "@forms/validation/VForm";
-import Submit from "./Submit";
-import Text from "./Text";
+import YesNo from "./YesNo.js";
+import { FormValidationProvider } from "@forms/validation/FormValidationProvider.js";
+import VForm from "@forms/validation/VForm.js";
+import Submit from "./Submit.js";
+import Text from "./Text.js";
 
 const OuiNon = YesNo("Oui", "Non");
 const YSN = YesNo();

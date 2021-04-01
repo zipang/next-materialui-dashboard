@@ -1,7 +1,7 @@
-import suite from "baretest";
+import suite from "baretest.js";
 import { getParseInstance } from "./ParseSDK.js";
 import { create as createAdhesion, retrieve as retrieveAdhesions } from "./Adhesion.js";
-import code from "@hapi/code";
+import code from "@hapi/code.js";
 
 const { expect } = code;
 

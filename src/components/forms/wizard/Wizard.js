@@ -5,12 +5,12 @@ import SvgIcon from "@components/SvgIcon";
 import { makeStyles } from "@material-ui/core/styles";
 
 import { useRouter } from "next/router";
-import { useEventBus, withEventBus } from "@components/EventBusProvider";
-import { useAuthentication } from "@components/AuthenticationProvider";
-import { isEmpty } from "@lib/utils/NestedObjects";
-import { useStateMachine, withStateMachine } from "@components/StateMachine";
-import WizardStateMachine from "./WizardStateMachine";
-import Step from "@components/forms/wizard/Step";
+import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
+import { useAuthentication } from "@components/AuthenticationProvider.js";
+import { isEmpty } from "@lib/utils/NestedObjects.js";
+import { useStateMachine, withStateMachine } from "@components/StateMachine.js";
+import WizardStateMachine from "./WizardStateMachine.js";
+import Step from "@components/forms/wizard/Step.js";
 
 const useWizardStyles = (customStyles = {}) =>
 	makeStyles((theme) => ({

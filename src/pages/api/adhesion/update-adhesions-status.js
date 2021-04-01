@@ -1,4 +1,4 @@
-import { getParseInstance } from "@models/ParseSDK";
+import { getParseInstance } from "@models/ParseSDK.js";
 import https from "https";
 
 const formatDate = (d) => d.toISOString().substr(0, 10); // YYYY-MM-DD

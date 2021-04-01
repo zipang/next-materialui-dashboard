@@ -1,6 +1,6 @@
-import { useAuthentication } from "@components/AuthenticationProvider";
-import Wizard from "@forms/wizard/Wizard";
-import AdherentsApiClient from "@lib/client/AdherentsApiClient";
+import { useAuthentication } from "@components/AuthenticationProvider.js";
+import Wizard from "@forms/wizard/Wizard.js";
+import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
 import { useEffect, useState } from "react";
 import {
 	welcomeStepsNewAccount,
@@ -8,7 +8,7 @@ import {
 	formSteps,
 	stepDemandeContact,
 	stepAdhesionPaymentChoice
-} from "./RegistrationSteps";
+} from "./RegistrationSteps.js";
 
 const steps = [
 	...welcomeStepsNewAccount,

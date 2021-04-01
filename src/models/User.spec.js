@@ -1,5 +1,5 @@
-import suite from "baretest";
-import code from "@hapi/code";
+import suite from "baretest.js";
+import code from "@hapi/code.js";
 import User from "./User.js";
 import { getParseInstance } from "./ParseSDK.js";
 import testUser from "./test-user.js";

@@ -1,8 +1,8 @@
 import { createRef } from "react";
-import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import Submit from "@components/forms/inputs/Submit";
-import useFormStyles from "@components/forms/useFormStyles";
-import { generateFromHtml } from "@lib/client/PdfApiClient";
+import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
+import Submit from "@components/forms/inputs/Submit.js";
+import useFormStyles from "@components/forms/useFormStyles.js";
+import { generateFromHtml } from "@lib/client/PdfApiClient.js";
 
 const TestGenerationPdfPage = () => {
 	const refHtml = createRef();

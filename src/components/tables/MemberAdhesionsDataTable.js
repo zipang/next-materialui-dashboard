@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
-import DataTable from "./DataTable";
+import DataTable from "./DataTable.js";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { Box } from "@material-ui/core";
-import UsersApiClient from "@lib/client/UsersApiClient";
-import { useEventBus } from "@components/EventBusProvider";
+import UsersApiClient from "@lib/client/UsersApiClient.js";
+import { useEventBus } from "@components/EventBusProvider.js";
 
 const displayDate = (isoDate) => {
 	if (!isoDate) return "";

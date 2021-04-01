@@ -1,9 +1,9 @@
 // Registration.stories.js
-import AuthenticationProvider from "@components/AuthenticationProvider";
-import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import testUser from "@models/test-user";
-import Wizard from "../wizard/Wizard";
-import { formSteps } from "./RegistrationSteps";
+import AuthenticationProvider from "@components/AuthenticationProvider.js";
+import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
+import testUser from "@models/test-user.js";
+import Wizard from "../wizard/Wizard.js";
+import { formSteps } from "./RegistrationSteps.js";
 
 // This default export determines where your story goes in the story list
 export default {

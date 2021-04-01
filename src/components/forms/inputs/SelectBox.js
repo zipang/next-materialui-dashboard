@@ -6,9 +6,9 @@ import {
 	FormControl,
 	FormHelperText
 } from "@material-ui/core";
-import { useFormValidationContext } from "@forms/validation/FormValidationProvider";
-import { convertOptions } from "./utils";
-import _BASE_INPUT_STYLES from "./styles";
+import { useFormValidationContext } from "@forms/validation/FormValidationProvider.js";
+import { convertOptions } from "./utils.js";
+import _BASE_INPUT_STYLES from "./styles.js";
 
 /**
  * Select a value amonst one defined list of options

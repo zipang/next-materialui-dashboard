@@ -1,5 +1,5 @@
-import { searchOrganismeBySiret } from "@lib/client/SireneClient";
-import { retrieveBySiret } from "@models/Adherent";
+import { searchOrganismeBySiret } from "@lib/client/SireneClient.js";
+import { retrieveBySiret } from "@models/Adherent.js";
 
 /**
  * API handler for `/siret/search` (Search Sirene Open Data API)

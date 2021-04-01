@@ -7,6 +7,9 @@ const withBundleAnalyzer = require("@next/bundle-analyzer")({
 
 module.exports = withBundleAnalyzer({
 	reactStrictMode: true,
+	// future: {
+	// 	webpack5: true
+	// },
 	redirects: async () => [
 		{
 			source: "/",
@@ -64,6 +67,15 @@ module.exports = withBundleAnalyzer({
 			fs: "empty",
 			child_process: "empty"
 		};
+		// Replaced above with below for webpack 5.
+		// Reference: https://webpack.js.org/migrate/5/#clean-up-configuration
+		// config.resolve = {
+		// 	fallback: {
+		// 		fs: false,
+		// 		path: false,
+		// 		child_process: false
+		// 	}
+		// };
 
 		return config;
 	}

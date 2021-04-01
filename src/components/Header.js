@@ -1,8 +1,8 @@
 import { AppBar, Avatar, Box, Grid, IconButton, Toolbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import { useAuthentication } from "./AuthenticationProvider";
-import { Tabs } from "./forms/tabs/TabbedView";
-import SvgIcon from "./SvgIcon";
+import { useAuthentication } from "./AuthenticationProvider.js";
+import { Tabs } from "./forms/tabs/TabbedView.js";
+import SvgIcon from "./SvgIcon.js";
 
 const lightColor = "rgba(255, 255, 255, 0.7)";
 

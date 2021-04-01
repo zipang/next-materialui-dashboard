@@ -1,5 +1,10 @@
-import Formatted from "./Formatted";
-import { isDate, applyDateMask, serializeDate, formatISODate } from "../validation/utils";
+import Formatted from "./Formatted.js";
+import {
+	isDate,
+	applyDateMask,
+	serializeDate,
+	formatISODate
+} from "../validation/utils.js";
 
 /**
  * @typedef DateInputProps extends FormattedInputProps

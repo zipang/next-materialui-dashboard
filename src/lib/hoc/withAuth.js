@@ -1,7 +1,7 @@
-import { useState, useGlobal } from "reactn";
+import { useState, useGlobal } from "reactn.js";
 import { useRouter } from "next/router";
 
-import User from "../models/User";
+import User from "../models/User.js";
 
 /**
  * Verify that a page is only accessible when a user is logged

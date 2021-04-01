@@ -1,7 +1,7 @@
 // Integer.stories.js
-import Integer from "./Integer";
-import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import VForm from "../validation/VForm";
+import Integer from "./Integer.js";
+import { FormValidationProvider } from "@forms/validation/FormValidationProvider.js";
+import VForm from "../validation/VForm.js";
 
 // This default export determines where your story goes in the story list
 export default {

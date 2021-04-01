@@ -1,6 +1,6 @@
-import { withAuthentication } from "@components/AuthenticationProvider";
-import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import RegistrationWizard from "@components/forms/registration/RegistrationWizard";
+import { withAuthentication } from "@components/AuthenticationProvider.js";
+import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
+import RegistrationWizard from "@components/forms/registration/RegistrationWizard.js";
 
 const RegistrationPage = ({ user }) => {
 	return (

@@ -1,5 +1,5 @@
-import APIClient from "./ApiClient";
-import ApiError from "@lib/ApiError";
+import APIClient from "./ApiClient.js";
+import ApiError from "@lib/ApiError.js";
 
 /**
  * Let a user update some informations about an existing adherent

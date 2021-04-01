@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { getProperty } from "@lib/utils/NestedObjects";
-import { applyNumericMask, getDigitsOnly } from "@components/forms/validation/utils";
-import APIForm from "../APIForm";
-import Formatted from "../inputs/Formatted";
-import Submit from "../inputs/Submit";
+import { getProperty } from "@lib/utils/NestedObjects.js";
+import { applyNumericMask, getDigitsOnly } from "@components/forms/validation/utils.js";
+import APIForm from "../APIForm.js";
+import Formatted from "../inputs/Formatted.js";
+import Submit from "../inputs/Submit.js";
 
 export const formatSiret = applyNumericMask("999 999 999 99999");
 export const isSiretValid = (str = "") =>

@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
-import { useEventBus } from "@components/EventBusProvider";
+import { useEventBus } from "@components/EventBusProvider.js";
 import { Tab as MuiTab, Tabs as MuiTabs } from "@material-ui/core";
-import DisplayTab from "./DisplayTab";
-import EditableTab from "./EditableTab";
+import DisplayTab from "./DisplayTab.js";
+import EditableTab from "./EditableTab.js";
 
 /**
  * @typedef TabsDef

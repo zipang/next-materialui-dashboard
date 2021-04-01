@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { withAuthentication } from "@components/AuthenticationProvider";
-import Dashboard from "@components/Dashboard";
+import { withAuthentication } from "@components/AuthenticationProvider.js";
+import Dashboard from "@components/Dashboard.js";
 import { useRouter } from "next/router";
-import MemberAdhesionsDataTable from "@components/tables/MemberAdhesionsDataTable";
-import UsersApiClient from "@lib/client/UsersApiClient";
-import { withEventBus } from "@components/EventBusProvider";
+import MemberAdhesionsDataTable from "@components/tables/MemberAdhesionsDataTable.js";
+import UsersApiClient from "@lib/client/UsersApiClient.js";
+import { withEventBus } from "@components/EventBusProvider.js";
 
 const MemberPage = ({ user }) => {
 	const router = useRouter();

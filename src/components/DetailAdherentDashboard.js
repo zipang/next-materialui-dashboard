@@ -5,7 +5,7 @@ import TabbedView, { buildTabHeaders } from "@components/forms/tabs/TabbedView.j
 import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
 import { formSteps } from "@forms/registration/RegistrationSteps.js";
 import Dashboard from "@components/Dashboard.js";
-import { useAuthentication } from "./AuthenticationProvider";
+import { useAuthentication } from "./AuthenticationProvider.js";
 
 // Some steps may not contain fields
 const steps = formSteps.filter((step) => Array.isArray(step.fields));

@@ -1,8 +1,8 @@
 import { Grid } from "@material-ui/core";
-import GroupLabel from "../GroupLabel";
-import Link from "@components/Link";
-import { getProperty } from "@lib/utils/NestedObjects";
-import { displaySelectedOption } from "../inputs/utils";
+import GroupLabel from "../GroupLabel.js";
+import Link from "@components/Link.js";
+import { getProperty } from "@lib/utils/NestedObjects.js";
+import { displaySelectedOption } from "../inputs/utils.js";
 
 /**
  * @typedef TabDef

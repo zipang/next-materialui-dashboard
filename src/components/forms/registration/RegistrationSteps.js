@@ -1,8 +1,8 @@
-import { SiretSearchForm } from "./SiretSearch";
-import { update, createAdhesion } from "@lib/client/AdherentsApiClient";
-import { sendMailTemplate } from "@lib/client/MailApiClient";
-import APIClient from "@lib/client/ApiClient";
-import { positiveNumber } from "@forms/validation/utils";
+import { SiretSearchForm } from "./SiretSearch.js";
+import { update, createAdhesion } from "@lib/client/AdherentsApiClient.js";
+import { sendMailTemplate } from "@lib/client/MailApiClient.js";
+import APIClient from "@lib/client/ApiClient.js";
+import { positiveNumber } from "@forms/validation/utils.js";
 
 /**
  * These steps are the introduction text for a new adhesion

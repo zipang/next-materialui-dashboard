@@ -1,6 +1,6 @@
 // SiretSearch.stories.js
-import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import { SiretSearchForm } from "./SiretSearch";
+import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
+import { SiretSearchForm } from "./SiretSearch.js";
 
 // This default export determines where your story goes in the story list
 export default {

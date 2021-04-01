@@ -1,5 +1,5 @@
 import { useContext, createContext } from "react";
-import EventEmitter from "@lib/utils/EventEmitter";
+import EventEmitter from "@lib/utils/EventEmitter.js";
 
 /**
  * @typedef EventEmitter

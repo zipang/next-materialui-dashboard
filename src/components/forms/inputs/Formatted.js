@@ -1,8 +1,8 @@
 import { createRef, useState, useEffect, useLayoutEffect } from "react";
 import { TextField } from "@material-ui/core";
-import { useFormValidationContext } from "../validation/FormValidationProvider";
-import { evalContextualProp } from "../validation/utils";
-import _BASE_INPUT_STYLES from "./styles";
+import { useFormValidationContext } from "../validation/FormValidationProvider.js";
+import { evalContextualProp } from "../validation/utils.js";
+import _BASE_INPUT_STYLES from "./styles.js";
 
 const noop = (val) => val;
 

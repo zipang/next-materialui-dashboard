@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import DataTable from "./DataTable";
+import DataTable from "./DataTable.js";
 import Skeleton from "@material-ui/lab/Skeleton";
-import AdherentsApiClient from "@lib/client/AdherentsApiClient";
+import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
 import { Box } from "@material-ui/core";
 
 export const columns = [

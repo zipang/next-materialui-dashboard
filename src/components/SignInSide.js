@@ -4,10 +4,10 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import LockOutlinedIcon from "@material-ui/icons/LockOutlined";
 import Typography from "@material-ui/core/Typography";
-import Link from "./Link";
-import Copyright from "./Copyright";
+import Link from "./Link.js";
+import Copyright from "./Copyright.js";
 import { makeStyles } from "@material-ui/core/styles";
-import LoginForm from "./forms/LoginForm";
+import LoginForm from "./forms/LoginForm.js";
 
 const useStyles = makeStyles((theme) => ({
 	twocolumns: {

@@ -1,8 +1,8 @@
-import suite from "baretest";
-import code from "@hapi/code";
+import suite from "baretest.js";
+import code from "@hapi/code.js";
 import { generatePdf } from "./HtmlToPdf.js";
-import path from "path";
-import fs from "fs-extra";
+import path from "path.js";
+import fs from "fs-extra.js";
 
 const dirname = new URL(import.meta.url).pathname;
 const { expect } = code;

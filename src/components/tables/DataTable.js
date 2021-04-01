@@ -8,9 +8,9 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import { getProperty } from "@lib/utils/NestedObjects";
+import { getProperty } from "@lib/utils/NestedObjects.js";
 import { Button, TableSortLabel } from "@material-ui/core";
-import Link from "@components/Link";
+import Link from "@components/Link.js";
 
 const useStyles = makeStyles({
 	root: {

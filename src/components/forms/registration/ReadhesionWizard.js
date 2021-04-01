@@ -1,11 +1,11 @@
-import { withStateMachine } from "@components/StateMachine";
-import Wizard from "@forms/wizard/Wizard";
-import WizardStateMachine from "@forms/wizard/WizardStateMachine";
+import { withStateMachine } from "@components/StateMachine.js";
+import Wizard from "@forms/wizard/Wizard.js";
+import WizardStateMachine from "@forms/wizard/WizardStateMachine.js";
 import {
 	welcomeStepsReAdhesion,
 	formSteps,
 	stepAdhesionPaymentChoice
-} from "./RegistrationSteps";
+} from "./RegistrationSteps.js";
 
 const steps = [...welcomeStepsReAdhesion, ...formSteps, ...stepAdhesionPaymentChoice];
 

@@ -1,4 +1,4 @@
-import { parse, dirname } from "path";
+import { parse, dirname } from "path.js";
 
 /**
  * Build a quick file filter based on accepted extensions

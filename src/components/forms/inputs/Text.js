@@ -1,9 +1,9 @@
 import React, { createRef, useEffect, useLayoutEffect } from "react";
 import { TextField } from "@material-ui/core";
-import { useFormValidationContext } from "../validation/FormValidationProvider";
-import { evalContextualProp } from "../validation/utils";
+import { useFormValidationContext } from "../validation/FormValidationProvider.js";
+import { evalContextualProp } from "../validation/utils.js";
 
-import _BASE_INPUT_STYLES from "./styles";
+import _BASE_INPUT_STYLES from "./styles.js";
 
 /**
  * @typedef TextInputProps

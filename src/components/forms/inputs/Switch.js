@@ -1,7 +1,7 @@
 import { createRef, useLayoutEffect, useState } from "react";
 import { Switch as MaterialSwitch, FormControlLabel } from "@material-ui/core";
-import { useFormValidationContext } from "../validation/FormValidationProvider";
-import _BASE_INPUT_STYLES from "./styles";
+import { useFormValidationContext } from "../validation/FormValidationProvider.js";
+import _BASE_INPUT_STYLES from "./styles.js";
 
 /**
  * @typedef SwitchProps

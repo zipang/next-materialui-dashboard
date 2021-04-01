@@ -1,7 +1,7 @@
 // Radio.stories.js
-import Radio from "./Radio";
-import { FormValidationProvider } from "@forms/validation/FormValidationProvider";
-import VForm from "@forms/validation/VForm";
+import Radio from "./Radio.js";
+import { FormValidationProvider } from "@forms/validation/FormValidationProvider.js";
+import VForm from "@forms/validation/VForm.js";
 
 const musicOptions = {
 	rock: "Rock",

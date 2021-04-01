@@ -1,5 +1,5 @@
-import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import ForgotPassword from "@components/ForgotPassword";
+import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
+import ForgotPassword from "@components/ForgotPassword.js";
 
 const ForgotPasswordPage = () => {
 	return (

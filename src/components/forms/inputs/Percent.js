@@ -1,5 +1,5 @@
-import Integer from "./Integer";
-import { isInteger, isBetween } from "../validation/utils";
+import Integer from "./Integer.js";
+import { isInteger, isBetween } from "../validation/utils.js";
 
 /**
  * @typedef PercentInputProps

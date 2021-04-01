@@ -1,11 +1,11 @@
-import CenteredPaperSheet from "@components/CenteredPaperSheet";
-import useFormStyles from "@components/forms/useFormStyles";
-import { sendMailTemplate } from "@lib/client/MailApiClient";
-import APIForm from "@components/forms/APIForm";
-import { SiretInput } from "@components/forms/registration/SiretSearch";
-import Text from "@components/forms/inputs/Text";
-import Email from "@components/forms/inputs/Email";
-import Submit from "@components/forms/inputs/Submit";
+import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
+import useFormStyles from "@components/forms/useFormStyles.js";
+import { sendMailTemplate } from "@lib/client/MailApiClient.js";
+import APIForm from "@components/forms/APIForm.js";
+import { SiretInput } from "@components/forms/registration/SiretSearch.js";
+import Text from "@components/forms/inputs/Text.js";
+import Email from "@components/forms/inputs/Email.js";
+import Submit from "@components/forms/inputs/Submit.js";
 import { merge } from "@lib/utils/deepMerge.js";
 import {
 	update,

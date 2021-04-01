@@ -1,5 +1,5 @@
-import APIClient from "./ApiClient";
-import ApiError from "@lib/ApiError";
+import APIClient from "./ApiClient.js";
+import ApiError from "@lib/ApiError.js";
 
 /**
  * Use a named template to build a message and send it by mail

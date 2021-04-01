@@ -1,10 +1,10 @@
-import Formatted from "./Formatted";
+import Formatted from "./Formatted.js";
 import {
 	getDigitsOnly,
 	formatIntegerWithUnit,
 	isInteger,
 	isBetween
-} from "../validation/utils";
+} from "../validation/utils.js";
 
 export const serializeInteger = (str) => {
 	const digits = getDigitsOnly(str);
