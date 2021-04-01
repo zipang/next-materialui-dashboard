@@ -59,7 +59,7 @@ export const Tabs = ({ tabsDefs = [], currentTab }) => (
 );
 
 /**
- *
+ * Displays the sync-ed tab content in edit-mode or read-only
  * @param {TabbedViewProps} props
  * @returns
  */
