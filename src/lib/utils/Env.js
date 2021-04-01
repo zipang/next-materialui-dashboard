@@ -12,7 +12,3 @@ export const loadEnv = () => {
 	// How can we know for sure the project root outside next..
 	Env.loadEnvConfig(baseDir);
 };
-
-export default {
-	loadEnv
-};
