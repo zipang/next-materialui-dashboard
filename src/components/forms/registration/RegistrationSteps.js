@@ -1087,9 +1087,12 @@ export const stepAdhesionPaymentChoice = [
 Votre processus d’adhésion est presque terminé.
 Vous pouvez revenir en arrière pour vérifier une dernière fois les informations saisies.
 
-En choisissant Paiement en ligne vous activerez immédiatement votre adhésion à notre service. 
+Choisissez l'une des options suivantes :
+* Règlement par chèque à l’ordre d’**INVIE**
+* Ou règlement par virement **IBAN FR76 1751 5006 0008 0019 2244 430**
 
-Pour le paiement par chèque veuillez imprimer votre appel de fond ci-dessous et glissez le dans l'enveloppe avec la référence de votre adhésion.
+Pour le paiement par chèque veuillez imprimer votre appel de fond ci-dessous 
+et glissez le dans l'enveloppe avec la référence de votre adhésion.
 [Télécharger votre appel de fond](/api/pdf/appel-de-fond/{{=siret}}.pdf)
 
 Cliquez maintenant sur Valider pour envoyer votre demande.`
@@ -1104,7 +1107,7 @@ Cliquez maintenant sur Valider pour envoyer votre demande.`
 						type: "radio",
 						size: 1,
 						options: {
-							en_ligne: "Paiement en ligne",
+							virement: "Par virement",
 							cheque: "Par chèque à l'ordre de INVIE"
 						}
 					}
@@ -1133,6 +1136,12 @@ Cliquez maintenant sur Valider pour envoyer votre demande.`
 							alert(
 								`Votre demande d'adhésion n° ${updatedAdhestion.no} a bien été enregistrée. 
 Elle sera active dès que votre chèque aura été réceptionné.`
+							);
+							router.push("/member");
+						} else if (updatedAdhestion.mode_paiement === "virement") {
+							alert(
+								`Votre demande d'adhésion n° ${updatedAdhestion.no} a bien été enregistrée. 
+Elle sera active dès que votre virement aura été réceptionné.`
 							);
 							router.push("/member");
 						} else if (updatedAdhestion.mode_paiement === "en_ligne") {
