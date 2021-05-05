@@ -60,24 +60,29 @@ const MarkdownTemplateLoader = (templateName, md, properties = {}) => {
 
 	// Each property in the front matter may be a dot template function too
 	const propertiesSource = Object.keys(properties).reduce((code, propertyName) => {
-		return (
-			code +
-			`
+		try {
+			return (
+				code +
+				`
 /**
  * Front matter ${propertyName}
  * @param {Object} data
  * @return {String}
  */
 export const ${propertyName} = ${rewriteDotTemplate(
-				dot.template(properties[propertyName], {
-					...defaultTemplateSettings,
-					strip: false
-				})
-			)}
+					dot.template(properties[propertyName], {
+						...defaultTemplateSettings,
+						strip: false
+					})
+				)}
 
 `
-		);
+			);
+		} catch (err) {
+			return code;
+		}
 	}, "");
+
 	const propertiesKeys = `,${Object.keys(properties).join(",\n\t")}`;
 
 	const templateSource = `
