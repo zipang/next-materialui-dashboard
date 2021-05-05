@@ -1,5 +1,5 @@
 import APIClient from "./ApiClient.js";
-import ApiError from "@lib/ApiError.js";
+import ApiError from "../ApiError.js";
 
 /**
  * Use a named template to build a message and send it by mail
@@ -36,6 +36,7 @@ export const sendMessage = async (message) => {
  */
 export const renderTemplate = async (name, data) => {
 	try {
+		console.log(`Rendering template '${name}' with data`, data);
 		return await APIClient.post(`/api/templates/${name}`, data);
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
