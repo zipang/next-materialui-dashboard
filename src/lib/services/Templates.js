@@ -31,7 +31,7 @@ export const render = async (templateName, data) => {
 
 			message.attachments = await Promise.all(
 				attachmentNames.map(async (name) => {
-					const attachmentTemplate = getTemplate(name);
+					const attachmentTemplate = await getTemplate(name);
 					const { filename, html } = attachmentTemplate(data);
 					// And last thing last : we must convert this html to a base64 encoded PDF string
 					return await generateFromHtml(filename, html, false);

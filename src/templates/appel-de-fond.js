@@ -39,7 +39,7 @@ export const text = function anonymous(data) {
 		getProperty(data, "adhesion.montant", "") +
 		"€**  \n\nFait aux Mureaux, le " +
 		getProperty(data, "date", "") +
-		", pour valoir ce que de droit.\n\n    **COUTEAU DELORD Stéphanie**  \n    **Responsable Administratif et Financier**\n\n";
+		', pour valoir ce que de droit.\n\n<div style="width: 50%; margin-left: 50%; font-weight: bold;">\nCOUTEAU DELORD Stéphanie  <br>\nResponsable Administratif et Financier\n</div>\n\n';
 	return out.replace(/(<([^>]+)>)/gi, "");
 };
 
@@ -62,7 +62,7 @@ export const html = function anonymous(data) {
 		getProperty(data, "adhesion.montant", "") +
 		"€</strong></p><p>Fait aux Mureaux, le " +
 		getProperty(data, "date", "") +
-		", pour valoir ce que de droit.</p><pre><code>**COUTEAU DELORD Stéphanie** **Responsable Administratif et Financier**</code></pre>";
+		', pour valoir ce que de droit.</p><div style="width: 50%; margin-left: 50%; font-weight: bold;">COUTEAU DELORD Stéphanie  <br>Responsable Administratif et Financier</div>';
 	return out;
 };
 
