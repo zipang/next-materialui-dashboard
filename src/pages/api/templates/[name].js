@@ -1,5 +1,9 @@
 import { render } from "@lib/services/Templates.js";
 
+const loadEnv = (data) => {
+	data.env = process.env;
+};
+
 /**
  * The API entry point (POST) to render a given template
  * Pass the data into the JSON body
