@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import path, { dirname } from "path.js";
-import { fileURLToPath } from "url.js";
-import tk from "terminal-kit.js";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
+import tk from "terminal-kit";
 import FileWalker from "../lib/utils/FileWalker.js";
 
 // REBUILD THE COMMON JS ENV VARIABLES

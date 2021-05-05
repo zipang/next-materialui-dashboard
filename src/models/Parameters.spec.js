@@ -1,6 +1,6 @@
 import suite from "baretest";
 import { getParseInstance } from "./ParseSDK.js";
-import { Parameters } from "@models/Parameters.js";
+import { Parameters } from "./Parameters.js";
 import code from "@hapi/code";
 
 const { expect } = code;
@@ -17,7 +17,7 @@ ParametersTestSuite("Get the next adhesion number", async () => {
 	const currentYear = new Date().getFullYear().toString();
 	const params = await Parameters.retrieve();
 
-	const no = params.no_adhesion;
+	const no = params.get("no_adhesion");
 	expect(no).to.be.a.string();
 
 	// Split adhesion number

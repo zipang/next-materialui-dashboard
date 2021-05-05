@@ -3,7 +3,7 @@ import code from "@hapi/code";
 import {
 	ValidationError,
 	validateField,
-	ValidationContext
+	default as ValidationContext
 } from "./ValidationContext.js";
 const { expect } = code;
 
@@ -77,7 +77,7 @@ ValidationContextTestSuite("validateField", () => {
  * Test a ValidationContext with empty initial values
  */
 ValidationContextTestSuite("validateField with interdependant validation rules", () => {
-	const { register, setData, validate } = ValidationContext({
+	const { register, setData, validate } = new ValidationContext({
 		data: janeDoe
 	});
 
@@ -114,7 +114,7 @@ ValidationContextTestSuite("validateField with interdependant validation rules",
  * Test a ValidationContext with empty initial values
  */
 ValidationContextTestSuite("ValidationContext", () => {
-	const { register, setData, validate } = ValidationContext();
+	const { register, setData, validate } = new ValidationContext();
 
 	register("firstName", { required: "firstName is required" });
 	register("lastName", { required: true });

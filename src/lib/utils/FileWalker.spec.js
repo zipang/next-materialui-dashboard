@@ -3,7 +3,7 @@ import code from "@hapi/code";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import FileWalker from "./FileWalker.js";
-import { EventEmitter } from "events.js";
+import { EventEmitter } from "events";
 
 const { expect } = code;
 const FileWalkerTestSuite = suite("FileWalker");

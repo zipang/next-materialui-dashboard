@@ -3,8 +3,8 @@ import code from "@hapi/code";
 import { generatePdf } from "./HtmlToPdf.js";
 import path from "path";
 import fs from "fs-extra";
+import __dirname from "../../../dirname.js";
 
-const dirname = new URL(import.meta.url).pathname;
 const { expect } = code;
 const HtmlToPdfTestSuite = suite("HtmlToPdf Test Suite");
 
@@ -13,7 +13,7 @@ const dummyHTML = `
 <code>Generated at ${new Date().toISOString()} with Puppeteer</code>
 <img src="https://miro.medium.com/max/580/0*jCOWhOlQgZmFy_e6.png" />
 `;
-const testFilePath = path.join(dirname, "src/lib/services", "hello-world.pdf");
+const testFilePath = path.join(__dirname, "src/lib/services", "hello-world.pdf");
 
 const returnABuffer = async () => {
 	return await generatePdf(dummyHTML);

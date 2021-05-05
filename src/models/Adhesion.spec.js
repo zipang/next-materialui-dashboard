@@ -6,7 +6,6 @@ import code from "@hapi/code";
 const { expect } = code;
 
 import testAdherent from "./adherent-test.js";
-import testUser from "./test-user.js";
 
 let Parse;
 
@@ -18,7 +17,7 @@ AdhesionTestSuite.before(() => {
 });
 
 AdhesionTestSuite("Create a new Adhesion", async () => {
-	const adh = await createAdhesion(testUser, testAdherent.siret, {
+	const adh = await createAdhesion(testAdherent.siret, {
 		mode_paiement: "cheque"
 	});
 
