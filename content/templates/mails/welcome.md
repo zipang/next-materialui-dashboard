@@ -1,14 +1,27 @@
 ---
-subject: L'enregistrement de {{=data.nom}} a bien été reçu
+subject: Votre renouvellement d'adhésion INVIE ({{=data.nom}})
 to: '"{{=data.representant.prenom}} {{=data.representant.nom}}" <{{=data.representant.email}}>'
 bcc: zipang <christophe.desguez@gmail.com>
 attachments: attestation
 ---
 <img src="https://invie78.fr/images/logo.jpg" alt="logo" />
 
-Paris, le {{=(new Date).toISOString().substr(0,10)}}
+Les Mureaux, le {{=(new Date).toISOString().substr(0,10)}}
 
-Bonjour **{{=data.representant.prenom}} {{=data.representant.nom}}**,
+Bonjour,
 
-L'enregistrement de votre société **{{=data.nom}}** a bien été pris en compte en date du {{=data.date_creation}}.
+Vous venez de valider votre adhésion en ligne.
 
+Nous vous remercions pour votre confiance.
+
+Afin de finaliser votre adhésion, le règlement (d’un montant de 200€) peut se réaliser par :
+
+    * Chèque à l’ordre d’INVIE
+    * Virement bancaire via l’IBAN FR76 1751 5006 0008 0019 2244 430
+
+ 
+Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail contact@invie78.fr
+
+Cordialement,
+
+L’équipe d’INVIE

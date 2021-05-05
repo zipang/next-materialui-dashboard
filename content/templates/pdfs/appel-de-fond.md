@@ -13,6 +13,8 @@ au titre de l'année {{=data.year}} requiert le réglement d'un montant de : **{
 
 Fait aux Mureaux, le {{=data.date}}, pour valoir ce que de droit.
 
-    **COUTEAU DELORD Stéphanie**  
-    **Responsable Administratif et Financier**
+<div style="width: 50%; margin-left: 50%; font-weight: bold;">
+COUTEAU DELORD Stéphanie  <br>
+Responsable Administratif et Financier
+</div>
 

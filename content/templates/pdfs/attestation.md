@@ -16,6 +16,8 @@ La somme de : **{{=data.adhesion.montant}}**
 
 Fait aux Mureaux, le {{=(new Date).toISOString().substr(0,10)}}, pour valoir ce que de droit.
 
-    **COUTEAU DELORD Stéphanie**  
-    **Responsable Administratif et Financier**
+<div style="width: 50%; margin-left: 50%; font-weight: bold;">
+COUTEAU DELORD Stéphanie<br>  
+Responsable Administratif et Financier
+</div>
 
