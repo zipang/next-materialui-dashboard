@@ -1,7 +1,7 @@
-import suite from "baretest.js";
+import suite from "baretest";
 import { getParseInstance } from "./ParseSDK.js";
 import { logIn } from "./User.js";
-import code from "@hapi/code.js";
+import code from "@hapi/code";
 
 const { expect } = code;
 

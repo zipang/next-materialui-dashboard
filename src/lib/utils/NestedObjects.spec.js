@@ -1,6 +1,6 @@
-import suite from "baretest.js";
+import suite from "baretest";
 import { splitPath, getProperty, setProperty } from "./NestedObjects.js";
-import code from "@hapi/code.js";
+import code from "@hapi/code";
 
 const { expect } = code;
 

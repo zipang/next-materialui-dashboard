@@ -1,9 +1,9 @@
-import micromark from "micromark.js";
+import micromark from "micromark";
 import combine from "micromark/dist/util/combine-extensions.js";
 import combineHtml from "micromark/dist/util/combine-html-extensions.js";
-import gfmTables from "micromark-extension-gfm-table.js";
+import gfmTables from "micromark-extension-gfm-table";
 import gfmTablesHtml from "micromark-extension-gfm-table/html.js";
-import gfmAutoLinks from "micromark-extension-gfm-autolink-literal.js";
+import gfmAutoLinks from "micromark-extension-gfm-autolink-literal";
 import gfmAutoLinksHtml from "micromark-extension-gfm-autolink-literal/html.js";
 
 const _DEFAULT_OPTIONS = {

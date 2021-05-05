@@ -1,5 +1,5 @@
-import suite from "baretest.js";
-import code from "@hapi/code.js";
+import suite from "baretest";
+import code from "@hapi/code";
 import { render } from "./Templates.js";
 import { loadEnv } from "../utils/Env.js";
 
