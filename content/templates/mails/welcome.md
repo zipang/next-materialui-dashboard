@@ -1,5 +1,5 @@
 ---
-subject: Votre renouvellement d'adhésion INVIE ({{=data.nom}})
+subject: Votre adhésion INVIE ({{=data.nom}})
 to: '"{{=data.representant.prenom}} {{=data.representant.nom}}" <{{=data.representant.email}}>'
 bcc: zipang <christophe.desguez@gmail.com>
 attachments: attestation
@@ -8,9 +8,11 @@ attachments: attestation
 
 Les Mureaux, le {{=(new Date).toISOString().substr(0,10)}}
 
+Vos références : {{=data.no}} - {{=data.nom}}
+
 Bonjour,
 
-Vous venez de valider votre adhésion en ligne.
+Vous venez de valider votre demande d'adhésion en ligne.
 
 Nous vous remercions pour votre confiance.
 

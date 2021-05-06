@@ -1,6 +1,6 @@
 ---
 subject: Nouvelle adhésion ({{=data.nom}})
-to: {{=data.env.MAIL_CONTACT}}
+to: '{{=data.env.MAIL_CONTACT}}'
 bcc: zipang <christophe.desguez@gmail.com>
 ---
 {{=data.nom}} vient d'adhérer/renouveler son adhésion.

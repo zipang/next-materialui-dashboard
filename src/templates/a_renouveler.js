@@ -35,9 +35,9 @@ export const text = function anonymous(data) {
 		getProperty(data, "no", "") +
 		"**\n\nBonjour,\n\nVotre adhésion à INVIE va bientôt arriver à expiration à sa date anniversaire le " +
 		getProperty(data, "date_fin", "") +
-		'.\n\nAfin de renouveler votre adhésion, veuillez vous re-connecter dans <a href="' +
+		'.\n\nAfin de procéder à son renouvellement, merci de vous connecter dans <a href="' +
 		getProperty(data, "env.NEXT_PUBLIC_SITE_URL", "") +
-		"\">votre espace adhérent</a> et revalider le formulaire d'informations/ré-abonnement.\n \nPour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail contact@invie78.fr\n\nNous vous remercions pour votre confiance.\n\nCordialement,\n\nL’équipe d’INVIE\n";
+		"\">votre espace adhérent</a> et de revalider votre formulaire d'informations.\n \nPour toute question complémentaire ou demande de rdv, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail contact@invie78.fr\n\nNous vous remercions pour votre confiance.\n\nCordialement,\n\nL’équipe d’INVIE\n";
 	return out.replace(/(<([^>]+)>)/gi, "");
 };
 
@@ -56,9 +56,9 @@ export const html = function anonymous(data) {
 		getProperty(data, "no", "") +
 		"</strong></p><p>Bonjour,</p><p>Votre adhésion à INVIE va bientôt arriver à expiration à sa date anniversaire le " +
 		getProperty(data, "date_fin", "") +
-		'.</p><p>Afin de renouveler votre adhésion, veuillez vous re-connecter dans <a href="' +
+		'.</p><p>Afin de procéder à son renouvellement, merci de vous connecter dans <a href="' +
 		getProperty(data, "env.NEXT_PUBLIC_SITE_URL", "") +
-		'">votre espace adhérent</a> et revalider le formulaire d\'informations/ré-abonnement.</p><p>Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail <a href="mailto:contact@invie78.fr">contact@invie78.fr</a></p><p>Nous vous remercions pour votre confiance.</p><p>Cordialement,</p><p>L’équipe d’INVIE</p>';
+		'">votre espace adhérent</a> et de revalider votre formulaire d\'informations.</p><p>Pour toute question complémentaire ou demande de rdv, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail <a href="mailto:contact@invie78.fr">contact@invie78.fr</a></p><p>Nous vous remercions pour votre confiance.</p><p>Cordialement,</p><p>L’équipe d’INVIE</p>';
 	return out;
 };
 

@@ -4,7 +4,7 @@ import path, { dirname } from "path";
 import { fileURLToPath } from "url";
 import { getTemplate } from "./index.js";
 import testAdherent from "../models/adherent-test.js";
-import testAdhesion from "../models/adhesion-test.js";
+import adhesions_report from "./adhesions-report-test.js";
 import { loadEnv } from "../lib/utils/Env.js";
 
 const { expect } = code;
@@ -20,11 +20,22 @@ loadEnv("test");
  * Check the API
  */
 TemplateSuite("Load a template by name", async () => {
-	const adhesionTemplate = await getTemplate("adhesion");
+	const render = await getTemplate("adhesion");
+	expect(render).to.be.a.function();
 
-	expect(adhesionTemplate).to.be.a.function();
+	const mailTemplate = render(testAdherent);
+});
 
-	const mailTemplate = adhesionTemplate(testAdherent);
+TemplateSuite("Render the 'adhesions_report' template with some test data", async () => {
+	const render = await getTemplate("adhesions_report");
+	expect(render).to.be.a.function();
+
+	const rendered = render(adhesions_report);
+	console.log("adhesions_report", rendered);
+	expect(rendered).to.be.an.object();
+	expect(rendered.to).to.be.a.string();
+	expect(rendered.subject).to.be.a.string();
+	expect(rendered.html).to.be.a.string();
 });
 
 export default TemplateSuite;

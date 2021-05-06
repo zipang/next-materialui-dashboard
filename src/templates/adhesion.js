@@ -114,7 +114,7 @@ export const subject = function anonymous(data) {
  * @return {String}
  */
 export const to = function anonymous(data) {
-	var out = "[object Object]";
+	var out = "" + getProperty(data, "env.MAIL_CONTACT", "");
 	return out;
 };
 
