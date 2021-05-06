@@ -128,7 +128,7 @@ export const toRenew = async () => {
 				data.today = frenchDate(today);
 				data.date_fin = frenchDate(data.date_fin);
 				data.adherent = adherent.toJSON();
-				// await sendMailTemplate("a_renouveler", data);
+				await sendMailTemplate("a_renouveler", data);
 			};
 
 			if (date_fin < isoDate(today)) {
