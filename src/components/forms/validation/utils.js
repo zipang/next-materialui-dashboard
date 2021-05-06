@@ -214,14 +214,18 @@ export const serializeDate = (format = "dd/mm/yyyy") => (formattedDate = "") => 
 };
 
 /**
- * Take an ISO date (eg. '2000-12-31')
+ * Take a Date object or an ISO date string (eg. '2000-12-31')
  * and return it in the appropriate format
  * where 'dd' 'mm' 'yyyy' represent the position of 'day' 'month' and 'year' digits
  * @param {String} dateFormat desired output format
  * @return {Function} formatter function
  */
-export const formatISODate = (dateFormat = "dd/mm/yyyy") => (str = "") => {
+export const formatDate = (dateFormat = "dd/mm/yyyy") => (str = "") => {
 	if (!str) return "";
+
+	if (str.toISOString) {
+		str = str.toISOString().substr(0, 10);
+	}
 
 	const [year, month, day] = str.split("-");
 	const formatted = dateFormat
@@ -231,6 +235,10 @@ export const formatISODate = (dateFormat = "dd/mm/yyyy") => (str = "") => {
 	console.log(`Formatting ${str} to ${formatted}`);
 	return formatted;
 };
+
+export const frenchDate = formatDate("dd/mm/yyyy");
+export const usDate = formatDate("mm-dd-yyyy");
+export const isoDate = formatDate("yyyy-mm-dd");
 
 /**
  * Validate that an integer is between 0 and 100 (strict percentage)

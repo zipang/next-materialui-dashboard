@@ -1,10 +1,5 @@
 import Formatted from "./Formatted.js";
-import {
-	isDate,
-	applyDateMask,
-	serializeDate,
-	formatISODate
-} from "../validation/utils.js";
+import { isDate, applyDateMask, serializeDate, formatDate } from "../validation/utils.js";
 
 /**
  * @typedef DateInputProps extends FormattedInputProps
@@ -40,7 +35,7 @@ const Date = ({
 			required={required}
 			format={applyDateMask(format)}
 			serialize={serializeDate(format)}
-			load={formatISODate(format)}
+			load={formatDate(format)}
 			defaultValue={defaultValue}
 			validation={validation}
 			inputType="tel"

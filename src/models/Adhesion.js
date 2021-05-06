@@ -4,10 +4,7 @@ import { getNextAdhesionNumber, updateAdhesionNumber } from "./Parameters.js";
 import { retrieveBySiret } from "./Adherent.js";
 import ApiError from "../lib/ApiError.js";
 import { sendMailTemplate } from "../lib/client/MailApiClient.js";
-import { formatISODate } from "../components/forms/validation/utils.js";
-
-const formatDate = (d) => d.toISOString().substr(0, 10); // YYYY-MM-DD
-const frenchDate = formatISODate("dd/mm/yyyy");
+import { frenchDate, isoDate } from "../components/forms/validation/utils.js";
 
 // Extract these fields only when requesting a list
 const _DEFAULT_FIELD_LIST = [
@@ -111,7 +108,7 @@ export const toRenew = async () => {
 	const query = new Parse.Query("Adhesion");
 	query.include("questioning");
 	query.select(["no", "nom", "statut", "date_fin", "adherent.representant"]);
-	query.lessThanOrEqualTo("date_fin", formatDate(inAMonth));
+	query.lessThanOrEqualTo("date_fin", isoDate(inAMonth));
 	query.notEqualTo("statut", "closed"); // do not loop over already expired adhesions
 
 	const closingAdhesions = await query.findAll();
@@ -125,21 +122,16 @@ export const toRenew = async () => {
 			const statut = adhesion.get("statut");
 			const date_fin = adhesion.get("date_fin");
 			const adherent = adhesion.get("adherent");
-			console.log(
-				`Adhesion ${adhesion.get(
-					"no"
-				)} will expire at ${date_fin} when today is ${formatDate(today)}`
-			);
 
 			const sendReminderEmail = async () => {
 				const data = adhesion.toJSON();
-				data.today = frenchDate(formatDate(today));
+				data.today = frenchDate(today);
 				data.date_fin = frenchDate(data.date_fin);
 				data.adherent = adherent.toJSON();
-				await sendMailTemplate("a_renouveler", data);
+				// await sendMailTemplate("a_renouveler", data);
 			};
 
-			if (date_fin < formatDate(today)) {
+			if (date_fin < isoDate(today)) {
 				// This time it's over
 				adhesion.set("statut", "closed");
 				adherent.set("statut", "inactif");
@@ -157,9 +149,15 @@ export const toRenew = async () => {
 					`${adhesion.get("no")} - ${adhesion.get("nom")}`
 				);
 			}
+
 			return true; //
 		})
 	);
+	if (report.a_renouveler.length + report.a_renouveler.length > 0) {
+		// Send another report
+		report.today = frenchDate(today);
+		sendMailTemplate("adhesions_report", report);
+	}
 	return report;
 };
 
