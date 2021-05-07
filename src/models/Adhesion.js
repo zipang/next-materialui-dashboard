@@ -135,22 +135,22 @@ export const toRenew = async () => {
 				// This time it's over
 				adhesion.set("statut", "closed");
 				adherent.set("statut", "inactif");
-				await Promise.all([adherent.save(), adhesion.save()]);
-				// Do it again
-				sendReminderEmail();
 				report.closed.push(`${adhesion.get("no")} - ${adhesion.get("nom")}`);
+				return Promise.all([
+					adherent.save(),
+					adhesion.save(),
+					sendReminderEmail()
+				]);
 			} else if (statut === "active") {
 				// Mark the adhesion
 				adhesion.set("statut", "a_renouveler");
-				await adhesion.save();
-				// Send the reminder email
-				sendReminderEmail();
 				report.a_renouveler.push(
 					`${adhesion.get("no")} - ${adhesion.get("nom")}`
 				);
+				return Promise.all([adhesion.save(), sendReminderEmail()]);
+			} else {
+				return true; // nothign to do
 			}
-
-			return true; //
 		})
 	);
 	if (report.a_renouveler.length + report.a_renouveler.length > 0) {
