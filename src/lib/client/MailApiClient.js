@@ -1,15 +1,16 @@
 import APIClient from "./ApiClient.js";
 import ApiError from "../ApiError.js";
+import { delay } from "@lib/utils/Promises.js";
 
 /**
  * Use a named template to build a message and send it by mail
  * @param {String} name
  * @param {Object} data
  */
-export const sendMailTemplate = async (name, data) => {
+export const sendMailTemplate = async (name, data, ms = 0) => {
 	try {
 		const { content } = await renderTemplate(name, data);
-		return await sendMessage(content);
+		return await delay(ms, () => sendMessage(content));
 	} catch (err) {
 		throw new ApiError(err.code || 500, err.message);
 	}
