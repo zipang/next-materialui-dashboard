@@ -64,7 +64,7 @@ const useWizardStyles = (customStyles = {}) =>
  * @property {String} id! required a unique id to identify this wizard (and allow sending messages)
  * @property {Step[]} steps the array of steps that will be executed in sequence
  * @property {Object} data the initial data to render
- * @property {Number} [initialSteps=0] the current slide to render
+ * @property {Number|String} [initialStep=0] the current slide to render (index or id)
  */
 
 const WizardContainer = ({ children }) => (
