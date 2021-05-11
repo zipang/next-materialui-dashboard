@@ -7,7 +7,7 @@ import { sendMailTemplate } from "../lib/client/MailApiClient.js";
 import { frenchDate, isoDate } from "../components/forms/validation/utils.js";
 
 // Extract these fields only when requesting a list
-const _DEFAULT_FIELD_LIST = [
+const _DEFAULT_FIELDS_LIST = [
 	"no",
 	"siret",
 	"nom",
@@ -71,14 +71,16 @@ export const create = async (siret, data = {}) => {
  * @param {Array<String>} fields An array of field names to include
  * @return {Array<Object>} These will not be Parse.Object
  */
-export const retrieve = async (params = {}, fields = _DEFAULT_FIELD_LIST) => {
+export const retrieve = async (params = {}, fields = _DEFAULT_FIELDS_LIST) => {
 	try {
 		const Parse = getParseInstance();
 		const query = new Parse.Query("Adhesion");
 		query.select(fields);
 		Parse.addQueryParameters(query, params);
 		const adhesions = await query.findAll();
-		return adhesions.map((adh) => adh.toJSON());
+		return adhesions
+			.map((adh) => adh.toJSON())
+			.sort((a, b) => (a.no > b.no ? -1 : 1)); // sort by descending adhesion number (most recents first)
 	} catch (err) {
 		console.error(err);
 		throw new ApiError(err.code || 500, `Failed loading adhesions : ${err.message}`);
