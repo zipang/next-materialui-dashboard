@@ -103,6 +103,11 @@ export const toRenew = async () => {
 	const inAMonth = new Date();
 	inAMonth.setMonth(today.getMonth() + 1);
 
+	const report = {
+		a_renouveler: [],
+		closed: []
+	};
+
 	// Look for all the adhesions that will expire in a month
 	const Parse = await getParseInstance();
 	const query = new Parse.Query("Adhesion");
@@ -112,10 +117,6 @@ export const toRenew = async () => {
 	query.notEqualTo("statut", "closed"); // do not loop over already expired adhesions
 
 	const closingAdhesions = await query.findAll();
-	const report = {
-		a_renouveler: [],
-		closed: []
-	};
 
 	await Promise.all(
 		closingAdhesions.map(async (adhesion, i) => {
@@ -153,6 +154,7 @@ export const toRenew = async () => {
 			}
 		})
 	);
+
 	if (report.a_renouveler.length + report.a_renouveler.length > 0) {
 		// Send another report
 		report.today = frenchDate(today);
@@ -174,6 +176,7 @@ export const confirmPayment = async (no, data = {}) => {
 		// Check the date to which this adhesion should be active
 		const currentDate = new Date().toISOString().substr(0, 10);
 		const date_debut = adhesion.get("date_debut");
+
 		if (!date_debut || currentDate > date_debut) {
 			adhesion.set("date_debut", currentDate);
 			const [year, month, day] = currentDate.split("-");
