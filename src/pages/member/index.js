@@ -15,13 +15,20 @@ const MemberPage = ({ user }) => {
 		try {
 			if (!adhesions) {
 				const { rows } = await UsersApiClient.getAdhesions(user);
-				if (rows.length) {
+				if (rows.length === 0) {
+					// Nothing yet : open the registration form
+					router.push("/member/registration");
+				} else if (
+					rows[0].statut === "a_renouveler" ||
+					rows[0].statut === "closed"
+				) {
+					// The latest adhesion is not valid anymore
+					router.push(`/member/${rows[0].siret}/re-adhesion`);
+				} else {
 					console.log(
 						`Loaded ${rows.length} adhesions for user ${user.username}`
 					);
 					setAdhesions(rows);
-				} else {
-					router.push("/member/registration");
 				}
 			}
 		} catch (err) {
