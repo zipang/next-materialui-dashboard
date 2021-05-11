@@ -1,6 +1,6 @@
-import { withStateMachine } from "@components/StateMachine.js";
 import Wizard from "@forms/wizard/Wizard.js";
-import WizardStateMachine from "@forms/wizard/WizardStateMachine.js";
+import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
+import { useEffect } from "react";
 import {
 	welcomeStepsReAdhesion,
 	formSteps,
@@ -9,7 +9,8 @@ import {
 
 const steps = [...welcomeStepsReAdhesion, ...formSteps, ...stepAdhesionPaymentChoice];
 
-const ReadhesionWizard = ({ data }) =>
-	withStateMachine(Wizard, WizardStateMachine("readhesion-wizards", steps, data));
+const ReadhesionWizard = ({ data }) => (
+	<Wizard id="re-adhesion" data={data} steps={steps} initialStep={data.statut} />
+);
 
 export default ReadhesionWizard;
