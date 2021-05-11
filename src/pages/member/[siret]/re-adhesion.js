@@ -1,13 +1,10 @@
 import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
 import { Box } from "@material-ui/core";
 import { useEffect, useState } from "react";
-import UserDashboard from "../index.js";
-import { useEventBus, withEventBus } from "@components/EventBusProvider.js";
+import { withEventBus } from "@components/EventBusProvider.js";
 import ReadhesionWizard from "@components/forms/registration/ReadhesionWizard.js";
-import {
-	useAuthentication,
-	withAuthentication
-} from "@components/AuthenticationProvider.js";
+import { withAuthentication } from "@components/AuthenticationProvider.js";
+import CenteredPaperSheet from "@components/CenteredPaperSheet.js";
 
 /**
  * @see https://nextjs.org/docs/basic-features/data-fetching#getserversideprops-server-side-rendering
@@ -22,7 +19,7 @@ export const getServerSideProps = async (context) => {
 
 const LoadReAdhesion = ({ data, error }) => {
 	if (error) return <Box>{error}</Box>;
-	if (adherent) return <ReadhesionWizard data={data} />;
+	if (data) return <ReadhesionWizard data={data} />;
 	return null;
 };
 
@@ -31,8 +28,6 @@ const LoadReAdhesion = ({ data, error }) => {
  * to organize the data
  */
 const PageReAdhesion = ({ siret }) => {
-	const eb = useEventBus();
-	const [currentTab, setCurrentTab] = useState(0);
 	const [adherent, setAdherent] = useState();
 	const [error, setError] = useState(false);
 
@@ -45,7 +40,11 @@ const PageReAdhesion = ({ siret }) => {
 		}
 	}, [false]);
 
-	return <LoadReAdhesion data={adherent} error={error} />;
+	return (
+		<CenteredPaperSheet xs={10} md={8}>
+			<LoadReAdhesion data={adherent} error={error} />
+		</CenteredPaperSheet>
+	);
 };
 
 export default withAuthentication(withEventBus(PageReAdhesion), {
