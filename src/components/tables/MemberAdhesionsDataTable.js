@@ -42,7 +42,7 @@ export const defineColumns = (eb) => [
 		minWidth: 80,
 		format: (code) => MODE_PAIEMENTS[code],
 		button: (adhesion) => {
-			if (adhesion.statut === "a_renouveler") {
+			if (adhesion.statut === "a_renouveler" || adhesion.statut === "closed") {
 				return {
 					label: "Renouveler Adhésion",
 					action: () => eb.send(`adhesion:renew`, adhesion.siret)
