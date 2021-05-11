@@ -19,7 +19,9 @@ const MODE_PAIEMENTS = {
 };
 const STATUTS = {
 	active: "Active",
-	en_attente: "En Attente"
+	en_attente: "En Attente",
+	a_renouveler: "A Renouveler",
+	closed: "Expirée"
 };
 
 export const defineColumns = (eb) => [
@@ -34,13 +36,7 @@ export const defineColumns = (eb) => [
 		id: "statut",
 		label: "Statut",
 		minWidth: 200,
-		format: (code) => STATUTS[code]
-	},
-	{
-		id: "mode_paiement",
-		label: "Mode Paiement",
-		minWidth: 80,
-		format: (code) => MODE_PAIEMENTS[code],
+		format: (code) => STATUTS[code],
 		button: (adhesion) => {
 			if (adhesion.statut === "a_renouveler" || adhesion.statut === "closed") {
 				return {
@@ -49,6 +45,12 @@ export const defineColumns = (eb) => [
 				};
 			}
 		}
+	},
+	{
+		id: "mode_paiement",
+		label: "Mode Paiement",
+		minWidth: 80,
+		format: (code) => MODE_PAIEMENTS[code]
 	},
 	{ id: "date_debut", label: "Date début", minWidth: 100, format: displayDate },
 	{ id: "date_fin", label: "Date fin", minWidth: 100, format: displayDate }
