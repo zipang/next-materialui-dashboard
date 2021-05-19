@@ -31,7 +31,7 @@ export const columns = [
 		minWidth: 80,
 		format: (code) => MODE_PAIEMENTS[code],
 		button: (adhesion) => {
-			if (adhesion.mode_paiement === "cheque" && adhesion.statut === "en_attente") {
+			if (adhesion.statut === "en_attente") {
 				return {
 					label: "Confirmer Paiement",
 					action: async () => {
