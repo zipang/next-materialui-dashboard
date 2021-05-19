@@ -37,7 +37,7 @@ export const columns = [
 					action: async () => {
 						if (
 							confirm(
-								`Confirmez-vous la réception du chèque pour l'adhésion ${adhesion.no} (${adhesion.nom})`
+								`Confirmez-vous la réception du paiement pour l'adhésion ${adhesion.no} (${adhesion.nom})`
 							)
 						) {
 							const paymentData = {
