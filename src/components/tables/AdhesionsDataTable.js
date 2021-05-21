@@ -14,6 +14,7 @@ const displayDate = (isoDate) => {
  */
 const MODE_PAIEMENTS = {
 	cheque: "Par Chèque",
+	virement: "Par Virement",
 	en_ligne: "En Ligne"
 };
 
