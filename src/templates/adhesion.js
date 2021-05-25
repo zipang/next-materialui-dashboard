@@ -47,11 +47,11 @@ export const text = function anonymous(data) {
 		getProperty(data, "representant.prenom", "") +
 		" " +
 		getProperty(data, "representant.nom", "") +
-		".\nEmail: " +
+		".  \nEmail: " +
 		getProperty(data, "representant.email", "") +
-		"\nN° Mobile: " +
+		"  \nN° Mobile: " +
 		getProperty(data, "representant.mobile", "") +
-		"\n\n";
+		"  \n\n";
 	if (getProperty(data, "demande_contact_adherent", "")) {
 		out += "\n**La structure a souhaité être recontactée**\n";
 	}
@@ -86,9 +86,9 @@ export const html = function anonymous(data) {
 		getProperty(data, "representant.prenom", "") +
 		" " +
 		getProperty(data, "representant.nom", "") +
-		".Email: " +
+		".<br />Email: " +
 		getProperty(data, "representant.email", "") +
-		"N° Mobile: " +
+		"<br />N° Mobile: " +
 		getProperty(data, "representant.mobile", "") +
 		"</p><p>";
 	if (getProperty(data, "demande_contact_adherent", "")) {

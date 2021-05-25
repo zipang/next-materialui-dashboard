@@ -15,9 +15,9 @@ Ses coordonnées :
 Standard: {{=data.contact.telephone}}  
 Email: {{=data.contact.email}}
 
-Représentant {{=data.representant.prenom}} {{=data.representant.nom}}.
-Email: {{=data.representant.email}}
-N° Mobile: {{=data.representant.mobile}}
+Représentant {{=data.representant.prenom}} {{=data.representant.nom}}.  
+Email: {{=data.representant.email}}  
+N° Mobile: {{=data.representant.mobile}}  
 
 {{? data.demande_contact_adherent }}
 **La structure a souhaité être recontactée**
