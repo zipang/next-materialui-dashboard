@@ -34,6 +34,3 @@ PARSE_APP_ID=xxxxx
 PARSE_JS_KEY=xxxxx
 ```
 
-## Troubleshooting
-
-### `Warning: Prop className did not match.`
