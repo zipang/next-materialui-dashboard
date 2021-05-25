@@ -1130,27 +1130,27 @@ Cliquez maintenant sur Valider pour envoyer votre demande.`
 						sendMailTemplate("adhesion", adherent);
 
 						// Now if the payment option is online, redirect to the payment site
-						const updatedAdhestion = resp.adhesion;
+						const updatedAdhesion = resp.adhesion;
 
-						if (updatedAdhestion.mode_paiement === "cheque") {
+						if (updatedAdhesion.mode_paiement === "cheque") {
 							alert(
-								`Votre demande d'adhésion n° ${updatedAdhestion.no} a bien été enregistrée. 
+								`Votre demande d'adhésion n° ${updatedAdhesion.no} a bien été enregistrée. 
 Elle sera active dès que votre chèque aura été réceptionné.`
 							);
 							router.push("/member");
-						} else if (updatedAdhestion.mode_paiement === "virement") {
+						} else if (updatedAdhesion.mode_paiement === "virement") {
 							alert(
-								`Votre demande d'adhésion n° ${updatedAdhestion.no} a bien été enregistrée. 
+								`Votre demande d'adhésion n° ${updatedAdhesion.no} a bien été enregistrée. 
 Elle sera active dès que votre virement aura été réceptionné.`
 							);
 							router.push("/member");
-						} else if (updatedAdhestion.mode_paiement === "en_ligne") {
+						} else if (updatedAdhesion.mode_paiement === "en_ligne") {
 							// Obtenir l'URL du paiement Mollie
 							const payment = await APIClient.post(
-								`/api/adhesion/${updatedAdhestion.no}/create-payment`,
+								`/api/adhesion/${updatedAdhesion.no}/create-payment`,
 								{
 									montant: 200,
-									description: `Adhésion INVIE #${updatedAdhestion.no} - ${adherent.nom}`
+									description: `Adhésion INVIE #${updatedAdhesion.no} - ${adherent.nom}`
 								}
 							);
 							alert(
@@ -1158,6 +1158,9 @@ Elle sera active dès que votre virement aura été réceptionné.`
 							);
 							router.push(payment.redirectTo);
 						}
+						// Send the welcome email to the adherent
+						adherent.adhesion = updatedAdhesion;
+						sendMailTemplate("welcome", adherent);
 					} catch (err) {
 						alert(err.message);
 					}
