@@ -95,6 +95,11 @@ export const get = (APIClient.get = async (apiEntryPoint, apiParams) => {
 			method: "GET",
 			headers: _DEFAULT_REQUEST_HEADERS
 		});
+
+		if (!resp.ok) {
+			throw new ApiError(resp.status, resp.statusText);
+		}
+
 		const respBody = await readResponseBody(resp);
 
 		if (respBody.error) {
