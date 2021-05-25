@@ -12,6 +12,12 @@ export const update = async (user, data) => {
 			// Because admins can edit but not take ownership
 			data.owner = user.username;
 		}
+		if (data.demande_contact_adherent === "true") {
+			// We have a strange problem here as the field is not serialized correctly as a Boolean
+			data.demande_contact_adherent = true;
+		} else {
+			data.demande_contact_adherent = false;
+		}
 		const { success, adherent } = await APIClient.post(
 			`/api/adherent/${data.siret}`,
 			data
