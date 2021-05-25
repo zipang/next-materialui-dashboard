@@ -18,20 +18,28 @@ Install the dependencies :
 yarn
 ```
 
-### 2. Create your backend as a service with back4app
+### 2. Create your Parse backend with back4app
 
-[Create an application](https://youtu.be/JWMv2aEx5G0), then copy the required application key and js api key inside `env.local`
+[Create an application](https://youtu.be/JWMv2aEx5G0), 
+Create the following Classes with the following fields : 
+Adherent
+Adhesion
+Parameters
+
+### 3. Create the local parameters
+
+Next.js makes it super easy to [load project environnement variables from `.env` files](https://nextjs.org/docs/basic-features/environment-variables)
 
 ```sh
 cp .env.local.sample .env.local
 nano .env.local
 ```
 
-which should now contain something like this with the values of your backend, as well as the configuration of the mail server :
+This `env` file which should now contain something like this with the values of your Parse backend, as well as the configuration of the mail server and the site name and URL.. :
 
 ```properties
 NEXT_PUBLIC_SITE_URL=https://my.dashboard.wtf
-NEXT_PUBLIC_SITE_NAME=DASHBOARD ADHESIONS (DEV)
+NEXT_PUBLIC_SITE_NAME=DASHBOARD ADHESIONS
 PARSE_APP_ID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 PARSE_JS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 PARSE_SERVER_URL=https://parseapi.back4app.com
@@ -39,7 +47,7 @@ SMTP_HOST=smtp.server.com
 SMTP_PORT=587
 SMTP_SECURE=false
 SMTP_USER=contact@somewhere.org
-SMTP_USERNAME=CONTACT DASHBOARD (dev)
+SMTP_USERNAME=CONTACT DASHBOARD
 SMTP_PWD=XXXXXXXXXXXXXXXXX
 MAIL_CONTACT=CONTACT DASHBOARD <contact@somewhere.org>
 ```
