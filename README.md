@@ -27,7 +27,7 @@ cp .env.local.sample .env.local
 nano .env.local
 ```
 
-which should now contain something like this with the values of your backend :
+which should now contain something like this with the values of your backend, as well as the configuration of the mail server :
 
 ```properties
 NEXT_PUBLIC_SITE_URL=https://my.dashboard.wtf
