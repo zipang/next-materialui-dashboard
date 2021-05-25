@@ -1069,7 +1069,8 @@ export const stepDemandeContact = [
 			{
 				name: "demande_contact_adherent",
 				label: "Souhaitez-vous être recontacté pour un RV adhérent ?",
-				type: "ysn"
+				type: "ysn",
+				defaultValue: true
 			}
 		]
 	}

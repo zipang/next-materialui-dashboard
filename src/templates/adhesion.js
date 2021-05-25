@@ -52,7 +52,7 @@ export const text = function anonymous(data) {
 		"  \nN° Mobile: " +
 		getProperty(data, "representant.mobile", "") +
 		"  \n\n";
-	if (getProperty(data, "demande_contact_adherent", "")) {
+	if (getProperty(data, "demande_contact_adherent", false)) {
 		out += "\n**La structure a souhaité être recontactée**\n";
 	}
 	out += "\n";
