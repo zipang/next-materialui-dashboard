@@ -112,7 +112,7 @@ const testData = {
 		codes: ["menage", "soutien_scolaire", "jardinage", "demarches_administratives"],
 		autres: ""
 	},
-	demande_contact_adherent: "true"
+	demande_contact_adherent: true
 };
 
 export default testData;
