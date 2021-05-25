@@ -30,7 +30,24 @@ nano .env.local
 which should now contain something like this with the values of your backend :
 
 ```properties
-PARSE_APP_ID=xxxxx
-PARSE_JS_KEY=xxxxx
+NEXT_PUBLIC_SITE_URL=https://my.dashboard.wtf
+NEXT_PUBLIC_SITE_NAME=DASHBOARD ADHESIONS (DEV)
+PARSE_APP_ID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+PARSE_JS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
+PARSE_SERVER_URL=https://parseapi.back4app.com
+SMTP_HOST=smtp.server.com
+SMTP_PORT=587
+SMTP_SECURE=false
+SMTP_USER=contact@somewhere.wtf
+SMTP_USERNAME=CONTACT DASHBOARD (dev)
+SMTP_PWD=XXXXXXXXXXXXXXXXX
+MAIL_CONTACT=CONTACT INVIE DEV <christophe.desguez@gmail.fr>
+MOLLIE_API_KEY=test_TMy3PjCuUhqEzzdxvSb6kthVBWesRg
 ```
+
+Note : be sure that this local environment file is never pushed to git as it contains sensible informations.
+
+To have these environment variables available in Vercel (the prefered choice for our deployments) you have to create the manually in the environment variables sections :
+
+![Environment variables in Vercel](public/img/vercel-environment-variables.png)
 
