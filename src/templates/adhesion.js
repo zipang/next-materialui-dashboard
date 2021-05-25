@@ -27,9 +27,9 @@ const getProperty = (source = {}, path = "", defaultValue) => {
  */
 export const text = function anonymous(data) {
 	var out =
-		"" +
+		"L'adhérent **" +
 		getProperty(data, "nom", "") +
-		" vient d'adhérer/renouveler son adhésion.\n\nLes coordonnées :\n\n**" +
+		"** vient d'adhérer/renouveler son adhésion.\n\nSes coordonnées :\n\n**" +
 		getProperty(data, "nom", "") +
 		"**  \n" +
 		getProperty(data, "adresse.rue1", "") +
@@ -66,9 +66,9 @@ export const text = function anonymous(data) {
  */
 export const html = function anonymous(data) {
 	var out =
-		"<p>" +
+		"<p>L'adhérent <strong>" +
 		getProperty(data, "nom", "") +
-		" vient d'adhérer/renouveler son adhésion.</p><p>Les coordonnées :</p><p><strong>" +
+		"</strong> vient d'adhérer/renouveler son adhésion.</p><p>Ses coordonnées :</p><p><strong>" +
 		getProperty(data, "nom", "") +
 		"</strong><br />" +
 		getProperty(data, "adresse.rue1", "") +

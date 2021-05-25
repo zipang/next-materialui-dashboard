@@ -2,13 +2,12 @@
 subject: Votre adhésion INVIE ({{=data.nom}})
 to: '"{{=data.representant.prenom}} {{=data.representant.nom}}" <{{=data.representant.email}}>'
 bcc: zipang <christophe.desguez@gmail.com>
-attachments: attestation
 ---
 <img src="https://invie78.fr/images/logo.jpg" alt="logo" />
 
 Les Mureaux, le {{=(new Date).toISOString().substr(0,10)}}
 
-Vos références : {{=data.no}} - {{=data.nom}}
+Vos références : {{=data.adhesion.no}} - {{=data.nom}}
 
 Bonjour,
 

@@ -1,4 +1,4 @@
-// welcome.js
+// paiement.js
 const splitPath = (path = "") => path.split(/[,\[\]\.]+?/).filter(Boolean);
 
 /**
@@ -33,7 +33,9 @@ export const text = function anonymous(data) {
 		getProperty(data, "adhesion.no", "") +
 		" - " +
 		getProperty(data, "nom", "") +
-		"\n\nBonjour,\n\nVous venez de valider votre demande d'adhésion en ligne.\n\nNous vous remercions pour votre confiance.\n\nAfin de finaliser votre adhésion, le règlement (d’un montant de 200€) peut se réaliser par :\n\n    * Chèque à l’ordre d’INVIE\n    * Virement bancaire via l’IBAN FR76 1751 5006 0008 0019 2244 430\n\n \nPour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail contact@invie78.fr\n\nCordialement,\n\nL’équipe d’INVIE\n";
+		"\n\nBonjour,\n\nNous accusons bonne réception de votre paiement pour l'adhésion " +
+		getProperty(data, "adhesion.no", "") +
+		".\nVous pouvez trouver en pièce jointe l'attestation d'adhésion.\n\n\nEn vous remerciant pour votre confiance,\nCordialement,\n\nL’équipe d’INVIE\n\nPour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail contact@invie78.fr\n";
 	return out.replace(/(<([^>]+)>)/gi, "");
 };
 
@@ -50,7 +52,9 @@ export const html = function anonymous(data) {
 		getProperty(data, "adhesion.no", "") +
 		" - " +
 		getProperty(data, "nom", "") +
-		'</p><p>Bonjour,</p><p>Vous venez de valider votre demande d\'adhésion en ligne.</p><p>Nous vous remercions pour votre confiance.</p><p>Afin de finaliser votre adhésion, le règlement (d’un montant de 200€) peut se réaliser par :</p><pre><code>* Chèque à l’ordre d’INVIE* Virement bancaire via l’IBAN FR76 1751 5006 0008 0019 2244 430</code></pre><p>Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail <a href="mailto:contact@invie78.fr">contact@invie78.fr</a></p><p>Cordialement,</p><p>L’équipe d’INVIE</p>';
+		"</p><p>Bonjour,</p><p>Nous accusons bonne réception de votre paiement pour l'adhésion " +
+		getProperty(data, "adhesion.no", "") +
+		".Vous pouvez trouver en pièce jointe l'attestation d'adhésion.</p><p>En vous remerciant pour votre confiance,Cordialement,</p><p>L’équipe d’INVIE</p><p>Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail <a href=\"mailto:contact@invie78.fr\">contact@invie78.fr</a></p>";
 	return out;
 };
 
@@ -60,7 +64,7 @@ export const html = function anonymous(data) {
  * @return {String}
  */
 export const subject = function anonymous(data) {
-	var out = "Votre adhésion INVIE (" + getProperty(data, "nom", "") + ")";
+	var out = "Votre adhésion INVIE (" + getProperty(data, "nom", "") + ") est validée";
 	return out;
 };
 
@@ -91,17 +95,28 @@ export const bcc = function anonymous(data) {
 	return out;
 };
 
-const welcome = {
+/**
+ * Front matter attachments
+ * @param {Object} data
+ * @return {String}
+ */
+export const attachments = function anonymous(data) {
+	var out = "attestation";
+	return out;
+};
+
+const paiement = {
 	text,
 	html,
 	subject,
 	to,
-	bcc
+	bcc,
+	attachments
 };
 
 const render = (data) =>
-	Object.keys(welcome).reduce((prev, key) => {
-		prev[key] = welcome[key](data);
+	Object.keys(paiement).reduce((prev, key) => {
+		prev[key] = paiement[key](data);
 		return prev;
 	}, {});
 
