@@ -3,6 +3,7 @@ import DataTable from "./DataTable.js";
 import Skeleton from "@material-ui/lab/Skeleton";
 import { Box } from "@material-ui/core";
 import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
+import { sendMailTemplate } from "@lib/client/MailApiClient.js";
 
 const displayDate = (isoDate) => {
 	if (!isoDate) return "";
@@ -32,27 +33,39 @@ export const columns = [
 		minWidth: 80,
 		format: (code) => MODE_PAIEMENTS[code],
 		button: (adhesion) => {
-			if (adhesion.statut === "en_attente") {
-				return {
-					label: "Confirmer Paiement",
-					action: async () => {
-						if (
-							confirm(
-								`Confirmez-vous la réception du paiement pour l'adhésion ${adhesion.no} (${adhesion.nom})`
-							)
-						) {
-							const paymentData = {
-								date: new Date().toISOString().substr(0, 10),
-								montant: 200
-							};
-							await AdherentsApiClient.confirmAdhesion(
-								adhesion.no,
-								paymentData
-							);
-							alert("Le paiement a été enregistré");
+			try {
+				if (adhesion.statut === "en_attente") {
+					return {
+						label: "Confirmer Paiement",
+						action: async () => {
+							if (
+								confirm(
+									`Confirmez-vous la réception du paiement pour l'adhésion ${adhesion.no} (${adhesion.nom})`
+								)
+							) {
+								const paymentData = {
+									date: new Date().toISOString().substr(0, 10),
+									montant: 200
+								};
+								const updated = await AdherentsApiClient.confirmAdhesion(
+									adhesion.no,
+									paymentData
+								);
+								const adherent = await AdherentsApiClient.retrieveBySiret(
+									adhesion.siret
+								);
+								adherent.adhesion = updated.adhesion;
+								sendMailTemplate("paiement", adherent);
+								alert(
+									"Le paiement a été enregistré. L'adhérent va être notifié."
+								);
+							}
 						}
-					}
-				};
+					};
+				}
+			} catch (err) {
+				console.error(err);
+				alert(err.message);
 			}
 		}
 	},
