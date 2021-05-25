@@ -54,38 +54,42 @@ const rewriteDotTemplate = (fn, stripHTML) =>
  * @param {String} md
  */
 const MarkdownTemplateLoader = (templateName, md, properties = {}) => {
-	const textTemplate = dot.template(md, { ...defaultTemplateSettings, strip: false }); // Do not alter spaces and newlines in markdown !
-	const html = convertToHtml(md);
-	const htmlTemplate = dot.template(html, defaultTemplateSettings);
+	try {
+		const textTemplate = dot.template(md, {
+			...defaultTemplateSettings,
+			strip: false
+		}); // Do not alter spaces and newlines in markdown !
+		const html = convertToHtml(md);
+		const htmlTemplate = dot.template(html, defaultTemplateSettings);
 
-	// Each property in the front matter may be a dot template function too
-	const propertiesSource = Object.keys(properties).reduce((code, propertyName) => {
-		try {
-			return (
-				code +
-				`
+		// Each property in the front matter may be a dot template function too
+		const propertiesSource = Object.keys(properties).reduce((code, propertyName) => {
+			try {
+				return (
+					code +
+					`
 /**
  * Front matter ${propertyName}
  * @param {Object} data
  * @return {String}
  */
 export const ${propertyName} = ${rewriteDotTemplate(
-					dot.template(properties[propertyName], {
-						...defaultTemplateSettings,
-						strip: false
-					})
-				)}
+						dot.template(properties[propertyName], {
+							...defaultTemplateSettings,
+							strip: false
+						})
+					)}
 
 `
-			);
-		} catch (err) {
-			return code;
-		}
-	}, "");
+				);
+			} catch (err) {
+				return code;
+			}
+		}, "");
 
-	const propertiesKeys = `,${Object.keys(properties).join(",\n\t")}`;
+		const propertiesKeys = `,${Object.keys(properties).join(",\n\t")}`;
 
-	const templateSource = `
+		const templateSource = `
 // ${templateName}.js	
 const splitPath = (path = "") => path.split(/[,\\[\\]\\.]+?/).filter(Boolean);
 
@@ -137,7 +141,14 @@ const render = (data) =>
 
 export default render;
 `;
-	return templateSource;
+		return templateSource;
+	} catch (err) {
+		console.error(
+			`Une erreur est survenue lors du chargement du template ${templateName}`,
+			err
+		);
+		return err.message;
+	}
 };
 
 export default MarkdownTemplateLoader;
