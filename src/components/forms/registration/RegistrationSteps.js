@@ -1123,7 +1123,7 @@ Cliquez maintenant sur Valider pour envoyer votre demande.`
 						const { adhesion, ...adherent } = data;
 						const { siret } = adherent;
 						// Update the final state of the organisme
-						update(loggedUser, adherent);
+						await update(loggedUser, adherent);
 						// Create the adhesion request
 						const resp = await createAdhesion(loggedUser, siret, adhesion);
 						// Send the mail to admins
