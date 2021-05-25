@@ -5,14 +5,16 @@ filename: "Adhésion-INVIE-{{=(new Date).toISOString().substr(0,10)}}-{{=data.no
 
 <h1 style="width: 80%; text-align: center; background-color: 'orange'"> RECU D'ADHESION {{=data.adhesion.no}}</h1>
 
-L'association INVIE atteste avoir reçu au titre de l'année {{=(new Date).toISOString().substr(0,10)}}
-l'adhésion de 
+En date du {{=data.adhesion.date_debut}}  
 
-<h2 style="width: 80%; text-align: center; margin-left: auto; margin-right: auto; background-color: 'orange'"> {{=data.nom}} (N° de Siret `{{=data.siret}}`)</h2>
+L'association INVIE atteste avoir reçu au titre de l'année {{=(new Date).toISOString().substr(0,4)}}  
+l'adhésion de  
 
-En date du : {{=data.adhesion.date_debut}}
+<h2 style="width: 80%; text-align: center; margin-left: auto; margin-right: auto; background-color: 'orange'"> {{=data.nom}}</h2>
 
-La somme de : **{{=data.adhesion.montant}}**  
+Identification SIRET : {{=data.siret}}  
+
+Pour la somme de : **200€**  
 
 Fait aux Mureaux, le {{=(new Date).toISOString().substr(0,10)}}, pour valoir ce que de droit.
 
