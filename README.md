@@ -21,10 +21,10 @@ yarn
 ### 2. Create your Parse backend with back4app
 
 [Create an application](https://youtu.be/JWMv2aEx5G0), 
-Create the following Classes with the following fields : 
-Adherent
-Adhesion
-Parameters
+Create the following Classes with the following fields :  
+**Adherent**  
+**Adhesion**  
+**Parameters**  
 
 ### 3. Create the local parameters
 
