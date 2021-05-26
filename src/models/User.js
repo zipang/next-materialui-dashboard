@@ -103,10 +103,8 @@ export const forgotPassword = (User.forgotPassword = async (email) => {
 		const user = await getByUsername(email);
 
 		if (user) {
-			Parse.User.requestPasswordReset(email);
+			await Parse.User.requestPasswordReset(email);
 
-			user.set("emailVerified", true);
-			user.save(); // don't wait
 			return user;
 		} else {
 			throw new ApiError(404, "Email inconnu");
