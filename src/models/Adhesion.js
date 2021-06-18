@@ -194,7 +194,12 @@ export const confirmPayment = async (no, data = {}) => {
 		adhesion.set("statut", "active");
 		adhesion.set("paiement", data);
 
-		const adherent = adhesion.get("adherent");
+		let adherent = adhesion.get("adherent");
+
+		if (!adherent) {
+			adherent = await retrieveBySiret(adhesion.get("siret"));
+			adhesion.set("adherent", adherent);
+		}
 		adherent.set("statut", "actif");
 
 		await Promise.allSettled([adherent.save(), adhesion.save()]);
