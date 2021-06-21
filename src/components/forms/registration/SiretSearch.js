@@ -4,6 +4,8 @@ import { applyNumericMask, getDigitsOnly } from "@components/forms/validation/ut
 import APIForm from "../APIForm.js";
 import Formatted from "../inputs/Formatted.js";
 import Submit from "../inputs/Submit.js";
+import { useAuthentication } from "@components/AuthenticationProvider.js";
+import User from "@models/User.js";
 
 export const formatSiret = applyNumericMask("999 999 999 99999");
 export const isSiretValid = (str = "") =>
@@ -24,8 +26,12 @@ export const SiretInput = ({ validation, label = "N° de Siret", ...props }) => 
  * Take the format returned by /siret/search API
  * And convert it to our needs
  * @param {Function} callback
+ * @param {User} user Currently logged user
  */
-export const mergeSiretData = (callback) => ({ siret, siretData, savedData }, errors) => {
+export const mergeSiretData = (callback, user) => (
+	{ siret, siretData, savedData },
+	errors
+) => {
 	// Remember this one
 	window.localStorage.setItem("siret-search", siret);
 
@@ -66,15 +72,12 @@ Vous allez devoir saisir vos informations manuellement.`);
 				commune: getProperty(etablissement, "libelle_commune")
 			},
 			representant: {
-				nom: getProperty(etablissement, "unite_legale.nom"),
-				prenom: getProperty(etablissement, "unite_legale.prenom_1")
+				prenom: user.firstName,
+				nom: user.lastName,
+				email: user.email
 			},
 			statut: "en_attente"
 		};
-		const sex = getProperty(etablissement, "unite_legale.sexe");
-		if (sex) {
-			merged.representant.civilite = sex === "M" ? "M." : "Mme";
-		}
 		const etatAdministratif = getProperty(
 			etablissement,
 			"unite_legale.etat_administratif"
@@ -116,6 +119,7 @@ Vous allez devoir saisir vos informations manuellement.`);
  */
 export const SiretSearchForm = ({ onSubmit }) => {
 	const [apiErrorMessage, setApiErrorMessage] = useState(false);
+	const { loggedUser } = useAuthentication();
 
 	const onError = (error) => {
 		console.log(`Siret search returned error`, error);
@@ -135,7 +139,7 @@ export const SiretSearchForm = ({ onSubmit }) => {
 	return (
 		<APIForm
 			action="/api/siret/search"
-			onSuccess={mergeSiretData(onSubmit)}
+			onSuccess={mergeSiretData(onSubmit, loggedUser)}
 			onError={onError}
 			customStyles={{ width: "18em" }}
 		>
