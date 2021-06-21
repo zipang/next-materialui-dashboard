@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { getProperty } from "@lib/utils/NestedObjects.js";
 import { applyNumericMask, getDigitsOnly } from "@components/forms/validation/utils.js";
 import APIForm from "../APIForm.js";
 import Formatted from "../inputs/Formatted.js";
@@ -53,51 +52,19 @@ Vous allez devoir saisir vos informations manuellement.`);
 		return callback({});
 	}
 
-	if (typeof siretData?.etablissement === "object") {
-		const { etablissement } = siretData;
-
-		const merged = {
-			siret: getProperty(etablissement, "siret"),
-			nom: getProperty(
-				etablissement,
-				"denomination_usuelle",
-				getProperty(etablissement, "unite_legale.denomination")
-			),
-			federation_reseau_enseigne: getProperty(etablissement, "enseigne_1"),
-			date_creation: getProperty(etablissement, "date_debut"),
-			adresse: {
-				rue1: getProperty(etablissement, "geo_l4"),
-				rue2: getProperty(etablissement, "complement_adresse"),
-				code_postal: getProperty(etablissement, "code_postal"),
-				commune: getProperty(etablissement, "libelle_commune")
-			},
-			representant: {
+	if (typeof siretData === "object") {
+		siretData.statut = "en_attente";
+		if (user) {
+			siretData.representant = {
 				prenom: user.firstName,
 				nom: user.lastName,
 				email: user.email
-			},
-			statut: "en_attente"
-		};
-		const etatAdministratif = getProperty(
-			etablissement,
-			"unite_legale.etat_administratif"
-		);
-		const numeroAssociation = getProperty(
-			etablissement,
-			"unite_legale.identifiant_association"
-		);
-
-		if (merged.federation_reseau_enseigne === "CCAS") {
-			merged.forme_juridique = "ccas-cias";
-		} else if (numeroAssociation || etatAdministratif === "A") {
-			merged.forme_juridique = "association";
-		} else {
-			merged.forme_juridique = "entreprise";
+			};
 		}
 
-		console.log(`Siret data extracted :`, merged);
+		console.log(`Siret data extracted :`, siretData);
 
-		callback(merged);
+		callback(siretData);
 	} else {
 		// Create an error message in the same format that react-hook-form uses
 		callback(
