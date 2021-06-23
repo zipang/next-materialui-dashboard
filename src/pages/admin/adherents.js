@@ -3,7 +3,7 @@ import AdherentsDataTable from "@components/tables/AdherentsDataTable.js";
 import Dashboard from "@components/Dashboard.js";
 import { withAuthentication } from "@components/AuthenticationProvider.js";
 
-const buildTabs = (statut, setFilter) => {
+const buildTabsDef = (statut, setFilter) => {
 	const tabs = [
 		{
 			value: "actif",
@@ -31,7 +31,7 @@ const buildTabs = (statut, setFilter) => {
 const PageAdherents = () => {
 	const [statut, setFilter] = useState("actif");
 	return (
-		<Dashboard title="Adhérents" tabs={buildTabs(statut, setFilter)}>
+		<Dashboard title="Adhérents" tabsDefs={buildTabsDef(statut, setFilter)}>
 			<AdherentsDataTable filter={{ statut }} />
 		</Dashboard>
 	);
