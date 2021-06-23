@@ -14,14 +14,16 @@ import Link from "@components/Link.js";
 
 const useStyles = makeStyles({
 	root: {
-		width: "100%"
+		width: "100%",
+		height: "100%"
 	},
 	container: {
-		maxHeight: 480
+		// maxHeight: 480
 	},
 
 	table: {
-		minWidth: 780
+		minWidth: 780,
+		height: "100%"
 	},
 	visuallyHidden: {
 		border: 0,

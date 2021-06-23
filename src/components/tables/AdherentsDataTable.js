@@ -4,6 +4,9 @@ import Skeleton from "@material-ui/lab/Skeleton";
 import AdherentsApiClient from "@lib/client/AdherentsApiClient.js";
 import { Box } from "@material-ui/core";
 
+/**
+ * Define the columns for the adherents
+ */
 export const columns = [
 	{
 		id: "nom",
