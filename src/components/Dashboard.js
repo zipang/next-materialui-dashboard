@@ -26,7 +26,7 @@ const useStyles = makeStyles((theme) => ({
 	},
 	main: {
 		flex: 1,
-		padding: theme.spacing(6, 4),
+		padding: "7rem 1rem 1rem",
 		background: "#eaeff1",
 		"& .action": {
 			// The floating action button

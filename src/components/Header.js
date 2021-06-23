@@ -1,3 +1,4 @@
+import Sticky from "react-stickynode";
 import { AppBar, Avatar, Box, Grid, IconButton, Toolbar } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useAuthentication } from "./AuthenticationProvider.js";
@@ -38,8 +39,8 @@ function Header({ title, tabsDefs = [], currentTab = 0 }) {
 	const styles = useStyles();
 
 	return (
-		<>
-			<AppBar color="primary" position="sticky" elevation={0}>
+		<Sticky enabled={true} innerZ={999}>
+			<AppBar color="primary" elevation={0}>
 				<Toolbar>
 					<Grid container spacing={1} direction="row" justify="flex-end">
 						<Box flexGrow={1}>{title && <h2>{title}</h2>}</Box>
@@ -59,17 +60,9 @@ function Header({ title, tabsDefs = [], currentTab = 0 }) {
 						)}
 					</Grid>
 				</Toolbar>
-			</AppBar>
-
-			<AppBar
-				component="div"
-				className={styles.secondaryBar}
-				position="static"
-				elevation={0}
-			>
 				<Tabs tabsDefs={tabsDefs} currentTab={currentTab} />
 			</AppBar>
-		</>
+		</Sticky>
 	);
 }
 
