@@ -4,13 +4,7 @@
 
 ### 1. Download the sources
 
-Download the zip file from the [github repo](https://github.com/zipang/parse-materia-dashboard-next) and unzip it.
-
-Or with [degit](https://github.com/Rich-Harris/degit) : 
-```sh
-degit zipang/parse-materia-dashboard-next my-dashboard
-cd my-dashboard
-```
+Clone the repo locally with git
 
 Install the dependencies :
 
@@ -23,6 +17,10 @@ yarn
 [Create an application](https://youtu.be/JWMv2aEx5G0), 
 Create the following Classes with the following fields :  
 **Adherent**  
+* siret
+* nom
+* statut
+* owner
 **Adhesion**  
 **Parameters**  
 
@@ -38,7 +36,7 @@ nano .env.local
 This `env` file which should now contain something like this with the values of your Parse backend, as well as the configuration of the mail server and the site name and URL.. :
 
 ```properties
-NEXT_PUBLIC_SITE_URL=https://my.dashboard.wtf
+NEXT_PUBLIC_SITE_URL=https://my.dashboard
 NEXT_PUBLIC_SITE_NAME=DASHBOARD ADHESIONS
 PARSE_APP_ID=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 PARSE_JS_KEY=XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
