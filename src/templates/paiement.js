@@ -91,7 +91,7 @@ export const to = function anonymous(data) {
  * @return {String}
  */
 export const bcc = function anonymous(data) {
-	var out = "zipang <christophe.desguez@gmail.com>";
+	var out = "zipang <christophe.desguez@gmail.com>, contact@invie78.fr";
 	return out;
 };
 
