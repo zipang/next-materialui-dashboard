@@ -22,7 +22,7 @@ export default async (req, resp) => {
 		const mailerResponse = await Mailer.sendMail(message);
 		resp.json({
 			success: true,
-			message: `Mail '${message.subject}' has been sent`,
+			message: `Mail '${message.subject}' has been sent to ${message.to}`,
 			...mailerResponse
 		});
 	} catch (err) {
