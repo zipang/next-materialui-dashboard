@@ -80,8 +80,8 @@ export const getParseInstance = () => {
 			"getParseInstance cannot be called on the front-end ! Use APIClient instead."
 		);
 	} else if (!parseInstance) {
-		// Manually load the environment variables for the test
-		if (process.env.NODE_ENV === "test") {
+		// Manually load the environment variables for the test or scripts
+		if (!process.env.PARSE_APP_ID) {
 			loadEnv();
 		}
 		const { PARSE_APP_ID, PARSE_JS_KEY, PARSE_SERVER_URL } = process.env;
