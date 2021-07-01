@@ -1,6 +1,6 @@
 import APIClient from "./ApiClient.js";
 import ApiError from "../ApiError.js";
-import { delay } from "@lib/utils/Promises.js";
+import { delay } from "../utils/Promises.js";
 
 /**
  * Use a named template to build a message and send it by mail

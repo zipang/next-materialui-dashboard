@@ -8,4 +8,4 @@
  *
  */
 
-module.exports = process.env.NODE_ENV === "test" ? __dirname : process.cwd();
+module.exports = __dirname;
