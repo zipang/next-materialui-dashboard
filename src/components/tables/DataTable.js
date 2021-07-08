@@ -200,7 +200,7 @@ const DataTable = ({ columns = [], rows = [], onAction }) => {
 	const [order, setOrder] = useState("desc");
 	const [orderBy, setOrderBy] = useState(columns[0]?.id);
 	const [page, setPage] = React.useState(0);
-	const [rowsPerPage, setRowsPerPage] = useState(100);
+	const [rowsPerPage, setRowsPerPage] = useState(1000);
 
 	const changePage = (event, newPage) => {
 		setPage(newPage);
