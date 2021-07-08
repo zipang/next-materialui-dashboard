@@ -18,7 +18,7 @@ const buildTabsDefs = (statut, setFilter) => {
 		{
 			value: "expiree",
 			label: "Ancienne adhésions",
-			action: () => setFilter("expiree")
+			action: () => setFilter("closed")
 		}
 	];
 	tabs.value = statut; // the currently selected tab
