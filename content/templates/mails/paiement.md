@@ -1,7 +1,7 @@
 ---
 subject: Votre adhésion INVIE ({{=data.nom}}) est validée
 to: '"{{=data.representant.prenom}} {{=data.representant.nom}}" <{{=data.representant.email}}>'
-bcc: zipang <christophe.desguez@gmail.com>
+bcc: zipang <christophe.desguez@gmail.com>, contact@invie78.fr
 attachments: attestation
 ---
 <img src="https://invie78.fr/images/logo.jpg" alt="logo" />
