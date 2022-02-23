@@ -21,7 +21,7 @@ Afin de finaliser votre adhésion, le règlement (d’un montant de 200€) peut
 * Virement bancaire via l’IBAN FR76 1751 5006 0008 0019 2244 430  
 
  
-Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail contact@invie78.fr
+Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail mpace@agence-autonomy.fr
 
 Cordialement,
 

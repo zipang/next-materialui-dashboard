@@ -1,8 +1,8 @@
-import { SiretSearchForm } from "./SiretSearch.js";
-import { update, createAdhesion } from "@lib/client/AdherentsApiClient.js";
-import { sendMailTemplate } from "@lib/client/MailApiClient.js";
-import APIClient from "@lib/client/ApiClient.js";
 import { positiveNumber } from "@forms/validation/utils.js";
+import { createAdhesion, update } from "@lib/client/AdherentsApiClient.js";
+import APIClient from "@lib/client/ApiClient.js";
+import { sendMailTemplate } from "@lib/client/MailApiClient.js";
+import { SiretSearchForm } from "./SiretSearch.js";
 
 /**
  * These steps are the introduction text for a new adhesion
@@ -25,7 +25,7 @@ Deux modalités de cotisation sont possibles :
 * Cotisation A : 200€ par an pour les SAP/SAAD donnant accès à toute l’offre de services
 * Cotisation B : 60€ pour les partenaires du secteur social, médicosocial et sanitaire
   (ESMS hors SAAD/EHPAD et Résidences autonomie, fédérations de branche, OPCO, adherents de formations)
-  Contactez INVIE sur contact@invie78.fr – 01.39.29.43.48
+  Contactez INVIE sur mpace@agence-autonomy.fr – 01.39.29.43.48
 `,
 			backgroundImage: "https://invie78.fr/images/background-registration.jpg"
 		}

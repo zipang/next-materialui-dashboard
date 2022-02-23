@@ -37,7 +37,7 @@ export const text = function anonymous(data) {
 		getProperty(data, "date_fin", "") +
 		'.\n\nAfin de procéder à son renouvellement, merci de vous connecter dans <a href="' +
 		getProperty(data, "env.NEXT_PUBLIC_SITE_URL", "") +
-		"\">votre espace adhérent</a> et de revalider votre formulaire d'informations.\n \nPour toute question complémentaire ou demande de rdv, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail contact@invie78.fr\n\nNous vous remercions pour votre confiance.\n\nCordialement,\n\nL’équipe d’INVIE\n";
+		"\">votre espace adhérent</a> et de revalider votre formulaire d'informations.\n \nPour toute question complémentaire ou demande de rdv, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail mpace@agence-autonomy.fr\n\nNous vous remercions pour votre confiance.\n\nCordialement,\n\nL’équipe d’INVIE\n";
 	return out.replace(/(<([^>]+)>)/gi, "");
 };
 
@@ -58,7 +58,7 @@ export const html = function anonymous(data) {
 		getProperty(data, "date_fin", "") +
 		'.</p><p>Afin de procéder à son renouvellement, merci de vous connecter dans <a href="' +
 		getProperty(data, "env.NEXT_PUBLIC_SITE_URL", "") +
-		'">votre espace adhérent</a> et de revalider votre formulaire d\'informations.</p><p>Pour toute question complémentaire ou demande de rdv, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail <a href="mailto:contact@invie78.fr">contact@invie78.fr</a></p><p>Nous vous remercions pour votre confiance.</p><p>Cordialement,</p><p>L’équipe d’INVIE</p>';
+		'">votre espace adhérent</a> et de revalider votre formulaire d\'informations.</p><p>Pour toute question complémentaire ou demande de rdv, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail <a href="mailto:mpace@agence-autonomy.fr">mpace@agence-autonomy.fr</a></p><p>Nous vous remercions pour votre confiance.</p><p>Cordialement,</p><p>L’équipe d’INVIE</p>';
 	return out;
 };
 

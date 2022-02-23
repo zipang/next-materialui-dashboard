@@ -1,7 +1,7 @@
 ---
 subject: Votre adhésion INVIE ({{=data.nom}}) est validée
 to: '"{{=data.representant.prenom}} {{=data.representant.nom}}" <{{=data.representant.email}}>'
-bcc: zipang <christophe.desguez@gmail.com>, contact@invie78.fr
+bcc: zipang <christophe.desguez@gmail.com>, mpace@agence-autonomy.fr
 attachments: attestation
 ---
 <img src="https://invie78.fr/images/logo.jpg" alt="logo" />
@@ -21,4 +21,4 @@ Cordialement,
 
 L’équipe d’INVIE
 
-Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail contact@invie78.fr
+Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail mpace@agence-autonomy.fr

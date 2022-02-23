@@ -35,7 +35,7 @@ export const text = function anonymous(data) {
 		getProperty(data, "nom", "") +
 		"\n\nBonjour,\n\nNous accusons bonne réception de votre paiement pour l'adhésion " +
 		getProperty(data, "adhesion.no", "") +
-		".\nVous pouvez trouver en pièce jointe l'attestation d'adhésion.\n\n\nEn vous remerciant pour votre confiance,\nCordialement,\n\nL’équipe d’INVIE\n\nPour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail contact@invie78.fr\n";
+		".\nVous pouvez trouver en pièce jointe l'attestation d'adhésion.\n\n\nEn vous remerciant pour votre confiance,\nCordialement,\n\nL’équipe d’INVIE\n\nPour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail mpace@agence-autonomy.fr\n";
 	return out.replace(/(<([^>]+)>)/gi, "");
 };
 
@@ -54,7 +54,7 @@ export const html = function anonymous(data) {
 		getProperty(data, "nom", "") +
 		"</p><p>Bonjour,</p><p>Nous accusons bonne réception de votre paiement pour l'adhésion " +
 		getProperty(data, "adhesion.no", "") +
-		".Vous pouvez trouver en pièce jointe l'attestation d'adhésion.</p><p>En vous remerciant pour votre confiance,Cordialement,</p><p>L’équipe d’INVIE</p><p>Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail <a href=\"mailto:contact@invie78.fr\">contact@invie78.fr</a></p>";
+		".Vous pouvez trouver en pièce jointe l'attestation d'adhésion.</p><p>En vous remerciant pour votre confiance,Cordialement,</p><p>L’équipe d’INVIE</p><p>Pour toute question complémentaire, vous pouvez nous contacter par téléphone au 01 39 29 43 48 ou par mail <a href=\"mailto:mpace@agence-autonomy.fr\">mpace@agence-autonomy.fr</a></p>";
 	return out;
 };
 
@@ -91,7 +91,7 @@ export const to = function anonymous(data) {
  * @return {String}
  */
 export const bcc = function anonymous(data) {
-	var out = "zipang <christophe.desguez@gmail.com>, contact@invie78.fr";
+	var out = "zipang <christophe.desguez@gmail.com>, mpace@agence-autonomy.fr";
 	return out;
 };
 
